@@ -1,0 +1,640 @@
+import 'dart:async';
+import 'dart:io';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:twochealthcare/common_widgets/circular_image.dart';
+import 'package:twochealthcare/common_widgets/menu_text_style.dart';
+import 'package:twochealthcare/util/application_sizing.dart';
+import 'package:twochealthcare/util/application_colors.dart';
+import 'package:twochealthcare/util/styles.dart';
+import 'package:twochealthcare/views/home/home.dart';
+import 'package:fluentui_icons/fluentui_icons.dart';
+
+class CustomDrawer extends HookWidget {
+  @override
+  Widget build(BuildContext context) {
+
+    useEffect(
+      () {
+        Future.microtask(() async {});
+
+        return () {
+          // Dispose Objects here
+        };
+      },
+      const [],
+    );
+    return Container(
+        height: MediaQuery.of(context).size.height,
+        decoration: BoxDecoration(
+            color: appColor,
+            borderRadius: const BorderRadius.only(
+              topRight: Radius.circular(30),
+              bottomRight: Radius.circular(30),
+            )
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.only(top: ApplicationSizing.convert(20)),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+
+                          Row(
+                            children: [
+                              Container(
+                                margin: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin()),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    ApplicationSizing.verticalSpacer(n: 50),
+                                    CircularImage(
+                                      w: ApplicationSizing.convert(60),
+                                      h: ApplicationSizing.convert(60),
+                                      imageUrl: "assets/icons/personIcon.png",
+                                      assetImage: true,
+                                      color: Colors.white,
+                                    ),
+                                    Container(
+                                      child: Text(
+                                        "Jamshed khan",
+                                        style: Styles.PoppinsRegular(
+                                            fontSize: ApplicationSizing.fontScale(20),
+                                            color: Colors.white,
+                                          fontWeight: FontWeight.w600
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      child: Text(
+                                        "jimmykhan121@gmail.com",
+                                        style: Styles.PoppinsRegular(
+                                            fontSize: ApplicationSizing.fontScale(10),
+                                            color: Colors.white,
+                                          fontWeight: FontWeight.w200
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(
+                horizontal: ApplicationSizing.convertWidth( 30),
+                vertical: ApplicationSizing.convert(15),
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Container(
+                    child: Text(
+                      "Version: ",
+                      style: Styles.PoppinsBold(
+                        color: Color(0xff134389),
+                        fontSize: ApplicationSizing.fontScale( 8),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    child: Text(
+                      "1.5",
+                      style: Styles.PoppinsBold(
+                        color: Color(0xff134389),
+                        fontSize: ApplicationSizing.fontScale(8),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            )
+          ],
+        ));
+  }
+
+  _menu(context,) {
+    Color UnSelectedColor = Color(0xff134389);
+    return Column(
+      children: [
+        Container(
+          margin: EdgeInsets.only(top: ApplicationSizing.convert(1)),
+          padding:
+              EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin()),
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+            colors: [AppBarStartColor, AppBarEndColor],
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+          )),
+          // child: Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //   children: [
+          //     Container(
+          //       child: Row(
+          //         mainAxisAlignment: MainAxisAlignment.start,
+          //         crossAxisAlignment: CrossAxisAlignment.center,
+          //         children: [
+          //           Icon(
+          //             FluentSystemIcons.ic_fluent_heart_regular,
+          //             size: size.convert(context, 25),
+          //             color: Colors.white,
+          //           ),
+          //           MenuTextStyle(
+          //             text: "Hub",
+          //             color: Colors.white,
+          //           ),
+          //         ],
+          //       ),
+          //     ),
+          //     toggleButton(
+          //       value: applicatonState.isHubActive,
+          //       enableColor: AppBarStartColor,
+          //       disableColor: Colors.white,
+          //       buttonWidth: size.convertWidth(context, 50),
+          //       onChange: (value) {
+          //         print("$value");
+          //         showDialog(
+          //             context: context,
+          //             barrierColor: Colors.transparent,
+          //             builder: (context) => ConfirmationAlerts(
+          //                   deviceService: deviceService,
+          //                   value: value,
+          //                   Action: "hub",
+          //                 ));
+          //       },
+          //     ),
+          //   ],
+          // ),
+        ),
+
+        Container(
+          margin: EdgeInsets.only(
+            left: ApplicationSizing.convertWidth( 20),
+            right: ApplicationSizing.convertWidth( 20),
+            top: ApplicationSizing.convert( 10),
+          ),
+          child: Column(
+            children: [
+              InkWell(
+                onTap: () {
+                  Navigator.pushReplacement(
+                      context,
+                      PageTransition(
+                          child: Home(), type: PageTransitionType.fade));
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Icon(
+                      FluentSystemIcons.ic_fluent_badge_regular,
+                      size: ApplicationSizing.convert( 25),
+                      color: appColor,
+                    ),
+                    MenuTextStyle(
+                      text: "Home",
+                    ),
+                  ],
+                ),
+              ),
+
+              Platform.isIOS ? Container(): InkWell(
+                onTap: () {
+                  if (Platform.isAndroid) {
+                    SystemNavigator.pop();
+                  } else if (Platform.isIOS) {
+                    Navigator.pop(context);
+                  }
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Icon(
+                      FluentSystemIcons.ic_fluent_dismiss_regular,
+                      size: ApplicationSizing.convert(25),
+                      color: appColor,
+                    ),
+                    MenuTextStyle(
+                      text: "Exit",
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  // facilityUserMenu(
+  //     context, DeviceService deviceService, ApplicatonState applicatonState) {
+  //   Color UnSelectedColor = Color(0xff134389);
+  //   return Column(
+  //     children: [
+  //       Container(
+  //         margin: EdgeInsets.only(
+  //           left: size.convertWidth(context, 20),
+  //           right: size.convertWidth(context, 20),
+  //           top: size.convertWidth(context, 10),
+  //         ),
+  //         child: Column(
+  //           children: [
+  //             InkWell(
+  //               onTap: () {
+  //                 applicatonState.updateSelectedTabI(0);
+  //                 Navigator.pushReplacement(
+  //                     context,
+  //                     PageTransition(
+  //                         child: ChatListScreen(),
+  //                         type: PageTransitionType.fade));
+  //               },
+  //               child: Row(
+  //                 mainAxisAlignment: MainAxisAlignment.start,
+  //                 crossAxisAlignment: CrossAxisAlignment.center,
+  //                 children: [
+  //                   Icon(
+  //                     FluentSystemIcons.ic_fluent_badge_regular,
+  //                     size: size.convert(context, 25),
+  //                     color: appColor,
+  //                   ),
+  //                   MenuTextStyle(
+  //                     text: "Home",
+  //                   ),
+  //                 ],
+  //               ),
+  //             ),
+  //             InkWell(
+  //               onTap: () {
+  //                 showDialog(
+  //                     context: context,
+  //                     barrierColor: Colors.transparent,
+  //                     builder: (context) => ConfirmationAlerts(
+  //                           Action: "logout",
+  //                         ));
+  //               },
+  //               child: Row(
+  //                 mainAxisAlignment: MainAxisAlignment.start,
+  //                 crossAxisAlignment: CrossAxisAlignment.center,
+  //                 children: [
+  //                   Icon(
+  //                     FluentSystemIcons.ic_fluent_power_regular,
+  //                     size: size.convert(context, 25),
+  //                     color: appColor,
+  //                   ),
+  //                   MenuTextStyle(
+  //                     text: "Logout",
+  //                   ),
+  //                 ],
+  //               ),
+  //             ),
+  //             Platform.isIOS ? Container(): InkWell(
+  //               onTap: () {
+  //                 if (Platform.isAndroid) {
+  //                   SystemNavigator.pop();
+  //                 } else if (Platform.isIOS) {
+  //                   Navigator.pop(context);
+  //                 }
+  //               },
+  //               child: Row(
+  //                 mainAxisAlignment: MainAxisAlignment.start,
+  //                 crossAxisAlignment: CrossAxisAlignment.center,
+  //                 children: [
+  //                   Icon(
+  //                     FluentSystemIcons.ic_fluent_dismiss_regular,
+  //                     size: size.convert(context, 25),
+  //                     color: appColor,
+  //                   ),
+  //                   MenuTextStyle(
+  //                     text: "Exit",
+  //                   ),
+  //                 ],
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
+  //
+  // lounchDexcomUrl(context, ApplicatonState applicatonState,
+  //     DeviceService deviceService) async {
+  //   print("lounchDexcom url call");
+  //   try {
+  //     applicatonState.SetStateForDexcomAuth(true);
+  //     var response = await SimpleApi().getWithContext(
+  //         url: ApiStrings.GET_DEXCOM_CODE,
+  //         context: context,
+  //         bearerToken: deviceService.currentUser.bearerToken,
+  //         patintId: deviceService.currentUser.id);
+  //     if (response is Response) {
+  //       if (response.statusCode == 200) {
+  //         print(response.data);
+  //         await launch(response.data);
+  //       }
+  //       applicatonState.SetStateForDexcomAuth(false);
+  //     } else {
+  //       applicatonState.SetStateForDexcomAuth(false);
+  //     }
+  //   } catch (e) {
+  //     applicatonState.SetStateForDexcomAuth(false);
+  //   }
+  // }
+}
+
+//  ConfirmationAlert(context, DeviceService deviceService,{String message,String event}) {
+//   // Navigator.pop(context);
+//   return showDialog(
+//       context: context,
+//       builder: (BuildContext context) {
+//         return Dialog(
+//           child: Container(
+//             padding: EdgeInsets.symmetric(
+//                 horizontal: size.convertWidth(context, 15)),
+//             height: size.convert(context, size.convert(context, 157)),
+//             width: size.convertWidth(context, 334),
+//             child: Column(
+//               children: <Widget>[
+//                 SizedBox(
+//                   height: size.convert(context, 26),
+//                 ),
+//                 Text(
+//                   "Alert",
+//                   style:
+//                       style.RobotoRegular(fontSize: size.convert(context, 15)),
+//                 ),
+//                 SizedBox(
+//                   height: size.convert(context, 18),
+//                 ),
+//                 Text(
+//                   message??"Are you sure, you want Logout?",
+//                   style:
+//                       style.RobotoRegular(fontSize: size.convert(context, 15)),
+//                 ),
+//                 SizedBox(
+//                   height: size.convert(context, 24),
+//                 ),
+//                 Container(
+//                   child: Row(
+//                     mainAxisAlignment: MainAxisAlignment.center,
+//                     children: <Widget>[
+//                       Container(
+//                         child: GestureDetector(
+//                           onTap: () {
+//                             Navigator.pop(context);
+//                             if(event!=null){
+//                               if(event=="reset" || event =="Reset"){
+//                                 deviceService.ResetPairedDevice();
+//                               }
+//                             }
+//                             else{
+//                               print("press Confirm Logout");
+//                               var firebaseMessaging = FirebaseMessaging.instance;
+//                               firebaseMessaging
+//                                   .unsubscribeFromTopic(
+//                                   "${deviceService.currentUser.appUserId}-NewDataReceived")
+//                                   .then((value) => null);
+//                               firebaseMessaging
+//                                   .unsubscribeFromTopic(
+//                                   "${deviceService.currentUser.appUserId}-NewMsgReceived")
+//                                   .then((value) => null);
+//                               SharedPref().logoutPref();
+//                               Navigator.pushAndRemoveUntil(
+//                                 context,
+//                                 MaterialPageRoute(
+//                                   builder: (BuildContext context) => SignInPage(),
+//                                 ),
+//                                     (route) => false,
+//                               );
+//                             }
+//
+//                             //Navigator.pushReplacement(context, PageTransition(child: SignInPage(), type: PageTransitionType.fade));
+//                           },
+//                           child: Container(
+//                             width: size.convertWidth(context, 87),
+//                             height: size.convert(context, 35),
+//                             decoration: BoxDecoration(
+//                                 borderRadius: BorderRadius.circular(
+//                                     size.convert(context, 5)),
+//                                 border: Border.all(width: 1, color: appColor)),
+//                             child: Center(
+//                               child: Text(
+//                                 "Yes",
+//                                 style: style.RobotoRegular(
+//                                     fontSize: size.convert(context, 15)),
+//                               ),
+//                             ),
+//                           ),
+//                         ),
+//                       ),
+//                       SizedBox(
+//                         width: size.convertWidth(context, 26),
+//                       ),
+//                       Container(
+//                         child: InkWell(
+//                           onTap: () {
+//                             print("press No Logout");
+//                             Navigator.pop(context);
+//                           },
+//                           child: Container(
+//                             width: size.convertWidth(context, 87),
+//                             height: size.convert(context, 35),
+//                             decoration: BoxDecoration(
+//                                 borderRadius: BorderRadius.circular(
+//                                     size.convert(context, 5)),
+//                                 border: Border.all(width: 1, color: appColor)),
+//                             child: Center(
+//                               child: Text(
+//                                 "No",
+//                                 style: style.RobotoRegular(
+//                                     fontSize: size.convert(context, 15)),
+//                               ),
+//                             ),
+//                           ),
+//                         ),
+//                       ),
+//                     ],
+//                   ),
+//                 )
+//               ],
+//             ),
+//           ),
+//         );
+//       });
+// }
+
+// ConfirmationAlert(context,
+//     {DeviceService deviceService,
+//     int index,
+//     ApplicatonState appState,
+//     GlobalKey<ScaffoldState> scaffoldkey,
+//     String message,
+//     String event}) {
+//   return showDialog(
+//       context: context,
+//       builder: (BuildContext context) {
+//         return Dialog(
+//           insetPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+//           child: Container(
+//             padding: EdgeInsets.all(size.convert(context, 20)),
+//             // height: size.convert(context, size.convert(context, 160)),
+//             width: double.minPositive,
+//             child: Column(
+//               mainAxisSize: MainAxisSize.min,
+//               children: <Widget>[
+//                 Column(
+//                   mainAxisAlignment: MainAxisAlignment.center,
+//                   crossAxisAlignment: CrossAxisAlignment.center,
+//                   children: [
+//                     Icon(
+//                       FluentSystemIcons.ic_fluent_error_circle_regular,
+//                       size: size.convert(context, 30),
+//                       color: Colors.red,
+//                     ),
+//                     SizedBox(
+//                       height: size.convert(context, 5),
+//                     ),
+//                     Text(
+//                       "Alert",
+//                       textAlign: TextAlign.center,
+//                       style: style.RobotoMedium(
+//                           fontSize: size.convert(context, 16)),
+//                     ),
+//                   ],
+//                 ),
+//                 SizedBox(
+//                   height: size.convert(context, 18),
+//                 ),
+//                 Text(
+//                   message ?? "Are you sure, you want delete device?",
+//                   textAlign: TextAlign.center,
+//                   style:
+//                       style.RobotoRegular(fontSize: size.convert(context, 15)),
+//                 ),
+//                 SizedBox(
+//                   height: size.convert(context, 24),
+//                 ),
+//                 Container(
+//                   child: Row(
+//                     mainAxisAlignment: MainAxisAlignment.center,
+//                     children: <Widget>[
+//                       Container(
+//                         child: GestureDetector(
+//                           onTap: () async {
+//                             Navigator.pop(context);
+//                             if (event != null) {
+//                               if (event == "reset" || event == "Reset") {
+//                                 deviceService.ResetPairedDevice();
+//                               }
+//                               if (event == "logout" || event == "Logout") {
+//                                 print("press Confirm Logout");
+//
+//
+//                               }
+//                             } else {
+//                               appState.SetStateForDeleteDevice(index);
+//                               print("press Confirm Logout");
+//                               bool isDelete =
+//                                   await deviceService.RemoveDeviceWithId(
+//                                       showSnackbarForError: false,
+//                                       scaffold: scaffoldkey,
+//                                       context: context,
+//                                       DeviceId: deviceService
+//                                           .pairedDevices[index].id);
+//                               print("is delete $isDelete}");
+//                               if (isDelete) {
+//                                 deviceService.DeleteDevicesFromSharedPrefByMac(
+//                                     deviceService
+//                                         .pairedDevices[index].macAddress);
+//                                 // await deviceService.getDashBoardDevices(
+//                                 //     context: context);
+//                                 appState.SetStateForDeleteDevice(-1);
+//                                 // Navigator.pop(context);
+//                               } else {
+//                                 deviceService.DeleteDevicesFromSharedPrefByMac(
+//                                     deviceService
+//                                         .pairedDevices[index].macAddress);
+//                                 appState.SetStateForDeleteDevice(-1);
+//                                 // Navigator.pop(context);
+//                               }
+//                             }
+//                           },
+//                           child: Container(
+//                             padding: EdgeInsets.symmetric(
+//                                 horizontal: size.convert(context, 30),
+//                                 vertical: size.convert(context, 10)),
+//                             decoration: BoxDecoration(
+//                                 borderRadius: BorderRadius.circular(
+//                                     size.convert(context, 5)),
+//                                 color: Colors.red.shade500),
+//                             child: Center(
+//                               child: Text(
+//                                 "Yes",
+//                                 style: style.RobotoRegular(
+//                                     fontSize: size.convert(context, 15),
+//                                     color: Colors.white),
+//                               ),
+//                             ),
+//                           ),
+//                         ),
+//                       ),
+//                       SizedBox(
+//                         width: size.convertWidth(context, 15),
+//                       ),
+//                       Container(
+//                         child: InkWell(
+//                           onTap: () {
+//                             print("press No Logout");
+//                             Navigator.pop(context);
+//                           },
+//                           child: Container(
+//                             padding: EdgeInsets.symmetric(
+//                                 horizontal: size.convert(context, 30),
+//                                 vertical: size.convert(context, 10)),
+//                             decoration: BoxDecoration(
+//                                 borderRadius: BorderRadius.circular(
+//                                     size.convert(context, 5)),
+//                                 border:
+//                                     Border.all(width: 1, color: Colors.white),
+//                                 color: Colors.grey.shade300),
+//                             child: Center(
+//                               child: Text(
+//                                 "No",
+//                                 style: style.RobotoRegular(
+//                                     fontSize: size.convert(context, 15)),
+//                               ),
+//                             ),
+//                           ),
+//                         ),
+//                       ),
+//                     ],
+//                   ),
+//                 )
+//               ],
+//             ),
+//           ),
+//         );
+//       });
+// }

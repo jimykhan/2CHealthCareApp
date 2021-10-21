@@ -19,7 +19,7 @@ class NotificationList extends StatelessWidget {
                 Navigator.pop(context);
               },
               child: Container(
-                padding: EdgeInsets.all(ApplicationSizing.convert(10)),
+                padding: EdgeInsets.only(right:ApplicationSizing.convertWidth(10)),
                 child: RotatedBox(
                     quarterTurns: 2,child: SvgPicture.asset("assets/icons/home/right-arrow-icon.svg")),
               ),

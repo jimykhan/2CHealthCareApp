@@ -13,6 +13,7 @@ import 'dart:math';
 
 import 'package:twochealthcare/util/styles.dart';
 import 'package:twochealthcare/views/notifiction/notifiction_list.dart';
+import 'package:twochealthcare/views/readings/modalities_reading.dart';
 class Home extends HookWidget {
    Home({Key? key}) : super(key: key);
   List<Map<String, dynamic>?>? items = [
@@ -110,7 +111,14 @@ class Home extends HookWidget {
                 crossAxisCount: 2,
                 itemCount: items?.length ?? 0,
                 itemBuilder: (BuildContext context, int index) {
-                  return squareBox(item: items?[index],index: index);
+                  return InkWell(
+                    onTap: (){
+                      if(index == 1){
+                        Navigator.push(context, PageTransition(
+                            child: ModalitiesReading(), type: PageTransitionType.rightToLeft));
+                      }
+                    },
+                      child: squareBox(item: items?[index],index: index));
                 },
                 staggeredTileBuilder: (int index) =>
                  const StaggeredTile.count(1, 1),

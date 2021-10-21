@@ -25,22 +25,22 @@ class ApplicationSizing {
     var f = size * textScale;
     return f;
   }
-  static convert(double n){
+  static double convert(double n){
     double i = (n)/guidelineBaseHeight;
     return i* longDimension;
   }
-  static convertWidth(double n){
+  static double convertWidth(double n){
     double i = (n)/guidelineBaseWidth;
     return i* shortDimension;
   }
-  static verticalSpacer({double n = 10}){
+  static Widget verticalSpacer({double n = 10}){
     return SizedBox(height: convert(n),);
   }
-  static horizontalSpacer({double n = 10}){
+  static Widget horizontalSpacer({double n = 10}){
     return SizedBox(width: convertWidth(n),);
   }
 
-  static horizontalMargin({double n = 15}){
+  static double horizontalMargin({double n = 15}){
     return convertWidth(n);
   }
 

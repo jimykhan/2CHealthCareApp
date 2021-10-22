@@ -1,7 +1,6 @@
 class Strings {
   static const String noConnection = 'no_connection';
   static const String retry = 'Retry';
-
   // Generic strings
   static const String ok = 'OK';
   static const String cancel = 'Cancel';

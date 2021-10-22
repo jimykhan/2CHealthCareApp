@@ -7,13 +7,14 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:twochealthcare/common_widgets/appbar_text_style.dart';
 import 'package:twochealthcare/common_widgets/calendar.dart';
 import 'package:twochealthcare/common_widgets/custom_appbar.dart';
+import 'package:twochealthcare/common_widgets/floating_button.dart';
 import 'package:twochealthcare/common_widgets/line_chart.dart';
 import 'package:twochealthcare/common_widgets/reading_in_table.dart';
 import 'package:twochealthcare/common_widgets/tap_bar.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
-import 'package:twochealthcare/view_models/blood_pressure_reading_vm.dart';
+import 'package:twochealthcare/view_models/modalities_reading_vm/blood_pressure_reading_vm.dart';
 class BloodPressureReading extends HookWidget {
   const BloodPressureReading({Key? key}) : super(key: key);
 
@@ -54,6 +55,8 @@ class BloodPressureReading extends HookWidget {
             ),
           ),
         ),
+        floatingActionButtonLocation:  FloatingActionButtonLocation.miniEndFloat,
+        floatingActionButton: FloatingButton(),
         body: _body(context,bloodPressureReadingVM: bloodPressureReadingVM));
   }
 

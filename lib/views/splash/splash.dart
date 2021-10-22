@@ -5,7 +5,7 @@ import 'package:hooks_riverpod/all.dart';
 import 'package:twochealthcare/main.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
-import 'package:twochealthcare/view_models/splash_vm.dart';
+import 'package:twochealthcare/view_models/splash_vm/splash_vm.dart';
 class Splash extends HookWidget {
   const Splash({Key? key}) : super(key: key);
 

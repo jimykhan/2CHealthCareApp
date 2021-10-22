@@ -23,11 +23,15 @@ dependencies:
   page_transition: ^2.0.4
   fluentui_icons: ^1.0.0
   table_calendar: ^3.0.2
+  dio: ^4.0.0
+  json_serializable: ^6.0.0
+  json_annotation: ^4.3.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^1.0.0
+  build_runner: ^2.1.4
 
 flutter:
 
@@ -47,6 +51,8 @@ flutter:
     - assets/icons/side_menu/logout-icon.svg
     - assets/icons/side_menu/setting-icon.svg
     - assets/icons/readings/blood-glucose-icon.svg
+    - assets/icons/bottom_navbar/user-icon.svg
+    - assets/icons/bottom_navbar/message-icon.svg
 
   fonts:
     - family: PoppinsRegular

@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:twochealthcare/common_widgets/appbar_text_style.dart';
 import 'package:twochealthcare/common_widgets/custom_appbar.dart';
+import 'package:twochealthcare/common_widgets/floating_button.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
 import 'package:twochealthcare/views/readings/blood_pressure_reading.dart';
@@ -68,6 +69,8 @@ class ModalitiesReading extends StatelessWidget {
             ),
           ),
         ),
+        floatingActionButtonLocation:  FloatingActionButtonLocation.miniEndFloat,
+        floatingActionButton: FloatingButton(),
         body: _body());
   }
   _body(){

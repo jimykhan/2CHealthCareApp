@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:twochealthcare/common_widgets/bottom_bar.dart';
 import 'package:twochealthcare/common_widgets/circular_image.dart';
 import 'package:twochealthcare/common_widgets/custom_appbar.dart';
 import 'package:twochealthcare/common_widgets/custom_drawer.dart';
@@ -62,6 +63,13 @@ class Home extends HookWidget {
           ),
         ),
         body: _body(),
+      floatingActionButtonLocation:  FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: FloatingActionButton(
+          child: SvgPicture.asset("assets/icons/bottom_navbar/user-icon.svg",
+            height: ApplicationSizing.convert(25),
+          ),
+          onPressed: () {},),
+        bottomNavigationBar: BottomBar(selectedIndex: 1,),
       drawer: Container(
         width: ApplicationSizing.convertWidth(280),
         child: CustomDrawer(),

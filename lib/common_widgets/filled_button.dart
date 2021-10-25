@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 // import 'package:flutter_svg/flutter_svg.dart';
 
 class FilledButton extends StatelessWidget {
-  final Function()? onTap;
+  Function()? onTap;
   Color? color1;
   Color? txtcolor;
   String? txt;
@@ -30,12 +30,12 @@ class FilledButton extends StatelessWidget {
       this.fontsize,
       this.leftWidget,
       this.rigtWidget,
-      this.onTap});
+      required this.onTap});
   @override
   Widget build(BuildContext context) {
     Size size1 = MediaQuery.of(context).size;
     return GestureDetector(
-      onTap: onTap ?? (){},
+      onTap: onTap ,
       child: Container(
         padding: EdgeInsets.only(right: 10, left: 10),
         height: h ?? ApplicationSizing.convert(50),

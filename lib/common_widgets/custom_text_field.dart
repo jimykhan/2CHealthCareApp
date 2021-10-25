@@ -6,8 +6,8 @@ import 'package:twochealthcare/util/application_colors.dart';
 class CustomTextField extends StatefulWidget {
   Color? color1;
   Widget? iconWidget;
-  Function? onchange;
-  Function? onSubmit;
+  Function(String val) onchange;
+  Function(String val) onSubmit;
   String? hints;
   Widget? trailingIcon;
   double? borderWidth;
@@ -25,8 +25,8 @@ class CustomTextField extends StatefulWidget {
         this.color1,
         this.iconWidget,
         this.textEditingController,
-        this.onchange,
-        this.onSubmit});
+        required this.onchange,
+        required this.onSubmit});
   @override
   _CustomTextFieldState createState() => _CustomTextFieldState();
 }
@@ -56,9 +56,10 @@ class _CustomTextFieldState extends State<CustomTextField> {
                     onFocusChange: (val) {
                       if (val) {
                         borderColor = appColor;
+                        widget.onSubmit;
                         setState(() {});
                       } else {
-                        widget.onSubmit ??  () {};
+                        widget.onSubmit;
                         borderColor = null;
                         setState(() {});
                       }
@@ -66,9 +67,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
                       print(val);
                     },
                     child: TextFormField(
-                      // onFieldSubmitted: widget?.onSubmit!! ?? (val){},
-
-                      // onChanged: widget?.onchange(val) ?? (val) {},
+                      onFieldSubmitted: widget.onSubmit,
+                      onChanged: widget.onchange,
                       enabled: widget.isEnable ?? true,
                       cursorWidth: 1.2,
                       obscureText: widget.obscureText ?? false,

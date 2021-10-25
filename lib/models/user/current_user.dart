@@ -30,6 +30,8 @@ class CurrentUser {
         this.expiration,
         this.userType,
         required this.claims});
+  factory CurrentUser.fromJson(Map<String, dynamic> data) => _$CurrentUserFromJson(data);
+  Map<String, dynamic> toJson() => _$CurrentUserToJson(this);
 }
 
 // part 'claim_g.dart';
@@ -39,4 +41,6 @@ class Claims {
   String? claimValue;
 
   Claims({this.claimType, this.claimValue});
+  factory Claims.fromJson(Map<String, dynamic> data) => _$ClaimsFromJson(data);
+  Map<String, dynamic> toJson() => _$ClaimsToJson(this);
 }

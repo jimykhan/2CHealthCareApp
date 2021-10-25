@@ -14,9 +14,9 @@ class DioServices{
   _initDio(){
     dio = Dio(BaseOptions(
       baseUrl: ApiStrings.baseUrl,
-      receiveTimeout: 15000, // 15 seconds
-      connectTimeout: 15000,
-      sendTimeout: 15000,
+      receiveTimeout: 5000, // 5 seconds
+      connectTimeout: 5000,
+      sendTimeout: 5000,
     ));
 
     if(dio != null){
@@ -29,6 +29,7 @@ class DioServices{
 
   }
   _errorHandler(DioError err , handler){
+
     switch (err.type) {
       case DioErrorType.connectTimeout:
       case DioErrorType.sendTimeout:
@@ -57,6 +58,10 @@ class DioServices{
     return handler.next(err);
   }
 
-  _dioResponse(response,handler){}
-  _dioRequest(options,handler){}
+  _dioResponse(response,handler){
+
+  }
+  _dioRequest(options,handler){
+
+  }
 }

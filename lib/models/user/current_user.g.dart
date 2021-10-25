@@ -19,8 +19,8 @@ CurrentUser _$CurrentUserFromJson(Map<String, dynamic> json) => CurrentUser(
       bearerToken: json['bearerToken'] as String?,
       expiration: json['expiration'] as String?,
       userType: json['userType'] as int?,
-      claims: (json['claims'] as List<dynamic>?)
-          ?.map((e) => Claims.fromJson(e as Map<String, dynamic>))
+      claims: (json['claims'] as List<dynamic>)
+          .map((e) => Claims.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 

@@ -1,27 +1,51 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/all.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:twochealthcare/common_widgets/alert_loader.dart';
 import 'package:twochealthcare/common_widgets/custom_text_field.dart';
+import 'package:twochealthcare/common_widgets/error_text.dart';
 import 'package:twochealthcare/common_widgets/filled_button.dart';
+import 'package:twochealthcare/providers/providers.dart';
+import 'package:twochealthcare/services/auth_services/login_services.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
+import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
 import 'package:twochealthcare/views/home/home.dart';
 class Login extends HookWidget {
   const Login({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    LoginVM loginVM = useProvider(loginVMProvider);
+
+    useEffect(
+          () {
+        Future.microtask(() async {});
+
+        return () {
+          // Dispose Objects here
+        };
+      },
+      const [],
+    );
     return Scaffold(
         body: Container(
          child: SingleChildScrollView(
-           child: Column(
+           child: Stack(
              children: [
-                Container(
-                 child: Image.asset("assets/icons/loginBg.png"),
+
+               Column(
+                 children: [
+                    Container(
+                     child: Image.asset("assets/icons/loginBg.png"),
+                   ),
+                   _loginform(context,loginVM: loginVM),
+                 ],
                ),
-               _loginform(context),
+               loginVM.loading ? AlertLoader() : Container(),
              ],
            ),
          ),
@@ -30,7 +54,7 @@ class Login extends HookWidget {
     );
   }
 
-  _loginform(BuildContext context) {
+  _loginform(BuildContext context,{LoginVM? loginVM}) {
 
     return Container(
       decoration: BoxDecoration(
@@ -80,24 +104,21 @@ class Login extends HookWidget {
               Container(
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
                 child: CustomTextField(
-                  onchange: (val) {
-                    // userNameLength = val.toString().length;
-                    // fieldValidation("email");
-                  },
-                  // textEditingController: _emailController,
+                  onchange: loginVM!.onChangeEmail,
+                  textEditingController: loginVM.emailController,
                   textInputType: TextInputType.emailAddress,
                   hints: "E-mail / User Name",
-                  // color1: error["email"][0] && error["email"][1] != ""
-                  //     ? errorColor
-                  //     : disableColor,
-                  // onSubmit: () {
-                  //   fieldValidation("email");
-                  // },
+                  color1: loginVM.isEmailFieldValid
+                      ? disableColor
+                      : errorColor,
+                  onSubmit: (val) {
+                    loginVM.fieldValidation(val,fieldType: 0);
+                  },
                 ),
               ),
-              // error["email"][0]
-              //     ? ErrorText(error["email"][1] ?? "")
-              //     : Container()
+              loginVM.isEmailFieldValid ? Container():
+              ErrorText(text: loginVM.emailErrorText),
+
             ],
           ),
           ApplicationSizing.verticalSpacer(),
@@ -107,53 +128,33 @@ class Login extends HookWidget {
               Container(
                 child: RichText(
                   text: TextSpan(
-                      text: "Password",
+                    text: "Password",
                     style: Styles.PoppinsBold(
                         fontSize: ApplicationSizing.fontScale(12),
                         color: Colors.black
-                    ),),
+                    ),
+                  ),
                 ),
               ),
               ApplicationSizing.verticalSpacer(n: 5),
               Container(
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
                 child: CustomTextField(
-                  onchange: (val) {
-                    // passwordLength = val.toString().length;
-                    // fieldValidation("password");
-                  },
-                  // textEditingController: _passwordController,
+                  onchange: loginVM.onChangePassword,
+                  textEditingController: loginVM.passwordController,
+                  textInputType: TextInputType.text,
                   hints: "Password",
-                  // color1: error["password"][0] && error["password"][1] != ""
-                  //     ? errorColor
-                  //     : disableColor,
-                  // onSubmit: () {
-                  //   fieldValidation("password");
-                  // },
-                  // obscureText: !hidePass,
-                  // trailingIcon: InkWell(
-                  //   // onTap: () {
-                  //   //   setState(() {
-                  //   //     hidePass = !hidePass;
-                  //   //   });
-                  //   // },
-                  //   child: Container(
-                  //     child: !hidePass
-                  //         ? Icon(
-                  //       IcoFontIcons.eyeBlocked,
-                  //       color: Colors.grey.shade500,
-                  //     )
-                  //         : Icon(
-                  //       IcoFontIcons.eye,
-                  //       color: Colors.green.shade600,
-                  //     ),
-                  //   ),
-                  // ),
+                  color1: loginVM.isPasswordFieldValid
+                      ? disableColor
+                      : errorColor,
+                  onSubmit: (val) {
+                    loginVM.fieldValidation(val,fieldType: 1);
+                  },
                 ),
               ),
-              // error["password"][0]
-              //     ? ErrorText(error["password"][1] ?? "")
-              //     : Container()
+              loginVM.isPasswordFieldValid ? Container():
+              ErrorText(text: loginVM.passwordErrorText),
+
             ],
           ),
           ApplicationSizing.verticalSpacer(n: 5),
@@ -198,8 +199,17 @@ class Login extends HookWidget {
             h: ApplicationSizing.convert(50),
             txt: "Login",
             onTap: (){
-              Navigator.pushReplacement(context, PageTransition(
-                  child: Home(), type: PageTransitionType.bottomToTop));
+              loginVM.userLogin();
+              // dd();
+              // loginVM.setLoading(true);
+              bool checkMail = loginVM.fieldValidation(loginVM.emailController.text,fieldType: 0);
+              bool checkPassword = loginVM.fieldValidation(loginVM.passwordController.text,fieldType: 1);
+              if(checkMail && checkPassword){
+                // Navigator.pushReplacement(context, PageTransition(
+                //     child: Home(), type: PageTransitionType.bottomToTop)
+                // );
+              }
+
             },
           ),
           SizedBox(

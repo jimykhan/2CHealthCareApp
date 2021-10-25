@@ -53,6 +53,7 @@ flutter:
     - assets/icons/readings/blood-glucose-icon.svg
     - assets/icons/bottom_navbar/user-icon.svg
     - assets/icons/bottom_navbar/message-icon.svg
+    - assets/loader.gif
 
   fonts:
     - family: PoppinsRegular

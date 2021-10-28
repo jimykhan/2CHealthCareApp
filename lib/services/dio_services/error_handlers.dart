@@ -1,11 +1,12 @@
 import 'package:dio/dio.dart';
+import 'package:twochealthcare/services/auth_services/auth_services.dart';
 
 class BadRequestException extends DioError {
   BadRequestException(RequestOptions r) : super(requestOptions: r);
 
   @override
   String toString() {
-    return 'Invalid request';
+    return 'Invalid request ';
   }
 }
 

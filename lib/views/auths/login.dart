@@ -8,7 +8,7 @@ import 'package:twochealthcare/common_widgets/custom_text_field.dart';
 import 'package:twochealthcare/common_widgets/error_text.dart';
 import 'package:twochealthcare/common_widgets/filled_button.dart';
 import 'package:twochealthcare/providers/providers.dart';
-import 'package:twochealthcare/services/auth_services/login_services.dart';
+import 'package:twochealthcare/services/auth_services/auth_services.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
@@ -36,7 +36,6 @@ class Login extends HookWidget {
          child: SingleChildScrollView(
            child: Stack(
              children: [
-
                Column(
                  children: [
                     Container(
@@ -205,9 +204,9 @@ class Login extends HookWidget {
               bool checkMail = loginVM.fieldValidation(loginVM.emailController.text,fieldType: 0);
               bool checkPassword = loginVM.fieldValidation(loginVM.passwordController.text,fieldType: 1);
               if(checkMail && checkPassword){
-                // Navigator.pushReplacement(context, PageTransition(
-                //     child: Home(), type: PageTransitionType.bottomToTop)
-                // );
+                Navigator.pushReplacement(context, PageTransition(
+                    child: Home(), type: PageTransitionType.bottomToTop)
+                );
               }
 
             },

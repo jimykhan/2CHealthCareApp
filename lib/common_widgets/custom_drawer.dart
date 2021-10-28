@@ -7,22 +7,27 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:twochealthcare/common_widgets/circular_image.dart';
 import 'package:twochealthcare/common_widgets/menu_text_style.dart';
+import 'package:twochealthcare/providers/providers.dart';
+import 'package:twochealthcare/services/auth_services/auth_services.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/styles.dart';
+import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
 import 'package:twochealthcare/views/home/home.dart';
 import 'package:fluentui_icons/fluentui_icons.dart';
 
 class CustomDrawer extends HookWidget {
   @override
   Widget build(BuildContext context) {
-
+    LoginVM loginVM = useProvider(loginVMProvider);
     useEffect(
       () {
         Future.microtask(() async {});
+
 
         return () {
           // Dispose Objects here
@@ -96,8 +101,8 @@ class CustomDrawer extends HookWidget {
                           InkWell(
                             onTap: (){},
                             child: Container(
-                              padding: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin()),
-                              // color: Colors.pinkAccent,
+                              padding: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin(),
+                                  vertical: ApplicationSizing.convert(6)),
                               child: Row(
                                 // crossAxisAlignment: CrossAxisAlignment.end,
                                 children:  [
@@ -118,7 +123,8 @@ class CustomDrawer extends HookWidget {
 
                             },
                             child: Container(
-                              padding: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin()),
+                              padding: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin(),
+                              vertical: ApplicationSizing.convert(6)),
                               // color: Colors.pinkAccent,
                               child: Row(
                                 // crossAxisAlignment: CrossAxisAlignment.end,
@@ -140,7 +146,8 @@ class CustomDrawer extends HookWidget {
 
                             },
                             child: Container(
-                              padding: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin()),
+                              padding: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin(),
+                                  vertical: ApplicationSizing.convert(6)),
                               // color: Colors.pinkAccent,
                               child: Row(
                                 // crossAxisAlignment: CrossAxisAlignment.end,
@@ -162,8 +169,8 @@ class CustomDrawer extends HookWidget {
 
                             },
                             child: Container(
-                              padding: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin()),
-                              // color: Colors.pinkAccent,
+                              padding: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin(),
+                                  vertical: ApplicationSizing.convert(6)),
                               child: Row(
                                 // crossAxisAlignment: CrossAxisAlignment.end,
                                 children:  [
@@ -184,8 +191,8 @@ class CustomDrawer extends HookWidget {
 
                             },
                             child: Container(
-                              padding: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin()),
-                              // color: Colors.pinkAccent,
+                              padding: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin(),
+                                  vertical: ApplicationSizing.convert(6)),
                               child: Row(
                                 // crossAxisAlignment: CrossAxisAlignment.end,
                                 children:  [
@@ -206,8 +213,8 @@ class CustomDrawer extends HookWidget {
 
                             },
                             child: Container(
-                              padding: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin()),
-                              // color: Colors.pinkAccent,
+                              padding: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin(),
+                                  vertical: ApplicationSizing.convert(6)),
                               child: Row(
                                 // crossAxisAlignment: CrossAxisAlignment.end,
                                 children:  [
@@ -225,11 +232,11 @@ class CustomDrawer extends HookWidget {
 
                           InkWell(
                             onTap: (){
-
+                                loginVM.userLogout();
                             },
                             child: Container(
-                              padding: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin()),
-                              // color: Colors.pinkAccent,
+                              padding: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin(),
+                                  vertical: ApplicationSizing.convert(6)),
                               child: Row(
                                 // crossAxisAlignment: CrossAxisAlignment.end,
                                 children:  [

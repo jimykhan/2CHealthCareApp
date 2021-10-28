@@ -4,7 +4,7 @@ class ApiStrings {
   static const String Production = "https://api.2chealthsolutions.com";
   static const String development = "https://cea4-39-45-161-120.ngrok.io";
   static const String baseUrl = test;
-  static const String SIGN_IN = baseUrl + "/api/Account/token2";
+  static const String SIGN_IN = "/api/Account/token2";
   static const String GET_PATIENT_INFO_BY_ID =
       baseUrl + "/api/Patients/GetPatientById";
   static const String POST_CONFIGURE_API =

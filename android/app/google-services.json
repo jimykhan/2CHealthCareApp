@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "332247763022",
+    "project_id": "c-health-care",
+    "storage_bucket": "c-health-care.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:332247763022:android:41778265c6649030da9b1f",
+        "android_client_info": {
+          "package_name": "twochealthcare.io"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "332247763022-vo4aslcbbegdcrri97djvvnn2tkp6jh2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBdNJGiInuYliKGNOeWMXRTB6u6llCGsfQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "332247763022-vo4aslcbbegdcrri97djvvnn2tkp6jh2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,9 +1,12 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:twochealthcare/main.dart';
 import 'package:twochealthcare/models/user/current_user.dart';
 import 'package:twochealthcare/providers/providers.dart';
-import 'package:twochealthcare/services/auth_services/login_services.dart';
+import 'package:twochealthcare/services/auth_services/auth_services.dart';
 import 'package:twochealthcare/validator/login_validator.dart';
+import 'package:twochealthcare/views/auths/login.dart';
 
 class LoginVM extends ChangeNotifier{
   CurrentUser? currentUser;
@@ -15,8 +18,13 @@ class LoginVM extends ChangeNotifier{
   bool isPasswordFieldValid = true;
   String passwordErrorText = "";
   ProviderReference? _ref;
+  AuthServices? authService;
   LoginVM({ProviderReference? ref}){
     _ref = ref;
+    initServices();
+  }
+  initServices(){
+     authService = _ref!.read(authServiceProvider);
   }
 
   onChangeEmail(String val){
@@ -33,13 +41,20 @@ class LoginVM extends ChangeNotifier{
   }
 
   userLogin({String? userName, String? password, String? rememberMe}) async {
-    LoginServices loginService = _ref!.read(loginServiceProvider);
-    var res = await loginService.userLogin();
+    setLoading(true);
+
+    var res = await authService?.userLogin(userName: emailController.text,
+        password: passwordController.text);
     if(res is CurrentUser){
       currentUser = res;
     }
+    setLoading(false);
 
 
+  }
+
+  getCurrentUserFromSharedPref()async{
+    currentUser = await authService?.getCurrentUserFromSharedPref();
   }
 
 
@@ -76,5 +91,18 @@ class LoginVM extends ChangeNotifier{
     else if(fieldType == 2){return false;}
     else{return false;}
 
+  }
+
+
+  userLogout(){
+    authService?.updateCurrentUser(null);
+    Navigator.pushAndRemoveUntil(
+      applicationContext!.currentContext!,
+      MaterialPageRoute(
+        builder: (BuildContext context) =>
+            const Login(),
+      ),
+          (route) => false,
+    );
   }
 }

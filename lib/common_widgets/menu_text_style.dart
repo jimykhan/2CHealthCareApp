@@ -12,21 +12,15 @@ class MenuTextStyle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       // color: Colors.red,
-      margin: !isPadding ? const EdgeInsets.only(top: 0,left: 0)  : const EdgeInsets.only(top: 10,left: 10),
+       margin: !isPadding ? const EdgeInsets.only(top: 0,left: 0)  : const EdgeInsets.only(left: 10),
       // padding: const EdgeInsets.only(top: 4),
-      child: Row(
-        // crossAxisAlignment: CrossAxisAlignment.end,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Text(
-            text ?? "",
-            style: Styles.PoppinsRegular(
-              color: color?? Colors.white,
-              fontSize: fontSize ?? ApplicationSizing.fontScale(15),
-              fontWeight: FontWeight.w400
-            ),
-          ),
-        ],
+      child: Text(
+        text ?? "",
+        style: Styles.PoppinsRegular(
+            color: color?? Colors.white,
+            fontSize: fontSize ?? ApplicationSizing.fontScale(15),
+            fontWeight: FontWeight.w400
+        ),
       ),
     );
   }

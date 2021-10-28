@@ -108,7 +108,7 @@ class ModalitiesReading extends HookWidget {
                       physics: ScrollPhysics(),
                       itemBuilder: (context,index){
                         ModalitiesModel modality = modalitiesReadingVM!.modalitiesList[index];
-                        return modality.id == 0 ?  Container() : InkWell(
+                        return modality.id == -1 ?  Container() : InkWell(
                           onTap: (){
                             if(index == 0){
                               // sharedPrefServices?.getBearerToken();

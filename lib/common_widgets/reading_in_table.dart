@@ -4,7 +4,8 @@ import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
 class ReadingInTable extends StatelessWidget {
   List? reading;
-   ReadingInTable({Key? key,this.reading}) : super(key: key);
+  String? modality;
+   ReadingInTable({Key? key,this.reading,this.modality}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -13,6 +14,7 @@ class ReadingInTable extends StatelessWidget {
         shrinkWrap: true,
           physics: ScrollPhysics(),
           itemBuilder: (context, index){
+
             if(index == 0){
               return Container(
                 margin: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin()),
@@ -20,7 +22,7 @@ class ReadingInTable extends StatelessWidget {
                   children: [
                     Container(
                       alignment: Alignment.centerLeft,
-                      child: Text("05 OCT, 2021",
+                      child: Text(reading![index].measurementDate?? "05 OCT, 2021",
                         style: Styles.PoppinsRegular(
                           fontWeight: FontWeight.bold,
                           fontSize: ApplicationSizing.fontScale(15),
@@ -177,7 +179,8 @@ class ReadingInTable extends StatelessWidget {
                       flex: 3,
                       child: Container(
                           alignment: Alignment.centerRight,
-                          child: Row(
+                          child: modality =="BP"? bpReading() :
+                          modality =="BP"? bgReading() :Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               RichText(
@@ -261,8 +264,118 @@ class ReadingInTable extends StatelessWidget {
           separatorBuilder: (context, index){
             return ApplicationSizing.verticalSpacer();
           },
-          itemCount: reading?.length??8
+          itemCount: reading?.length??0
       ),
     );
   }
+
+  bpReading({double? sys, double? dia, int? hr}){
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        RichText(
+          text:  TextSpan(
+              children: [
+                TextSpan(
+                    text: "80",
+                    style: Styles.PoppinsRegular(
+                      fontSize: ApplicationSizing.fontScale(20),
+                      fontWeight: FontWeight.bold,
+                      color: Colors.red,
+                    )
+                ),
+
+                TextSpan(
+                    text: "HR",
+                    style: Styles.PoppinsRegular(
+                      fontSize: ApplicationSizing.fontScale(8),
+                      color: Colors.red,
+                    )
+                ),
+              ]
+          ),
+        ),
+
+        Container(
+          margin: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin(n: 5)),
+          child: RichText(
+            text:  TextSpan(
+                children: [
+                  TextSpan(
+                      text: "80",
+                      style: Styles.PoppinsRegular(
+                        fontSize: ApplicationSizing.fontScale(20),
+                        fontWeight: FontWeight.bold,
+                        color: Colors.red,
+                      )
+                  ),
+
+                  TextSpan(
+                      text: "HR",
+                      style: Styles.PoppinsRegular(
+                        fontSize: ApplicationSizing.fontScale(8),
+                        color: Colors.red,
+                      )
+                  ),
+                ]
+            ),
+          ),
+        ),
+
+        RichText(
+          text:  TextSpan(
+              children: [
+                TextSpan(
+                    text: "80",
+                    style: Styles.PoppinsRegular(
+                      fontSize: ApplicationSizing.fontScale(20),
+                      fontWeight: FontWeight.bold,
+                      color: Colors.red,
+                    )
+                ),
+
+                TextSpan(
+                    text: "HR",
+                    style: Styles.PoppinsRegular(
+                      fontSize: ApplicationSizing.fontScale(8),
+                      color: Colors.red,
+                    )
+                ),
+              ]
+          ),
+        ),
+      ],
+    );
+  }
+
+  bgReading(){
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        RichText(
+          text:  TextSpan(
+              children: [
+                TextSpan(
+                    text: "80",
+                    style: Styles.PoppinsRegular(
+                      fontSize: ApplicationSizing.fontScale(20),
+                      fontWeight: FontWeight.bold,
+                      color: Colors.red,
+                    )
+                ),
+
+                TextSpan(
+                    text: "HR",
+                    style: Styles.PoppinsRegular(
+                      fontSize: ApplicationSizing.fontScale(8),
+                      color: Colors.red,
+                    )
+                ),
+              ]
+          ),
+        ),
+      ],
+    );
+  }
+
 }

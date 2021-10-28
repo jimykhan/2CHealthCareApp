@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/all.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:twochealthcare/common_widgets/alert_loader.dart';
 import 'package:twochealthcare/common_widgets/appbar_text_style.dart';
 import 'package:twochealthcare/common_widgets/calendar.dart';
 import 'package:twochealthcare/common_widgets/custom_appbar.dart';
@@ -24,7 +25,11 @@ class BloodPressureReading extends HookWidget {
 
     useEffect(
           () {
-        Future.microtask(() async {});
+            bloodPressureReadingVM.bPReadingLoading = true;
+            bloodPressureReadingVM.getBloodPressureReading();
+        Future.microtask(() async {
+
+        });
 
         return () {
           // Dispose Objects here
@@ -63,26 +68,31 @@ class BloodPressureReading extends HookWidget {
   _body(context,{BloodPressureReadingVM? bloodPressureReadingVM}){
     return Container(
       child: SingleChildScrollView(
-        child: Column(
+        child: Stack(
           children: [
-            ApplicationSizing.verticalSpacer(),
-            TapBar(
-              selectedIndx: bloodPressureReadingVM?.timePeriodSelect??0,
-              ontap: (val){
-              bloodPressureReadingVM?.changeTimePeriodSelectIndex(val);
-              },
+            Column(
+              children: [
+                ApplicationSizing.verticalSpacer(),
+                TapBar(
+                  selectedIndx: bloodPressureReadingVM?.timePeriodSelect??0,
+                  ontap: (val){
+                  bloodPressureReadingVM?.changeTimePeriodSelectIndex(val);
+                  },
+                ),
+                CustomCalendar(
+                    selectedDayPredict: bloodPressureReadingVM!.selectDayPredict,
+                    onDaySelect: bloodPressureReadingVM.onDaySelected,
+                    formatChange: bloodPressureReadingVM.onFormatChanged,
+                    onRangeSelect: bloodPressureReadingVM.selectRange,
+                  calendarFormat: bloodPressureReadingVM.calendarFormat,
+                  headerDisable: bloodPressureReadingVM.headerDisable,
+                  dayHeight: bloodPressureReadingVM.dayHeight,
+                ),
+                LineChart(chartType: ChartType.bloodPressure),
+                ReadingInTable(modality: "BP", reading: bloodPressureReadingVM.bPReadings,),
+              ],
             ),
-            CustomCalendar(
-                selectedDayPredict: bloodPressureReadingVM!.selectDayPredict,
-                onDaySelect: bloodPressureReadingVM.onDaySelected,
-                formatChange: bloodPressureReadingVM.onFormatChanged,
-                onRangeSelect: bloodPressureReadingVM.selectRange,
-              calendarFormat: bloodPressureReadingVM.calendarFormat,
-              headerDisable: bloodPressureReadingVM.headerDisable,
-              dayHeight: bloodPressureReadingVM.dayHeight,
-            ),
-            LineChart(chartType: ChartType.bloodPressure),
-            ReadingInTable(),
+            bloodPressureReadingVM.bPReadingLoading ? AlertLoader() : Container(),
           ],
         ),
       ),

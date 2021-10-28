@@ -1,8 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:twochealthcare/models/modalities_models/blood_pressure_reading_model.dart';
+import 'package:twochealthcare/providers/providers.dart';
+import 'package:twochealthcare/services/auth_services/auth_services.dart';
+import 'package:twochealthcare/services/reading_services/blood_pressure_reading_service.dart';
 class BloodPressureReadingVM extends ChangeNotifier{
   int timePeriodSelect = 0;
+  List<BloodPressureReadingModel> bPReadings = [];
+  bool bPReadingLoading = true;
   /// Calendar work start from there
   CalendarFormat? calendarFormat ;
   // DateTime? focusedDay1 = DateTime.now();
@@ -14,10 +20,18 @@ class BloodPressureReadingVM extends ChangeNotifier{
   bool headerDisable = false;
   double dayHeight = 1;
   /// Calendar work start from there
-
+  AuthServices? _authService;
+  BloodPressureReadingService? _bloodPressureReadingService;
   ProviderReference? _ref;
+
   BloodPressureReadingVM({ProviderReference? ref}){
     _ref = ref;
+    initService();
+  }
+  initService(){
+    _authService = _ref!.read(authServiceProvider);
+    _bloodPressureReadingService = _ref!.read(bloodPressureServiceProvider);
+
   }
   changeTimePeriodSelectIndex(int? index){
     if(index != timePeriodSelect){
@@ -67,8 +81,28 @@ class BloodPressureReadingVM extends ChangeNotifier{
   bool selectDayPredict(dar){
     return false;
   }
-  onFormatChanged(format){
+  onFormatChanged(format){}
 
+  getBloodPressureReading()async{
+    int id  = await _authService!.getCurrentUserId();
+    var res = await _bloodPressureReadingService?.getBloodPressureReading(currentUserId: id,
+    month: 5,year: 2021);
+    if(res is List){
+      bPReadings = [];
+      res.forEach((element){
+        bPReadings.add(element);
+      });
+      // notifyListeners();
+      setBPReadingLoading(false);
+
+    }
+    setBPReadingLoading(false);
+
+  }
+
+  setBPReadingLoading(bool f){
+    bPReadingLoading = f;
+    notifyListeners();
   }
 
 }

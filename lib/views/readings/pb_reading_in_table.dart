@@ -1,28 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:twochealthcare/models/modalities_models/blood_pressure_reading_model.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
-class ReadingInTable extends StatelessWidget {
-  List? reading;
-  String? modality;
-   ReadingInTable({Key? key,this.reading,this.modality}) : super(key: key);
+class bpReadingInTable extends StatelessWidget {
+  List<BloodPressureReadingModel> bPReadings = [];
+   bpReadingInTable({Key? key,required this.bPReadings}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    String measureDate = "00 000 00";
+    bPReadings.sort((a, b) {
+      return b.measurementDate!.compareTo(a.measurementDate!);
+      // return b.measurementDate.compareTo(a.measurementDate);
+    });
     return Container(
       child: ListView.separated(
         shrinkWrap: true,
           physics: ScrollPhysics(),
           itemBuilder: (context, index){
-
-            if(index == 0){
+            if(measureDate !=
+                bPReadings[index].measurementDate!
+                    .substring(0, 9)){
+              measureDate = bPReadings[index].measurementDate!
+                  .substring(0, 9);
               return Container(
                 margin: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin()),
                 child: Column(
                   children: [
                     Container(
                       alignment: Alignment.centerLeft,
-                      child: Text(reading![index].measurementDate?? "05 OCT, 2021",
+                      child: Text(measureDate,
                         style: Styles.PoppinsRegular(
                           fontWeight: FontWeight.bold,
                           fontSize: ApplicationSizing.fontScale(15),
@@ -46,46 +54,44 @@ class ReadingInTable extends StatelessWidget {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Row(
-
                         children: [
                           Expanded(
-                            flex: 1,
+                              flex: 1,
                               child: Container(
                                 alignment: Alignment.centerLeft,
-                            child: Text("10:50 AM",
-                              style: Styles.PoppinsRegular(
-                                fontSize: ApplicationSizing.fontScale(15),
-                                color: fontGrayColor
-                              ),
-                            ),
-                          )),
+                                child: Text(bPReadings[index].measurementDate!.substring(11),
+                                  style: Styles.PoppinsRegular(
+                                      fontSize: ApplicationSizing.fontScale(15),
+                                      color: fontGrayColor
+                                  ),
+                                ),
+                              )),
                           Expanded(
                               flex: 3,
                               child: Container(
-                                  alignment: Alignment.centerRight,
+                                alignment: Alignment.centerRight,
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     RichText(
                                       text:  TextSpan(
-                                        children: [
-                                          TextSpan(
-                                            text: "80",
-                                            style: Styles.PoppinsRegular(
-                                              fontSize: ApplicationSizing.fontScale(20),
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.red,
-                                            )
-                                          ),
-
-                                          TextSpan(
-                                              text: "HR",
-                                              style: Styles.PoppinsRegular(
-                                                fontSize: ApplicationSizing.fontScale(8),
-                                                color: Colors.red,
-                                              )
-                                          ),
-                                        ]
+                                          children: [
+                                            TextSpan(
+                                                text: bPReadings[index].heartRate?.toStringAsFixed(0)?? "",
+                                                style: Styles.PoppinsRegular(
+                                                  fontSize: ApplicationSizing.fontScale(20),
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.red,
+                                                )
+                                            ),
+                                            TextSpan(
+                                                text: "HR",
+                                                style: Styles.PoppinsRegular(
+                                                  fontSize: ApplicationSizing.fontScale(8),
+                                                  color: Colors.red,
+                                                )
+                                            ),
+                                          ]
                                       ),
                                     ),
 
@@ -95,19 +101,19 @@ class ReadingInTable extends StatelessWidget {
                                         text:  TextSpan(
                                             children: [
                                               TextSpan(
-                                                  text: "80",
+                                                  text: bPReadings[index].highPressure?.toStringAsFixed(0)?? "",
                                                   style: Styles.PoppinsRegular(
                                                     fontSize: ApplicationSizing.fontScale(20),
                                                     fontWeight: FontWeight.bold,
-                                                    color: Colors.red,
+                                                    color: appColor,
                                                   )
                                               ),
 
                                               TextSpan(
-                                                  text: "HR",
+                                                  text: "Sys",
                                                   style: Styles.PoppinsRegular(
                                                     fontSize: ApplicationSizing.fontScale(8),
-                                                    color: Colors.red,
+                                                    color: appColor,
                                                   )
                                               ),
                                             ]
@@ -119,26 +125,26 @@ class ReadingInTable extends StatelessWidget {
                                       text:  TextSpan(
                                           children: [
                                             TextSpan(
-                                                text: "80",
+                                                text: bPReadings[index].lowPressure?.toStringAsFixed(0)?? "",
                                                 style: Styles.PoppinsRegular(
                                                   fontSize: ApplicationSizing.fontScale(20),
                                                   fontWeight: FontWeight.bold,
-                                                  color: Colors.red,
+                                                  color: Color(0xff1D3D71),
                                                 )
                                             ),
 
                                             TextSpan(
-                                                text: "HR",
+                                                text: "Dia",
                                                 style: Styles.PoppinsRegular(
                                                   fontSize: ApplicationSizing.fontScale(8),
-                                                  color: Colors.red,
+                                                  color: Color(0xff1D3D71),
                                                 )
                                             ),
                                           ]
                                       ),
                                     ),
                                   ],
-                                )
+                                ),
                               ))
                         ],
                       ),
@@ -168,7 +174,7 @@ class ReadingInTable extends StatelessWidget {
                       flex: 1,
                       child: Container(
                         alignment: Alignment.centerLeft,
-                        child: Text("10:50 AM",
+                        child: Text(bPReadings[index].measurementDate!.substring(11),
                           style: Styles.PoppinsRegular(
                               fontSize: ApplicationSizing.fontScale(15),
                               color: fontGrayColor
@@ -179,22 +185,20 @@ class ReadingInTable extends StatelessWidget {
                       flex: 3,
                       child: Container(
                           alignment: Alignment.centerRight,
-                          child: modality =="BP"? bpReading() :
-                          modality =="BP"? bgReading() :Row(
+                          child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               RichText(
                                 text:  TextSpan(
                                     children: [
                                       TextSpan(
-                                          text: "80",
+                                          text: bPReadings[index].heartRate?.toStringAsFixed(0)?? "",
                                           style: Styles.PoppinsRegular(
                                             fontSize: ApplicationSizing.fontScale(20),
                                             fontWeight: FontWeight.bold,
                                             color: Colors.red,
                                           )
                                       ),
-
                                       TextSpan(
                                           text: "HR",
                                           style: Styles.PoppinsRegular(
@@ -212,19 +216,19 @@ class ReadingInTable extends StatelessWidget {
                                   text:  TextSpan(
                                       children: [
                                         TextSpan(
-                                            text: "80",
+                                            text: bPReadings[index].highPressure?.toStringAsFixed(0)?? "",
                                             style: Styles.PoppinsRegular(
                                               fontSize: ApplicationSizing.fontScale(20),
                                               fontWeight: FontWeight.bold,
-                                              color: Colors.red,
+                                              color: appColor,
                                             )
                                         ),
 
                                         TextSpan(
-                                            text: "HR",
+                                            text: "Sys",
                                             style: Styles.PoppinsRegular(
                                               fontSize: ApplicationSizing.fontScale(8),
-                                              color: Colors.red,
+                                              color: appColor,
                                             )
                                         ),
                                       ]
@@ -236,26 +240,26 @@ class ReadingInTable extends StatelessWidget {
                                 text:  TextSpan(
                                     children: [
                                       TextSpan(
-                                          text: "80",
+                                          text: bPReadings[index].lowPressure?.toStringAsFixed(0)?? "",
                                           style: Styles.PoppinsRegular(
                                             fontSize: ApplicationSizing.fontScale(20),
                                             fontWeight: FontWeight.bold,
-                                            color: Colors.red,
+                                            color: Color(0xff1D3D71),
                                           )
                                       ),
 
                                       TextSpan(
-                                          text: "HR",
+                                          text: "Dia",
                                           style: Styles.PoppinsRegular(
                                             fontSize: ApplicationSizing.fontScale(8),
-                                            color: Colors.red,
+                                            color: Color(0xff1D3D71),
                                           )
                                       ),
                                     ]
                                 ),
                               ),
                             ],
-                          )
+                          ),
                       ))
                 ],
               ),
@@ -264,7 +268,7 @@ class ReadingInTable extends StatelessWidget {
           separatorBuilder: (context, index){
             return ApplicationSizing.verticalSpacer();
           },
-          itemCount: reading?.length??0
+          itemCount: bPReadings.length
       ),
     );
   }

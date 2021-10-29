@@ -3,33 +3,34 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:twochealthcare/constants/api_strings.dart';
 import 'package:twochealthcare/models/modalities_models/blood_pressure_reading_model.dart';
+import 'package:twochealthcare/models/modalities_models/gb_reading_model.dart';
 import 'package:twochealthcare/models/modalities_models/modalities_model.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/shared_pref_services.dart';
 
-class BloodPressureReadingService{
+class BGReadingService{
   ProviderReference? _ref;
-  BloodPressureReadingService({ProviderReference? ref}){
+  BGReadingService({ProviderReference? ref}){
     _ref = ref;
   }
 
-  getBloodPressureReading({int? currentUserId,int? month,int? year}) async {
+  getBGReading({int? currentUserId,int? month,int? year}) async {
     try{
       final dio = _ref!.read(dioServicesProvider);
-      Response response = await dio.dio!.get(ApiStrings.GET_BP_DEVICE_DATA_BY_PATIENTID+"/"+"$currentUserId/$month/$year",
+      Response response = await dio.dio!.get(ApiStrings.GET_BG_DEVICE_DATA_BY_PATIENTID+"/"+"$currentUserId/$month/$year",
       );
       if(response.statusCode == 200){
         // sharePrf.setCurrentUser(response.data);
-        List<BloodPressureReadingModel> bPReadings = [];
+        List<BGDataModel> bGReadings = [];
         response.data.forEach((element) {
-          bPReadings.add(BloodPressureReadingModel.fromJson(element));
+          bGReadings.add(BGDataModel.fromJson(element));
         });
-        bPReadings.forEach((element) {
+        bGReadings.forEach((element) {
           element.measurementDate =
               Jiffy(element.measurementDate).format("dd MMM yy, h:mm a");
         });
 
-        return bPReadings;
+        return bGReadings;
 
       }else{
         return null;

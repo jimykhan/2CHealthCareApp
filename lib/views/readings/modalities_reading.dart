@@ -13,6 +13,7 @@ import 'package:twochealthcare/services/shared_pref_services.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
 import 'package:twochealthcare/view_models/modalities_reading_vm/modalities_reading_vm.dart';
+import 'package:twochealthcare/views/readings/bg_reading.dart';
 import 'package:twochealthcare/views/readings/blood_pressure_reading.dart';
 class ModalitiesReading extends HookWidget {
    ModalitiesReading({Key? key}) : super(key: key);
@@ -110,11 +111,23 @@ class ModalitiesReading extends HookWidget {
                         ModalitiesModel modality = modalitiesReadingVM!.modalitiesList[index];
                         return modality.id == -1 ?  Container() : InkWell(
                           onTap: (){
-                            if(index == 0){
+                            if(modality.modality == "BP"){
                               // sharedPrefServices?.getBearerToken();
                               Navigator.push(context, PageTransition(
                                   child: const BloodPressureReading(), type: PageTransitionType.bottomToTop));
                             }
+                            else if(modality.modality == "BG"){
+                              // sharedPrefServices?.getBearerToken();
+                              Navigator.push(context, PageTransition(
+                                  child: const BGReading(), type: PageTransitionType.bottomToTop));
+                            }
+
+                            else if(modality.modality == "WT"){
+                              // sharedPrefServices?.getBearerToken();
+                              // Navigator.push(context, PageTransition(
+                              //     child: const BloodPressureReading(), type: PageTransitionType.bottomToTop));
+                            }
+
 
                           },
                           child: Container(
@@ -167,10 +180,10 @@ class ModalitiesReading extends HookWidget {
                                           child: Container(
                                             alignment: Alignment.center,
                                               child: SvgPicture.asset(
-                                                  modality.modality =="BP" ? "assets/icons/readings/blood-glucose-icon.svg" :
+                                                  modality.modality =="BP" ? "assets/icons/readings/heart-icon.svg" :
                                                   modality.modality == "BG" ? "assets/icons/readings/blood-glucose-icon.svg" :
-                                                  modality.modality=="WT" ? "assets/icons/readings/blood-glucose-icon.svg" :
-                                                  modality.modality == "CGM" ? "" : "assets/icons/readings/blood-glucose-icon.svg",
+                                                  modality.modality=="WT" ? "assets/icons/readings/weight-icon.svg" :
+                                                  modality.modality == "CGM" ? "assets/icons/readings/blood-glucose-icon.svg" : "assets/icons/readings/blood-glucose-icon.svg",
                                               )
                                           )),
                                       Expanded(

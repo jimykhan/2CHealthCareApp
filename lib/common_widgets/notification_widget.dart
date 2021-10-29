@@ -16,6 +16,7 @@ class NotificationWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.symmetric(vertical: ApplicationSizing.convert(10)),
       child: Row(
         children: [
           Expanded(

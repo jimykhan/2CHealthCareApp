@@ -87,6 +87,7 @@ class BloodPressureReadingVM extends ChangeNotifier{
   bool selectDayPredict(dar){
     DateTime time = DateTime.parse(dar.toString());
     if(time.month != selectedMonth){
+      print("month change");
       selectedMonth = time.month;
       selectedYear = time.year;
       // getBloodPressureReading();

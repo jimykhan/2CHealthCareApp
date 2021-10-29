@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.green.shade50,
         primarySwatch: Colors.green
       ),
-      home: Splash(),
+      home: const Splash(),
     );
   }
 }

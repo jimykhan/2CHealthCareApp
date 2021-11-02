@@ -66,7 +66,7 @@ class Login extends HookWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            margin: EdgeInsets.only(top: ApplicationSizing.convert(30)),
+            margin: EdgeInsets.only(top: ApplicationSizing.convert(60)),
             child: RichText(
               text: TextSpan(
                   text: "Welcome,",

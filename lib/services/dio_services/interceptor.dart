@@ -12,7 +12,7 @@ class ApiInterceptor extends Interceptor{
   @override
   void onError(DioError err, ErrorInterceptorHandler handler) {
     // TODO: implement onError
-    SnackBarMessage(message: err.response!.data.toString());
+    // SnackBarMessage(message: err.response!.data.toString());
     super.onError(err, handler);
     switch (err.type) {
       case DioErrorType.connectTimeout:
@@ -50,12 +50,14 @@ class ApiInterceptor extends Interceptor{
     options.headers = {
       "Authorization": "Bearer ${loginVM.currentUser?.bearerToken??""}"
     };
+    print(options.path);
     super.onRequest(options, handler);
   }
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
     // TODO: implement onResponse
     print(response.data);
+    // print()
     super.onResponse(response, handler);
   }
 }

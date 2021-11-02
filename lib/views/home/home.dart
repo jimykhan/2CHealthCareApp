@@ -13,6 +13,7 @@ import 'package:twochealthcare/util/application_sizing.dart';
 import 'dart:math';
 
 import 'package:twochealthcare/util/styles.dart';
+import 'package:twochealthcare/views/home/profile.dart';
 import 'package:twochealthcare/views/notifiction/notifiction_list.dart';
 import 'package:twochealthcare/views/readings/modalities_reading.dart';
 class Home extends HookWidget {
@@ -68,7 +69,11 @@ class Home extends HookWidget {
           child: SvgPicture.asset("assets/icons/bottom_navbar/user-icon.svg",
             height: ApplicationSizing.convert(25),
           ),
-          onPressed: () {},),
+          onPressed: () {
+            Navigator.pushReplacement(context, PageTransition(child: Profile(),
+              type: PageTransitionType.bottomToTop
+              ,));
+          },),
         bottomNavigationBar: BottomBar(selectedIndex: 1,),
       drawer: Container(
         width: ApplicationSizing.convertWidth(280),
@@ -113,6 +118,7 @@ class Home extends HookWidget {
             ),
             ApplicationSizing.verticalSpacer(),
             Container(
+              margin: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin()),
               child: StaggeredGridView.countBuilder(
                 shrinkWrap: true,
                 physics: const ScrollPhysics(),
@@ -129,9 +135,10 @@ class Home extends HookWidget {
                       child: squareBox(item: items?[index],index: index));
                 },
                 staggeredTileBuilder: (int index) =>
-                 const StaggeredTile.count(1, 1),
-                mainAxisSpacing: ApplicationSizing.convert(15),
-                crossAxisSpacing: 4.0,
+                 const StaggeredTile.fit(1),
+                mainAxisSpacing: ApplicationSizing.convert(5),
+                crossAxisSpacing: ApplicationSizing.convert(5),
+
               )
             ),
             Container(
@@ -194,8 +201,8 @@ class Home extends HookWidget {
                     return Container(
                       height: 1,
                       color: fontGrayColor.withOpacity(0.5),
-                      margin: EdgeInsets.symmetric(vertical: ApplicationSizing.convert(10),
-                      horizontal: ApplicationSizing.horizontalMargin(n: 20)),
+                      // margin: EdgeInsets.symmetric(vertical: ApplicationSizing.convert(10),
+                      // horizontal: ApplicationSizing.horizontalMargin(n: 20)),
                     );
                   },
                   itemCount: 10),
@@ -208,13 +215,13 @@ class Home extends HookWidget {
   }
   Widget squareBox({var item,int index= 0}){
     return Container(
-        margin: EdgeInsets.only(
-          left: ((index % 2) == 0) ? ApplicationSizing.horizontalMargin() : 5,
-          right: ((index % 2) == 0) ? 5 : ApplicationSizing.horizontalMargin(),
-        ),
+      width: 150,
+        height: 150,
+        padding: EdgeInsets.symmetric(vertical: ApplicationSizing.convert(20)),
         decoration: BoxDecoration(
           color: appColor.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(20),
+          // color: Colors.blueAccent,
+          borderRadius: BorderRadius.circular(10),
           border: Border.all(
             color: appColor.withOpacity(0.8),
             width: 0.6,
@@ -237,7 +244,6 @@ class Home extends HookWidget {
             style: Styles.PoppinsRegular(
               fontSize: ApplicationSizing.fontScale(8),
               color: fontGrayColor
-              
             ),
           ),
         ],

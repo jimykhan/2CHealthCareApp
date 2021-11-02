@@ -16,16 +16,7 @@ class ChatList extends StatelessWidget {
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(ApplicationSizing.convert(80)),
           child: CustomAppBar(
-            leadingIcon: InkWell(
-              onTap: (){
-                Navigator.pop(context);
-              },
-              child: Container(
-                padding: EdgeInsets.only(right:ApplicationSizing.convertWidth(10)),
-                child: RotatedBox(
-                    quarterTurns: 2,child: SvgPicture.asset("assets/icons/home/right-arrow-icon.svg")),
-              ),
-            ),
+            leadingIcon: Container(),
             color1: Colors.white,
             color2: Colors.white,
             hight: ApplicationSizing.convert(80),

@@ -193,6 +193,7 @@ class Login extends HookWidget {
                   color: Colors.red,
                 )
               : FilledButton(
+<<<<<<< HEAD
                   h: ApplicationSizing.convert(50),
                   txt: "Login",
                   onTap: () {
@@ -214,6 +215,27 @@ class Login extends HookWidget {
                     }
                   },
                 ),
+=======
+            h: ApplicationSizing.convert(50),
+            txt: "Login",
+            onTap: () async {
+
+              // dd();
+              // loginVM.setLoading(true);
+              bool checkMail = loginVM.fieldValidation(loginVM.emailController.text,fieldType: 0);
+              bool checkPassword = loginVM.fieldValidation(loginVM.passwordController.text,fieldType: 1);
+              if(checkMail && checkPassword){
+                bool isValid = await loginVM.userLogin();
+                if(isValid){
+                  Navigator.pushReplacement(context, PageTransition(
+                      child: Home(), type: PageTransitionType.bottomToTop)
+                  );
+                }
+              }
+
+            },
+          ),
+>>>>>>> bb622a49dedf45a4b8333024baf831d3dabfd6ab
           SizedBox(
             height: ApplicationSizing.convert(12),
           ),

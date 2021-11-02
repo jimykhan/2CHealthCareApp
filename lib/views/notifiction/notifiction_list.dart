@@ -64,8 +64,6 @@ class NotificationList extends StatelessWidget {
                     return Container(
                       height: 1,
                       color: fontGrayColor.withOpacity(0.5),
-                      margin: EdgeInsets.symmetric(vertical: ApplicationSizing.convert(10),
-                          horizontal: ApplicationSizing.horizontalMargin(n: 20)),
                     );
                   },
                   itemCount: 10),

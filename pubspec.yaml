@@ -31,6 +31,7 @@ dependencies:
   firebase_core: ^1.8.0
   flutter_local_notifications: ^9.0.1
   shared_preferences: ^2.0.8
+  jiffy: ^4.1.0
 
 dev_dependencies:
   flutter_test:
@@ -56,6 +57,8 @@ flutter:
     - assets/icons/side_menu/logout-icon.svg
     - assets/icons/side_menu/setting-icon.svg
     - assets/icons/readings/blood-glucose-icon.svg
+    - assets/icons/readings/heart-icon.svg
+    - assets/icons/readings/weight-icon.svg
     - assets/icons/bottom_navbar/user-icon.svg
     - assets/icons/bottom_navbar/message-icon.svg
     - assets/loader.gif

@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:twochealthcare/common_widgets/snackber_message.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
 
 class BadRequestException extends DioError {
@@ -6,6 +7,7 @@ class BadRequestException extends DioError {
 
   @override
   String toString() {
+    SnackBarMessage(message: "Invalid request ");
     return 'Invalid request ';
   }
 }
@@ -15,6 +17,7 @@ class InternalServerErrorException extends DioError {
 
   @override
   String toString() {
+    SnackBarMessage(message: "Unknown error occurred, please try again later.");
     return 'Unknown error occurred, please try again later.';
   }
 }
@@ -24,6 +27,7 @@ class ConflictException extends DioError {
 
   @override
   String toString() {
+    SnackBarMessage(message: "Conflict occurred");
     return 'Conflict occurred';
   }
 }
@@ -33,6 +37,7 @@ class UnauthorizedException extends DioError {
 
   @override
   String toString() {
+    SnackBarMessage(message: "Access denied");
     return 'Access denied';
   }
 }
@@ -42,6 +47,7 @@ class NotFoundException extends DioError {
 
   @override
   String toString() {
+    SnackBarMessage(message: "The requested information could not be found");
     return 'The requested information could not be found';
   }
 }
@@ -51,6 +57,7 @@ class NoInternetConnectionException extends DioError {
 
   @override
   String toString() {
+    SnackBarMessage(message: "No internet connection detected, please try again.");
     return 'No internet connection detected, please try again.';
   }
 }
@@ -60,6 +67,7 @@ class DeadlineExceededException extends DioError {
 
   @override
   String toString() {
+    SnackBarMessage(message: "The connection has timed out, please try again.");
     return 'The connection has timed out, please try again.';
   }
 }

@@ -10,23 +10,25 @@ import 'package:twochealthcare/common_widgets/calendar.dart';
 import 'package:twochealthcare/common_widgets/custom_appbar.dart';
 import 'package:twochealthcare/common_widgets/floating_button.dart';
 import 'package:twochealthcare/common_widgets/line_chart.dart';
+import 'package:twochealthcare/view_models/modalities_reading_vm/bg_reading_vm.dart';
+import 'package:twochealthcare/views/readings/bg_reading_in_table.dart';
 import 'package:twochealthcare/views/readings/pb_reading_in_table.dart';
 import 'package:twochealthcare/common_widgets/tap_bar.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/view_models/modalities_reading_vm/blood_pressure_reading_vm.dart';
-class BloodPressureReading extends HookWidget {
-  const BloodPressureReading({Key? key}) : super(key: key);
+class BGReading extends HookWidget {
+  const BGReading({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    BloodPressureReadingVM bloodPressureReadingVM = useProvider(bloodPressureReadingVMProvider);
+    BGReadingVM bgReadingVM = useProvider(bGReadingVMProvider);
 
     useEffect(
           () {
-            bloodPressureReadingVM.bPReadingLoading = true;
-            bloodPressureReadingVM.getBloodPressureReading();
+        bgReadingVM.bGReadingLoading = true;
+        bgReadingVM.getBGReading();
         Future.microtask(() async {
 
         });
@@ -56,16 +58,16 @@ class BloodPressureReading extends HookWidget {
             hight: ApplicationSizing.convert(80),
             parentContext: context,
             centerWigets: AppBarTextStyle(
-              text: "Blood Pressure Reading",
+              text: "Blood Glucose Reading",
             ),
           ),
         ),
         floatingActionButtonLocation:  FloatingActionButtonLocation.miniEndFloat,
         floatingActionButton: FloatingButton(),
-        body: _body(context,bloodPressureReadingVM: bloodPressureReadingVM));
+        body: _body(context,bgReadingVM: bgReadingVM));
   }
 
-  _body(context,{BloodPressureReadingVM? bloodPressureReadingVM}){
+  _body(context,{BGReadingVM? bgReadingVM}){
     return Container(
       child: SingleChildScrollView(
         child: Stack(
@@ -74,26 +76,25 @@ class BloodPressureReading extends HookWidget {
               children: [
                 ApplicationSizing.verticalSpacer(),
                 TapBar(
-                  selectedIndx: bloodPressureReadingVM?.timePeriodSelect??0,
+                  selectedIndx: bgReadingVM?.timePeriodSelect??0,
                   ontap: (val){
-                  bloodPressureReadingVM?.changeTimePeriodSelectIndex(val);
+                    bgReadingVM?.changeTimePeriodSelectIndex(val);
                   },
                 ),
                 CustomCalendar(
-                    selectedDayPredict: bloodPressureReadingVM!.selectDayPredict,
-                    onDaySelect: bloodPressureReadingVM.onDaySelected,
-                    formatChange: bloodPressureReadingVM.onFormatChanged,
-                    onRangeSelect: bloodPressureReadingVM.selectRange,
-                  calendarFormat: bloodPressureReadingVM.calendarFormat,
-                  headerDisable: bloodPressureReadingVM.headerDisable,
-                  dayHeight: bloodPressureReadingVM.dayHeight,
-                  selectedDay1: bloodPressureReadingVM.selectedDay1,
+                  selectedDayPredict: bgReadingVM!.selectDayPredict,
+                  onDaySelect: bgReadingVM.onDaySelected,
+                  formatChange: bgReadingVM.onFormatChanged,
+                  onRangeSelect: bgReadingVM.selectRange,
+                  calendarFormat: bgReadingVM.calendarFormat,
+                  headerDisable: bgReadingVM.headerDisable,
+                  dayHeight: bgReadingVM.dayHeight,
                 ),
                 LineChart(chartType: ChartType.bloodPressure),
-                bpReadingInTable(bPReadings:bloodPressureReadingVM.bPReadings,),
+                bGReadingInTable(bGReadings:bgReadingVM.bPReadings,),
               ],
             ),
-            bloodPressureReadingVM.bPReadingLoading ? AlertLoader() : Container(),
+            bgReadingVM.bGReadingLoading ? AlertLoader() : Container(),
           ],
         ),
       ),

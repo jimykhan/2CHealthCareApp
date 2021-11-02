@@ -66,12 +66,12 @@ class Login extends HookWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            margin: EdgeInsets.only(top: ApplicationSizing.convert(20)),
+            margin: EdgeInsets.only(top: ApplicationSizing.convert(30)),
             child: RichText(
               text: TextSpan(
                   text: "Welcome,",
                   style: Styles.PoppinsBold(
-                      fontSize: ApplicationSizing.fontScale(20),
+                      fontSize: ApplicationSizing.fontScale(22),
                       color: appColor)),
             ),
           ),
@@ -85,14 +85,14 @@ class Login extends HookWidget {
               ),
             ),
           ),
-          ApplicationSizing.verticalSpacer(n: 40),
+          ApplicationSizing.verticalSpacer(n: 50),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
                 child: RichText(
                   text: TextSpan(
-                    text: "User Name or Email Address",
+                    text: "Email/Username",
                     style: Styles.PoppinsBold(
                         fontSize: ApplicationSizing.fontScale(12),
                         color: Colors.black),
@@ -106,7 +106,7 @@ class Login extends HookWidget {
                   onchange: loginVM!.onChangeEmail,
                   textEditingController: loginVM.emailController,
                   textInputType: TextInputType.emailAddress,
-                  hints: "E-mail / User Name",
+                  hints: "Email / User Name",
                   color1: loginVM.isEmailFieldValid ? disableColor : errorColor,
                   onSubmit: (val) {
                     loginVM.fieldValidation(val, fieldType: 0);

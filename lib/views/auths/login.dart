@@ -14,6 +14,7 @@ import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
 import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
 import 'package:twochealthcare/views/home/home.dart';
+
 class Login extends HookWidget {
   const Login({Key? key}) : super(key: key);
 
@@ -22,7 +23,7 @@ class Login extends HookWidget {
     LoginVM loginVM = useProvider(loginVMProvider);
 
     useEffect(
-          () {
+      () {
         Future.microtask(() async {});
 
         return () {
@@ -32,40 +33,40 @@ class Login extends HookWidget {
       const [],
     );
     return Scaffold(
-        body: Container(
-         child: SingleChildScrollView(
-           child: Stack(
-             children: [
-               Column(
-                 children: [
-                    Container(
-                     child: Image.asset("assets/icons/loginBg.png"),
-                   ),
-                   _loginform(context,loginVM: loginVM),
-                 ],
-               ),
-               loginVM.loading ? AlertLoader() : Container(),
-             ],
-           ),
-         ),
+      body: Container(
+        child: SingleChildScrollView(
+          child: Stack(
+            children: [
+              Column(
+                children: [
+                  Container(
+                    child: Image.asset("assets/icons/loginBg.png"),
+                  ),
+                  _loginform(context, loginVM: loginVM),
+                ],
+              ),
+              loginVM.loading ? AlertLoader() : Container(),
+            ],
+          ),
         ),
-
+      ),
     );
   }
 
-  _loginform(BuildContext context,{LoginVM? loginVM}) {
-
+  _loginform(BuildContext context, {LoginVM? loginVM}) {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(ApplicationSizing.fontScale(5)),
       ),
-      padding: EdgeInsets.symmetric(horizontal: ApplicationSizing.convertWidth(20)),
-      margin: EdgeInsets.symmetric(horizontal: ApplicationSizing.convertWidth(10)),
+      padding:
+          EdgeInsets.symmetric(horizontal: ApplicationSizing.convertWidth(20)),
+      margin:
+          EdgeInsets.symmetric(horizontal: ApplicationSizing.convertWidth(10)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            margin: EdgeInsets.only(top: ApplicationSizing.convert(30)),
+            margin: EdgeInsets.only(top: ApplicationSizing.convert(20)),
             child: RichText(
               text: TextSpan(
                   text: "Welcome,",
@@ -77,10 +78,10 @@ class Login extends HookWidget {
           Container(
             child: RichText(
               text: TextSpan(
-                  text: "Sign in to your account",
-                  style: Styles.PoppinsRegular(
-                      fontSize: ApplicationSizing.fontScale(12),
-                      color: fontGrayColor),
+                text: "Sign in to your account",
+                style: Styles.PoppinsRegular(
+                    fontSize: ApplicationSizing.fontScale(12),
+                    color: fontGrayColor),
               ),
             ),
           ),
@@ -91,11 +92,10 @@ class Login extends HookWidget {
               Container(
                 child: RichText(
                   text: TextSpan(
-                      text: "User Name or Email Address",
-                      style: Styles.PoppinsBold(
-                          fontSize: ApplicationSizing.fontScale(12),
-                        color: Colors.black
-                      ),
+                    text: "User Name or Email Address",
+                    style: Styles.PoppinsBold(
+                        fontSize: ApplicationSizing.fontScale(12),
+                        color: Colors.black),
                   ),
                 ),
               ),
@@ -107,17 +107,15 @@ class Login extends HookWidget {
                   textEditingController: loginVM.emailController,
                   textInputType: TextInputType.emailAddress,
                   hints: "E-mail / User Name",
-                  color1: loginVM.isEmailFieldValid
-                      ? disableColor
-                      : errorColor,
+                  color1: loginVM.isEmailFieldValid ? disableColor : errorColor,
                   onSubmit: (val) {
-                    loginVM.fieldValidation(val,fieldType: 0);
+                    loginVM.fieldValidation(val, fieldType: 0);
                   },
                 ),
               ),
-              loginVM.isEmailFieldValid ? Container():
-              ErrorText(text: loginVM.emailErrorText),
-
+              loginVM.isEmailFieldValid
+                  ? Container()
+                  : ErrorText(text: loginVM.emailErrorText),
             ],
           ),
           ApplicationSizing.verticalSpacer(),
@@ -130,8 +128,7 @@ class Login extends HookWidget {
                     text: "Password",
                     style: Styles.PoppinsBold(
                         fontSize: ApplicationSizing.fontScale(12),
-                        color: Colors.black
-                    ),
+                        color: Colors.black),
                   ),
                 ),
               ),
@@ -143,17 +140,16 @@ class Login extends HookWidget {
                   textEditingController: loginVM.passwordController,
                   textInputType: TextInputType.text,
                   hints: "Password",
-                  color1: loginVM.isPasswordFieldValid
-                      ? disableColor
-                      : errorColor,
+                  color1:
+                      loginVM.isPasswordFieldValid ? disableColor : errorColor,
                   onSubmit: (val) {
-                    loginVM.fieldValidation(val,fieldType: 1);
+                    loginVM.fieldValidation(val, fieldType: 1);
                   },
                 ),
               ),
-              loginVM.isPasswordFieldValid ? Container():
-              ErrorText(text: loginVM.passwordErrorText),
-
+              loginVM.isPasswordFieldValid
+                  ? Container()
+                  : ErrorText(text: loginVM.passwordErrorText),
             ],
           ),
           ApplicationSizing.verticalSpacer(n: 5),
@@ -162,55 +158,62 @@ class Login extends HookWidget {
             children: [
               false
                   ? Container(
-                  width: ApplicationSizing.convertWidth(120),
-                  height: ApplicationSizing.convert(25),
-                  alignment: Alignment.topRight,
-                  padding: EdgeInsets.only(
-                    right: ApplicationSizing.convertWidth(6),
-                    bottom: ApplicationSizing.convert(10),
-                  ),
-                  // color: Colors.red,
-                  child: CupertinoActivityIndicator(
-                    radius: ApplicationSizing.fontScale(10),
-                  ))
+                      width: ApplicationSizing.convertWidth(120),
+                      height: ApplicationSizing.convert(25),
+                      alignment: Alignment.topRight,
+                      padding: EdgeInsets.only(
+                        right: ApplicationSizing.convertWidth(6),
+                        bottom: ApplicationSizing.convert(10),
+                      ),
+                      // color: Colors.red,
+                      child: CupertinoActivityIndicator(
+                        radius: ApplicationSizing.fontScale(10),
+                      ))
                   : InkWell(
-                onTap: () async {
-
-                },
-                child: Container(
-                  width: ApplicationSizing.convertWidth(150),
-                  height: ApplicationSizing.convert(30),
-                  alignment: Alignment.topRight,
-                  child: RichText(
-                    text: TextSpan(
-                        text: "Forgot Password?",
-                        style: Styles.PoppinsRegular(
-                            fontSize: ApplicationSizing.fontScale(12),
-                            color: fontGrayColor)),
-                  ),
-                ),
-              ),
+                      onTap: () async {},
+                      child: Container(
+                        width: ApplicationSizing.convertWidth(150),
+                        height: ApplicationSizing.convert(30),
+                        alignment: Alignment.topRight,
+                        child: RichText(
+                          text: TextSpan(
+                              text: "Forgot Password?",
+                              style: Styles.PoppinsRegular(
+                                  fontSize: ApplicationSizing.fontScale(12),
+                                  color: fontGrayColor)),
+                        ),
+                      ),
+                    ),
             ],
           ),
           false
-              ? Container(width: 10,height: 10,color: Colors.red,)
+              ? Container(
+                  width: 10,
+                  height: 10,
+                  color: Colors.red,
+                )
               : FilledButton(
-            h: ApplicationSizing.convert(50),
-            txt: "Login",
-            onTap: (){
-              loginVM.userLogin();
-              // dd();
-              // loginVM.setLoading(true);
-              bool checkMail = loginVM.fieldValidation(loginVM.emailController.text,fieldType: 0);
-              bool checkPassword = loginVM.fieldValidation(loginVM.passwordController.text,fieldType: 1);
-              if(checkMail && checkPassword){
-                Navigator.pushReplacement(context, PageTransition(
-                    child: Home(), type: PageTransitionType.bottomToTop)
-                );
-              }
-
-            },
-          ),
+                  h: ApplicationSizing.convert(50),
+                  txt: "Login",
+                  onTap: () {
+                    loginVM.userLogin();
+                    // dd();
+                    // loginVM.setLoading(true);
+                    bool checkMail = loginVM.fieldValidation(
+                        loginVM.emailController.text,
+                        fieldType: 0);
+                    bool checkPassword = loginVM.fieldValidation(
+                        loginVM.passwordController.text,
+                        fieldType: 1);
+                    if (checkMail && checkPassword) {
+                      Navigator.pushReplacement(
+                          context,
+                          PageTransition(
+                              child: Home(),
+                              type: PageTransitionType.bottomToTop));
+                    }
+                  },
+                ),
           SizedBox(
             height: ApplicationSizing.convert(12),
           ),
@@ -218,11 +221,11 @@ class Login extends HookWidget {
             alignment: Alignment.bottomRight,
             child: RichText(
               text: TextSpan(children: [
-                TextSpan(
-                    text: "Version : ",
-                    style: Styles.RobotoMedium(
-                      fontSize: ApplicationSizing.fontScale(12),
-                    )),
+                // TextSpan(
+                //     text: "Version : ",
+                //     style: Styles.RobotoMedium(
+                //       fontSize: ApplicationSizing.fontScale(12),
+                //     )),
                 TextSpan(
                     text: "${""}",
                     style: Styles.RobotoMedium(

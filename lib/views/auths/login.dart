@@ -197,16 +197,19 @@ class Login extends HookWidget {
               : FilledButton(
             h: ApplicationSizing.convert(50),
             txt: "Login",
-            onTap: (){
-              loginVM.userLogin();
+            onTap: () async {
+
               // dd();
               // loginVM.setLoading(true);
               bool checkMail = loginVM.fieldValidation(loginVM.emailController.text,fieldType: 0);
               bool checkPassword = loginVM.fieldValidation(loginVM.passwordController.text,fieldType: 1);
               if(checkMail && checkPassword){
-                Navigator.pushReplacement(context, PageTransition(
-                    child: Home(), type: PageTransitionType.bottomToTop)
-                );
+                bool isValid = await loginVM.userLogin();
+                if(isValid){
+                  Navigator.pushReplacement(context, PageTransition(
+                      child: Home(), type: PageTransitionType.bottomToTop)
+                  );
+                }
               }
 
             },

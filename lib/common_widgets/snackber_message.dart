@@ -3,13 +3,12 @@ import 'package:twochealthcare/main.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 
-SnackBarMessage({String? message,bool error = false}){
+SnackBarMessage({String? message,bool error = true}){
   ScaffoldMessenger.of(applicationContext!.currentContext!).showSnackBar(
     SnackBar(
       backgroundColor: Colors.transparent,
       elevation: 0.0,
       content: Container(
-
         // alignment: Alignment.center,
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(

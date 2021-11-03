@@ -16,78 +16,97 @@ import 'package:twochealthcare/util/styles.dart';
 import 'package:twochealthcare/views/home/profile.dart';
 import 'package:twochealthcare/views/notifiction/notifiction_list.dart';
 import 'package:twochealthcare/views/readings/modalities_reading.dart';
+
 class Home extends HookWidget {
-   Home({Key? key}) : super(key: key);
+  Home({Key? key}) : super(key: key);
   List<Map<String, dynamic>?>? items = [
     {
-      "icon":"assets/icons/home/user-icon.svg",
-      "title":"My Profile",
-      "hints":"",
+      "icon": "assets/icons/home/user-icon.svg",
+      "title": "My Profile",
+      "hints": "",
+      "color": Color(0Xff548EFF),
+      "bordercolor": Color(0Xff4eaf4840),
     },
     {
-      "icon":"assets/icons/home/reading-icon.svg",
-      "title":"My Reading",
-      "hints":"",
+      "icon": "assets/icons/home/reading-icon.svg",
+      "title": "My Reading",
+      "hints": "",
+      "color": Color(0XffFD5C58),
+      "bordercolor": Color(0Xff4eaf4840),
     },
     {
-      "icon":"assets/icons/home/trophy-icon.svg",
-      "title":"My Rewards",
-      "hints":"Coming Soon...",
+      "icon": "assets/icons/home/trophy-icon.svg",
+      "title": "My Rewards",
+      "hints": "Coming Soon...",
+      "color": Color(0XffBE54FF),
+      "bordercolor": Color(0Xff4eaf4840),
     },
     {
-      "icon":"assets/icons/home/health-guide-icon.svg",
-      "title":"Health Guides",
-      "hints":"Coming Soon...",
+      "icon": "assets/icons/home/health-guide-icon.svg",
+      "title": "Health Guides",
+      "hints": "Coming Soon...",
+      "color": Color(0XffFFA654),
+      "bordercolor": Color(0Xff4eaf4840),
     },
   ];
-   GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
+  GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldkey,
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(ApplicationSizing.convert(80)),
-          child: CustomAppBar(
-            leadingIcon: InkWell(
-              onTap: (){
-                _scaffoldkey.currentState!.openDrawer();
-              },
-              child: Container(
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(ApplicationSizing.convert(80)),
+        child: CustomAppBar(
+          leadingIcon: InkWell(
+            onTap: () {
+              _scaffoldkey.currentState!.openDrawer();
+            },
+            child: Container(
                 alignment: Alignment.centerLeft,
                 padding: EdgeInsets.only(right: 20),
-                  child: SvgPicture.asset("assets/icons/home/side-menu-icon.svg")),
-            ),
-            color1: Colors.white,
-            color2: Colors.white,
-            hight: ApplicationSizing.convert(80),
-            parentContext: context,
+                child:
+                    SvgPicture.asset("assets/icons/home/side-menu-icon.svg")),
           ),
+          color1: Colors.white,
+          color2: Colors.white,
+          hight: ApplicationSizing.convert(80),
+          parentContext: context,
         ),
-        body: _body(),
-      floatingActionButtonLocation:  FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: FloatingActionButton(
-          child: SvgPicture.asset("assets/icons/bottom_navbar/user-icon.svg",
-            height: ApplicationSizing.convert(25),
-          ),
-          onPressed: () {
-            Navigator.pushReplacement(context, PageTransition(child: Profile(),
-              type: PageTransitionType.bottomToTop
-              ,));
-          },),
-        bottomNavigationBar: BottomBar(selectedIndex: 1,),
+      ),
+      body: _body(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: FloatingActionButton(
+        child: SvgPicture.asset(
+          "assets/icons/bottom_navbar/user-icon.svg",
+          height: ApplicationSizing.convert(25),
+        ),
+        onPressed: () {
+          Navigator.pushReplacement(
+              context,
+              PageTransition(
+                child: Profile(),
+                type: PageTransitionType.bottomToTop,
+              ));
+        },
+      ),
+      bottomNavigationBar: BottomBar(
+        selectedIndex: 1,
+      ),
       drawer: Container(
         width: ApplicationSizing.convertWidth(280),
         child: CustomDrawer(),
       ),
     );
   }
-  _body(){
+
+  _body() {
     return Container(
       child: SingleChildScrollView(
         child: Column(
           children: [
             Container(
-              margin: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin(n: 20)),
+              margin: EdgeInsets.symmetric(
+                  horizontal: ApplicationSizing.horizontalMargin(n: 20)),
               child: Column(
                 children: [
                   Container(
@@ -96,53 +115,57 @@ class Home extends HookWidget {
                       top: ApplicationSizing.convert(10),
                       bottom: ApplicationSizing.convert(0),
                     ),
-                    child: Text("Welcome Back,",
-                    style: Styles.PoppinsRegular(
-                      fontSize: ApplicationSizing.fontScale(11),
-                      color: fontGrayColor,
-                    ),
+                    child: Text(
+                      "Welcome Back,",
+                      style: Styles.PoppinsRegular(
+                        fontSize: ApplicationSizing.fontScale(12),
+                        color: fontGrayColor,
+                      ),
                     ),
                   ),
                   Container(
                     alignment: Alignment.centerLeft,
-                    child: Text("Jamshed khan",
+                    child: Text(
+                      "Jamshed khan",
                       style: Styles.PoppinsRegular(
-                        fontSize: ApplicationSizing.fontScale(20),
-                        color: Colors.black,
-                        fontWeight: FontWeight.w600
-                      ),
+                          fontSize: ApplicationSizing.fontScale(20),
+                          color: Colors.black,
+                          fontWeight: FontWeight.w600),
                     ),
                   ),
                 ],
               ),
             ),
-            ApplicationSizing.verticalSpacer(),
+            ApplicationSizing.verticalSpacer(n: 20),
             Container(
-              margin: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin()),
-              child: StaggeredGridView.countBuilder(
-                shrinkWrap: true,
-                physics: const ScrollPhysics(),
-                crossAxisCount: 2,
-                itemCount: items?.length ?? 0,
-                itemBuilder: (BuildContext context, int index) {
-                  return InkWell(
-                    onTap: (){
-                      if(index == 1){
-                        Navigator.push(context, PageTransition(
-                            child: ModalitiesReading(), type: PageTransitionType.rightToLeft));
-                      }
-                    },
-                      child: squareBox(item: items?[index],index: index));
-                },
-                staggeredTileBuilder: (int index) =>
-                 const StaggeredTile.fit(1),
-                mainAxisSpacing: ApplicationSizing.convert(5),
-                crossAxisSpacing: ApplicationSizing.convert(5),
-
-              )
-            ),
+                margin: EdgeInsets.symmetric(
+                    horizontal: ApplicationSizing.horizontalMargin()),
+                child: StaggeredGridView.countBuilder(
+                  shrinkWrap: true,
+                  physics: const ScrollPhysics(),
+                  crossAxisCount: 2,
+                  itemCount: items?.length ?? 0,
+                  itemBuilder: (BuildContext context, int index) {
+                    return InkWell(
+                        onTap: () {
+                          if (index == 1) {
+                            Navigator.push(
+                                context,
+                                PageTransition(
+                                    child: ModalitiesReading(),
+                                    type: PageTransitionType.rightToLeft));
+                          }
+                        },
+                        child: squareBox(item: items?[index], index: index));
+                  },
+                  staggeredTileBuilder: (int index) =>
+                      const StaggeredTile.fit(1),
+                  mainAxisSpacing: ApplicationSizing.convert(20),
+                  crossAxisSpacing: ApplicationSizing.convert(20),
+                )),
             Container(
-              margin: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin(n: 20)),
+              margin: EdgeInsets.symmetric(
+                  horizontal: ApplicationSizing.horizontalMargin(n: 20)),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.end,
@@ -151,10 +174,10 @@ class Home extends HookWidget {
                     flex: 6,
                     child: Container(
                       alignment: Alignment.bottomLeft,
-                      child: Text("Recent Notifications",
+                      child: Text(
+                        "Recent Notifications",
                         style: Styles.PoppinsBold(
                           fontSize: ApplicationSizing.fontScale(16),
-
                         ),
                       ),
                     ),
@@ -163,41 +186,43 @@ class Home extends HookWidget {
                     flex: 2,
                     child: Container(
                       alignment: Alignment.bottomRight,
-                      child: Text("See All",
+                      child: Text(
+                        "See All",
                         style: Styles.PoppinsRegular(
                           fontSize: ApplicationSizing.fontScale(12),
                           color: appColor,
-
-
                         ),
                       ),
                     ),
                   ),
-
                 ],
               ),
             ),
-            ApplicationSizing.verticalSpacer(n: 20),
+            ApplicationSizing.verticalSpacer(n: 0),
             Container(
-              child:ListView.separated(
-                shrinkWrap: true,
+              child: ListView.separated(
+                  shrinkWrap: true,
                   physics: ScrollPhysics(),
-                  itemBuilder: (context,index){
+                  itemBuilder: (context, index) {
                     return InkWell(
-                      onTap: (){
-                        Navigator.push(context, PageTransition(
-                            child: NotificationList(), type: PageTransitionType.bottomToTop));
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            PageTransition(
+                                child: NotificationList(),
+                                type: PageTransitionType.bottomToTop));
                       },
                       child: Container(
-                        margin: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin()),
+                        margin: EdgeInsets.symmetric(
+                            horizontal: ApplicationSizing.horizontalMargin()),
                         child: NotificationWidget(
-                          title: "EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin())",
+                          title: "Lorem ipsum",
                           date: "6 April",
                         ),
                       ),
                     );
                   },
-                  separatorBuilder: (context,index){
+                  separatorBuilder: (context, index) {
                     return Container(
                       height: 1,
                       color: fontGrayColor.withOpacity(0.5),
@@ -213,42 +238,49 @@ class Home extends HookWidget {
       ),
     );
   }
-  Widget squareBox({var item,int index= 0}){
+
+  Widget squareBox({var item, int index = 0}) {
     return Container(
       width: 150,
-        height: 150,
-        padding: EdgeInsets.symmetric(vertical: ApplicationSizing.convert(20)),
-        decoration: BoxDecoration(
-          color: appColor.withOpacity(0.1),
-          // color: Colors.blueAccent,
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(
-            color: appColor.withOpacity(0.8),
-            width: 0.6,
-
-          )
+      height: 150,
+      padding: EdgeInsets.symmetric(vertical: ApplicationSizing.convert(15)),
+      decoration: BoxDecoration(
+        color: item["color"],
+        // color: Colors.blueAccent,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: item["bordercolor"],
+          width: 1,
         ),
+        boxShadow: [
+          BoxShadow(
+            color: Color(0Xff1d161712),
+            blurRadius: 4,
+            offset: Offset(0, 8), // Shadow position
+          ),
+        ],
+      ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           SvgPicture.asset(item["icon"]),
           Container(
-            margin: EdgeInsets.symmetric(vertical: ApplicationSizing.convert(5)),
-              child: Text(item["title"],
-                style: Styles.PoppinsBold(
-                  fontSize: ApplicationSizing.fontScale(12),
-                ),
-              ),
-          ),
-          Text(item["hints"],
-            style: Styles.PoppinsRegular(
-              fontSize: ApplicationSizing.fontScale(8),
-              color: fontGrayColor
+            margin:
+                EdgeInsets.symmetric(vertical: ApplicationSizing.convert(7)),
+            child: Text(
+              item["title"],
+              style: Styles.PoppinsBold(
+                  fontSize: ApplicationSizing.fontScale(16),
+                  color: Colors.white),
             ),
+          ),
+          Text(
+            item["hints"],
+            style: Styles.PoppinsBold(
+                fontSize: ApplicationSizing.fontScale(8), color: Colors.white),
           ),
         ],
       ),
     );
   }
 }
-

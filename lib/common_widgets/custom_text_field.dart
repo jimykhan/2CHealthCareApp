@@ -17,16 +17,16 @@ class CustomTextField extends StatefulWidget {
   bool? isEnable;
   CustomTextField(
       {this.isEnable = true,
-        this.obscureText,
-        this.textInputType,
-        this.borderWidth,
-        this.trailingIcon,
-        this.hints,
-        this.color1,
-        this.iconWidget,
-        this.textEditingController,
-        required this.onchange,
-        required this.onSubmit});
+      this.obscureText,
+      this.textInputType,
+      this.borderWidth,
+      this.trailingIcon,
+      this.hints,
+      this.color1,
+      this.iconWidget,
+      this.textEditingController,
+      required this.onchange,
+      required this.onSubmit});
   @override
   _CustomTextFieldState createState() => _CustomTextFieldState();
 }
@@ -41,9 +41,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
       decoration: BoxDecoration(
           border: Border.all(
             color: borderColor ?? widget.color1 ?? Colors.green,
-            width: widget.borderWidth ??  1.2 ,
+            width: widget.borderWidth ?? 1.2,
           ),
-          borderRadius: BorderRadius.circular(5)),
+          borderRadius: BorderRadius.circular(7)),
       child: Row(
         children: <Widget>[
           widget.iconWidget ?? Container(),
@@ -52,6 +52,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
               children: [
                 Container(
                   // height: size.convert(context, 40),
+                  height: 50 ?? ApplicationSizing.convert(50),
                   child: Focus(
                     onFocusChange: (val) {
                       if (val) {
@@ -78,7 +79,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                           contentPadding: EdgeInsets.zero,
                           disabledBorder: InputBorder.none,
                           border: InputBorder.none,
-                          hintText: widget.hints ?? "" ,
+                          hintText: widget.hints ?? "",
                           hintStyle: Styles.PoppinsRegular(
                               color: fontGrayColor,
                               fontSize: ApplicationSizing.fontScale(12))),
@@ -88,7 +89,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
               ],
             ),
           ),
-          widget.trailingIcon ?? Container() ,
+          widget.trailingIcon ?? Container(),
         ],
       ),
     );

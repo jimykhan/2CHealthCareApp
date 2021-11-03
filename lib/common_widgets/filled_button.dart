@@ -35,14 +35,14 @@ class FilledButton extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size1 = MediaQuery.of(context).size;
     return GestureDetector(
-      onTap: onTap ,
+      onTap: onTap,
       child: Container(
         padding: EdgeInsets.only(right: 10, left: 10),
         height: h ?? ApplicationSizing.convert(50),
         width: w ?? ApplicationSizing.convertWidth(360),
         decoration: BoxDecoration(
             color: color1 ?? appColor,
-            borderRadius: BorderRadius.circular(5),
+            borderRadius: BorderRadius.circular(7),
             border: Border.all(
               width: borderwidth ?? 0,
               color: borderColor ?? appColor,
@@ -56,7 +56,7 @@ class FilledButton extends StatelessWidget {
               width: 10,
             ),
             Text(
-              txt ?? "Empty" ,
+              txt ?? "Empty",
               style: Styles.PoppinsBold(
                   fontSize: fontsize ?? ApplicationSizing.fontScale(16),
                   color: whiteColor),

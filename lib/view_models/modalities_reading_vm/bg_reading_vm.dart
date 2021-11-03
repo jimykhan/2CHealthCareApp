@@ -11,7 +11,7 @@ class BGReadingVM extends ChangeNotifier{
   double bGMaxLimit = 100;
   int selectedYear = DateTime.now().year;
   int selectedMonth = DateTime.now().month;
-  int timePeriodSelect = 0;
+  int timePeriodSelect = 2;
   List<BGDataModel> bPReadings = [];
   bool bGReadingLoading = true;
   /// Calendar work start from there

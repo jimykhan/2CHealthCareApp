@@ -8,7 +8,7 @@ import 'package:twochealthcare/services/auth_services/auth_services.dart';
 import 'package:twochealthcare/services/reading_services/blood_pressure_reading_service.dart';
 class BloodPressureReadingVM extends ChangeNotifier{
   double bloodPressureMaxLimit = 100;
-  int timePeriodSelect = 0;
+  int timePeriodSelect = 2;
   int selectedYear = DateTime.now().year;
   int selectedMonth = DateTime.now().month;
   List<BloodPressureReadingModel> bPReadings = [];
@@ -43,19 +43,22 @@ class BloodPressureReadingVM extends ChangeNotifier{
     if(index != timePeriodSelect){
       timePeriodSelect = index??0;
       if(index == 0){
-        calendarFormat = CalendarFormat.month;
-        dayHeight =52;
+        calendarFormat = CalendarFormat.week;
+        dayHeight =40;
         headerDisable = false;
+        daysOfWeekVisible = true;
       }
       else if(index == 1){
         calendarFormat = CalendarFormat.week;
         dayHeight =1;
         headerDisable = true;
+        daysOfWeekVisible = false;
       }
       else if(index == 2){
         calendarFormat = CalendarFormat.month;
         dayHeight =1;
         headerDisable = true;
+        daysOfWeekVisible = false;
       }
 
       notifyListeners();

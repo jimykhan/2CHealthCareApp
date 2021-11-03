@@ -77,7 +77,8 @@ class ModalitiesReading extends HookWidget {
                 Navigator.pop(context);
               },
               child: Container(
-                padding: EdgeInsets.only(right:ApplicationSizing.convertWidth(10)),
+                alignment: Alignment.centerLeft,
+
                 child: RotatedBox(
                     quarterTurns: 2,child: SvgPicture.asset("assets/icons/home/right-arrow-icon.svg")),
               ),

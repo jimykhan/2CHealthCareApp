@@ -10,6 +10,7 @@ import 'package:twochealthcare/common_widgets/calendar.dart';
 import 'package:twochealthcare/common_widgets/custom_appbar.dart';
 import 'package:twochealthcare/common_widgets/floating_button.dart';
 import 'package:twochealthcare/common_widgets/line_chart.dart';
+import 'package:twochealthcare/common_widgets/no_data_inlist.dart';
 import 'package:twochealthcare/models/modalities_models/blood_pressure_reading_model.dart';
 import 'package:twochealthcare/util/styles.dart';
 import 'package:twochealthcare/views/readings/pb_reading_in_table.dart';
@@ -95,8 +96,13 @@ class BloodPressureReading extends HookWidget {
                     daysOfWeekVisible: bloodPressureReadingVM.daysOfWeekVisible
 
                 ),
-                LineGraph(bloodPressureReadingVM: bloodPressureReadingVM),
-                bpReadingInTable(bPReadings:bloodPressureReadingVM.bPReadings,),
+                bloodPressureReadingVM.bPReadings.length == 0 ? NoData()  : Column(
+                  children: [
+                    LineGraph(bloodPressureReadingVM: bloodPressureReadingVM),
+                    bpReadingInTable(bPReadings:bloodPressureReadingVM.bPReadings,),
+                    ApplicationSizing.verticalSpacer(n: 70),
+                  ],
+                )
               ],
             ),
             bloodPressureReadingVM.bPReadingLoading ? AlertLoader() : Container(),

@@ -70,12 +70,11 @@ class BGReading extends HookWidget {
         body: _body(context,bgReadingVM: bgReadingVM));
   }
 
-  _body(context,{BGReadingVM? bgReadingVM}){
+  _body(context,{required BGReadingVM bgReadingVM}){
     return Container(
       child: SingleChildScrollView(
         child: Stack(
           children: [
-            bgReadingVM!.bPReadings.length == 0 ? NoData() :
             Column(
               children: [
                 ApplicationSizing.verticalSpacer(),
@@ -99,8 +98,13 @@ class BGReading extends HookWidget {
                   focusedDay1: bgReadingVM.focusedDay1,
 
                 ),
-                LineGraph(context, bgReadingVM: bgReadingVM),
-                bGReadingInTable(bGReadings:bgReadingVM.bPReadings,),
+                bgReadingVM.bPReadings.length == 0 ? NoData() : Column(
+                  children: [
+                    LineGraph(context, bgReadingVM: bgReadingVM),
+                    bGReadingInTable(bGReadings:bgReadingVM.bPReadings,),
+                    ApplicationSizing.verticalSpacer(n: 70),
+                  ],
+                )
               ],
             ),
             bgReadingVM.bGReadingLoading ? AlertLoader() : Container(),

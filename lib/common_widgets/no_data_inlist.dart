@@ -8,7 +8,10 @@ class NoData extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Text("No Records found",
+      alignment: Alignment.center,
+      // color: Colors.green,
+      height: 400,
+      child: Text("No Record Found",
       style: Styles.PoppinsRegular(
         fontSize: ApplicationSizing.convert(20),
       ),),

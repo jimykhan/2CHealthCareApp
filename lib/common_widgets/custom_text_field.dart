@@ -52,7 +52,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
               children: [
                 Container(
                   // height: size.convert(context, 40),
-                  height: 50 ?? ApplicationSizing.convert(50),
+                  height: 50,
                   child: Focus(
                     onFocusChange: (val) {
                       if (val) {

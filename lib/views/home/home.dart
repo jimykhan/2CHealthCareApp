@@ -93,7 +93,7 @@ class Home extends HookWidget {
         selectedIndex: 1,
       ),
       drawer: Container(
-        width: ApplicationSizing.convertWidth(280),
+        width: ApplicationSizing.convertWidth(250),
         child: CustomDrawer(),
       ),
     );

@@ -5,19 +5,21 @@ import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/views/chat/chat_list.dart';
 import 'package:twochealthcare/views/home/home.dart';
+
 class BottomBar extends StatelessWidget {
   int selectedIndex;
-   BottomBar({Key? key,required this.selectedIndex}) : super(key: key);
+  BottomBar({Key? key, required this.selectedIndex}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BottomAppBar(
       color: appColor,
       shape: const CircularNotchedRectangle(),
-      notchMargin: 6.0,
-      elevation: 0,
-      child:  Container(
-        margin: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin()),
+      notchMargin: 9.0,
+      elevation: 1,
+      child: Container(
+        margin: EdgeInsets.symmetric(
+            horizontal: ApplicationSizing.horizontalMargin()),
         height: ApplicationSizing.convert(60),
         color: Colors.transparent,
         child: Row(
@@ -25,18 +27,20 @@ class BottomBar extends StatelessWidget {
             Expanded(
               flex: 1,
               child: InkWell(
-                onTap: (){
-                  if(selectedIndex != 1){
-                    Navigator.pushReplacement(context, PageTransition(
-                        child: Home(),
-                        type: PageTransitionType.topToBottom
-                    ));
+                onTap: () {
+                  if (selectedIndex != 1) {
+                    Navigator.pushReplacement(
+                        context,
+                        PageTransition(
+                            child: Home(),
+                            type: PageTransitionType.topToBottom));
                     print("do something on selected index $selectedIndex}");
                   }
                 },
                 child: Container(
                   alignment: Alignment.center,
-                  child: SvgPicture.asset("assets/icons/side_menu/home-icon.svg",
+                  child: SvgPicture.asset(
+                    "assets/icons/side_menu/home-icon.svg",
                     height: ApplicationSizing.convert(25),
                   ),
                 ),
@@ -46,12 +50,13 @@ class BottomBar extends StatelessWidget {
             Expanded(
               flex: 1,
               child: InkWell(
-                onTap: (){
-                  if(selectedIndex != 2){
-                    Navigator.pushReplacement(context, PageTransition(
-                        child: ChatList(),
-                        type: PageTransitionType.bottomToTop
-                    ));
+                onTap: () {
+                  if (selectedIndex != 2) {
+                    Navigator.pushReplacement(
+                        context,
+                        PageTransition(
+                            child: ChatList(),
+                            type: PageTransitionType.bottomToTop));
                     print("do something on selected index $selectedIndex}");
                   }
                 },
@@ -59,7 +64,8 @@ class BottomBar extends StatelessWidget {
                   // color: Colors.red,
                   alignment: Alignment.center,
 
-                  child: SvgPicture.asset("assets/icons/bottom_navbar/message-icon.svg",
+                  child: SvgPicture.asset(
+                    "assets/icons/bottom_navbar/message-icon.svg",
                     height: ApplicationSizing.convert(25),
                   ),
                 ),

@@ -1,38 +1,35 @@
 import 'package:flutter/material.dart';
 
 class Styles {
-  static TextStyle PoppinsBold(
-      {double fontSize = 30,
-        String fontFamily = "PoppinsBold",
-        Color color = Colors.black,
-        FontWeight fontWeight = FontWeight.bold
-      }) {
+  static TextStyle PoppinsBold({
+    double fontSize = 30,
+    String fontFamily = "PoppinsBold",
+    Color color = Colors.black,
+    FontWeight fontWeight = FontWeight.bold,
+  }) {
     return TextStyle(
-      fontSize: fontSize,
-      fontFamily: fontFamily,
-      color: color,
-      fontWeight: fontWeight
-    );
+        fontSize: fontSize,
+        fontFamily: fontFamily,
+        color: color,
+        fontWeight: fontWeight);
   }
 
   static TextStyle PoppinsRegular(
       {double fontSize = 20,
-        String fontFamily = "PoppinsRegular",
-        Color color = Colors.black,
-        FontWeight fontWeight = FontWeight.normal
-      }) {
+      String fontFamily = "PoppinsRegular",
+      Color color = Colors.black,
+      FontWeight fontWeight = FontWeight.normal}) {
     return TextStyle(
-      fontSize: fontSize,
-      fontFamily: fontFamily,
-      color: color,
-      fontWeight: fontWeight
-    );
+        fontSize: fontSize,
+        fontFamily: fontFamily,
+        color: color,
+        fontWeight: fontWeight);
   }
 
   static TextStyle RobotoMedium(
       {double fontSize = 9,
-        String fontFamily = "RobotoMedium",
-        Color color = Colors.black}) {
+      String fontFamily = "RobotoMedium",
+      Color color = Colors.black}) {
     return TextStyle(
       fontSize: fontSize,
       fontFamily: fontFamily,
@@ -42,8 +39,8 @@ class Styles {
 
   static TextStyle RobotoThin(
       {double fontSize = 9,
-        String fontFamily = "RobotoThin",
-        Color color = Colors.black}) {
+      String fontFamily = "RobotoThin",
+      Color color = Colors.black}) {
     return TextStyle(
       fontSize: fontSize,
       fontFamily: fontFamily,
@@ -57,7 +54,7 @@ class Styles {
         color: isPaired == 1 ? Colors.white : Colors.white60,
         boxShadow: [
           BoxShadow(
-            // color: Color(0xff00000029),
+              // color: Color(0xff00000029),
               color: Colors.grey.shade200,
               offset: Offset(0, 1),
               blurRadius: 10,

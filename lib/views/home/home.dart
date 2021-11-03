@@ -262,6 +262,7 @@ class Home extends HookWidget {
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SvgPicture.asset(item["icon"]),
           Container(
@@ -274,11 +275,14 @@ class Home extends HookWidget {
                   color: Colors.white),
             ),
           ),
-          Text(
-            item["hints"],
-            style: Styles.PoppinsBold(
-                fontSize: ApplicationSizing.fontScale(8), color: Colors.white),
-          ),
+          item["hints"] == ""
+              ? Container()
+              : Text(
+                  item["hints"],
+                  style: Styles.PoppinsBold(
+                      fontSize: ApplicationSizing.fontScale(8),
+                      color: Colors.white),
+                ),
         ],
       ),
     );

@@ -10,7 +10,7 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   // SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.top]);
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    statusBarColor: Colors.transparent,
+    statusBarColor: Colors.green,
     //statusBarBrightness: Brightness.dark,
     //statusBarIconBrightness: Brightness.light,
   ));
@@ -22,14 +22,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-
       navigatorKey: applicationContext,
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-        primaryColor: Colors.green.shade50,
-        primarySwatch: Colors.green
-      ),
+          primaryColor: Colors.green.shade50, primarySwatch: Colors.green),
       home: const Splash(),
     );
   }

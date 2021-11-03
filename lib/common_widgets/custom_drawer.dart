@@ -74,7 +74,7 @@ class CustomDrawer extends HookWidget {
                                     ),
                                     Container(
                                       child: Text(
-                                        "Jamshed khan",
+                                        loginVM.currentUser?.fullName??"",
                                         style: Styles.PoppinsRegular(
                                             fontSize: ApplicationSizing.fontScale(20),
                                             color: Colors.white,
@@ -84,7 +84,7 @@ class CustomDrawer extends HookWidget {
                                     ),
                                     Container(
                                       child: Text(
-                                        "jimmykhan121@gmail.com",
+                                        loginVM.currentUser?.fullName??"",
                                         style: Styles.PoppinsRegular(
                                             fontSize: ApplicationSizing.fontScale(10),
                                             color: Colors.white,

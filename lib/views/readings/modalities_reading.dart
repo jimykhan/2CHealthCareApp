@@ -78,7 +78,6 @@ class ModalitiesReading extends HookWidget {
               },
               child: Container(
                 alignment: Alignment.centerLeft,
-
                 child: RotatedBox(
                     quarterTurns: 2,child: SvgPicture.asset("assets/icons/home/right-arrow-icon.svg")),
               ),

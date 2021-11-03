@@ -2,17 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hooks_riverpod/all.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:twochealthcare/common_widgets/bottom_bar.dart';
 import 'package:twochealthcare/common_widgets/circular_image.dart';
 import 'package:twochealthcare/common_widgets/custom_appbar.dart';
 import 'package:twochealthcare/common_widgets/custom_drawer.dart';
 import 'package:twochealthcare/common_widgets/notification_widget.dart';
+import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'dart:math';
 
 import 'package:twochealthcare/util/styles.dart';
+import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
 import 'package:twochealthcare/views/home/profile.dart';
 import 'package:twochealthcare/views/notifiction/notifiction_list.dart';
 import 'package:twochealthcare/views/readings/modalities_reading.dart';
@@ -52,6 +55,7 @@ class Home extends HookWidget {
   GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
+    LoginVM loginVM = useProvider(loginVMProvider);
     return Scaffold(
       key: _scaffoldkey,
       appBar: PreferredSize(
@@ -73,7 +77,7 @@ class Home extends HookWidget {
           parentContext: context,
         ),
       ),
-      body: _body(),
+      body: _body(loginVM: loginVM),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         child: SvgPicture.asset(
@@ -99,7 +103,7 @@ class Home extends HookWidget {
     );
   }
 
-  _body() {
+  _body({required LoginVM loginVM}) {
     return Container(
       child: SingleChildScrollView(
         child: Column(
@@ -126,7 +130,7 @@ class Home extends HookWidget {
                   Container(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      "Jamshed khan",
+                      loginVM.currentUser?.fullName??"",
                       style: Styles.PoppinsRegular(
                           fontSize: ApplicationSizing.fontScale(20),
                           color: Colors.black,
@@ -153,6 +157,13 @@ class Home extends HookWidget {
                                 context,
                                 PageTransition(
                                     child: ModalitiesReading(),
+                                    type: PageTransitionType.rightToLeft));
+                          }
+                          else if(index == 0){
+                            Navigator.push(
+                                context,
+                                PageTransition(
+                                    child: Profile(),
                                     type: PageTransitionType.rightToLeft));
                           }
                         },

@@ -14,7 +14,9 @@ import 'package:twochealthcare/services/shared_pref_services.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
+import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
 import 'package:twochealthcare/view_models/modalities_reading_vm/modalities_reading_vm.dart';
+import 'package:twochealthcare/view_models/profile_vm.dart';
 import 'package:twochealthcare/views/home/components/widgets.dart';
 import 'package:twochealthcare/views/readings/bg_reading.dart';
 import 'package:twochealthcare/views/readings/blood_pressure_reading.dart';
@@ -22,11 +24,14 @@ class Profile extends HookWidget {
   Profile({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    // final sharedPrefService = useProvider(sharedPrefServiceProvider);
+    LoginVM loginVM = useProvider(loginVMProvider);
+    ProfileVm profileVm = useProvider(profileVMProvider);
     // final modalitiesReadingVM = useProvider(modalitiesReadingVMProvider);
     useEffect(
           () {
-        Future.microtask(() async {});
+        Future.microtask(() async {
+          profileVm.getUserInfo();
+        });
         return () {
           // Dispose Objects here
         };
@@ -50,51 +55,72 @@ class Profile extends HookWidget {
         ),
         floatingActionButtonLocation:  FloatingActionButtonLocation.miniEndFloat,
         floatingActionButton: FloatingButton(),
-        body: _body(),
+        body: _body(loginVM: loginVM,profileVm: profileVm),
     );
   }
-  _body({SharedPrefServices? sharedPrefServices,ModalitiesReadingVM? modalitiesReadingVM}){
+  _body({LoginVM? loginVM,ProfileVm? profileVm}){
     return Container(
-      child: Column(
-        // mainAxisAlignment: MainAxisAlignment.center,
-        // crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          ApplicationSizing.verticalSpacer(n: 30),
-          Container(
-            alignment: Alignment.center,
-            margin: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin()),
-            child: CircularImage(
-              w: ApplicationSizing.convert(110),
-              h: ApplicationSizing.convert(110),
-            ),
-          ),
-          Container(
-            alignment: Alignment.center,
-            margin: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin()),
-            child: Column(
+      child: SingleChildScrollView(
+        child: Stack(
+          children: [
+            Column(
+              // mainAxisAlignment: MainAxisAlignment.center,
+              // crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text("Jamshed khan",
-                style: Styles.PoppinsRegular(
-                  fontSize: ApplicationSizing.fontScale(20),
-                  fontWeight: FontWeight.w600,
-                  color: appColor
-                ),),
-                Text("jamshed@gmail.com",
-                style: Styles.PoppinsRegular(
-                  fontSize: ApplicationSizing.fontScale(12),
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black
-                ),),
+                ApplicationSizing.verticalSpacer(n: 30),
+                Container(
+                  alignment: Alignment.center,
+                  margin: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin()),
+                  child: CircularImage(
+                    w: ApplicationSizing.convert(110),
+                    h: ApplicationSizing.convert(110),
+                  ),
+                ),
+                Container(
+                  alignment: Alignment.center,
+                  margin: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin()),
+                  child: Column(
+                    children: [
+                      Text(loginVM?.currentUser?.fullName??"",
+                      style: Styles.PoppinsRegular(
+                        fontSize: ApplicationSizing.fontScale(20),
+                        fontWeight: FontWeight.w600,
+                        color: appColor
+                      ),),
+                      Text(loginVM?.currentUser?.userName??"",
+                      style: Styles.PoppinsRegular(
+                        fontSize: ApplicationSizing.fontScale(12),
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black
+                      ),),
+                    ],
+                  ),
+                ),
+                ApplicationSizing.verticalSpacer(n:10),
+                ListView.separated(
+                  shrinkWrap: true,
+                    physics: ScrollPhysics(),
+                    itemBuilder: (context,index){
+                      return infoWidget(widgetTitle: 'Care Provider',
+                        key1: "Name",
+                        value1: profileVm!.currentUserInfo?.careProviders?[index].fullName??""
+
+                      );
+                    },
+                    separatorBuilder: (context,index){
+                      return ApplicationSizing.verticalSpacer();
+                    },
+                    itemCount: profileVm!.currentUserInfo?.careProviders?.length??0)
+                // infoWidget(widgetTitle: "Care Provider Details",
+                // key1: "Name",
+                //   value1: "Jamshed khan"
+                // )
+
               ],
             ),
-          ),
-          ApplicationSizing.verticalSpacer(n:10),
-          infoWidget(widgetTitle: "Care Provider Details",
-          key1: "Name",
-            value1: "Jamshed khan"
-          )
-
-        ],
+            profileVm.loading ? AlertLoader() : Container(),
+          ],
+        ),
       ),
     );
   }

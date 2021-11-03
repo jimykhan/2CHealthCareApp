@@ -9,6 +9,7 @@ import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/shared_pref_services.dart';
 
 class BGReadingService{
+  double bGMaxLimit = 100;
   ProviderReference? _ref;
   BGReadingService({ProviderReference? ref}){
     _ref = ref;
@@ -25,10 +26,29 @@ class BGReadingService{
         response.data.forEach((element) {
           bGReadings.add(BGDataModel.fromJson(element));
         });
-        bGReadings.forEach((element) {
-          element.measurementDate =
-              Jiffy(element.measurementDate).format("dd MMM yy, h:mm a");
-        });
+        if (bGReadings.length > 0) {
+          bGReadings.sort((a, b) {
+            return double.parse(a.measurementDate!
+                .trim()
+                .replaceAll("-", "")
+                .replaceAll("T", "")
+                .replaceAll(":", ""))
+                .compareTo(double.parse(b.measurementDate!
+                .trim()
+                .replaceAll("-", "")
+                .replaceAll("T", "")
+                .replaceAll(":", "")));
+          });
+          bGReadings.forEach((element) {
+            // element.datetime = DateTime.parse(element.measurementDate.trim().replaceAll("-", "").replaceAll(":", ""));
+            element.measurementDate =
+                Jiffy(element.measurementDate).format("dd MMM yy, h:mm a");
+            // element.measurementDate = Jiffy((DateFormat("yyyy-MM-dd HH:mm:ss").parse(DateTime.parse(element.measurementDate).toString(),true)).toLocal().toString()).format("dd MMM yy, h:mm a");
+            if (bGMaxLimit < element.bg!) {
+              bGMaxLimit = element.bg!;
+            }
+          });
+        }
 
         return bGReadings;
 

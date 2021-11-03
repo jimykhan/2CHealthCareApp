@@ -20,8 +20,30 @@ class ModalitiesModel {
   String? lastReadingContext;
   String? lastReadingDate;
   int? patientId;
-  String? facilityId;
+  int? facilityId;
   int? phDeviceModelId;
+  String? patientName;
+
+  // int? id;
+  // String? manufacturer;
+  // String? model;
+  // String? macAddress;
+  // String? serialNo;
+  // String? installationDate;
+  // bool? isIotDevice;
+  // bool? cpT99453;
+  // String? modality;
+  // String? modalityName;
+  // int? status;
+  // int? inventoryStatus;
+  // String? lastReading;
+  // String? lastReadingUnit;
+  // String? lastReadingContext;
+  // String? lastReadingDate;
+  // int? patientId;
+  //
+  // int? facilityId;
+  // int? phDeviceModelId;
 
   ModalitiesModel(
       {this.id,
@@ -42,7 +64,9 @@ class ModalitiesModel {
         this.lastReadingDate,
         this.patientId,
         this.facilityId,
-        this.phDeviceModelId});
+        this.phDeviceModelId,
+      this.patientName,
+      });
   factory ModalitiesModel.fromJson(Map<String, dynamic> data) => _$ModalitiesModelFromJson(data);
   Map<String, dynamic> toJson() => _$ModalitiesModelToJson(this);
 }

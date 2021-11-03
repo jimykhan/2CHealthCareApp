@@ -70,6 +70,9 @@ class LineChart extends StatelessWidget {
   grp(){
     String SeriesName;
     return Container(
+      decoration: const BoxDecoration(
+        color: Colors.white
+      ),
         child: SfCartesianChart(
           // Initialize category axis
           //   primaryXAxis: CategoryAxis(),

@@ -50,6 +50,7 @@ class ApiInterceptor extends Interceptor{
     options.headers = {
       "Authorization": "Bearer ${loginVM.currentUser?.bearerToken??""}"
     };
+    print(loginVM.currentUser?.bearerToken??"");
     print(options.path);
     super.onRequest(options, handler);
   }

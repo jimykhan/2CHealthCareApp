@@ -10,6 +10,8 @@ import 'package:twochealthcare/common_widgets/calendar.dart';
 import 'package:twochealthcare/common_widgets/custom_appbar.dart';
 import 'package:twochealthcare/common_widgets/floating_button.dart';
 import 'package:twochealthcare/common_widgets/line_chart.dart';
+import 'package:twochealthcare/models/modalities_models/blood_pressure_reading_model.dart';
+import 'package:twochealthcare/util/styles.dart';
 import 'package:twochealthcare/views/readings/pb_reading_in_table.dart';
 import 'package:twochealthcare/common_widgets/tap_bar.dart';
 import 'package:twochealthcare/providers/providers.dart';
@@ -88,8 +90,12 @@ class BloodPressureReading extends HookWidget {
                   headerDisable: bloodPressureReadingVM.headerDisable,
                   dayHeight: bloodPressureReadingVM.dayHeight,
                   selectedDay1: bloodPressureReadingVM.selectedDay1,
+                  onPageChanged: bloodPressureReadingVM.onPageChanged,
+                  focusedDay1: bloodPressureReadingVM.focusedDay1,
+                    daysOfWeekVisible: bloodPressureReadingVM.daysOfWeekVisible
+
                 ),
-                LineChart(chartType: ChartType.bloodPressure),
+                LineGraph(bloodPressureReadingVM: bloodPressureReadingVM),
                 bpReadingInTable(bPReadings:bloodPressureReadingVM.bPReadings,),
               ],
             ),
@@ -99,9 +105,149 @@ class BloodPressureReading extends HookWidget {
       ),
     );
   }
+  LineGraph({BloodPressureReadingVM? bloodPressureReadingVM}) {
+    bloodPressureReadingVM?.bPReadings.sort((a, b) {
+      return a.measurementDate!.compareTo(b.measurementDate!);
+    });
+    return Center(
+        child: Stack(
+          children: [
+            Container(
+                height: ApplicationSizing.convert(400),
+                margin: EdgeInsets.symmetric(
+                    horizontal: ApplicationSizing.convertWidth(20)
+                ),
+                child: SfCartesianChart(
+                  margin: EdgeInsets.all(0),
+                  title: ChartTitle(
+                    text: "Blood Pressure",
+                    alignment: ChartAlignment.near,
+                    textStyle: Styles.PoppinsRegular(),
+                  ),
+                  legend: Legend(
+                    isVisible: true,
+                    position: LegendPosition.bottom,
+                    alignment: ChartAlignment.near,
+                  ),
+                  tooltipBehavior: TooltipBehavior(
+                    enable: true,
+                  ),
+                  primaryXAxis: CategoryAxis(
+                    labelIntersectAction: AxisLabelIntersectAction.rotate45,
+                    placeLabelsNearAxisLine: true,
+                    autoScrollingMode: AutoScrollingMode.start,
+                    // plotOffset: 10
+                    // visibleMinimum: 0.1
+                    // interval: 1,
+                    // arrangeByIndex: true ,
+                    // axisLine:AxisLine(
+                    //   color: Colors.red,
+                    //
+                    // )
+                    //   visibleMaximum: 8,
+                    //  minorTicksPerInterval: 5,
+                    // minimum: 1,
+                    // maximum: 5,
+                    // autoScrollingDelta: 10
+                    // crossesAt: 12
+                    desiredIntervals: 4,
+                    // majorGridLines: MajorGridLines(
+                    //   color: Colors.red
+                    // )
+                  ),
+                  primaryYAxis: NumericAxis(
+                    maximum: bloodPressureReadingVM!.bloodPressureMaxLimit + 100,
+                    minimum: 0,
+                    interval: 50,
+                    enableAutoIntervalOnZooming: true,
+                  ),
+                  series: <ChartSeries>[
+                    FastLineSeries<BloodPressureReadingModel, String>(
+                      name: "Systolic",
+                      enableTooltip: true,
+                      dataSource: bloodPressureReadingVM.bPReadings,
+                      xValueMapper: (BloodPressureReadingModel bloodPressure, _) =>
+                          // bloodPressure.measurementDate.substring(0, 9),
+                          bloodPressure.measurementDate,
+                      yValueMapper: (BloodPressureReadingModel bloodPressure, _) =>
+                      bloodPressure.highPressure,
+                      markerSettings: const MarkerSettings(
+                        color: Colors.white,
+                        isVisible: true,
+                      ),
+                      legendIconType: LegendIconType.circle,
+                      isVisibleInLegend: true,
+                      color: AppBarStartColor,
+                    ),
+                    FastLineSeries<BloodPressureReadingModel, String>(
+                      name: "Diastolic",
+                      enableTooltip: true,
+                      dataSource: bloodPressureReadingVM.bPReadings,
+                      xValueMapper: (BloodPressureReadingModel bloodPressure, _) =>
+                          // bloodPressure.measurementDate.substring(0, 9),
+                          bloodPressure.measurementDate,
+                      yValueMapper: (BloodPressureReadingModel bloodPressure, _) =>
+                      bloodPressure.lowPressure,
+                      markerSettings: const MarkerSettings(
+                        color:  Colors.white,
+                        isVisible: true,
+                        // width: 5,
+                        // height: 5
+                        // borderWidth: 1
+                      ),
+                      legendIconType: LegendIconType.circle,
+                      color: appColor,
 
-
-
+                      // dataLabelSettings: DataLabelSettings(
+                      //     isVisible: true,
+                      //     //useSeriesColor: true
+                      // ),
+                      isVisible: true,
+                      // emptyPointSettings: EmptyPointSettings(
+                      //   color: Colors.red,
+                      //   borderWidth: 2,
+                      //   borderColor: Colors.blue,
+                      //   mode: EmptyPointMode.average
+                      // ),
+                      // width: 1
+                    ),
+                  ],
+                )),
+            bloodPressureReadingVM.bPReadings.length == 0
+                ? Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                            color: Colors.grey.withOpacity(0.3),
+                            offset: Offset(0, 0.3),
+                            blurRadius: 6,
+                            spreadRadius: 5)
+                      ]),
+                  margin: EdgeInsets.symmetric(
+                      vertical: ApplicationSizing.convert(170)
+                  ),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: ApplicationSizing.convertWidth(20),
+                      vertical: ApplicationSizing.convert(10)
+                  ),
+                  child: Text(
+                    "No Record",
+                    style: Styles.PoppinsRegular(
+                        fontSize: ApplicationSizing.fontScale(12)
+                    ),
+                  ),
+                ),
+              ],
+            )
+                : Container()
+          ],
+        ));
+  }
 
 }
 

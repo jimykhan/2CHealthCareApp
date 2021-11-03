@@ -7,6 +7,7 @@ import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
 import 'package:twochealthcare/services/reading_services/blood_pressure_reading_service.dart';
 class BloodPressureReadingVM extends ChangeNotifier{
+  double bloodPressureMaxLimit = 100;
   int timePeriodSelect = 0;
   int selectedYear = DateTime.now().year;
   int selectedMonth = DateTime.now().month;
@@ -22,7 +23,9 @@ class BloodPressureReadingVM extends ChangeNotifier{
   DateTime? rangeEnd;
   bool headerDisable = false;
   double dayHeight = 1;
+  bool daysOfWeekVisible = true;
   /// Calendar work start from there
+
   AuthServices? _authService;
   BloodPressureReadingService? _bloodPressureReadingService;
   ProviderReference? _ref;
@@ -60,46 +63,67 @@ class BloodPressureReadingVM extends ChangeNotifier{
 
   }
 
+
   onDaySelected(selectedDay, focusedDay){
-    print("onDaySelected call");
-    selectedDay1 = selectedDay;
-    focusedDay1 = focusedDay;
+    print("onDaySelected call ${selectedDay} ${focusedDay}");
+    if (!isSameDay(selectedDay1, selectedDay)) {
+      // Call `setState()` when updating the selected day
+      selectedDay1 = selectedDay;
+      focusedDay1 = focusedDay;
+    }
+
     notifyListeners();
   }
 
   onPageChanged(focusedDay) {
-    print("onPageChanged call");
-  // No need to call `setState()` here
-  focusedDay1 = focusedDay;
-  notifyListeners();
+    print("onPageChanged call ${focusedDay}");
+    // No need to call `setState()` here
+    // if(!isSameDay(focusedDay1,focusedDay)){
+    //   print("day not same");
+    // }
+    selectedDay1 = focusedDay;
+    focusedDay1 = focusedDay;
+    if(timePeriodSelect == 2){
+      selectedMonth = selectedDay1!.month;
+      selectedYear = selectedDay1!.year;
+      getBloodPressureReading();
+    }
+
+
+
+    // notifyListeners();
   }
 
   selectRange(start, end, focusedDay) {
-    print("selectRange call");
-      selectedDay1 = null;
-      focusedDay = focusedDay;
-      rangeStart = start;
-      rangeEnd = end;
-      rangeSelectionMode = RangeSelectionMode.toggledOn;
-      notifyListeners();
+    print("selected Range call");
+    selectedDay1 = null;
+    focusedDay1 = focusedDay;
+    rangeStart = start;
+    rangeEnd = end;
+    rangeSelectionMode = RangeSelectionMode.toggledOn;
+    notifyListeners();
   }
 
-  bool selectDayPredict(dar){
-    DateTime time = DateTime.parse(dar.toString());
+  bool selectDayPredict(day){
+    DateTime time = DateTime.parse(day.toString());
+
     if(time.month != selectedMonth){
-      print("month change");
+      print(day.toString());
       selectedMonth = time.month;
       selectedYear = time.year;
-      // getBloodPressureReading();
+      // getBGReading();
+      print("selectDayPredict call");
     }
-    return true;
+    return isSameDay(selectedDay1, day);
   }
+
   onFormatChanged(format){
-    print("onFormatChanged call");
+    print("onFormat change ${format}");
   }
 
   getBloodPressureReading()async{
     int id  = await _authService!.getCurrentUserId();
+    setBPReadingLoading(true);
     var res = await _bloodPressureReadingService?.getBloodPressureReading(currentUserId: id,
     month: selectedMonth,year: selectedYear);
     if(res is List){
@@ -107,6 +131,7 @@ class BloodPressureReadingVM extends ChangeNotifier{
       res.forEach((element){
         bPReadings.add(element);
       });
+      bloodPressureMaxLimit = _bloodPressureReadingService!.bloodPressureMaxLimit;
       // notifyListeners();
       setBPReadingLoading(false);
 

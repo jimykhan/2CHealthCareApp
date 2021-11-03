@@ -25,7 +25,7 @@ ModalitiesModel _$ModalitiesModelFromJson(Map<String, dynamic> json) =>
       lastReadingContext: json['lastReadingContext'] as String?,
       lastReadingDate: json['lastReadingDate'] as String?,
       patientId: json['patientId'] as int?,
-      facilityId: json['facilityId'] as String?,
+      facilityId: json['facilityId'] as int?,
       phDeviceModelId: json['phDeviceModelId'] as int?,
     );
 

@@ -26,6 +26,7 @@ class ModalitiesReadingVM extends ChangeNotifier{
     modalitiesLoading = f;
     notifyListeners();
   }
+
   getModalitiesByUserId()async{
     // setModalitiesLoading(true);
     int id  = await _authService!.getCurrentUserId();
@@ -37,7 +38,7 @@ class ModalitiesReadingVM extends ChangeNotifier{
       });
       // notifyListeners();
       setModalitiesLoading(false);
-      print("set laoder false ${modalitiesLoading}");
+      print("set loader false ${modalitiesLoading}");
     }
     setModalitiesLoading(false);
   }

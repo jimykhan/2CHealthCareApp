@@ -13,13 +13,17 @@ class CustomCalendar extends StatelessWidget {
   bool Function(dynamic) selectedDayPredict;
   void Function(DateTime,DateTime) onDaySelect;
   void Function(CalendarFormat) formatChange;
+  void Function(DateTime) onPageChanged;
   void Function(DateTime?,DateTime?,DateTime) onRangeSelect;
   bool? headerDisable;
   double? dayHeight;
+  bool? daysOfWeekVisible;
 
   CustomCalendar({Key? key,this.calendarFormat,this.focusedDay1,this.rangeEnd,this.rangeSelectionMode,this.rangeStart,
   this.selectedDay1,required this.selectedDayPredict,required this.onDaySelect,required this.formatChange,
-  this.headerDisable,required this.onRangeSelect,this.dayHeight}) : super(key: key);
+  this.headerDisable,required this.onRangeSelect,this.dayHeight,
+  this.daysOfWeekVisible = false,
+  required this.onPageChanged}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +33,7 @@ class CustomCalendar extends StatelessWidget {
         calendarStyle: const CalendarStyle(
           // cellMargin: EdgeInsets.all(1)
         ),
-        daysOfWeekVisible: false,
+        daysOfWeekVisible: daysOfWeekVisible!,
         headerVisible: headerDisable ?? true,
         daysOfWeekHeight: dayHeight ?? 1,
         rowHeight: dayHeight ?? 1,
@@ -69,10 +73,7 @@ class CustomCalendar extends StatelessWidget {
         //   }
         // },
         rangeSelectionMode: rangeSelectionMode?? RangeSelectionMode.toggledOn,
-        onPageChanged: (focusedDay) {
-          // No need to call `setState()` here
-          focusedDay1 = focusedDay;
-        },
+        onPageChanged: onPageChanged,
         onRangeSelected: onRangeSelect,
       ),
     );

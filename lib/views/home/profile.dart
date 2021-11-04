@@ -75,8 +75,8 @@ class Profile extends HookWidget {
                   margin: EdgeInsets.symmetric(
                       horizontal: ApplicationSizing.horizontalMargin()),
                   child: CircularImage(
-                    w: ApplicationSizing.convert(110),
-                    h: ApplicationSizing.convert(110),
+                    w: ApplicationSizing.convert(118),
+                    h: ApplicationSizing.convert(118),
                     imageUrl:
                         'https://www.propertytwinsswfl.com/wp-content/uploads/2018/09/dummy-profile-pic-male.jpg',
                   ),

@@ -5,7 +5,7 @@ import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
 
-Widget infoWidget({required String widgetTitle, String? key1, String? value1}) {
+Widget infoWidget({required String widgetTitle, Widget? child}) {
   return Row(
     children: [
       Expanded(
@@ -58,38 +58,40 @@ Widget infoWidget({required String widgetTitle, String? key1, String? value1}) {
                 ],
               ),
               ApplicationSizing.verticalSpacer(n: 10),
-              key1 != null
-                  ? Container(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: ApplicationSizing.horizontalMargin()),
-                      alignment: Alignment.topLeft,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            key1,
-                            style: Styles.PoppinsRegular(
-                              fontWeight: FontWeight.bold,
-                              fontSize: ApplicationSizing.fontScale(14),
-                              color: appColorSecondary,
-                            ),
-                          ),
-                          Text(
-                            value1 ?? "",
-                            style: Styles.PoppinsRegular(
-                              fontWeight: FontWeight.w400,
-                              fontSize: ApplicationSizing.fontScale(12),
-                              color: Colors.black,
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                  : Container(),
+              child?? Container(),
             ],
           ),
         ),
       ),
     ],
+  );
+}
+
+tile({String? key, String? value}){
+  return Container(
+    padding: EdgeInsets.symmetric(
+        horizontal: ApplicationSizing.horizontalMargin()),
+    alignment: Alignment.topLeft,
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          key??"",
+          style: Styles.PoppinsRegular(
+            fontWeight: FontWeight.bold,
+            fontSize: ApplicationSizing.fontScale(14),
+            color: appColorSecondary,
+          ),
+        ),
+        Text(
+          value ?? "",
+          style: Styles.PoppinsRegular(
+            fontWeight: FontWeight.w400,
+            fontSize: ApplicationSizing.fontScale(12),
+            color: Colors.black,
+          ),
+        ),
+      ],
+    ),
   );
 }

@@ -97,20 +97,83 @@ class Profile extends HookWidget {
                   ),
                 ),
                 ApplicationSizing.verticalSpacer(n:10),
-                ListView.separated(
-                  shrinkWrap: true,
-                    physics: ScrollPhysics(),
-                    itemBuilder: (context,index){
-                      return infoWidget(widgetTitle: 'Care Provider',
-                        key1: "Name",
-                        value1: profileVm!.currentUserInfo?.careProviders?[index].fullName??""
+                infoWidget
+                  (
+                    widgetTitle: 'Care Provider',
+                    child: ListView.separated(
+                        shrinkWrap: true,
+                        physics: ScrollPhysics(),
+                        itemBuilder: (context,index){
+                          return Column(
+                            children: [
+                              tile(
+                                  key: "Name",
+                                  value: profileVm!.currentUserInfo?.careProviders?[index].fullName??""),
+                              tile(
+                                  key: "Email",
+                                  // value: profileVm.currentUserInfo?.careProviders?[index].e??""
+                                  value: "jamshed@gmail.com"
+                              ),
 
-                      );
-                    },
-                    separatorBuilder: (context,index){
-                      return ApplicationSizing.verticalSpacer();
-                    },
-                    itemCount: profileVm!.currentUserInfo?.careProviders?.length??0)
+                              tile(
+                                  key: "Contact No",
+                                  // value: profileVm.currentUserInfo?.careProviders?[index].e??""
+                                  value: "7134099594"
+                              ),
+
+                            ],
+                          );
+                        },
+                        separatorBuilder: (context,index){
+                          return ApplicationSizing.verticalSpacer();
+                        },
+                        itemCount: profileVm!.currentUserInfo?.careProviders?.length??0),
+                ),
+                ApplicationSizing.verticalSpacer(n: 15),
+                infoWidget
+                  (
+                  widgetTitle: 'Personal Information',
+                  child: Container(),
+                ),
+
+                ApplicationSizing.verticalSpacer(n: 15),
+                infoWidget
+                  (
+                  widgetTitle: 'Contact Information',
+                  child: Container(),
+                ),
+
+                ApplicationSizing.verticalSpacer(n: 15),
+                infoWidget
+                  (
+                  widgetTitle: 'Current Address',
+                  child: Container(),
+                ),
+
+                ApplicationSizing.verticalSpacer(n: 15),
+                infoWidget
+                  (
+                  widgetTitle: 'Mailling Address',
+                  child: Container(),
+                ),
+
+                ApplicationSizing.verticalSpacer(n: 15),
+                infoWidget
+                  (
+                  widgetTitle: 'Preferences',
+                  child: Container(),
+                ),
+
+
+                ApplicationSizing.verticalSpacer(n: 15),
+                infoWidget
+                  (
+                  widgetTitle: 'Emergency Contact',
+                  child: Container(),
+                ),
+
+
+
                 // infoWidget(widgetTitle: "Care Provider Details",
                 // key1: "Name",
                 //   value1: "Jamshed khan"

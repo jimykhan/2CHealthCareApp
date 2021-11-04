@@ -20,6 +20,7 @@ import 'package:twochealthcare/view_models/profile_vm.dart';
 import 'package:twochealthcare/views/home/components/widgets.dart';
 import 'package:twochealthcare/views/readings/bg_reading.dart';
 import 'package:twochealthcare/views/readings/blood_pressure_reading.dart';
+
 class Profile extends HookWidget {
   Profile({Key? key}) : super(key: key);
   @override
@@ -28,7 +29,7 @@ class Profile extends HookWidget {
     ProfileVm profileVm = useProvider(profileVMProvider);
     // final modalitiesReadingVM = useProvider(modalitiesReadingVMProvider);
     useEffect(
-          () {
+      () {
         Future.microtask(() async {
           profileVm.getUserInfo();
         });
@@ -40,25 +41,26 @@ class Profile extends HookWidget {
     );
 
     return Scaffold(
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(ApplicationSizing.convert(80)),
-          child: CustomAppBar(
-            leadingIcon: Container(),
-            color1: Colors.white,
-            color2: Colors.white,
-            hight: ApplicationSizing.convert(80),
-            parentContext: context,
-            centerWigets: AppBarTextStyle(
-              text: "Profile",
-            ),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(ApplicationSizing.convert(80)),
+        child: CustomAppBar(
+          leadingIcon: Container(),
+          color1: Colors.white,
+          color2: Colors.white,
+          hight: ApplicationSizing.convert(80),
+          parentContext: context,
+          centerWigets: AppBarTextStyle(
+            text: "Profile",
           ),
         ),
-        floatingActionButtonLocation:  FloatingActionButtonLocation.miniEndFloat,
-        floatingActionButton: FloatingButton(),
-        body: _body(loginVM: loginVM,profileVm: profileVm),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
+      floatingActionButton: FloatingButton(),
+      body: _body(loginVM: loginVM, profileVm: profileVm),
     );
   }
-  _body({LoginVM? loginVM,ProfileVm? profileVm}){
+
+  _body({LoginVM? loginVM, ProfileVm? profileVm}) {
     return Container(
       child: SingleChildScrollView(
         child: Stack(
@@ -70,52 +72,59 @@ class Profile extends HookWidget {
                 ApplicationSizing.verticalSpacer(n: 30),
                 Container(
                   alignment: Alignment.center,
-                  margin: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin()),
+                  margin: EdgeInsets.symmetric(
+                      horizontal: ApplicationSizing.horizontalMargin()),
                   child: CircularImage(
                     w: ApplicationSizing.convert(110),
                     h: ApplicationSizing.convert(110),
+                    imageUrl:
+                        'https://www.propertytwinsswfl.com/wp-content/uploads/2018/09/dummy-profile-pic-male.jpg',
                   ),
                 ),
                 Container(
                   alignment: Alignment.center,
-                  margin: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin()),
+                  padding: EdgeInsets.only(top: 20),
+                  margin: EdgeInsets.symmetric(
+                      horizontal: ApplicationSizing.horizontalMargin()),
                   child: Column(
                     children: [
-                      Text(loginVM?.currentUser?.fullName??"",
-                      style: Styles.PoppinsRegular(
-                        fontSize: ApplicationSizing.fontScale(20),
-                        fontWeight: FontWeight.w600,
-                        color: appColor
-                      ),),
-                      Text(loginVM?.currentUser?.userName??"",
-                      style: Styles.PoppinsRegular(
-                        fontSize: ApplicationSizing.fontScale(12),
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black
-                      ),),
+                      Text(
+                        loginVM?.currentUser?.fullName ?? "",
+                        style: Styles.PoppinsBold(
+                            fontSize: ApplicationSizing.fontScale(22),
+                            color: appColor),
+                      ),
+                      Text(
+                        loginVM?.currentUser?.userName ?? "",
+                        style: Styles.PoppinsRegular(
+                            fontSize: ApplicationSizing.fontScale(14),
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black),
+                      ),
                     ],
                   ),
                 ),
-                ApplicationSizing.verticalSpacer(n:10),
+                ApplicationSizing.verticalSpacer(n: 10),
                 ListView.separated(
-                  shrinkWrap: true,
+                    shrinkWrap: true,
                     physics: ScrollPhysics(),
-                    itemBuilder: (context,index){
-                      return infoWidget(widgetTitle: 'Care Provider',
-                        key1: "Name",
-                        value1: profileVm!.currentUserInfo?.careProviders?[index].fullName??""
-
-                      );
+                    itemBuilder: (context, index) {
+                      return infoWidget(
+                          widgetTitle: 'Care Provider',
+                          key1: "Name",
+                          value1: profileVm!.currentUserInfo
+                                  ?.careProviders?[index].fullName ??
+                              "");
                     },
-                    separatorBuilder: (context,index){
+                    separatorBuilder: (context, index) {
                       return ApplicationSizing.verticalSpacer();
                     },
-                    itemCount: profileVm!.currentUserInfo?.careProviders?.length??0)
+                    itemCount:
+                        profileVm!.currentUserInfo?.careProviders?.length ?? 0)
                 // infoWidget(widgetTitle: "Care Provider Details",
                 // key1: "Name",
                 //   value1: "Jamshed khan"
                 // )
-
               ],
             ),
             profileVm.loading ? AlertLoader() : Container(),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
 
@@ -17,7 +18,7 @@ class MenuTextStyle extends StatelessWidget {
       child: Text(
         text ?? "",
         style: Styles.PoppinsRegular(
-            color: color?? Colors.white,
+            color: color?? appColor,
             fontSize: fontSize ?? ApplicationSizing.fontScale(15),
             fontWeight: FontWeight.w400
         ),

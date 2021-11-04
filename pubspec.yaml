@@ -32,6 +32,7 @@ dependencies:
   flutter_local_notifications: ^9.0.1
   shared_preferences: ^2.0.8
   jiffy: ^4.1.0
+  package_info: ^2.0.2
 
 dev_dependencies:
   flutter_test:

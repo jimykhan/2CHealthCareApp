@@ -16,6 +16,7 @@ import 'package:twochealthcare/services/auth_services/auth_services.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/styles.dart';
+import 'package:twochealthcare/view_models/application_package_vm.dart';
 import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
 import 'package:twochealthcare/views/home/home.dart';
 import 'package:fluentui_icons/fluentui_icons.dart';
@@ -24,6 +25,7 @@ class CustomDrawer extends HookWidget {
   @override
   Widget build(BuildContext context) {
     LoginVM loginVM = useProvider(loginVMProvider);
+    ApplicationPackageVM applicationPackageVM = useProvider(applicationPackageVMProvider);
     useEffect(
       () {
         Future.microtask(() async {});
@@ -37,11 +39,11 @@ class CustomDrawer extends HookWidget {
     );
     return Container(
         height: MediaQuery.of(context).size.height,
-        decoration: BoxDecoration(
-            color: appColor,
-            borderRadius: const BorderRadius.only(
-              topRight: Radius.circular(30),
-              bottomRight: Radius.circular(30),
+        decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topRight: Radius.circular(15),
+              bottomRight: Radius.circular(15),
             )
         ),
         child: Column(
@@ -52,205 +54,221 @@ class CustomDrawer extends HookWidget {
                 child: Column(
                   children: [
                     Container(
-                      padding: EdgeInsets.only(top: ApplicationSizing.convert(20)),
+
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
 
-                          Row(
-                            children: [
-                              Container(
-                                margin: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin()),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    ApplicationSizing.verticalSpacer(n: 50),
-                                    CircularImage(
-                                      w: ApplicationSizing.convert(60),
-                                      h: ApplicationSizing.convert(60),
-                                      imageUrl: "assets/icons/personIcon.png",
-                                      assetImage: true,
-                                      color: Colors.white,
-                                    ),
-                                    Container(
-                                      child: Text(
-                                        loginVM.currentUser?.fullName??"",
-                                        style: Styles.PoppinsRegular(
-                                            fontSize: ApplicationSizing.fontScale(20),
-                                            color: Colors.white,
-                                          fontWeight: FontWeight.w600
+                          Container(
+                            decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [AppBarStartColor, AppBarEndColor],
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.centerRight,
+                                )),
+                            child: Row(
+                              children: [
+                                Container(
+                                  height: ApplicationSizing.convert(200),
+                                  margin: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin()),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      CircularImage(
+                                        w: ApplicationSizing.convert(60),
+                                        h: ApplicationSizing.convert(60),
+                                        imageUrl: "assets/icons/personIcon.png",
+                                        assetImage: true,
+                                        color: Colors.white,
+                                      ),
+                                      Container(
+                                        child: Text(
+                                          loginVM.currentUser?.fullName??"",
+                                          style: Styles.PoppinsRegular(
+                                              fontSize: ApplicationSizing.fontScale(20),
+                                              color: Colors.white,
+                                            fontWeight: FontWeight.w600
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    Container(
-                                      child: Text(
-                                        loginVM.currentUser?.fullName??"",
-                                        style: Styles.PoppinsRegular(
-                                            fontSize: ApplicationSizing.fontScale(10),
-                                            color: Colors.white,
-                                          fontWeight: FontWeight.w200
+                                      Container(
+                                        child: Text(
+                                          loginVM.currentUser?.fullName??"",
+                                          style: Styles.PoppinsRegular(
+                                              fontSize: ApplicationSizing.fontScale(10),
+                                              color: Colors.white,
+                                            fontWeight: FontWeight.w200
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                          ApplicationSizing.verticalSpacer(n: 30),
-                          InkWell(
-                            onTap: (){},
-                            child: Container(
-                              padding: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin(),
-                                  vertical: ApplicationSizing.convert(6)),
-                              child: Row(
-                                // crossAxisAlignment: CrossAxisAlignment.end,
-                                children:  [
-                                    SvgPicture.asset("assets/icons/side_menu/home-icon.svg",
-                                     color: Colors.white,
-                                      width: ApplicationSizing.convert(18),
-                                      height: ApplicationSizing.convert(18),
-                                  ),
-                                  MenuTextStyle(text: "Home",),
-
-                                ],
-                              ),
+                              ],
                             ),
                           ),
+                          ApplicationSizing.verticalSpacer(n: 10),
+                          Container(
+                            padding: EdgeInsets.only(top: ApplicationSizing.convert(20)),
+                            child: Column(
+                              children: [
+                                InkWell(
+                                  onTap: (){},
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin(),
+                                        vertical: ApplicationSizing.convert(6)),
+                                    child: Row(
+                                      // crossAxisAlignment: CrossAxisAlignment.end,
+                                      children:  [
+                                        SvgPicture.asset("assets/icons/side_menu/home-icon.svg",
+                                          color: appColor,
+                                          width: ApplicationSizing.convert(18),
+                                          height: ApplicationSizing.convert(18),
+                                        ),
+                                        MenuTextStyle(text: "Home",),
 
-                          InkWell(
-                            onTap: (){
-
-                            },
-                            child: Container(
-                              padding: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin(),
-                              vertical: ApplicationSizing.convert(6)),
-                              // color: Colors.pinkAccent,
-                              child: Row(
-                                // crossAxisAlignment: CrossAxisAlignment.end,
-                                children:  [
-                                  SvgPicture.asset("assets/icons/home/user-icon.svg",
-                                    color: Colors.white,
-                                    width: ApplicationSizing.convert(18),
-                                    height: ApplicationSizing.convert(18),
+                                      ],
+                                    ),
                                   ),
-                                  MenuTextStyle(text: "My Profile",),
+                                ),
 
-                                ],
-                              ),
-                            ),
-                          ),
+                                InkWell(
+                                  onTap: (){
 
-                          InkWell(
-                            onTap: (){
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin(),
+                                        vertical: ApplicationSizing.convert(6)),
+                                    // color: Colors.pinkAccent,
+                                    child: Row(
+                                      // crossAxisAlignment: CrossAxisAlignment.end,
+                                      children:  [
+                                        SvgPicture.asset("assets/icons/home/user-icon.svg",
+                                          color: appColor,
+                                          width: ApplicationSizing.convert(18),
+                                          height: ApplicationSizing.convert(18),
+                                        ),
+                                        MenuTextStyle(text: "My Profile",),
 
-                            },
-                            child: Container(
-                              padding: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin(),
-                                  vertical: ApplicationSizing.convert(6)),
-                              // color: Colors.pinkAccent,
-                              child: Row(
-                                // crossAxisAlignment: CrossAxisAlignment.end,
-                                children:  [
-                                  SvgPicture.asset("assets/icons/home/reading-icon.svg",
-                                    color: Colors.white,
-                                    width: ApplicationSizing.convert(18),
-                                    height: ApplicationSizing.convert(18),
+                                      ],
+                                    ),
                                   ),
-                                  MenuTextStyle(text: "My Readings",),
+                                ),
 
-                                ],
-                              ),
-                            ),
-                          ),
+                                InkWell(
+                                  onTap: (){
 
-                          InkWell(
-                            onTap: (){
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin(),
+                                        vertical: ApplicationSizing.convert(6)),
+                                    // color: Colors.pinkAccent,
+                                    child: Row(
+                                      // crossAxisAlignment: CrossAxisAlignment.end,
+                                      children:  [
+                                        SvgPicture.asset("assets/icons/home/reading-icon.svg",
+                                          color: appColor,
+                                          width: ApplicationSizing.convert(18),
+                                          height: ApplicationSizing.convert(18),
+                                        ),
+                                        MenuTextStyle(text: "My Readings",),
 
-                            },
-                            child: Container(
-                              padding: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin(),
-                                  vertical: ApplicationSizing.convert(6)),
-                              child: Row(
-                                // crossAxisAlignment: CrossAxisAlignment.end,
-                                children:  [
-                                  SvgPicture.asset("assets/icons/home/health-guide-icon.svg",
-                                    color: Colors.white,
-                                    width: ApplicationSizing.convert(18),
-                                    height: ApplicationSizing.convert(18),
+                                      ],
+                                    ),
                                   ),
-                                  MenuTextStyle(text: "Health Guides",),
+                                ),
 
-                                ],
-                              ),
-                            ),
-                          ),
+                                InkWell(
+                                  onTap: (){
 
-                          InkWell(
-                            onTap: (){
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin(),
+                                        vertical: ApplicationSizing.convert(6)),
+                                    child: Row(
+                                      // crossAxisAlignment: CrossAxisAlignment.end,
+                                      children:  [
+                                        SvgPicture.asset("assets/icons/home/health-guide-icon.svg",
+                                          color: appColor,
+                                          width: ApplicationSizing.convert(18),
+                                          height: ApplicationSizing.convert(18),
+                                        ),
+                                        MenuTextStyle(text: "Health Guides",),
 
-                            },
-                            child: Container(
-                              padding: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin(),
-                                  vertical: ApplicationSizing.convert(6)),
-                              child: Row(
-                                // crossAxisAlignment: CrossAxisAlignment.end,
-                                children:  [
-                                  SvgPicture.asset("assets/icons/home/trophy-icon.svg",
-                                    color: Colors.white,
-                                    width: ApplicationSizing.convert(18),
-                                    height: ApplicationSizing.convert(18),
+                                      ],
+                                    ),
                                   ),
-                                  MenuTextStyle(text: "My Rewards",),
+                                ),
 
-                                ],
-                              ),
-                            ),
-                          ),
+                                InkWell(
+                                  onTap: (){
 
-                          InkWell(
-                            onTap: (){
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin(),
+                                        vertical: ApplicationSizing.convert(6)),
+                                    child: Row(
+                                      // crossAxisAlignment: CrossAxisAlignment.end,
+                                      children:  [
+                                        SvgPicture.asset("assets/icons/home/trophy-icon.svg",
+                                          color: appColor,
+                                          width: ApplicationSizing.convert(18),
+                                          height: ApplicationSizing.convert(18),
+                                        ),
+                                        MenuTextStyle(text: "My Rewards",),
 
-                            },
-                            child: Container(
-                              padding: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin(),
-                                  vertical: ApplicationSizing.convert(6)),
-                              child: Row(
-                                // crossAxisAlignment: CrossAxisAlignment.end,
-                                children:  [
-                                  SvgPicture.asset("assets/icons/side_menu/setting-icon.svg",
-                                    color: Colors.white,
-                                    width: ApplicationSizing.convert(18),
-                                    height: ApplicationSizing.convert(18),
+                                      ],
+                                    ),
                                   ),
-                                  MenuTextStyle(text: "My Rewards",),
+                                ),
 
-                                ],
-                              ),
-                            ),
-                          ),
+                                InkWell(
+                                  onTap: (){
 
-                          InkWell(
-                            onTap: (){
-                                loginVM.userLogout();
-                            },
-                            child: Container(
-                              padding: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin(),
-                                  vertical: ApplicationSizing.convert(6)),
-                              child: Row(
-                                // crossAxisAlignment: CrossAxisAlignment.end,
-                                children:  [
-                                  SvgPicture.asset("assets/icons/side_menu/logout-icon.svg",
-                                    color: Colors.white,
-                                    width: ApplicationSizing.convert(18),
-                                    height: ApplicationSizing.convert(18),
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin(),
+                                        vertical: ApplicationSizing.convert(6)),
+                                    child: Row(
+                                      // crossAxisAlignment: CrossAxisAlignment.end,
+                                      children:  [
+                                        SvgPicture.asset("assets/icons/side_menu/setting-icon.svg",
+                                          color: appColor,
+                                          width: ApplicationSizing.convert(18),
+                                          height: ApplicationSizing.convert(18),
+                                        ),
+                                        MenuTextStyle(text: "My Rewards",),
+
+                                      ],
+                                    ),
                                   ),
-                                  MenuTextStyle(text: "Logout",),
+                                ),
 
-                                ],
-                              ),
+                                InkWell(
+                                  onTap: (){
+                                    loginVM.userLogout();
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin(),
+                                        vertical: ApplicationSizing.convert(6)),
+                                    child: Row(
+                                      // crossAxisAlignment: CrossAxisAlignment.end,
+                                      children:  [
+                                        SvgPicture.asset("assets/icons/side_menu/logout-icon.svg",
+                                          color: appColor,
+                                          width: ApplicationSizing.convert(18),
+                                          height: ApplicationSizing.convert(18),
+                                        ),
+                                        MenuTextStyle(text: "Logout",),
+
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
+                          )
                         ],
                       ),
                     ),
@@ -274,7 +292,7 @@ class CustomDrawer extends HookWidget {
 
                   ),
                   MenuTextStyle(
-                    text: "1.0.0",
+                    text: applicationPackageVM.currentVersion??"",
                     fontSize: ApplicationSizing.fontScale(10),
                     isPadding: false,
 

@@ -13,6 +13,7 @@ import 'package:twochealthcare/services/firebase_service.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
+import 'package:twochealthcare/view_models/application_package_vm.dart';
 import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
 import 'package:twochealthcare/views/home/home.dart';
 
@@ -23,6 +24,7 @@ class Login extends HookWidget {
   Widget build(BuildContext context) {
     LoginVM loginVM = useProvider(loginVMProvider);
     FirebaseService firebaseService = useProvider(firebaseServiceProvider);
+    ApplicationPackageVM applicationPackageVM = useProvider(applicationPackageVMProvider);
 
     useEffect(
       () {
@@ -44,7 +46,7 @@ class Login extends HookWidget {
                   Container(
                     child: Image.asset("assets/icons/loginBg.png"),
                   ),
-                  _loginform(context, loginVM: loginVM,firebaseService: firebaseService),
+                  _loginform(context, loginVM: loginVM,firebaseService: firebaseService,applicationPackageVM: applicationPackageVM),
                 ],
               ),
               loginVM.loading ? AlertLoader() : Container(),
@@ -55,7 +57,7 @@ class Login extends HookWidget {
     );
   }
 
-  _loginform(BuildContext context, {LoginVM? loginVM,FirebaseService? firebaseService}) {
+  _loginform(BuildContext context, {LoginVM? loginVM,FirebaseService? firebaseService,ApplicationPackageVM? applicationPackageVM}) {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(ApplicationSizing.fontScale(5)),
@@ -227,13 +229,13 @@ class Login extends HookWidget {
             alignment: Alignment.bottomRight,
             child: RichText(
               text: TextSpan(children: [
-                // TextSpan(
-                //     text: "Version : ",
-                //     style: Styles.RobotoMedium(
-                //       fontSize: ApplicationSizing.fontScale(12),
-                //     )),
                 TextSpan(
-                    text: "${""}",
+                    text: "Version : ",
+                    style: Styles.RobotoMedium(
+                      fontSize: ApplicationSizing.fontScale(12),
+                    )),
+                TextSpan(
+                    text: applicationPackageVM?.currentVersion??"",
                     style: Styles.RobotoMedium(
                       fontSize: ApplicationSizing.fontScale(10),
                     )),

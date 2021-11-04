@@ -9,6 +9,7 @@ import 'package:twochealthcare/services/reading_services/bg_reading_service.dart
 import 'package:twochealthcare/services/reading_services/blood_pressure_reading_service.dart';
 import 'package:twochealthcare/services/reading_services/modalities_reading_service.dart';
 import 'package:twochealthcare/services/shared_pref_services.dart';
+import 'package:twochealthcare/view_models/application_package_vm.dart';
 import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
 import 'package:twochealthcare/view_models/home_vm.dart';
 import 'package:twochealthcare/view_models/modalities_reading_vm/bg_reading_vm.dart';
@@ -24,6 +25,7 @@ final modalitiesReadingVMProvider = ChangeNotifierProvider<ModalitiesReadingVM>(
 final bGReadingVMProvider = ChangeNotifierProvider<BGReadingVM>((ref)=>BGReadingVM(ref: ref));
 final profileVMProvider = ChangeNotifierProvider<ProfileVm>((ref)=>ProfileVm(ref: ref));
 final homeVMProvider = ChangeNotifierProvider<HomeVM>((ref)=>HomeVM(ref: ref));
+final applicationPackageVMProvider = ChangeNotifierProvider<ApplicationPackageVM>((ref)=>ApplicationPackageVM(ref: ref));
 /// ChangeNotifierProvider
 
 

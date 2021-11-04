@@ -15,6 +15,7 @@ import 'package:twochealthcare/util/styles.dart';
 import 'package:twochealthcare/view_models/modalities_reading_vm/modalities_reading_vm.dart';
 import 'package:twochealthcare/views/readings/bg_reading.dart';
 import 'package:twochealthcare/views/readings/blood_pressure_reading.dart';
+
 class ModalitiesReading extends HookWidget {
   ModalitiesReading({Key? key}) : super(key: key);
 
@@ -70,11 +71,12 @@ class ModalitiesReading extends HookWidget {
     );
 
     return Scaffold(
+        backgroundColor: Colors.white,
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(ApplicationSizing.convert(80)),
           child: CustomAppBar(
             leadingIcon: InkWell(
-              onTap: (){
+              onTap: () {
                 Navigator.pop(context);
               },
               child: Container(

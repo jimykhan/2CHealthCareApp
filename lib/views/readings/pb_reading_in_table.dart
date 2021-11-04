@@ -16,6 +16,7 @@ class bpReadingInTable extends StatelessWidget {
       // return b.measurementDate.compareTo(a.measurementDate);
     });
     return Container(
+      color: Colors.white,
       child: ListView.separated(
           shrinkWrap: true,
           physics: ScrollPhysics(),
@@ -52,6 +53,13 @@ class bpReadingInTable extends StatelessWidget {
                         border: Border.all(
                             width: 1, color: appColor.withOpacity(0.5)),
                         borderRadius: BorderRadius.circular(5),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Color(0Xff1d161712),
+                            blurRadius: 20,
+                            offset: Offset(4, 10), // Shadow position
+                          ),
+                        ],
                         color: Colors.white,
                       ),
                       child: Row(
@@ -177,6 +185,13 @@ class bpReadingInTable extends StatelessWidget {
                   border:
                       Border.all(width: 1, color: appColor.withOpacity(0.5)),
                   borderRadius: BorderRadius.circular(5),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color(0Xff1d161712),
+                      blurRadius: 20,
+                      offset: Offset(4, 10), // Shadow position
+                    ),
+                  ],
                   color: Colors.white),
               child: Row(
                 children: [

@@ -42,6 +42,7 @@ class BGReading extends HookWidget {
       const [],
     );
     return Scaffold(
+        backgroundColor: Colors.white,
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(ApplicationSizing.convert(80)),
           child: CustomAppBar(

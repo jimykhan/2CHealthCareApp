@@ -57,6 +57,7 @@ class Home extends HookWidget {
   Widget build(BuildContext context) {
     LoginVM loginVM = useProvider(loginVMProvider);
     return Scaffold(
+      backgroundColor: Colors.white,
       key: _scaffoldkey,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(ApplicationSizing.convert(80)),
@@ -105,6 +106,7 @@ class Home extends HookWidget {
 
   _body({required LoginVM loginVM}) {
     return Container(
+      color: Colors.white,
       child: SingleChildScrollView(
         child: Column(
           children: [
@@ -130,7 +132,7 @@ class Home extends HookWidget {
                   Container(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      loginVM.currentUser?.fullName??"",
+                      loginVM.currentUser?.fullName ?? "",
                       style: Styles.PoppinsRegular(
                           fontSize: ApplicationSizing.fontScale(20),
                           color: Colors.black,
@@ -158,8 +160,7 @@ class Home extends HookWidget {
                                 PageTransition(
                                     child: ModalitiesReading(),
                                     type: PageTransitionType.rightToLeft));
-                          }
-                          else if(index == 0){
+                          } else if (index == 0) {
                             Navigator.push(
                                 context,
                                 PageTransition(
@@ -241,7 +242,7 @@ class Home extends HookWidget {
                       // horizontal: ApplicationSizing.horizontalMargin(n: 20)),
                     );
                   },
-                  itemCount: 10),
+                  itemCount: 3),
             ),
             ApplicationSizing.verticalSpacer(),
           ],

@@ -14,16 +14,16 @@ class BloodPressureReadingVM extends ChangeNotifier{
   List<BloodPressureReadingModel> bPReadings = [];
   bool bPReadingLoading = true;
   /// Calendar work start from there
-  CalendarFormat? calendarFormat ;
+  CalendarFormat? calendarFormat = CalendarFormat.month;
   // DateTime? focusedDay1 = DateTime.now();
   DateTime? focusedDay1 ;
   DateTime? selectedDay1;
   RangeSelectionMode? rangeSelectionMode;
   DateTime? rangeStart;
   DateTime? rangeEnd;
-  bool headerDisable = false;
+  bool headerDisable = true;
   double dayHeight = 1;
-  bool daysOfWeekVisible = true;
+  bool daysOfWeekVisible = false;
   /// Calendar work start from there
 
   AuthServices? _authService;
@@ -130,6 +130,7 @@ class BloodPressureReadingVM extends ChangeNotifier{
     var res = await _bloodPressureReadingService?.getBloodPressureReading(currentUserId: id,
     month: selectedMonth,year: selectedYear);
     if(res is List){
+      print("a list");
       bPReadings = [];
       res.forEach((element){
         bPReadings.add(element);
@@ -137,7 +138,9 @@ class BloodPressureReadingVM extends ChangeNotifier{
       bloodPressureMaxLimit = _bloodPressureReadingService!.bloodPressureMaxLimit;
       // notifyListeners();
       setBPReadingLoading(false);
-
+    }else{
+      bPReadings = [];
+      setBPReadingLoading(false);
     }
     setBPReadingLoading(false);
 

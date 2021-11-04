@@ -78,13 +78,13 @@ class BloodPressureReading extends HookWidget {
           children: [
             Column(
               children: [
-                ApplicationSizing.verticalSpacer(),
-                TapBar(
-                  selectedIndx: bloodPressureReadingVM?.timePeriodSelect ?? 0,
-                  ontap: (val) {
-                    bloodPressureReadingVM?.changeTimePeriodSelectIndex(val);
-                  },
-                ),
+                // ApplicationSizing.verticalSpacer(),
+                // TapBar(
+                //   selectedIndx: bloodPressureReadingVM?.timePeriodSelect ?? 0,
+                //   ontap: (val) {
+                //     bloodPressureReadingVM?.changeTimePeriodSelectIndex(val);
+                //   },
+                // ),
                 CustomCalendar(
                     selectedDayPredict:
                         bloodPressureReadingVM!.selectDayPredict,

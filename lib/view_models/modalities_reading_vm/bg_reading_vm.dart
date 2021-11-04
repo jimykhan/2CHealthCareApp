@@ -15,16 +15,19 @@ class BGReadingVM extends ChangeNotifier{
   List<BGDataModel> bPReadings = [];
   bool bGReadingLoading = true;
   /// Calendar work start from there
-  CalendarFormat? calendarFormat ;
+  CalendarFormat? calendarFormat = CalendarFormat.month;
   // DateTime? focusedDay1 = DateTime.now();
   DateTime? focusedDay1 ;
   DateTime? selectedDay1;
   RangeSelectionMode? rangeSelectionMode;
   DateTime? rangeStart;
   DateTime? rangeEnd;
-  bool headerDisable = false;
+  bool headerDisable = true;
   double dayHeight = 1;
-  bool daysOfWeekVisible = true;
+  bool daysOfWeekVisible = false;
+  // dayHeight =1;
+  // headerDisable = true;
+  // daysOfWeekVisible = false;
   /// Calendar work start from there
 
 
@@ -138,7 +141,10 @@ class BGReadingVM extends ChangeNotifier{
       bGMaxLimit = _bGReadingService!.bGMaxLimit;
       // notifyListeners();
       setBGReadingLoading(false);
-
+    }
+    else{
+      bPReadings = [];
+      setBGReadingLoading(false);
     }
     setBGReadingLoading(false);
 

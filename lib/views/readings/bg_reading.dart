@@ -80,13 +80,13 @@ class BGReading extends HookWidget {
           children: [
             Column(
               children: [
-                ApplicationSizing.verticalSpacer(),
-                TapBar(
-                  selectedIndx: bgReadingVM.timePeriodSelect,
-                  ontap: (val) {
-                    bgReadingVM.changeTimePeriodSelectIndex(val);
-                  },
-                ),
+                // ApplicationSizing.verticalSpacer(),
+                // TapBar(
+                //   selectedIndx: bgReadingVM.timePeriodSelect,
+                //   ontap: (val) {
+                //     bgReadingVM.changeTimePeriodSelectIndex(val);
+                //   },
+                // ),
                 CustomCalendar(
                   selectedDayPredict: bgReadingVM.selectDayPredict,
                   onDaySelect: bgReadingVM.onDaySelected,

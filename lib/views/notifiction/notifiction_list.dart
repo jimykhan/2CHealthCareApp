@@ -72,7 +72,7 @@ class NotificationList extends StatelessWidget {
                       color: fontGrayColor.withOpacity(0.5),
                     );
                   },
-                  itemCount: 10),
+                  itemCount: 5),
             ),
             ApplicationSizing.verticalSpacer(),
           ],

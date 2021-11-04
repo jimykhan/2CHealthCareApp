@@ -9,6 +9,7 @@ import 'package:twochealthcare/common_widgets/error_text.dart';
 import 'package:twochealthcare/common_widgets/filled_button.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
+import 'package:twochealthcare/services/firebase_service.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
@@ -21,6 +22,7 @@ class Login extends HookWidget {
   @override
   Widget build(BuildContext context) {
     LoginVM loginVM = useProvider(loginVMProvider);
+    FirebaseService firebaseService = useProvider(firebaseServiceProvider);
 
     useEffect(
       () {
@@ -42,7 +44,7 @@ class Login extends HookWidget {
                   Container(
                     child: Image.asset("assets/icons/loginBg.png"),
                   ),
-                  _loginform(context, loginVM: loginVM),
+                  _loginform(context, loginVM: loginVM,firebaseService: firebaseService),
                 ],
               ),
               loginVM.loading ? AlertLoader() : Container(),
@@ -53,7 +55,7 @@ class Login extends HookWidget {
     );
   }
 
-  _loginform(BuildContext context, {LoginVM? loginVM}) {
+  _loginform(BuildContext context, {LoginVM? loginVM,FirebaseService? firebaseService}) {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(ApplicationSizing.fontScale(5)),
@@ -212,6 +214,8 @@ class Login extends HookWidget {
                             PageTransition(
                                 child: Home(),
                                 type: PageTransitionType.bottomToTop));
+                        firebaseService?.initNotification();
+
                       }
                     }
                   },

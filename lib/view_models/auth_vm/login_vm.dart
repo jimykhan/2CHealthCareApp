@@ -5,6 +5,7 @@ import 'package:twochealthcare/main.dart';
 import 'package:twochealthcare/models/user/current_user.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
+import 'package:twochealthcare/services/firebase_service.dart';
 import 'package:twochealthcare/validator/login_validator.dart';
 import 'package:twochealthcare/views/auths/login.dart';
 
@@ -19,12 +20,14 @@ class LoginVM extends ChangeNotifier{
   String passwordErrorText = "";
   ProviderReference? _ref;
   AuthServices? authService;
+  FirebaseService? firebaseService;
   LoginVM({ProviderReference? ref}){
     _ref = ref;
     initServices();
   }
   initServices(){
      authService = _ref!.read(authServiceProvider);
+     firebaseService = _ref!.read(firebaseServiceProvider);
   }
 
   onChangeEmail(String val){

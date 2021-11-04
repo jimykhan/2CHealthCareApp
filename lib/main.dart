@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/all.dart';
@@ -6,8 +7,9 @@ import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/views/splash/splash.dart';
 
 GlobalKey<NavigatorState>? applicationContext = GlobalKey();
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   // SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.top]);
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.green,
@@ -24,7 +26,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       navigatorKey: applicationContext,
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: '2C Health Care',
       theme: ThemeData(
           primaryColor: Colors.green.shade50, primarySwatch: Colors.green),
       home: const Splash(),

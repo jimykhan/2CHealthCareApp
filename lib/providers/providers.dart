@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:twochealthcare/constants/api_strings.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
 import 'package:twochealthcare/services/dio_services/dio_services.dart';
+import 'package:twochealthcare/services/firebase_service.dart';
 import 'package:twochealthcare/services/profile_service.dart';
 import 'package:twochealthcare/services/reading_services/bg_reading_service.dart';
 import 'package:twochealthcare/services/reading_services/blood_pressure_reading_service.dart';
@@ -34,5 +35,6 @@ final modalitiesReadingServiceProvider = Provider<ModalitiesReadingService>((ref
 final bloodPressureServiceProvider = Provider<BloodPressureReadingService>((ref)=>BloodPressureReadingService(ref: ref));
 final bGReadingServiceProvider = Provider<BGReadingService>((ref)=>BGReadingService(ref: ref));
 final profileServiceProvider = Provider<ProfileService>((ref)=>ProfileService(ref: ref));
+final firebaseServiceProvider = Provider<FirebaseService>((ref)=>FirebaseService(ref: ref));
 /// Simple Providers
 

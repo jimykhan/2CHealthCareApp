@@ -40,22 +40,22 @@ class Profile extends HookWidget {
     );
 
     return Scaffold(
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(ApplicationSizing.convert(80)),
-          child: CustomAppBar(
-            leadingIcon: Container(),
-            color1: Colors.white,
-            color2: Colors.white,
-            hight: ApplicationSizing.convert(80),
-            parentContext: context,
-            centerWigets: AppBarTextStyle(
-              text: "Profile",
-            ),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(ApplicationSizing.convert(80)),
+        child: CustomAppBar(
+          leadingIcon: Container(),
+          color1: Colors.white,
+          color2: Colors.white,
+          hight: ApplicationSizing.convert(80),
+          parentContext: context,
+          centerWigets: AppBarTextStyle(
+            text: "Profile",
           ),
         ),
-        floatingActionButtonLocation:  FloatingActionButtonLocation.miniEndFloat,
-        floatingActionButton: FloatingButton(),
-        body: _body(loginVM: loginVM,profileVm: profileVm),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
+      floatingActionButton: FloatingButton(),
+      body: _body(loginVM: loginVM, profileVm: profileVm),
     );
   }
   _body({LoginVM? loginVM,ProfileVm? profileVm}){
@@ -67,32 +67,38 @@ class Profile extends HookWidget {
               // mainAxisAlignment: MainAxisAlignment.center,
               // crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                ApplicationSizing.verticalSpacer(n: 30),
+                ApplicationSizing.verticalSpacer(n: 10),
                 Container(
                   alignment: Alignment.center,
-                  margin: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin()),
+                  margin: EdgeInsets.symmetric(
+                      horizontal: ApplicationSizing.horizontalMargin()),
                   child: CircularImage(
-                    w: ApplicationSizing.convert(110),
-                    h: ApplicationSizing.convert(110),
+                    w: ApplicationSizing.convert(118),
+                    h: ApplicationSizing.convert(118),
+                    imageUrl:
+                        'https://www.propertytwinsswfl.com/wp-content/uploads/2018/09/dummy-profile-pic-male.jpg',
                   ),
                 ),
                 Container(
                   alignment: Alignment.center,
-                  margin: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin()),
+                  padding: EdgeInsets.only(top: 20),
+                  margin: EdgeInsets.symmetric(
+                      horizontal: ApplicationSizing.horizontalMargin()),
                   child: Column(
                     children: [
-                      Text(loginVM?.currentUser?.fullName??"",
-                      style: Styles.PoppinsRegular(
-                        fontSize: ApplicationSizing.fontScale(20),
-                        fontWeight: FontWeight.w600,
-                        color: appColor
-                      ),),
-                      Text(loginVM?.currentUser?.userName??"",
-                      style: Styles.PoppinsRegular(
-                        fontSize: ApplicationSizing.fontScale(12),
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black
-                      ),),
+                      Text(
+                        loginVM?.currentUser?.fullName ?? "",
+                        style: Styles.PoppinsBold(
+                            fontSize: ApplicationSizing.fontScale(22),
+                            color: appColor),
+                      ),
+                      Text(
+                        loginVM?.currentUser?.userName ?? "",
+                        style: Styles.PoppinsRegular(
+                            fontSize: ApplicationSizing.fontScale(14),
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black),
+                      ),
                     ],
                   ),
                 ),
@@ -133,35 +139,271 @@ class Profile extends HookWidget {
                 infoWidget
                   (
                   widgetTitle: 'Personal Information',
-                  child: Container(),
+                  child: Container(
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: Container(
+                                alignment: Alignment.centerLeft,
+                                child: tile(
+                                    key: "Name",
+                                    value: profileVm.currentUserInfo?.fullName??""
+                                ),
+                              )
+                            ),
+
+                            Expanded(
+                              flex: 1,
+                              child: Container(
+                                alignment: Alignment.centerRight,
+                                child: tile(
+                                    key: "EmrId",
+                                    value: profileVm.currentUserInfo?.patientEmrId??""
+                                ),
+                              )
+                            ),
+
+                          ],
+                        ),
+                        ApplicationSizing.verticalSpacer(n: 5),
+                        Row(
+                          children: [
+                            Expanded(
+                                flex: 1,
+                                child: Container(
+                                  alignment: Alignment.centerLeft,
+                                  child: tile(
+                                      key: "Sex",
+                                      value: profileVm.currentUserInfo?.sex??""
+                                  ),
+                                )
+                            ),
+
+                            Expanded(
+                                flex: 1,
+                                child: Container(
+                                  alignment: Alignment.centerRight,
+                                  child: tile(
+                                      key: "Date of Birth",
+                                      value: profileVm.currentUserInfo?.dateOfBirth??""
+                                  ),
+                                )
+                            ),
+
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
 
                 ApplicationSizing.verticalSpacer(n: 15),
                 infoWidget
                   (
                   widgetTitle: 'Contact Information',
-                  child: Container(),
+                  child: Container(
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                                flex: 1,
+                                child: Container(
+                                  alignment: Alignment.centerLeft,
+                                  child: tile(
+                                      key: "Primary Phone No.",
+                                      value: profileVm.currentUserInfo?.emergencyContactPrimaryPhoneNo??""
+                                  ),
+                                )
+                            ),
+
+                            Expanded(
+                                flex: 1,
+                                child: Container(
+                                  alignment: Alignment.centerRight,
+                                  child: tile(
+                                      key: "Secondary Contact No.",
+                                      value: profileVm.currentUserInfo?.emergencyContactSecondaryPhoneNo??""
+                                  ),
+                                )
+                            ),
+
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
 
                 ApplicationSizing.verticalSpacer(n: 15),
                 infoWidget
                   (
                   widgetTitle: 'Current Address',
-                  child: Container(),
+                  child: Container(
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                                flex: 1,
+                                child: Container(
+                                  alignment: Alignment.centerLeft,
+                                  child: tile(
+                                      key: "Current Address",
+                                      value: profileVm.currentUserInfo?.currentAddress??""
+                                  ),
+                                )
+                            ),
+
+                            Expanded(
+                                flex: 1,
+                                child: Container(
+                                  alignment: Alignment.centerRight,
+                                  child: tile(
+                                      key: "City",
+                                      value: profileVm.currentUserInfo?.city??""
+                                  ),
+                                )
+                            ),
+
+                          ],
+                        ),
+                        ApplicationSizing.verticalSpacer(n: 5),
+                        Row(
+                          children: [
+                            Expanded(
+                                flex: 1,
+                                child: Container(
+                                  alignment: Alignment.centerLeft,
+                                  child: tile(
+                                      key: "State",
+                                      value: profileVm.currentUserInfo?.state??""
+                                  ),
+                                )
+                            ),
+
+                            Expanded(
+                                flex: 1,
+                                child: Container(
+                                  alignment: Alignment.centerRight,
+                                  child: tile(
+                                      key: "Zip Code",
+                                      value: profileVm.currentUserInfo?.zip??""
+                                  ),
+                                )
+                            ),
+
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
 
                 ApplicationSizing.verticalSpacer(n: 15),
                 infoWidget
                   (
                   widgetTitle: 'Mailling Address',
-                  child: Container(),
+                  child: Container(
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                                flex: 1,
+                                child: Container(
+                                  alignment: Alignment.centerLeft,
+                                  child: tile(
+                                      key: "Mailling Address",
+                                      value: profileVm.currentUserInfo?.mailingAddress??""
+                                  ),
+                                )
+                            ),
+
+                            Expanded(
+                                flex: 1,
+                                child: Container(
+                                  alignment: Alignment.centerRight,
+                                  child: tile(
+                                      key: "City",
+                                      value: profileVm.currentUserInfo?.maillingAddressCity??""
+                                  ),
+                                )
+                            ),
+
+                          ],
+                        ),
+                        ApplicationSizing.verticalSpacer(n: 5),
+                        Row(
+                          children: [
+                            Expanded(
+                                flex: 1,
+                                child: Container(
+                                  alignment: Alignment.centerLeft,
+                                  child: tile(
+                                      key: "State",
+                                      value: profileVm.currentUserInfo?.maillingAddressState??""
+                                  ),
+                                )
+                            ),
+
+                            Expanded(
+                                flex: 1,
+                                child: Container(
+                                  alignment: Alignment.centerRight,
+                                  child: tile(
+                                      key: "Zip Code",
+                                      value: profileVm.currentUserInfo?.maillingAddressZipCode??""
+                                  ),
+                                )
+                            ),
+
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
 
                 ApplicationSizing.verticalSpacer(n: 15),
                 infoWidget
                   (
                   widgetTitle: 'Preferences',
-                  child: Container(),
+                  child: Container(
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                                flex: 1,
+                                child: Container(
+                                  alignment: Alignment.centerLeft,
+                                  child: tile(
+                                      key: "Best time to call",
+                                      value: profileVm.currentUserInfo?.bestTimeToCall??""
+                                  ),
+                                )
+                            ),
+
+                            Expanded(
+                                flex: 1,
+                                child: Container(
+                                  alignment: Alignment.centerRight,
+                                  child: tile(
+                                      key: "Preferred Language",
+                                      value: profileVm.currentUserInfo?.preferredLanguage??""
+                                  ),
+                                )
+                            ),
+
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
 
 
@@ -169,8 +411,68 @@ class Profile extends HookWidget {
                 infoWidget
                   (
                   widgetTitle: 'Emergency Contact',
-                  child: Container(),
+                  child: Container(
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                                flex: 1,
+                                child: Container(
+                                  alignment: Alignment.centerLeft,
+                                  child: tile(
+                                      key: "Name",
+                                      value: profileVm.currentUserInfo?.emergencyContactName??""
+                                  ),
+                                )
+                            ),
+
+                            Expanded(
+                                flex: 1,
+                                child: Container(
+                                  alignment: Alignment.centerRight,
+                                  child: tile(
+                                      key: "Relationship",
+                                      value: profileVm.currentUserInfo?.emergencyContactRelationship??""
+                                  ),
+                                )
+                            ),
+
+                          ],
+                        ),
+                        ApplicationSizing.verticalSpacer(n: 5),
+                        Row(
+                          children: [
+                            Expanded(
+                                flex: 1,
+                                child: Container(
+                                  alignment: Alignment.centerLeft,
+                                  child: tile(
+                                      key: "Primary Phone",
+                                      value: profileVm.currentUserInfo?.emergencyContactPrimaryPhoneNo??""
+                                  ),
+                                )
+                            ),
+
+                            Expanded(
+                                flex: 1,
+                                child: Container(
+                                  alignment: Alignment.centerRight,
+                                  child: tile(
+                                      key: "Secondary Phone",
+                                      value: profileVm.currentUserInfo?.emergencyContactSecondaryPhoneNo??""
+                                  ),
+                                )
+                            ),
+
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
+
+                ApplicationSizing.verticalSpacer(n: 70),
 
 
 
@@ -178,7 +480,6 @@ class Profile extends HookWidget {
                 // key1: "Name",
                 //   value1: "Jamshed khan"
                 // )
-
               ],
             ),
             profileVm.loading ? AlertLoader() : Container(),

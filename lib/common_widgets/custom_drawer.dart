@@ -295,6 +295,7 @@ class CustomDrawer extends HookWidget {
                     text: applicationPackageVM.currentVersion??"",
                     fontSize: ApplicationSizing.fontScale(10),
                     isPadding: false,
+                    color: appColor,
 
                   ),
 

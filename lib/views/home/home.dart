@@ -81,9 +81,23 @@ class Home extends HookWidget {
       body: _body(loginVM: loginVM),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
-        child: SvgPicture.asset(
-          "assets/icons/bottom_navbar/user-icon.svg",
-          height: ApplicationSizing.convert(25),
+        // backgroundColor: Colors.black,
+        // child: SvgPicture.asset(
+        //   "assets/icons/bottom_navbar/user-icon.svg",
+        //   height: ApplicationSizing.convert(25),
+        // ),
+        child: Container(
+          width: 60,
+          height: 60,
+          padding: EdgeInsets.all(15),
+          child: SvgPicture.asset(
+            "assets/icons/bottom_navbar/user-icon.svg",
+            height: ApplicationSizing.convert(25),
+          ),
+          decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              gradient: LinearGradient(
+                  colors: [Color(0Xff4EAF48), Color(0xff60E558)])),
         ),
         onPressed: () {
           Navigator.pushReplacement(

@@ -4,9 +4,10 @@ import 'package:twochealthcare/models/modalities_models/gb_reading_model.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
+
 class bGReadingInTable extends StatelessWidget {
   List<BGDataModel> bGReadings = [];
-  bGReadingInTable({Key? key,required this.bGReadings}) : super(key: key);
+  bGReadingInTable({Key? key, required this.bGReadings}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,22 +20,23 @@ class bGReadingInTable extends StatelessWidget {
       child: ListView.separated(
           shrinkWrap: true,
           physics: ScrollPhysics(),
-          itemBuilder: (context, index){
-            if(measureDate !=
-                bGReadings[index].measurementDate!
-                    .substring(0, 9)){
-              measureDate = bGReadings[index].measurementDate!
-                  .substring(0, 9);
+          itemBuilder: (context, index) {
+            if (measureDate !=
+                bGReadings[index].measurementDate!.substring(0, 9)) {
+              measureDate = bGReadings[index].measurementDate!.substring(0, 9);
               return Container(
-                margin: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin()),
+                margin: EdgeInsets.symmetric(
+                    horizontal: ApplicationSizing.horizontalMargin()),
                 child: Column(
                   children: [
                     Container(
+                      margin: EdgeInsets.only(bottom: 5),
                       alignment: Alignment.centerLeft,
-                      child: Text(measureDate,
+                      child: Text(
+                        measureDate,
                         style: Styles.PoppinsRegular(
                           fontWeight: FontWeight.bold,
-                          fontSize: ApplicationSizing.fontScale(15),
+                          fontSize: ApplicationSizing.fontScale(16),
                           color: fontGrayColor,
                         ),
                       ),
@@ -49,24 +51,26 @@ class bGReadingInTable extends StatelessWidget {
                       ),
                       decoration: BoxDecoration(
                         border: Border.all(
-                            width: 1,
-                            color: appColor.withOpacity(0.5)
-                        ),
-                        borderRadius: BorderRadius.circular(10),
+                            width: 1, color: appColor.withOpacity(0.5)),
+                        borderRadius: BorderRadius.circular(5),
+                        color: Colors.white,
                       ),
                       child: Row(
                         children: [
                           Expanded(
-                              flex: 1,
-                              child: Container(
-                                alignment: Alignment.centerLeft,
-                                child: Text(bGReadings[index].measurementDate!.substring(11),
-                                  style: Styles.PoppinsRegular(
-                                      fontSize: ApplicationSizing.fontScale(15),
-                                      color: fontGrayColor
-                                  ),
-                                ),
-                              )),
+                            flex: 1,
+                            child: Container(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                bGReadings[index]
+                                    .measurementDate!
+                                    .substring(11),
+                                style: Styles.PoppinsRegular(
+                                    fontSize: ApplicationSizing.fontScale(16),
+                                    color: fontGrayColor),
+                              ),
+                            ),
+                          ),
                           Expanded(
                               flex: 3,
                               child: Container(
@@ -75,28 +79,33 @@ class bGReadingInTable extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     Container(
-                                      margin: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin(n: 5)),
+                                      margin: EdgeInsets.symmetric(
+                                          horizontal: ApplicationSizing
+                                              .horizontalMargin(n: 5)),
                                       child: RichText(
-                                        text:  TextSpan(
-                                            children: [
-                                              TextSpan(
-                                                  text: bGReadings[index].bg?.toStringAsFixed(0)?? "",
-                                                  style: Styles.PoppinsRegular(
-                                                    fontSize: ApplicationSizing.fontScale(20),
-                                                    fontWeight: FontWeight.bold,
-                                                    color: appColor,
-                                                  )
-                                              ),
-
-                                              TextSpan(
-                                                  text: bGReadings[index].bgUnit?? "",
-                                                  style: Styles.PoppinsRegular(
-                                                    fontSize: ApplicationSizing.fontScale(8),
-                                                    color: appColor,
-                                                  )
-                                              ),
-                                            ]
-                                        ),
+                                        text: TextSpan(children: [
+                                          TextSpan(
+                                              text: bGReadings[index]
+                                                      .bg
+                                                      ?.toStringAsFixed(0) ??
+                                                  "",
+                                              style: Styles.PoppinsBold(
+                                                fontSize:
+                                                    ApplicationSizing.fontScale(
+                                                        20),
+                                                fontWeight: FontWeight.bold,
+                                                color: appColor,
+                                              )),
+                                          TextSpan(
+                                              text: bGReadings[index].bgUnit ??
+                                                  "",
+                                              style: Styles.PoppinsRegular(
+                                                fontSize:
+                                                    ApplicationSizing.fontScale(
+                                                        10),
+                                                color: appColor,
+                                              )),
+                                        ]),
                                       ),
                                     ),
                                   ],
@@ -109,8 +118,10 @@ class bGReadingInTable extends StatelessWidget {
                 ),
               );
             }
-            return  Container(
-              margin: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin()),
+
+            return Container(
+              margin: EdgeInsets.symmetric(
+                  horizontal: ApplicationSizing.horizontalMargin()),
               padding: const EdgeInsets.only(
                 top: 5,
                 bottom: 5,
@@ -118,11 +129,9 @@ class bGReadingInTable extends StatelessWidget {
                 right: 10,
               ),
               decoration: BoxDecoration(
-                border: Border.all(
-                    width: 1,
-                    color: appColor.withOpacity(0.5)
-                ),
-                borderRadius: BorderRadius.circular(10),
+                border: Border.all(width: 1, color: appColor.withOpacity(0.5)),
+                borderRadius: BorderRadius.circular(5),
+                color: Colors.white,
               ),
               child: Row(
                 children: [
@@ -130,10 +139,11 @@ class bGReadingInTable extends StatelessWidget {
                       flex: 1,
                       child: Container(
                         alignment: Alignment.centerLeft,
-                        child: Text(bGReadings[index].measurementDate!.substring(11) ,
-                          style: Styles.PoppinsRegular(
-                              fontSize: ApplicationSizing.fontScale(15),
-                              color: fontGrayColor
+                        child: Text(
+                          bGReadings[index].measurementDate!.substring(11),
+                          style: Styles.PoppinsBold(
+                            fontSize: ApplicationSizing.fontScale(16),
+                            color: fontGrayColor,
                           ),
                         ),
                       )),
@@ -145,28 +155,30 @@ class bGReadingInTable extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             Container(
-                              margin: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin(n: 5)),
+                              margin: EdgeInsets.symmetric(
+                                  horizontal:
+                                      ApplicationSizing.horizontalMargin(n: 5)),
                               child: RichText(
-                                text:  TextSpan(
-                                    children: [
-                                      TextSpan(
-                                          text: bGReadings[index].bg?.toStringAsFixed(0)?? "",
-                                          style: Styles.PoppinsRegular(
-                                            fontSize: ApplicationSizing.fontScale(20),
-                                            fontWeight: FontWeight.bold,
-                                            color: appColor,
-                                          )
-                                      ),
-
-                                      TextSpan(
-                                          text: bGReadings[index].bgUnit?? "",
-                                          style: Styles.PoppinsRegular(
-                                            fontSize: ApplicationSizing.fontScale(8),
-                                            color: appColor,
-                                          )
-                                      ),
-                                    ]
-                                ),
+                                text: TextSpan(children: [
+                                  TextSpan(
+                                      text: bGReadings[index]
+                                              .bg
+                                              ?.toStringAsFixed(0) ??
+                                          "",
+                                      style: Styles.PoppinsBold(
+                                        fontSize:
+                                            ApplicationSizing.fontScale(20),
+                                        fontWeight: FontWeight.bold,
+                                        color: appColor,
+                                      )),
+                                  TextSpan(
+                                      text: bGReadings[index].bgUnit ?? "",
+                                      style: Styles.PoppinsRegular(
+                                        fontSize:
+                                            ApplicationSizing.fontScale(10),
+                                        color: appColor,
+                                      )),
+                                ]),
                               ),
                             ),
                           ],
@@ -176,121 +188,101 @@ class bGReadingInTable extends StatelessWidget {
               ),
             );
           },
-          separatorBuilder: (context, index){
+          separatorBuilder: (context, index) {
             return ApplicationSizing.verticalSpacer();
           },
-          itemCount: bGReadings.length
-      ),
+          itemCount: bGReadings.length),
     );
   }
 
-  bpReading({double? sys, double? dia, int? hr}){
+  bpReading({double? sys, double? dia, int? hr}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         RichText(
-          text:  TextSpan(
-              children: [
-                TextSpan(
-                    text: "80",
-                    style: Styles.PoppinsRegular(
-                      fontSize: ApplicationSizing.fontScale(20),
-                      fontWeight: FontWeight.bold,
-                      color: Colors.red,
-                    )
-                ),
-
-                TextSpan(
-                    text: "HR",
-                    style: Styles.PoppinsRegular(
-                      fontSize: ApplicationSizing.fontScale(8),
-                      color: Colors.red,
-                    )
-                ),
-              ]
+          text: TextSpan(
+            children: [
+              TextSpan(
+                  text: "80",
+                  style: Styles.PoppinsBold(
+                    fontSize: ApplicationSizing.fontScale(20),
+                    fontWeight: FontWeight.bold,
+                    color: Colors.red,
+                  )),
+              TextSpan(
+                  text: "HR",
+                  style: Styles.PoppinsRegular(
+                    fontSize: ApplicationSizing.fontScale(10),
+                    color: Colors.red,
+                  )),
+            ],
           ),
         ),
-
         Container(
-          margin: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin(n: 5)),
+          color: Colors.white,
+          margin: EdgeInsets.symmetric(
+              horizontal: ApplicationSizing.horizontalMargin(n: 5)),
           child: RichText(
-            text:  TextSpan(
-                children: [
-                  TextSpan(
-                      text: "80",
-                      style: Styles.PoppinsRegular(
-                        fontSize: ApplicationSizing.fontScale(20),
-                        fontWeight: FontWeight.bold,
-                        color: Colors.red,
-                      )
-                  ),
-
-                  TextSpan(
-                      text: "HR",
-                      style: Styles.PoppinsRegular(
-                        fontSize: ApplicationSizing.fontScale(8),
-                        color: Colors.red,
-                      )
-                  ),
-                ]
-            ),
+            text: TextSpan(children: [
+              TextSpan(
+                  text: "80",
+                  style: Styles.PoppinsBold(
+                    fontSize: ApplicationSizing.fontScale(20),
+                    fontWeight: FontWeight.bold,
+                    color: Colors.red,
+                  )),
+              TextSpan(
+                  text: "HR",
+                  style: Styles.PoppinsRegular(
+                    fontSize: ApplicationSizing.fontScale(10),
+                    color: Colors.red,
+                  )),
+            ]),
           ),
         ),
-
         RichText(
-          text:  TextSpan(
-              children: [
-                TextSpan(
-                    text: "80",
-                    style: Styles.PoppinsRegular(
-                      fontSize: ApplicationSizing.fontScale(20),
-                      fontWeight: FontWeight.bold,
-                      color: Colors.red,
-                    )
-                ),
-
-                TextSpan(
-                    text: "HR",
-                    style: Styles.PoppinsRegular(
-                      fontSize: ApplicationSizing.fontScale(8),
-                      color: Colors.red,
-                    )
-                ),
-              ]
-          ),
+          text: TextSpan(children: [
+            TextSpan(
+                text: "80",
+                style: Styles.PoppinsRegular(
+                  fontSize: ApplicationSizing.fontScale(20),
+                  fontWeight: FontWeight.bold,
+                  color: Colors.red,
+                )),
+            TextSpan(
+                text: "HR",
+                style: Styles.PoppinsRegular(
+                  fontSize: ApplicationSizing.fontScale(8),
+                  color: Colors.red,
+                )),
+          ]),
         ),
       ],
     );
   }
 
-  bgReading(){
+  bgReading() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         RichText(
-          text:  TextSpan(
-              children: [
-                TextSpan(
-                    text: "80",
-                    style: Styles.PoppinsRegular(
-                      fontSize: ApplicationSizing.fontScale(20),
-                      fontWeight: FontWeight.bold,
-                      color: Colors.red,
-                    )
-                ),
-
-                TextSpan(
-                    text: "HR",
-                    style: Styles.PoppinsRegular(
-                      fontSize: ApplicationSizing.fontScale(8),
-                      color: Colors.red,
-                    )
-                ),
-              ]
-          ),
+          text: TextSpan(children: [
+            TextSpan(
+                text: "80",
+                style: Styles.PoppinsRegular(
+                  fontSize: ApplicationSizing.fontScale(20),
+                  fontWeight: FontWeight.bold,
+                  color: Colors.red,
+                )),
+            TextSpan(
+                text: "HR",
+                style: Styles.PoppinsRegular(
+                  fontSize: ApplicationSizing.fontScale(8),
+                  color: Colors.red,
+                )),
+          ]),
         ),
       ],
     );
   }
-
 }

@@ -22,111 +22,111 @@ class bGReadingInTable extends StatelessWidget {
           shrinkWrap: true,
           physics: ScrollPhysics(),
           itemBuilder: (context, index) {
-            if (measureDate !=
-                bGReadings[index].measurementDate!.substring(0, 9)) {
-              measureDate = bGReadings[index].measurementDate!.substring(0, 9);
-              return Container(
-                margin: EdgeInsets.symmetric(
-                    horizontal: ApplicationSizing.horizontalMargin()),
-                child: Column(
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(bottom: 5),
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        measureDate,
-                        style: Styles.PoppinsRegular(
-                          fontWeight: FontWeight.bold,
-                          fontSize: ApplicationSizing.fontScale(16),
-                          color: fontGrayColor,
-                        ),
-                      ),
-                    ),
-                    ApplicationSizing.horizontalSpacer(n: 5),
-                    Container(
-                      padding: const EdgeInsets.only(
-                        top: 5,
-                        bottom: 5,
-                        left: 20,
-                        right: 10,
-                      ),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                            width: 1, color: appColor.withOpacity(0.5)),
-                        borderRadius: BorderRadius.circular(5),
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Color(0Xff1d161712),
-                            blurRadius: 20,
-                            offset: Offset(4, 10), // Shadow position
-                          ),
-                        ],
-                      ),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            flex: 1,
-                            child: Container(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                bGReadings[index]
-                                    .measurementDate!
-                                    .substring(11),
-                                style: Styles.PoppinsRegular(
-                                    fontSize: ApplicationSizing.fontScale(16),
-                                    color: fontGrayColor),
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                              flex: 3,
-                              child: Container(
-                                alignment: Alignment.centerRight,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Container(
-                                      margin: EdgeInsets.symmetric(
-                                          horizontal: ApplicationSizing
-                                              .horizontalMargin(n: 5)),
-                                      child: RichText(
-                                        text: TextSpan(children: [
-                                          TextSpan(
-                                              text: bGReadings[index]
-                                                      .bg
-                                                      ?.toStringAsFixed(0) ??
-                                                  "",
-                                              style: Styles.PoppinsBold(
-                                                fontSize:
-                                                    ApplicationSizing.fontScale(
-                                                        20),
-                                                fontWeight: FontWeight.bold,
-                                                color: appColor,
-                                              )),
-                                          TextSpan(
-                                              text: bGReadings[index].bgUnit ??
-                                                  "",
-                                              style: Styles.PoppinsRegular(
-                                                fontSize:
-                                                    ApplicationSizing.fontScale(
-                                                        10),
-                                                color: appColor,
-                                              )),
-                                        ]),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ))
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-              );
-            }
-
+            // if (measureDate !=
+            //     bGReadings[index].measurementDate!.substring(0, 9)) {
+            //   measureDate = bGReadings[index].measurementDate!.substring(0, 9);
+            //   return Container(
+            //     margin: EdgeInsets.symmetric(
+            //         horizontal: ApplicationSizing.horizontalMargin()),
+            //     child: Column(
+            //       children: [
+            //         Container(
+            //           margin: EdgeInsets.only(bottom: 5),
+            //           alignment: Alignment.centerLeft,
+            //           child: Text(
+            //             measureDate,
+            //             style: Styles.PoppinsRegular(
+            //               fontWeight: FontWeight.bold,
+            //               fontSize: ApplicationSizing.fontScale(16),
+            //               color: fontGrayColor,
+            //             ),
+            //           ),
+            //         ),
+            //         ApplicationSizing.horizontalSpacer(n: 5),
+            //         Container(
+            //           padding: const EdgeInsets.only(
+            //             top: 5,
+            //             bottom: 5,
+            //             left: 20,
+            //             right: 10,
+            //           ),
+            //           decoration: BoxDecoration(
+            //             border: Border.all(
+            //                 width: 1, color: appColor.withOpacity(0.5)),
+            //             borderRadius: BorderRadius.circular(5),
+            //             color: Colors.white,
+            //             boxShadow: [
+            //               BoxShadow(
+            //                 color: Color(0Xff1d161712),
+            //                 blurRadius: 20,
+            //                 offset: Offset(4, 10), // Shadow position
+            //               ),
+            //             ],
+            //           ),
+            //           child: Row(
+            //             children: [
+            //               Expanded(
+            //                 flex: 1,
+            //                 child: Container(
+            //                   alignment: Alignment.centerLeft,
+            //                   child: Text(
+            //                     bGReadings[index]
+            //                         .measurementDate!
+            //                         .substring(11),
+            //                     style: Styles.PoppinsRegular(
+            //                         fontSize: ApplicationSizing.fontScale(16),
+            //                         color: fontGrayColor),
+            //                   ),
+            //                 ),
+            //               ),
+            //               Expanded(
+            //                   flex: 3,
+            //                   child: Container(
+            //                     alignment: Alignment.centerRight,
+            //                     child: Row(
+            //                       mainAxisAlignment: MainAxisAlignment.end,
+            //                       children: [
+            //                         Container(
+            //                           margin: EdgeInsets.symmetric(
+            //                               horizontal: ApplicationSizing
+            //                                   .horizontalMargin(n: 5)),
+            //                           child: RichText(
+            //                             text: TextSpan(children: [
+            //                               TextSpan(
+            //                                   text: bGReadings[index]
+            //                                           .bg
+            //                                           ?.toStringAsFixed(0) ??
+            //                                       "",
+            //                                   style: Styles.PoppinsBold(
+            //                                     fontSize:
+            //                                         ApplicationSizing.fontScale(
+            //                                             20),
+            //                                     fontWeight: FontWeight.bold,
+            //                                     color: appColor,
+            //                                   )),
+            //                               TextSpan(
+            //                                   text: bGReadings[index].bgUnit ??
+            //                                       "",
+            //                                   style: Styles.PoppinsRegular(
+            //                                     fontSize:
+            //                                         ApplicationSizing.fontScale(
+            //                                             10),
+            //                                     color: appColor,
+            //                                   )),
+            //                             ]),
+            //                           ),
+            //                         ),
+            //                       ],
+            //                     ),
+            //                   ))
+            //             ],
+            //           ),
+            //         )
+            //       ],
+            //     ),
+            //   );
+            // }
+            measureDate = bGReadings[index].measurementDate!.substring(0, 9);
             return Container(
               margin: EdgeInsets.symmetric(
                   horizontal: ApplicationSizing.horizontalMargin()),
@@ -151,19 +151,29 @@ class bGReadingInTable extends StatelessWidget {
               child: Row(
                 children: [
                   Expanded(
-                      flex: 1,
+                      flex: 2,
                       child: Container(
                         alignment: Alignment.centerLeft,
-                        child: Text(
-                          bGReadings[index].measurementDate!.substring(11),
-                          style: Styles.PoppinsBold(
-                            fontSize: ApplicationSizing.fontScale(16),
-                            color: fontGrayColor,
-                          ),
+                        child: Row(
+                          children: [
+                            Text(
+                              measureDate,
+                              style: Styles.PoppinsRegular(
+                                  fontSize: ApplicationSizing.fontScale(16),
+                                  color: fontGrayColor),
+                            ),
+                            Text(
+                              bGReadings[index].measurementDate!.substring(11),
+                              style: Styles.PoppinsBold(
+                                fontSize: ApplicationSizing.fontScale(16),
+                                color: fontGrayColor,
+                              ),
+                            ),
+                          ],
                         ),
                       )),
                   Expanded(
-                      flex: 3,
+                      flex: 1,
                       child: Container(
                         alignment: Alignment.centerRight,
                         child: Row(

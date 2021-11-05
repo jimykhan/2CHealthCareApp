@@ -124,7 +124,7 @@ class BloodPressureReading extends HookWidget {
 
   LineGraph({BloodPressureReadingVM? bloodPressureReadingVM}) {
     bloodPressureReadingVM?.bPReadings.sort((a, b) {
-      return a.measurementDate!.compareTo(b.measurementDate!);
+      return b.measurementDate!.compareTo(a.measurementDate!);
     });
     return Center(
         child: Stack(
@@ -140,11 +140,11 @@ class BloodPressureReading extends HookWidget {
                 alignment: ChartAlignment.near,
                 textStyle: Styles.PoppinsRegular(),
               ),
-              legend: Legend(
-                isVisible: true,
-                position: LegendPosition.bottom,
-                alignment: ChartAlignment.near,
-              ),
+              // legend: Legend(
+              //   isVisible: true,
+              //   position: LegendPosition.bottom,
+              //   alignment: ChartAlignment.near,
+              // ),
               tooltipBehavior: TooltipBehavior(
                 enable: true,
               ),
@@ -184,7 +184,7 @@ class BloodPressureReading extends HookWidget {
                   dataSource: bloodPressureReadingVM.bPReadings,
                   xValueMapper: (BloodPressureReadingModel bloodPressure, _) =>
                       // bloodPressure.measurementDate.substring(0, 9),
-                      bloodPressure.measurementDate,
+                      bloodPressure.measurementDate!.substring(0, 9),
                   yValueMapper: (BloodPressureReadingModel bloodPressure, _) =>
                       bloodPressure.highPressure,
                   markerSettings: const MarkerSettings(
@@ -201,7 +201,7 @@ class BloodPressureReading extends HookWidget {
                   dataSource: bloodPressureReadingVM.bPReadings,
                   xValueMapper: (BloodPressureReadingModel bloodPressure, _) =>
                       // bloodPressure.measurementDate.substring(0, 9),
-                      bloodPressure.measurementDate,
+                      bloodPressure.measurementDate!.substring(0, 9),
                   yValueMapper: (BloodPressureReadingModel bloodPressure, _) =>
                       bloodPressure.lowPressure,
                   markerSettings: const MarkerSettings(

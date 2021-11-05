@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:twochealthcare/common_widgets/appbar_text_style.dart';
 import 'package:twochealthcare/common_widgets/bottom_bar.dart';
 import 'package:twochealthcare/common_widgets/custom_appbar.dart';
@@ -7,6 +8,7 @@ import 'package:twochealthcare/common_widgets/notification_widget.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
+import 'package:twochealthcare/views/home/profile.dart';
 class ChatList extends StatelessWidget {
   const ChatList({Key? key}) : super(key: key);
 
@@ -26,26 +28,54 @@ class ChatList extends StatelessWidget {
             ),
           ),
         ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: FloatingActionButton(
+          // backgroundColor: Colors.black,
+          // child: SvgPicture.asset(
+          //   "assets/icons/bottom_navbar/user-icon.svg",
+          //   height: ApplicationSizing.convert(25),
+          // ),
+          child: Container(
+            width: 60,
+            height: 60,
+            padding: EdgeInsets.all(15),
+            child: SvgPicture.asset(
+              "assets/icons/bottom_navbar/user-icon.svg",
+              height: ApplicationSizing.convert(25),
+            ),
+            decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: LinearGradient(
+                    colors: [Color(0Xff4EAF48), Color(0xff60E558)])),
+          ),
+          onPressed: () {
+            Navigator.pushReplacement(
+                context,
+                PageTransition(
+                  child: Profile(),
+                  type: PageTransitionType.bottomToTop,
+                ));
+          },
+        ),
         bottomNavigationBar: BottomBar(selectedIndex: 2,),
         body: _body());
   }
   _body(){
     return Container(
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            ApplicationSizing.verticalSpacer(n: 20),
-            Container(
-              child: Text("Comming Soon...",
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            alignment: Alignment.center,
+            child: Text("Comming Soon...",
               style: Styles.PoppinsRegular(
                 fontWeight: FontWeight.w500,
                 color: appColor,
                 fontSize: ApplicationSizing.fontScale(15),
               ),),
-            ),
-            ApplicationSizing.verticalSpacer(),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

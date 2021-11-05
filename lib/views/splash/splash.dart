@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/all.dart';
 import 'package:twochealthcare/main.dart';
 import 'package:twochealthcare/providers/providers.dart';
+import 'package:twochealthcare/services/firebase_service.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/view_models/splash_vm/splash_vm.dart';
 class Splash extends HookWidget {
@@ -13,6 +14,7 @@ class Splash extends HookWidget {
   Widget build(BuildContext context) {
     ApplicationSizing(applicationContext?.currentContext);
     SplashVM deviceService = useProvider(splachVMProvider);
+
 
     useEffect(
           () {

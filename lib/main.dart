@@ -1,22 +1,69 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/all.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
+import 'package:twochealthcare/views/readings/modalities_reading.dart';
 import 'package:twochealthcare/views/splash/splash.dart';
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  // _subNotification();
+  print('Handling a background message ${message.messageId}');
+  print('Handling a background message ${message.data}');
+  Navigator.push(applicationContext!.currentContext!, PageTransition(
+      child: ModalitiesReading(), type: PageTransitionType.topToBottom));
+}
+
+void requestNotificationPermission() async {
+  NotificationSettings settings = await FirebaseMessaging.instance
+      .requestPermission(
+      alert: true,
+      announcement: true,
+      badge: true,
+      carPlay: false,
+      criticalAlert: true,
+      provisional: true,
+      sound: true);
+
+  if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+    print("user granted permission");
+  } else if (settings.authorizationStatus ==
+      AuthorizationStatus.provisional) {
+    print('user granted provisional permission');
+  } else {
+    print('user declined or has not accepted permission');
+  }
+}
 
 GlobalKey<NavigatorState>? applicationContext = GlobalKey();
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  // SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.top]);
-  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    statusBarColor: Colors.green,
-    //statusBarBrightness: Brightness.dark,
-    //statusBarIconBrightness: Brightness.light,
-  ));
-  runApp(ProviderScope(child: MyApp()));
+  try{
+    WidgetsFlutterBinding.ensureInitialized();
+    await Firebase.initializeApp();
+    requestNotificationPermission();
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+    FirebaseMessaging.onMessage.listen((event) {
+      print("on Message in main ${event.data}");
+    });
+    FirebaseMessaging.onMessageOpenedApp.listen((event) {
+      print("on Message Opened App ${event.data}");
+      Navigator.push(applicationContext!.currentContext!, PageTransition(
+          child: ModalitiesReading(), type: PageTransitionType.topToBottom));
+    });
+    // SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.top]);
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      statusBarColor: Colors.green,
+      //statusBarBrightness: Brightness.dark,
+      //statusBarIconBrightness: Brightness.light,
+    ));
+    runApp(ProviderScope(child: MyApp()));
+  }
+  catch(e){
+    runApp(ProviderScope(child: MyApp()));
+  }
 }
 
 class MyApp extends StatelessWidget {

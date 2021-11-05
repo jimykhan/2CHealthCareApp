@@ -122,7 +122,7 @@ class BGReading extends HookWidget {
 
   LineGraph(context, {BGReadingVM? bgReadingVM}) {
     bgReadingVM?.bPReadings.sort((a, b) {
-      return a.measurementDate!.compareTo(b.measurementDate!);
+      return b.measurementDate!.compareTo(a.measurementDate!);
     });
     return Center(
         child: Stack(
@@ -138,11 +138,11 @@ class BGReading extends HookWidget {
                 alignment: ChartAlignment.near,
                 textStyle: Styles.PoppinsRegular(),
               ),
-              legend: Legend(
-                isVisible: true,
-                position: LegendPosition.bottom,
-                alignment: ChartAlignment.near,
-              ),
+              // legend: Legend(
+              //   isVisible: true,
+              //   position: LegendPosition.bottom,
+              //   alignment: ChartAlignment.near,
+              // ),
               tooltipBehavior: TooltipBehavior(
                 enable: true,
               ),
@@ -179,16 +179,15 @@ class BGReading extends HookWidget {
                 AreaSeries<BGDataModel, String>(
                   borderGradient: LinearGradient(
                       colors: <Color>[AppBarStartColor, AppBarEndColor],
-                      stops: <double>[0.2, 0.9],
+                      stops: const <double>[0.2, 0.9],
                       end: Alignment.topCenter,
                       begin: Alignment.bottomCenter),
+
                   gradient: LinearGradient(colors: <Color>[
                     AppBarStartColor.withOpacity(0.4),
-                    AppBarEndColor.withOpacity(0.4)
-                  ], stops: <double>[
-                    0.2,
-                    0.9
-                  ], end: Alignment.topCenter, begin: Alignment.bottomCenter),
+                    AppBarEndColor.withOpacity(0.4)],
+                      stops: const <double>[0.2, 0.9],
+                      end: Alignment.topCenter, begin: Alignment.bottomCenter),
                   name: "Blood Glucose",
                   enableTooltip: true,
                   dataSource: bgReadingVM.bPReadings,

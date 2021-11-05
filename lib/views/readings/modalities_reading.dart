@@ -81,7 +81,7 @@ class ModalitiesReading extends HookWidget {
               },
               child: Container(
                 alignment: Alignment.centerLeft,
-                padding: EdgeInsets.only(right: 20, top: 6, bottom: 6),
+                padding: const EdgeInsets.only(right: 20, top: 6, bottom: 6),
                 child: RotatedBox(
                   quarterTurns: 2,
                   child: SvgPicture.asset(
@@ -118,7 +118,7 @@ class ModalitiesReading extends HookWidget {
                 Container(
                   child: ListView.separated(
                       shrinkWrap: true,
-                      physics: ScrollPhysics(),
+                      physics: const ScrollPhysics(),
                       itemBuilder: (context, index) {
                         ModalitiesModel modality =
                             modalitiesReadingVM!.modalitiesList[index];
@@ -127,22 +127,22 @@ class ModalitiesReading extends HookWidget {
                             : InkWell(
                                 onTap: () {
                                   if (modality.modality == "BP") {
-                                    // sharedPrefServices?.getBearerToken();
                                     Navigator.push(
                                         context,
                                         PageTransition(
                                             child: const BloodPressureReading(),
                                             type: PageTransitionType
                                                 .bottomToTop));
-                                  } else if (modality.modality == "BG") {
-                                    // sharedPrefServices?.getBearerToken();
+                                  }
+                                  else if (modality.modality == "BG") {
                                     Navigator.push(
                                         context,
                                         PageTransition(
                                             child: const BGReading(),
                                             type: PageTransitionType
                                                 .bottomToTop));
-                                  } else if (modality.modality == "WT") {
+                                  }
+                                  else if (modality.modality == "WT") {
                                     // sharedPrefServices?.getBearerToken();
                                     // Navigator.push(context, PageTransition(
                                     //     child: const BloodPressureReading(), type: PageTransitionType.bottomToTop));

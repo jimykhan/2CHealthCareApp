@@ -17,6 +17,7 @@ class LoginVM extends ChangeNotifier{
   bool isEmailFieldValid = true;
   String emailErrorText = "";
   bool isPasswordFieldValid = true;
+  bool obscureText = true;
   String passwordErrorText = "";
   ProviderReference? _ref;
   AuthServices? authService;

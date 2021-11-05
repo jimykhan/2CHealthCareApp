@@ -1,7 +1,9 @@
+import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/all.dart';
+import 'package:icofont_flutter/icofont_flutter.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:twochealthcare/common_widgets/alert_loader.dart';
 import 'package:twochealthcare/common_widgets/custom_text_field.dart';
@@ -149,6 +151,26 @@ class Login extends HookWidget {
                   onSubmit: (val) {
                     loginVM.fieldValidation(val, fieldType: 1);
                   },
+                  // trailingIcon: ,
+                  obscureText: loginVM.obscureText,
+                  trailingIcon: InkWell(
+                    onTap: () {
+                      loginVM.obscureText = !loginVM.obscureText;
+                      loginVM.notifyListeners();
+                    },
+                    child: Container(
+                      child: !loginVM.obscureText
+                          ? Icon(
+                        IcoFontIcons.eye,
+                        color: Colors.green.shade600,
+                        // color: Colors.grey.shade500,
+                      )
+                          : Icon(
+                        IcoFontIcons.eyeBlocked,
+                        color: Colors.grey.shade500,
+                      ),
+                    ),
+                  ),
                 ),
               ),
               loginVM.isPasswordFieldValid

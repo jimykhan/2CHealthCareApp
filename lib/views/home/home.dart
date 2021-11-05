@@ -189,75 +189,75 @@ class Home extends HookWidget {
                   mainAxisSpacing: ApplicationSizing.convert(20),
                   crossAxisSpacing: ApplicationSizing.convert(20),
                 )),
-            Container(
-              margin: EdgeInsets.symmetric(
-                  horizontal: ApplicationSizing.horizontalMargin(n: 20)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Expanded(
-                    flex: 6,
-                    child: Container(
-                      alignment: Alignment.bottomLeft,
-                      child: Text(
-                        "Recent Notifications",
-                        style: Styles.PoppinsBold(
-                          fontSize: ApplicationSizing.fontScale(16),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 2,
-                    child: Container(
-                      alignment: Alignment.bottomRight,
-                      child: Text(
-                        "See All",
-                        style: Styles.PoppinsRegular(
-                          fontSize: ApplicationSizing.fontScale(12),
-                          color: appColor,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            ApplicationSizing.verticalSpacer(n: 0),
-            Container(
-              child: ListView.separated(
-                  shrinkWrap: true,
-                  physics: ScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    return InkWell(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            PageTransition(
-                                child: NotificationList(),
-                                type: PageTransitionType.bottomToTop));
-                      },
-                      child: Container(
-                        margin: EdgeInsets.symmetric(
-                            horizontal: ApplicationSizing.horizontalMargin()),
-                        child: NotificationWidget(
-                          title: "Lorem ipsum",
-                          date: "6 April",
-                        ),
-                      ),
-                    );
-                  },
-                  separatorBuilder: (context, index) {
-                    return Container(
-                      height: 1,
-                      color: fontGrayColor.withOpacity(0.5),
-                      // margin: EdgeInsets.symmetric(vertical: ApplicationSizing.convert(10),
-                      // horizontal: ApplicationSizing.horizontalMargin(n: 20)),
-                    );
-                  },
-                  itemCount: 3),
-            ),
+            // Container(
+            //   margin: EdgeInsets.symmetric(
+            //       horizontal: ApplicationSizing.horizontalMargin(n: 20)),
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //     crossAxisAlignment: CrossAxisAlignment.end,
+            //     children: [
+            //       Expanded(
+            //         flex: 6,
+            //         child: Container(
+            //           alignment: Alignment.bottomLeft,
+            //           child: Text(
+            //             "Recent Notifications",
+            //             style: Styles.PoppinsBold(
+            //               fontSize: ApplicationSizing.fontScale(16),
+            //             ),
+            //           ),
+            //         ),
+            //       ),
+            //       Expanded(
+            //         flex: 2,
+            //         child: Container(
+            //           alignment: Alignment.bottomRight,
+            //           child: Text(
+            //             "See All",
+            //             style: Styles.PoppinsRegular(
+            //               fontSize: ApplicationSizing.fontScale(12),
+            //               color: appColor,
+            //             ),
+            //           ),
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // ),
+            // ApplicationSizing.verticalSpacer(n: 0),
+            // Container(
+            //   child: ListView.separated(
+            //       shrinkWrap: true,
+            //       physics: ScrollPhysics(),
+            //       itemBuilder: (context, index) {
+            //         return InkWell(
+            //           onTap: () {
+            //             Navigator.push(
+            //                 context,
+            //                 PageTransition(
+            //                     child: NotificationList(),
+            //                     type: PageTransitionType.bottomToTop));
+            //           },
+            //           child: Container(
+            //             margin: EdgeInsets.symmetric(
+            //                 horizontal: ApplicationSizing.horizontalMargin()),
+            //             child: NotificationWidget(
+            //               title: "Lorem ipsum",
+            //               date: "6 April",
+            //             ),
+            //           ),
+            //         );
+            //       },
+            //       separatorBuilder: (context, index) {
+            //         return Container(
+            //           height: 1,
+            //           color: fontGrayColor.withOpacity(0.5),
+            //           // margin: EdgeInsets.symmetric(vertical: ApplicationSizing.convert(10),
+            //           // horizontal: ApplicationSizing.horizontalMargin(n: 20)),
+            //         );
+            //       },
+            //       itemCount: 3),
+            // ),
             ApplicationSizing.verticalSpacer(),
           ],
         ),

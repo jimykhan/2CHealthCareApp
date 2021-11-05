@@ -67,14 +67,14 @@ class Profile extends HookWidget {
               // mainAxisAlignment: MainAxisAlignment.center,
               // crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                ApplicationSizing.verticalSpacer(n: 10),
+                ApplicationSizing.verticalSpacer(n: 1),
                 Container(
                   alignment: Alignment.center,
                   margin: EdgeInsets.symmetric(
                       horizontal: ApplicationSizing.horizontalMargin()),
                   child: CircularImage(
-                    w: ApplicationSizing.convert(118),
-                    h: ApplicationSizing.convert(118),
+                    w: ApplicationSizing.convert(100),
+                    h: ApplicationSizing.convert(100),
                     imageUrl:
                         'https://www.propertytwinsswfl.com/wp-content/uploads/2018/09/dummy-profile-pic-male.jpg',
                   ),
@@ -114,17 +114,18 @@ class Profile extends HookWidget {
                             children: [
                               tile(
                                   key: "Name",
-                                  value: profileVm!.currentUserInfo?.careProviders?[index].fullName??""),
+                                  value: profileVm!.patientCareProvider[index].name??""
+                              ),
                               tile(
                                   key: "Email",
                                   // value: profileVm.currentUserInfo?.careProviders?[index].e??""
-                                  value: "jamshed@gmail.com"
+                                  value: profileVm.patientCareProvider[index].email??""
                               ),
 
                               tile(
                                   key: "Contact No",
                                   // value: profileVm.currentUserInfo?.careProviders?[index].e??""
-                                  value: "7134099594"
+                                  value: profileVm.patientCareProvider[index].contactNo??""
                               ),
 
                             ],
@@ -133,7 +134,7 @@ class Profile extends HookWidget {
                         separatorBuilder: (context,index){
                           return ApplicationSizing.verticalSpacer();
                         },
-                        itemCount: profileVm!.currentUserInfo?.careProviders?.length??0),
+                        itemCount: profileVm!.patientCareProvider.length),
                 ),
                 ApplicationSizing.verticalSpacer(n: 15),
                 infoWidget

@@ -31,6 +31,7 @@ class CustomCalendar extends StatelessWidget {
       // height: 20,
       child: TableCalendar(
         calendarStyle: const CalendarStyle(
+
           // cellMargin: EdgeInsets.all(1)
         ),
         daysOfWeekVisible: daysOfWeekVisible!,

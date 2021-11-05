@@ -139,7 +139,7 @@ class bGReadingInTable extends StatelessWidget {
               decoration: BoxDecoration(
                 border: Border.all(width: 1, color: appColor.withOpacity(0.5)),
                 borderRadius: BorderRadius.circular(5),
-                boxShadow: [
+                boxShadow: const [
                   BoxShadow(
                     color: Color(0Xff1d161712),
                     blurRadius: 20,
@@ -158,10 +158,12 @@ class bGReadingInTable extends StatelessWidget {
                           children: [
                             Text(
                               measureDate,
-                              style: Styles.PoppinsRegular(
-                                  fontSize: ApplicationSizing.fontScale(16),
-                                  color: fontGrayColor),
+                              style: Styles.PoppinsBold(
+                                fontSize: ApplicationSizing.fontScale(16),
+                                color: fontGrayColor,
+                              ),
                             ),
+                            ApplicationSizing.horizontalSpacer(),
                             Text(
                               bGReadings[index].measurementDate!.substring(11),
                               style: Styles.PoppinsBold(

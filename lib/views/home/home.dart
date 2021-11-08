@@ -4,6 +4,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/all.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:twochealthcare/common_widgets/aler_dialogue.dart';
 import 'package:twochealthcare/common_widgets/bottom_bar.dart';
 import 'package:twochealthcare/common_widgets/circular_image.dart';
 import 'package:twochealthcare/common_widgets/custom_appbar.dart';
@@ -91,25 +92,25 @@ class Home extends HookWidget {
           height: 60,
           padding: EdgeInsets.all(15),
           child: SvgPicture.asset(
-            "assets/icons/bottom_navbar/user-icon.svg",
+            "assets/icons/side_menu/home-icon.svg",
             height: ApplicationSizing.convert(25),
           ),
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
               shape: BoxShape.circle,
               gradient: LinearGradient(
                   colors: [Color(0Xff4EAF48), Color(0xff60E558)])),
         ),
         onPressed: () {
-          Navigator.pushReplacement(
-              context,
-              PageTransition(
-                child: Profile(),
-                type: PageTransitionType.bottomToTop,
-              ));
+          // Navigator.pushReplacement(
+          //     context,
+          //     PageTransition(
+          //       child: Home(),
+          //       type: PageTransitionType.bottomToTop,
+          //     ));
         },
       ),
       bottomNavigationBar: BottomBar(
-        selectedIndex: 1,
+        selectedIndex: 0,
       ),
       drawer: Container(
         width: ApplicationSizing.convertWidth(250),
@@ -174,12 +175,19 @@ class Home extends HookWidget {
                                 PageTransition(
                                     child: ModalitiesReading(),
                                     type: PageTransitionType.rightToLeft));
-                          } else if (index == 0) {
+                          }
+                          else if (index == 0) {
                             Navigator.push(
                                 context,
                                 PageTransition(
                                     child: Profile(),
                                     type: PageTransitionType.rightToLeft));
+                          }
+                          else if(index == 2){
+                            CustomAlertDialog(message: "Coming Soon...");
+                          }
+                          else if(index == 3){
+                            CustomAlertDialog(message: "Coming Soon...");
                           }
                         },
                         child: squareBox(item: items?[index], index: index));

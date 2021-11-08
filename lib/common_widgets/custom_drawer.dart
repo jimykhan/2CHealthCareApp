@@ -9,6 +9,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:twochealthcare/common_widgets/aler_dialogue.dart';
 import 'package:twochealthcare/common_widgets/circular_image.dart';
 import 'package:twochealthcare/common_widgets/menu_text_style.dart';
 import 'package:twochealthcare/providers/providers.dart';
@@ -20,6 +21,8 @@ import 'package:twochealthcare/view_models/application_package_vm.dart';
 import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
 import 'package:twochealthcare/views/home/home.dart';
 import 'package:fluentui_icons/fluentui_icons.dart';
+import 'package:twochealthcare/views/home/profile.dart';
+import 'package:twochealthcare/views/readings/modalities_reading.dart';
 
 class CustomDrawer extends HookWidget {
   @override
@@ -125,7 +128,10 @@ class CustomDrawer extends HookWidget {
                             child: Column(
                               children: [
                                 InkWell(
-                                  onTap: () {},
+                                  onTap: () {
+                                    Navigator.pushReplacement(context,
+                                        PageTransition(child: Home(), type: PageTransitionType.fade));
+                                  },
                                   child: Container(
                                     padding: EdgeInsets.symmetric(
                                         horizontal: ApplicationSizing
@@ -148,7 +154,10 @@ class CustomDrawer extends HookWidget {
                                   ),
                                 ),
                                 InkWell(
-                                  onTap: () {},
+                                  onTap: () {
+                                    Navigator.push(context,
+                                        PageTransition(child: Profile(), type: PageTransitionType.fade));
+                                  },
                                   child: Container(
                                     padding: EdgeInsets.symmetric(
                                         horizontal: ApplicationSizing
@@ -172,7 +181,10 @@ class CustomDrawer extends HookWidget {
                                   ),
                                 ),
                                 InkWell(
-                                  onTap: () {},
+                                  onTap: () {
+                                    Navigator.push(context,
+                                        PageTransition(child: ModalitiesReading(), type: PageTransitionType.fade));
+                                  },
                                   child: Container(
                                     padding: EdgeInsets.symmetric(
                                         horizontal: ApplicationSizing
@@ -196,7 +208,10 @@ class CustomDrawer extends HookWidget {
                                   ),
                                 ),
                                 InkWell(
-                                  onTap: () {},
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                    CustomAlertDialog(message: "Coming Soon...");
+                                  },
                                   child: Container(
                                     padding: EdgeInsets.symmetric(
                                         horizontal: ApplicationSizing
@@ -219,7 +234,10 @@ class CustomDrawer extends HookWidget {
                                   ),
                                 ),
                                 InkWell(
-                                  onTap: () {},
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                    CustomAlertDialog(message: "Coming Soon...");
+                                  },
                                   child: Container(
                                     padding: EdgeInsets.symmetric(
                                         horizontal: ApplicationSizing
@@ -242,7 +260,10 @@ class CustomDrawer extends HookWidget {
                                   ),
                                 ),
                                 InkWell(
-                                  onTap: () {},
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                    CustomAlertDialog(message: "Coming Soon...");
+                                  },
                                   child: Container(
                                     padding: EdgeInsets.symmetric(
                                         horizontal: ApplicationSizing
@@ -258,7 +279,7 @@ class CustomDrawer extends HookWidget {
                                           height: ApplicationSizing.convert(18),
                                         ),
                                         MenuTextStyle(
-                                          text: "My Rewards",
+                                          text: "Settings",
                                         ),
                                       ],
                                     ),

@@ -3,11 +3,12 @@ import 'package:twochealthcare/common_widgets/snackber_message.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
 
 class BadRequestException extends DioError {
-  BadRequestException(RequestOptions r) : super(requestOptions: r);
+  dynamic? data;
+  BadRequestException(RequestOptions r, {this.data}) : super(requestOptions: r);
 
   @override
   String toString() {
-    SnackBarMessage(message: "Invalid request ");
+    SnackBarMessage(message: data?.toString()??"Invalid request");
     return 'Invalid request ';
   }
 }

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/all.dart';
+import 'package:intl/intl.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:twochealthcare/common_widgets/alert_loader.dart';
 import 'package:twochealthcare/common_widgets/appbar_text_style.dart';
@@ -190,9 +192,8 @@ class ModalitiesReading extends HookWidget {
                                             ),
                                             Container(
                                               child: Text(
-                                                  modality.lastReadingDate ??
-                                                      '27-Jul-2021 11:30 PM',
-                                                  style: TextStyle(
+                                                  modality.lastReadingDate ?? "",
+                                                  style: const TextStyle(
                                                       fontSize: 14,
                                                       fontWeight:
                                                           FontWeight.w500,

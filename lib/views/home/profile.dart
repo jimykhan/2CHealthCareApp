@@ -189,7 +189,7 @@ class Profile extends HookWidget {
                                   alignment: Alignment.centerRight,
                                   child: tile(
                                       key: "Date of Birth",
-                                      value: profileVm.currentUserInfo?.dateOfBirth??""
+                                      value: profileVm.currentUserInfo?.dateOfBirth?.substring(0, 10) ?? ""
                                   ),
                                 )
                             ),

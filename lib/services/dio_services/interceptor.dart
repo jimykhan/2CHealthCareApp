@@ -22,7 +22,7 @@ class ApiInterceptor extends Interceptor{
       case DioErrorType.response:
         switch (err.response?.statusCode) {
           case 400:
-            throw BadRequestException(err.requestOptions);
+            throw BadRequestException(err.requestOptions,data: err.response?.data);
           case 401:
             SnackBarMessage(message: err.response!.data??"");
             throw UnauthorizedException(err.requestOptions);

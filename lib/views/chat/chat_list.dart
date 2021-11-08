@@ -8,6 +8,7 @@ import 'package:twochealthcare/common_widgets/notification_widget.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
+import 'package:twochealthcare/views/home/home.dart';
 import 'package:twochealthcare/views/home/profile.dart';
 class ChatList extends StatelessWidget {
   const ChatList({Key? key}) : super(key: key);
@@ -40,10 +41,10 @@ class ChatList extends StatelessWidget {
             height: 60,
             padding: EdgeInsets.all(15),
             child: SvgPicture.asset(
-              "assets/icons/bottom_navbar/user-icon.svg",
+              "assets/icons/side_menu/home-icon.svg",
               height: ApplicationSizing.convert(25),
             ),
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
                 shape: BoxShape.circle,
                 gradient: LinearGradient(
                     colors: [Color(0Xff4EAF48), Color(0xff60E558)])),
@@ -52,7 +53,7 @@ class ChatList extends StatelessWidget {
             Navigator.pushReplacement(
                 context,
                 PageTransition(
-                  child: Profile(),
+                  child: Home(),
                   type: PageTransitionType.bottomToTop,
                 ));
           },
@@ -68,7 +69,7 @@ class ChatList extends StatelessWidget {
         children: [
           Container(
             alignment: Alignment.center,
-            child: Text("Comming Soon...",
+            child: Text("Coming Soon...",
               style: Styles.PoppinsRegular(
                 fontWeight: FontWeight.w500,
                 color: appColor,

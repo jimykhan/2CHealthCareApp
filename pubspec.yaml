@@ -63,6 +63,7 @@ flutter:
     - assets/icons/readings/weight-icon.svg
     - assets/icons/bottom_navbar/user-icon.svg
     - assets/icons/bottom_navbar/message-icon.svg
+    - assets/icons/i.svg
     - assets/loader.gif
 
   fonts:

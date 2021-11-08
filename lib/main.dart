@@ -6,6 +6,7 @@ import 'package:hooks_riverpod/all.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
+import 'package:twochealthcare/views/home/home.dart';
 import 'package:twochealthcare/views/readings/modalities_reading.dart';
 import 'package:twochealthcare/views/splash/splash.dart';
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -45,14 +46,6 @@ Future<void> main() async {
     await Firebase.initializeApp();
     requestNotificationPermission();
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-    FirebaseMessaging.onMessage.listen((event) {
-      print("on Message in main ${event.data}");
-    });
-    FirebaseMessaging.onMessageOpenedApp.listen((event) {
-      print("on Message Opened App ${event.data}");
-      Navigator.push(applicationContext!.currentContext!, PageTransition(
-          child: ModalitiesReading(), type: PageTransitionType.topToBottom));
-    });
     // SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.top]);
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Colors.green,

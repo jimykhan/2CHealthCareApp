@@ -121,120 +121,73 @@ class BGReading extends HookWidget {
   }
 
   LineGraph(context, {BGReadingVM? bgReadingVM}) {
-    bgReadingVM?.bPReadings.sort((a, b) {
-      return b.measurementDate!.compareTo(a.measurementDate!);
+    List<BGDataModel> graphData = [];
+    bgReadingVM?.bPReadings.forEach((element) {
+      graphData.add(element);
     });
-    return Center(
-        child: Stack(
-      children: [
-        Container(
-            height: ApplicationSizing.convert(350),
-            margin: EdgeInsets.symmetric(
-                horizontal: ApplicationSizing.convertWidth(15)),
-            child: SfCartesianChart(
-              margin: EdgeInsets.all(10),
-              title: ChartTitle(
-                text: "Blood Glucose",
-                alignment: ChartAlignment.near,
-                textStyle: Styles.PoppinsRegular(),
-              ),
-              // legend: Legend(
-              //   isVisible: true,
-              //   position: LegendPosition.bottom,
-              //   alignment: ChartAlignment.near,
-              // ),
-              tooltipBehavior: TooltipBehavior(
-                enable: true,
-              ),
-              primaryXAxis: CategoryAxis(
-                labelIntersectAction: AxisLabelIntersectAction.rotate45,
-                placeLabelsNearAxisLine: true,
-                autoScrollingMode: AutoScrollingMode.start,
-                // plotOffset: 10
-                // visibleMinimum: 0.1
-                // interval: 1,
-                // arrangeByIndex: true ,
-                // axisLine:AxisLine(
-                //   color: Colors.red,
-                //
-                // )
-                //   visibleMaximum: 8,
-                //  minorTicksPerInterval: 5,
-                // minimum: 1,
-                // maximum: 5,
-                // autoScrollingDelta: 10
-                // crossesAt: 12
-                desiredIntervals: 5,
-                // majorGridLines: MajorGridLines(
-                //   color: Colors.red
-                // )
-              ),
-              primaryYAxis: NumericAxis(
-                maximum: bgReadingVM!.bGMaxLimit + 100,
-                minimum: 0,
-                interval: 50,
-                enableAutoIntervalOnZooming: true,
-              ),
-              series: <ChartSeries>[
-                AreaSeries<BGDataModel, String>(
-                  borderGradient: LinearGradient(
-                      colors: <Color>[AppBarStartColor, AppBarEndColor],
-                      stops: const <double>[0.2, 0.9],
-                      end: Alignment.topCenter,
-                      begin: Alignment.bottomCenter),
+    graphData.sort((a, b) {
+      return a.measurementDate!.compareTo(b.measurementDate!);
+    });
+    return Container(
+        margin: EdgeInsets.symmetric(
+            horizontal: ApplicationSizing.convertWidth(15)),
+        child: SfCartesianChart(
+          margin: EdgeInsets.all(10),
+          title: ChartTitle(
+            text: "Blood Glucose",
+            alignment: ChartAlignment.near,
+            textStyle: Styles.PoppinsRegular(),
+          ),
+          // legend: Legend(
+          //   isVisible: true,
+          //   position: LegendPosition.bottom,
+          //   alignment: ChartAlignment.near,
+          // ),
+          tooltipBehavior: TooltipBehavior(
+            enable: true,
+          ),
+          primaryXAxis: CategoryAxis(
+            labelIntersectAction: AxisLabelIntersectAction.rotate45,
+            placeLabelsNearAxisLine: true,
+            autoScrollingMode: AutoScrollingMode.start,
+            desiredIntervals: 5,
+            isVisible: false,
+          ),
+          primaryYAxis: NumericAxis(
+            maximum: bgReadingVM!.bGMaxLimit + 100,
+            minimum: 0,
+            interval: 50,
+            enableAutoIntervalOnZooming: true,
+          ),
+          series: <ChartSeries>[
+            AreaSeries<BGDataModel, String>(
+              borderGradient: LinearGradient(
+                  colors: <Color>[AppBarStartColor, AppBarEndColor],
+                  stops: const <double>[0.2, 0.9],
+                  end: Alignment.topCenter,
+                  begin: Alignment.bottomCenter),
 
-                  gradient: LinearGradient(colors: <Color>[
-                    AppBarStartColor.withOpacity(0.4),
-                    AppBarEndColor.withOpacity(0.4)],
-                      stops: const <double>[0.2, 0.9],
-                      end: Alignment.topCenter, begin: Alignment.bottomCenter),
-                  name: "Blood Glucose",
-                  enableTooltip: true,
-                  dataSource: bgReadingVM.bPReadings,
-                  xValueMapper: (BGDataModel bg, _) =>
-                      // bg.measurementDate.substring(0, 9),
-                      bg.measurementDate!.substring(0, 9),
-                  yValueMapper: (BGDataModel bg, _) => bg.bg,
-                  markerSettings: const MarkerSettings(
-                    color: Colors.white,
-                    isVisible: true,
-                  ),
-                  legendIconType: LegendIconType.circle,
-                  isVisibleInLegend: true,
-                  color: AppBarStartColor,
-                ),
-              ],
-            )),
-        bgReadingVM.bPReadings.length == 0
-            ? Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                              color: Colors.grey.withOpacity(0.3),
-                              offset: Offset(0, 0.3),
-                              blurRadius: 6,
-                              spreadRadius: 5)
-                        ]),
-                    margin: EdgeInsets.symmetric(
-                        vertical: ApplicationSizing.convertWidth(170)),
-                    padding: EdgeInsets.symmetric(
-                        horizontal: ApplicationSizing.convertWidth(20),
-                        vertical: ApplicationSizing.convertWidth(10)),
-                    child: Text(
-                      "No Record",
-                      style: Styles.PoppinsRegular(
-                          fontSize: ApplicationSizing.convert(12)),
-                    ),
-                  ),
-                ],
-              )
-            : Container()
-      ],
-    ));
+              gradient: LinearGradient(colors: <Color>[
+                AppBarStartColor.withOpacity(0.4),
+                AppBarEndColor.withOpacity(0.4)],
+                  stops: const <double>[0.2, 0.9],
+                  end: Alignment.topCenter, begin: Alignment.bottomCenter),
+              name: "Blood Glucose",
+              enableTooltip: true,
+              dataSource: graphData,
+              xValueMapper: (BGDataModel bg, _) =>
+              // bg.measurementDate.substring(0, 9),
+              bg.measurementDate,
+              yValueMapper: (BGDataModel bg, _) => bg.bg,
+              markerSettings: const MarkerSettings(
+                color: Colors.white,
+                isVisible: true,
+              ),
+              legendIconType: LegendIconType.circle,
+              isVisibleInLegend: true,
+              color: AppBarStartColor,
+            ),
+          ],
+        ));
   }
 }

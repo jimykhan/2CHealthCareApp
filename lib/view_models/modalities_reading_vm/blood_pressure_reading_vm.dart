@@ -22,7 +22,7 @@ class BloodPressureReadingVM extends ChangeNotifier{
   DateTime? rangeStart;
   DateTime? rangeEnd;
   bool headerDisable = true;
-  double dayHeight = 1;
+  double dayHeight = 0;
   bool daysOfWeekVisible = false;
   /// Calendar work start from there
 
@@ -50,13 +50,13 @@ class BloodPressureReadingVM extends ChangeNotifier{
       }
       else if(index == 1){
         calendarFormat = CalendarFormat.week;
-        dayHeight =1;
+        dayHeight =0;
         headerDisable = true;
         daysOfWeekVisible = false;
       }
       else if(index == 2){
         calendarFormat = CalendarFormat.month;
-        dayHeight =1;
+        dayHeight =0;
         headerDisable = true;
         daysOfWeekVisible = false;
       }

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'dart:collection';
 import 'package:intl/intl.dart';
+import 'package:twochealthcare/util/application_sizing.dart';
+import 'package:twochealthcare/util/styles.dart';
 class CustomCalendar extends StatelessWidget {
   CalendarFormat? calendarFormat ;
   // DateTime? focusedDay1 = DateTime.now();
@@ -30,9 +32,29 @@ class CustomCalendar extends StatelessWidget {
     return Container(
       // height: 20,
       child: TableCalendar(
+        headerStyle:  HeaderStyle(
+          formatButtonShowsNext: false,
+          formatButtonVisible: false,
+          titleCentered: true,
+          headerPadding: EdgeInsets.all(0.0),
+          titleTextStyle: Styles.PoppinsRegular(
+            fontSize: ApplicationSizing.fontScale(17)
+          ),
+          leftChevronIcon: Icon(Icons.chevron_left_sharp,size: ApplicationSizing.convert(25),),
+          rightChevronIcon: Icon(Icons.chevron_right_sharp,size: ApplicationSizing.convert(25),)
+        ),
         calendarStyle: const CalendarStyle(
+          isTodayHighlighted : false,
+          canMarkersOverflow : false,
+          outsideDaysVisible : false,
+          markersAutoAligned : false,
+          markerSizeScale : 0.0,
+          markersAnchor : 0.0,
+          rangeHighlightScale : 0.0,
+          cellMargin: EdgeInsets.all(0.0),
+          markerMargin: EdgeInsets.all(0.0),
+          cellPadding: EdgeInsets.all(0.0),
 
-          // cellMargin: EdgeInsets.all(1)
         ),
         daysOfWeekVisible: daysOfWeekVisible!,
         headerVisible: headerDisable ?? true,

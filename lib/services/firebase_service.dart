@@ -9,6 +9,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:twochealthcare/main.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
+import 'package:twochealthcare/views/home/home.dart';
 import 'package:twochealthcare/views/readings/modalities_reading.dart';
 
 class FirebaseService{
@@ -71,6 +72,23 @@ class FirebaseService{
   }
 
   _subNotification() async {
+    // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+    FirebaseMessaging.onMessage.listen((event) {
+      Navigator.pushAndRemoveUntil(
+        applicationContext!.currentContext!,
+        MaterialPageRoute(
+          builder: (BuildContext context) =>
+              Home(),
+        ),
+            (route) => false,
+      );
+      Navigator.push(applicationContext!.currentContext!, PageTransition(
+          child: ModalitiesReading(), type: PageTransitionType.fade));
+    });
+    FirebaseMessaging.onMessageOpenedApp.listen((event) {
+      Navigator.push(applicationContext!.currentContext!, PageTransition(
+          child: ModalitiesReading(), type: PageTransitionType.topToBottom));
+    });
     // if (Platform.isAndroid) {
     //   firebaseMessaging!
     //       .getToken()

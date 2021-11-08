@@ -162,14 +162,17 @@ class ModalitiesReading extends HookWidget {
                                   ),
                                   decoration: BoxDecoration(
                                     color: modality.modality == "BP"
-                                        ? const Color(0xffFD5C58)
+                                        ? modality.id == 0 ? const Color(0xffFD5C58).withOpacity(0.3) : const Color(0xffFD5C58)
                                         : modality.modality == "BG"
-                                            ? const Color(0xffFFA654)
+                                            ? modality.id == 0 ? const Color(0xffFFA654).withOpacity(0.3) : const Color(0xffFFA654)
+
                                             : modality.modality == "WT"
-                                                ? const Color(0xff548EFF)
+                                                ? modality.id == 0 ? const Color(0xff548EFF).withOpacity(0.3) : const Color(0xff548EFF)
+
                                                 : modality.modality == "CGM"
-                                                    ? const Color(0xffBE54FF)
-                                                    : const Color(0xff4EAF48),
+                                                    ? modality.id == 0 ? const Color(0xffBE54FF).withOpacity(0.3) : const Color(0xffBE54FF)
+
+                                                    : modality.id == 0 ? const Color(0xff4EAF48).withOpacity(0.3) : const Color(0xff4EAF48),
                                     borderRadius: BorderRadius.circular(20),
                                   ),
                                   child: Column(

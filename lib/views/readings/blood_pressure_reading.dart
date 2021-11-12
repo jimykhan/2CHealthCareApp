@@ -21,7 +21,9 @@ import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/view_models/modalities_reading_vm/blood_pressure_reading_vm.dart';
 
 class BloodPressureReading extends HookWidget {
-  const BloodPressureReading({Key? key}) : super(key: key);
+  int selectedMonth = DateTime.now().month;
+  int selectedYear = DateTime.now().year;
+  BloodPressureReading({Key? key,required this.selectedYear,required this.selectedMonth}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +32,10 @@ class BloodPressureReading extends HookWidget {
 
     useEffect(
       () {
+        bloodPressureReadingVM.selectedMonth = selectedMonth;
+        bloodPressureReadingVM.selectedYear = selectedYear;
+        bloodPressureReadingVM.focusedDay1 = DateTime(selectedYear ,selectedMonth);
+        bloodPressureReadingVM.selectedDay1 = DateTime(selectedYear,selectedMonth);
         bloodPressureReadingVM.bPReadingLoading = true;
         bloodPressureReadingVM.getBloodPressureReading();
         Future.microtask(() async {});
@@ -192,25 +198,10 @@ class BloodPressureReading extends HookWidget {
               markerSettings: const MarkerSettings(
                 color: Colors.white,
                 isVisible: true,
-                // width: 5,
-                // height: 5
-                // borderWidth: 1
               ),
               legendIconType: LegendIconType.circle,
+              isVisibleInLegend: true,
               color: appColor,
-
-              // dataLabelSettings: DataLabelSettings(
-              //     isVisible: true,
-              //     //useSeriesColor: true
-              // ),
-              isVisible: false,
-              // emptyPointSettings: EmptyPointSettings(
-              //   color: Colors.red,
-              //   borderWidth: 2,
-              //   borderColor: Colors.blue,
-              //   mode: EmptyPointMode.average
-              // ),
-              // width: 1
             ),
           ],
         ));

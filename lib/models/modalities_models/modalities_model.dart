@@ -24,27 +24,6 @@ class ModalitiesModel {
   int? phDeviceModelId;
   String? patientName;
 
-  // int? id;
-  // String? manufacturer;
-  // String? model;
-  // String? macAddress;
-  // String? serialNo;
-  // String? installationDate;
-  // bool? isIotDevice;
-  // bool? cpT99453;
-  // String? modality;
-  // String? modalityName;
-  // int? status;
-  // int? inventoryStatus;
-  // String? lastReading;
-  // String? lastReadingUnit;
-  // String? lastReadingContext;
-  // String? lastReadingDate;
-  // int? patientId;
-  //
-  // int? facilityId;
-  // int? phDeviceModelId;
-
   ModalitiesModel(
       {this.id,
         this.manufacturer,

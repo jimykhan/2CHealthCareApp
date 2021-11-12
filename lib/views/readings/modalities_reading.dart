@@ -2,16 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/all.dart';
-import 'package:intl/intl.dart';
-import 'package:jiffy/jiffy.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:twochealthcare/common_widgets/alert_loader.dart';
 import 'package:twochealthcare/common_widgets/appbar_text_style.dart';
 import 'package:twochealthcare/common_widgets/custom_appbar.dart';
 import 'package:twochealthcare/common_widgets/floating_button.dart';
+import 'package:twochealthcare/common_widgets/no_data_inlist.dart';
+import 'package:twochealthcare/common_widgets/toggle_button.dart';
 import 'package:twochealthcare/models/modalities_models/modalities_model.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/shared_pref_services.dart';
+import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
 import 'package:twochealthcare/view_models/modalities_reading_vm/modalities_reading_vm.dart';
@@ -20,41 +21,41 @@ import 'package:twochealthcare/views/readings/blood_pressure_reading.dart';
 
 class ModalitiesReading extends HookWidget {
   ModalitiesReading({Key? key}) : super(key: key);
-
-  List items = [
-    {
-      "modalityName": "Blood Pressure",
-      "reading": "180 sys 90 dia",
-      "context": "this is something",
-      "icon": "assets/icons/readings/blood-glucose-icon.svg",
-      "color": const Color(0xffFD5C58),
-      "date": "27-Jul-2021 11:30 PM"
-    },
-    {
-      "modalityName": "Blood Pressure",
-      "reading": "180 sys 90 dia",
-      "context": "this is something",
-      "icon": "assets/icons/readings/blood-glucose-icon.svg",
-      "color": const Color(0xffFFA654),
-      "date": "27-Jul-2021 11:30 PM"
-    },
-    {
-      "modalityName": "Blood Pressure",
-      "reading": "180 sys 90 dia",
-      "context": "this is something",
-      "icon": "assets/icons/readings/blood-glucose-icon.svg",
-      "color": const Color(0xff548EFF),
-      "date": "27-Jul-2021 11:30 PM"
-    },
-    {
-      "modalityName": "Blood Pressure",
-      "reading": "180 sys 90 dia",
-      "context": "this is something",
-      "icon": "assets/icons/readings/blood-glucose-icon.svg",
-      "color": const Color(0xffBE54FF),
-      "date": "27-Jul-2021 11:30 PM"
-    },
-  ];
+  //
+  // List items = [
+  //   {
+  //     "modalityName": "Blood Pressure",
+  //     "reading": "180 sys 90 dia",
+  //     "context": "this is something",
+  //     "icon": "assets/icons/readings/blood-glucose-icon.svg",
+  //     "color": const Color(0xffFD5C58),
+  //     "date": "27-Jul-2021 11:30 PM"
+  //   },
+  //   {
+  //     "modalityName": "Blood Pressure",
+  //     "reading": "180 sys 90 dia",
+  //     "context": "this is something",
+  //     "icon": "assets/icons/readings/blood-glucose-icon.svg",
+  //     "color": const Color(0xffFFA654),
+  //     "date": "27-Jul-2021 11:30 PM"
+  //   },
+  //   {
+  //     "modalityName": "Blood Pressure",
+  //     "reading": "180 sys 90 dia",
+  //     "context": "this is something",
+  //     "icon": "assets/icons/readings/blood-glucose-icon.svg",
+  //     "color": const Color(0xff548EFF),
+  //     "date": "27-Jul-2021 11:30 PM"
+  //   },
+  //   {
+  //     "modalityName": "Blood Pressure",
+  //     "reading": "180 sys 90 dia",
+  //     "context": "this is something",
+  //     "icon": "assets/icons/readings/blood-glucose-icon.svg",
+  //     "color": const Color(0xffBE54FF),
+  //     "date": "27-Jul-2021 11:30 PM"
+  //   },
+  // ];
 
   @override
   Widget build(BuildContext context) {
@@ -117,22 +118,26 @@ class ModalitiesReading extends HookWidget {
             Column(
               children: [
                 ApplicationSizing.verticalSpacer(n: 20),
+                (!modalitiesReadingVM!.modalitiesLoading && !modalitiesReadingVM.isActiveModality)
+                    ? NoData()
+                    :
                 Container(
                   child: ListView.separated(
                       shrinkWrap: true,
                       physics: const ScrollPhysics(),
                       itemBuilder: (context, index) {
                         ModalitiesModel modality =
-                            modalitiesReadingVM!.modalitiesList[index];
-                        return modality.id == -1
+                            modalitiesReadingVM.modalitiesList[index];
+                        return (modality.id == 0 && modality.lastReading == null)
                             ? Container()
                             : InkWell(
                                 onTap: () {
                                   if (modality.modality == "BP") {
+
                                     Navigator.push(
                                         context,
                                         PageTransition(
-                                            child: const BloodPressureReading(),
+                                            child:  BloodPressureReading(selectedMonth: modalitiesReadingVM.bPLastReadingMonth , selectedYear: modalitiesReadingVM.bPLastReadingYear),
                                             type: PageTransitionType
                                                 .bottomToTop));
                                   }
@@ -140,7 +145,7 @@ class ModalitiesReading extends HookWidget {
                                     Navigator.push(
                                         context,
                                         PageTransition(
-                                            child: const BGReading(),
+                                            child:  BGReading(selectedMonth: modalitiesReadingVM.bGLastReadingMonth , selectedYear: modalitiesReadingVM.bGLastReadingYear),
                                             type: PageTransitionType
                                                 .bottomToTop));
                                   }
@@ -162,17 +167,17 @@ class ModalitiesReading extends HookWidget {
                                   ),
                                   decoration: BoxDecoration(
                                     color: modality.modality == "BP"
-                                        ? modality.id == 0 ? const Color(0xffFD5C58).withOpacity(0.3) : const Color(0xffFD5C58)
+                                        ?  const Color(0xffFD5C58)
                                         : modality.modality == "BG"
-                                            ? modality.id == 0 ? const Color(0xffFFA654).withOpacity(0.3) : const Color(0xffFFA654)
+                                            ?  const Color(0xffFFA654)
 
                                             : modality.modality == "WT"
-                                                ? modality.id == 0 ? const Color(0xff548EFF).withOpacity(0.3) : const Color(0xff548EFF)
+                                                ?  const Color(0xff548EFF)
 
                                                 : modality.modality == "CGM"
-                                                    ? modality.id == 0 ? const Color(0xffBE54FF).withOpacity(0.3) : const Color(0xffBE54FF)
+                                                    ?  const Color(0xffBE54FF)
 
-                                                    : modality.id == 0 ? const Color(0xff4EAF48).withOpacity(0.3) : const Color(0xff4EAF48),
+                                                    :  const Color(0xff4EAF48),
                                     borderRadius: BorderRadius.circular(20),
                                   ),
                                   child: Column(
@@ -212,6 +217,7 @@ class ModalitiesReading extends HookWidget {
                                         // color:Colors.blueAccent,
                                         child: Row(
                                           children: [
+
                                             Expanded(
                                               flex: 2,
                                               child: Container(
@@ -306,35 +312,47 @@ class ModalitiesReading extends HookWidget {
                                       Container(
                                         // color: Colors.black,
                                         child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.start,
                                           children: [
                                             Expanded(
-                                                flex: 2,
+                                                flex: 6,
                                                 child: Container(
-                                                  alignment: Alignment.center,
+                                                  alignment: Alignment.centerLeft,
                                                   child: RichText(
                                                       text: TextSpan(children: [
-                                                    TextSpan(
-                                                        text: modality
-                                                                .lastReadingContext ??
-                                                            "",
-                                                        style: Styles.PoppinsRegular(
-                                                            fontSize:
+                                                        TextSpan(
+                                                            text: modality.lastReadingContext == null ? "" :
+                                                            modality.modality =="BP" ? "Heart Rate : " :  "Meal Context : ",
+                                                            style: Styles.PoppinsRegular(
+                                                                fontSize:
                                                                 ApplicationSizing
                                                                     .fontScale(
-                                                                        10),
-                                                            color:
+                                                                    10),
+                                                                color:
                                                                 Colors.white)),
-                                                    TextSpan(
-                                                        text: "",
-                                                        style: Styles.PoppinsRegular(
-                                                            fontSize:
+                                                        TextSpan(
+                                                            text: modality.lastReadingContext ?? "",
+                                                            style: Styles.PoppinsRegular(
+                                                                fontSize:
                                                                 ApplicationSizing
                                                                     .fontScale(
-                                                                        10),
-                                                            color:
+                                                                    10),
+                                                                color:
                                                                 Colors.white)),
-                                                  ])),
-                                                )),
+                                                      ])),
+                                                )
+                                            ),
+
+                                            Expanded(
+                                              flex: 1,
+                                              child: Container(
+                                                child: ToggleButton(
+                                                  onChange: (val){},
+                                                  value: modality.id == 0 ? false : true,
+                                                 // enableColor: modality.id == 0 ? AppBarEndColor : appColor,
+                                                ),
+                                              ),
+                                            )
                                           ],
                                         ),
                                       ),
@@ -349,12 +367,12 @@ class ModalitiesReading extends HookWidget {
                         );
                       },
                       itemCount:
-                          modalitiesReadingVM?.modalitiesList.length ?? 0),
+                          modalitiesReadingVM.modalitiesList.length),
                 ),
                 ApplicationSizing.verticalSpacer(),
               ],
             ),
-            modalitiesReadingVM!.modalitiesLoading
+            modalitiesReadingVM.modalitiesLoading
                 ? AlertLoader()
                 : Container(),
           ],
@@ -363,3 +381,5 @@ class ModalitiesReading extends HookWidget {
     );
   }
 }
+
+

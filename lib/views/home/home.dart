@@ -17,6 +17,7 @@ import 'dart:math';
 
 import 'package:twochealthcare/util/styles.dart';
 import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
+import 'package:twochealthcare/view_models/home_vm.dart';
 import 'package:twochealthcare/views/home/profile.dart';
 import 'package:twochealthcare/views/notifiction/notifiction_list.dart';
 import 'package:twochealthcare/views/readings/modalities_reading.dart';
@@ -57,6 +58,14 @@ class Home extends HookWidget {
   @override
   Widget build(BuildContext context) {
     LoginVM loginVM = useProvider(loginVMProvider);
+    HomeVM homeVM = useProvider(homeVMProvider);
+    useEffect((){
+      homeVM.checkForUpdate();
+      Future.microtask(() async{});
+      return (){};
+      },
+      const [],
+    );
     return Scaffold(
       backgroundColor: Colors.white,
       key: _scaffoldkey,

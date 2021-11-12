@@ -6,8 +6,13 @@ import 'package:twochealthcare/services/auth_services/auth_services.dart';
 import 'package:twochealthcare/services/reading_services/modalities_reading_service.dart';
 
 class ModalitiesReadingVM extends ChangeNotifier{
+  int bPLastReadingMonth = DateTime.now().month;
+  int bPLastReadingYear = DateTime.now().year;
+  int bGLastReadingMonth = DateTime.now().month;
+  int bGLastReadingYear = DateTime.now().year;
   ProviderReference? _ref;
   bool modalitiesLoading = true;
+  bool isActiveModality = false;
   List<ModalitiesModel> modalitiesList = [];
   AuthServices? _authService;
   ModalitiesReadingService? _modalitiesReadingService;
@@ -36,9 +41,15 @@ class ModalitiesReadingVM extends ChangeNotifier{
       res.forEach((element){
         modalitiesList.add(element);
       });
+       bPLastReadingMonth = _modalitiesReadingService!.bPLastReadingMonth;
+       bPLastReadingYear = _modalitiesReadingService!.bPLastReadingYear;
+       bGLastReadingMonth = _modalitiesReadingService!.bGLastReadingMonth;
+       bGLastReadingYear = _modalitiesReadingService!.bGLastReadingYear;
+      modalitiesList.forEach((element) {
+        if(element.id !=0) isActiveModality = true;
+      });
       // notifyListeners();
       setModalitiesLoading(false);
-      print("set loader false ${modalitiesLoading}");
     }
     setModalitiesLoading(false);
   }

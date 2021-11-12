@@ -23,7 +23,9 @@ import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/view_models/modalities_reading_vm/blood_pressure_reading_vm.dart';
 
 class BGReading extends HookWidget {
-  const BGReading({Key? key}) : super(key: key);
+  int selectedMonth;
+  int selectedYear;
+   BGReading({Key? key,required this.selectedMonth,required this.selectedYear}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +33,10 @@ class BGReading extends HookWidget {
 
     useEffect(
       () {
+        bgReadingVM.selectedMonth = selectedMonth;
+        bgReadingVM.selectedYear = selectedYear;
+        bgReadingVM.focusedDay1 = DateTime(selectedYear ,selectedMonth);
+        bgReadingVM.selectedDay1 = DateTime(selectedYear,selectedMonth);
         bgReadingVM.bGReadingLoading = true;
         bgReadingVM.getBGReading();
         Future.microtask(() async {});

@@ -39,7 +39,6 @@ class BloodPressureReadingService{
                 .replaceAll(":", "")));
           });
           bPReadings.forEach((element) {
-            print("befor convertion = ${element.measurementDate}");
             // element.dat = DateTime.parse(element.measurementDate!
             //     .trim()
             //     .replaceAll("-", "")
@@ -48,7 +47,6 @@ class BloodPressureReadingService{
             element.measurementDate =
                 Jiffy(element.measurementDate).format("dd MMM yy, h:mm a");
             // element.measurementDate = Jiffy((DateFormat("yyyy-MM-dd HH:mm:ss").parse(DateTime.parse(element.measurementDate).toString(),true)).toLocal().toString()).format("dd MMM yy, h:mm a");
-            print("after convertion = ${element.measurementDate}");
             if (bloodPressureMaxLimit < element.highPressure!) {
               bloodPressureMaxLimit = element.highPressure!;
             }

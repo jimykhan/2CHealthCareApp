@@ -22,7 +22,12 @@ CustomAlertDialog({String? message}) {
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
-                color: Colors.white
+                color: Color(0xffE6EFFA),
+              border: Border.all(
+                width: 1,
+                color: Color(0xff116DDA).withOpacity(0.7),
+              )
+
             ),
             padding: EdgeInsets.all(
               ApplicationSizing.convert(10)

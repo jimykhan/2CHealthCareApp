@@ -8,6 +8,10 @@ import 'package:twochealthcare/models/modalities_models/modalities_model.dart';
 import 'package:twochealthcare/providers/providers.dart';
 
 class ModalitiesReadingService{
+  int bPLastReadingMonth = DateTime.now().month;
+  int bPLastReadingYear = DateTime.now().year;
+  int bGLastReadingMonth = DateTime.now().month;
+  int bGLastReadingYear = DateTime.now().year;
   ProviderReference? _ref;
   ModalitiesReadingService({ProviderReference? ref}){
     _ref = ref;
@@ -26,6 +30,25 @@ class ModalitiesReadingService{
          response.data.forEach((element) {
            modalities.add(ModalitiesModel.fromJson(element));
          });
+        modalities.forEach((element) {
+          if(element.lastReadingDate != null){
+            int month = int.parse(element.lastReadingDate!.split("/")[0]);
+            int year = int.parse(element.lastReadingDate!.split("/")[2].split(" ")[0]);
+            if(element.modality == "BG") {
+              bGLastReadingMonth = month;
+              bGLastReadingYear = year;
+              print("last month of BG = ${month}");
+              print("last year of BG = ${year}");
+            }
+            if(element.modality == "BP") {
+              bPLastReadingMonth = month;
+              bPLastReadingYear = year;
+              print("last month of BP = ${month}");
+              print("last year of BP = ${year}");
+            }
+          }
+
+        });
 
         return modalities;
 

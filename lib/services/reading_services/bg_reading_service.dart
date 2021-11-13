@@ -18,7 +18,7 @@ class BGReadingService{
   getBGReading({int? currentUserId,int? month,int? year}) async {
     try{
       final dio = _ref!.read(dioServicesProvider);
-      Response response = await dio.dio!.get(ApiStrings.GET_BG_DEVICE_DATA_BY_PATIENTID+"/"+"$currentUserId/$month/$year",
+      Response response = await dio.dio!.get(ApiStrings.getBloodGlucoseDeviceDatabyPatientId+"/"+"$currentUserId/$month/$year",
       );
       if(response.statusCode == 200){
         // sharePrf.setCurrentUser(response.data);

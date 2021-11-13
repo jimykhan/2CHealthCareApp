@@ -127,32 +127,32 @@ class CustomDrawer extends HookWidget {
                                 top: ApplicationSizing.convert(20)),
                             child: Column(
                               children: [
-                                InkWell(
-                                  onTap: () {
-                                    Navigator.pushReplacement(context,
-                                        PageTransition(child: Home(), type: PageTransitionType.fade));
-                                  },
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: ApplicationSizing
-                                            .horizontalMargin(),
-                                        vertical: ApplicationSizing.convert(6)),
-                                    child: Row(
-                                      // crossAxisAlignment: CrossAxisAlignment.end,
-                                      children: [
-                                        SvgPicture.asset(
-                                          "assets/icons/side_menu/home-icon.svg",
-                                          color: appColor,
-                                          width: ApplicationSizing.convert(18),
-                                          height: ApplicationSizing.convert(18),
-                                        ),
-                                        MenuTextStyle(
-                                          text: "Home",
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
+                                // InkWell(
+                                //   onTap: () {
+                                //     Navigator.pushReplacement(context,
+                                //         PageTransition(child: Home(), type: PageTransitionType.fade));
+                                //   },
+                                //   child: Container(
+                                //     padding: EdgeInsets.symmetric(
+                                //         horizontal: ApplicationSizing
+                                //             .horizontalMargin(),
+                                //         vertical: ApplicationSizing.convert(6)),
+                                //     child: Row(
+                                //       // crossAxisAlignment: CrossAxisAlignment.end,
+                                //       children: [
+                                //         SvgPicture.asset(
+                                //           "assets/icons/side_menu/home-icon.svg",
+                                //           color: appColor,
+                                //           width: ApplicationSizing.convert(18),
+                                //           height: ApplicationSizing.convert(18),
+                                //         ),
+                                //         MenuTextStyle(
+                                //           text: "Home",
+                                //         ),
+                                //       ],
+                                //     ),
+                                //   ),
+                                // ),
                                 InkWell(
                                   onTap: () {
                                     Navigator.push(context,

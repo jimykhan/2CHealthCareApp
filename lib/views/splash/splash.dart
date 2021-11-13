@@ -39,7 +39,7 @@ class Splash extends HookWidget {
                     height: 100,
                   ),
                   Container(
-                    child: SvgPicture.asset("assets/icons/logo.svg",
+                    child: Image.asset("assets/icons/splash_logo.png",
                       width: ApplicationSizing.convert(200),
                     ),
                   ),

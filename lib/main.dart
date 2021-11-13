@@ -9,6 +9,8 @@ import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/views/home/home.dart';
 import 'package:twochealthcare/views/readings/modalities_reading.dart';
 import 'package:twochealthcare/views/splash/splash.dart';
+
+BuildContext? homeContext;
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
   // _subNotification();
@@ -63,6 +65,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    homeContext = context;
     return MaterialApp(
       navigatorKey: applicationContext,
       debugShowCheckedModeBanner: false,

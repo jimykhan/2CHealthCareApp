@@ -30,7 +30,7 @@ class AuthServices{
     };
     try{
       final dio = _ref!.read(dioServicesProvider);
-      Response response = await dio.dio!.post(ApiStrings.SIGN_IN,
+      Response response = await dio.dio!.post(ApiStrings.signIn,
         data: body,
       );
       if(response.statusCode == 200){

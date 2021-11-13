@@ -114,11 +114,7 @@ class BGReadingVM extends ChangeNotifier{
   bool selectDayPredict(day){
     DateTime time = DateTime.parse(day.toString());
     if(time.month != selectedMonth){
-      print(day.toString());
-      // selectedMonth = time.month;
-      // selectedYear = time.year;
-      // getBGReading();
-      print("selectDayPredict call");
+
     }
     return isSameDay(selectedDay1, day);
   }

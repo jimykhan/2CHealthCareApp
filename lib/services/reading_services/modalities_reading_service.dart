@@ -22,7 +22,7 @@ class ModalitiesReadingService{
 
     try{
       final dio = _ref!.read(dioServicesProvider);
-      Response response = await dio.dio!.get(ApiStrings.GET_PHDEVICE_DATA_BY_ID+"/"+"$currentUserId",
+      Response response = await dio.dio!.get(ApiStrings.getPhdDeviceDataById+"/"+"$currentUserId",
       );
       if(response.statusCode == 200){
         // sharePrf.setCurrentUser(response.data);

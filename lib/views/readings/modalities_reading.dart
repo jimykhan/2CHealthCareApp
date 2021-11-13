@@ -64,6 +64,7 @@ class ModalitiesReading extends HookWidget {
     useEffect(
       () {
         Future.microtask(() async {});
+        modalitiesReadingVM.isActiveModality = false;
         modalitiesReadingVM.modalitiesLoading = true;
         modalitiesReadingVM.getModalitiesByUserId();
         return () {

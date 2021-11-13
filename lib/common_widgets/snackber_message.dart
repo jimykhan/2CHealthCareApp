@@ -23,7 +23,4 @@ SnackBarMessage({String? message,bool error = true}){
           child: Text(message??'')),
     ),
   );
-  // ScaffoldMessenger.of(applicationContext!.currentContext!).dispose();
-  // Future.delayed(const Duration(seconds: 3),()=> ScaffoldMessenger.of(applicationContext!.currentContext!).dispose());
-
 }

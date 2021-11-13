@@ -91,11 +91,11 @@ class Home extends HookWidget {
       body: _body(loginVM: loginVM),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
+        // isExtended: true,
+        // mini: true,
         // backgroundColor: Colors.black,
-        // child: SvgPicture.asset(
-        //   "assets/icons/bottom_navbar/user-icon.svg",
-        //   height: ApplicationSizing.convert(25),
-        // ),
+       // clipBehavior: Clip.hardEdge,
+        enableFeedback: false,
         child: Container(
           width: 60,
           height: 60,

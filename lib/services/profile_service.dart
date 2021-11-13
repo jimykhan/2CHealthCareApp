@@ -16,7 +16,7 @@ class ProfileService{
 
     try{
       final dio = _ref!.read(dioServicesProvider);
-      Response response = await dio.dio!.get(ApiStrings.GET_PATIENT_BY_ID+"/"+"$currentUserId",
+      Response response = await dio.dio!.get(ApiStrings.getPatientById+"/"+"$currentUserId",
       );
       if(response.statusCode == 200){
         // sharePrf.setCurrentUser(response.data);
@@ -38,7 +38,7 @@ class ProfileService{
 
     try{
       final dio = _ref!.read(dioServicesProvider);
-      Response response = await dio.dio!.get(ApiStrings.GET_CAREPROVIDERS_BY_PATIENT_ID+"/"+"$currentUserId",
+      Response response = await dio.dio!.get(ApiStrings.getCareProvidersByPatientId+"/"+"$currentUserId",
       );
       if(response.statusCode == 200){
         List<PatientCareProvider> careProviders = [];

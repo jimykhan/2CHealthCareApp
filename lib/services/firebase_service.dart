@@ -64,12 +64,22 @@ class FirebaseService{
         badge: true,
         sound: true,
       );
+      firebaseMessaging!
+          .getToken()
+          .then((value) => print("this is mobile token ${value.toString()}"));
     }
     else {
       firebaseMessaging!.requestPermission();
+      String? apnsToken = await firebaseMessaging!.getAPNSToken();
+      firebaseMessaging!
+          .getToken()
+          .then((value) => print("this is mobile token ${value.toString()}"));
     }
     _subNotification();
+
+
   }
+
 
   _subNotification() async {
     // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
@@ -89,17 +99,7 @@ class FirebaseService{
       Navigator.push(applicationContext!.currentContext!, PageTransition(
           child: ModalitiesReading(), type: PageTransitionType.topToBottom));
     });
-    // if (Platform.isAndroid) {
-    //   firebaseMessaging!
-    //       .getToken()
-    //       .then((value) => print("this is mobile token ${value.toString()}"));
-    // }
-    // else {
-    //   String? apnsToken = await firebaseMessaging!.getAPNSToken();
-    //   firebaseMessaging!
-    //       .getToken()
-    //       .then((value) => print("this is mobile token ${value.toString()}"));
-    // }
+
     print("///////////////  weather ///////////////////");
     LoginVM result = _ref!.read(loginVMProvider);
     if (result.currentUser != null) {

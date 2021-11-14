@@ -285,7 +285,7 @@ class Home extends HookWidget {
   Widget squareBox({var item, int index = 0}) {
     return Container(
       width: 150,
-      height: 150,
+      height: 160,
       padding: EdgeInsets.symmetric(vertical: ApplicationSizing.convert(15)),
       decoration: BoxDecoration(
         color: item["color"],

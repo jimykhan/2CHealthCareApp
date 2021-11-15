@@ -188,6 +188,8 @@ class BGReading extends HookWidget {
               markerSettings: const MarkerSettings(
                 color: Colors.white,
                 isVisible: true,
+                  width: 2,
+                  height: 2
               ),
               legendIconType: LegendIconType.circle,
               isVisibleInLegend: true,

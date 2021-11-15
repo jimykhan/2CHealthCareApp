@@ -88,8 +88,9 @@ class BottomBar extends StatelessWidget {
         ),
 
         height: Platform.isIOS ? ApplicationSizing.convert(40)  : ApplicationSizing.convert(60),
-        color: Colors.transparent,
+        // color: Colors.black,
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Expanded(
               flex: 1,

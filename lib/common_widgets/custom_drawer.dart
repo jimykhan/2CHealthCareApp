@@ -14,6 +14,7 @@ import 'package:twochealthcare/common_widgets/circular_image.dart';
 import 'package:twochealthcare/common_widgets/menu_text_style.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
+import 'package:twochealthcare/services/firebase_service.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/styles.dart';
@@ -28,6 +29,7 @@ class CustomDrawer extends HookWidget {
   @override
   Widget build(BuildContext context) {
     LoginVM loginVM = useProvider(loginVMProvider);
+    FirebaseService firebaseService = useProvider(firebaseServiceProvider);
     ApplicationPackageVM applicationPackageVM =
         useProvider(applicationPackageVMProvider);
     useEffect(
@@ -288,6 +290,8 @@ class CustomDrawer extends HookWidget {
                                 InkWell(
                                   onTap: () {
                                     loginVM.userLogout();
+                                    firebaseService.TurnOfReadingNotification();
+
                                   },
                                   child: Container(
                                     padding: EdgeInsets.symmetric(

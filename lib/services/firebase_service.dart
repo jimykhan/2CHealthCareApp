@@ -26,7 +26,7 @@ class FirebaseService{
       showBadge: true,
 
   );
-
+  LoginVM? result;
   FirebaseService({ProviderReference? ref}){
     _ref = ref;
     initFirebase();
@@ -101,10 +101,11 @@ class FirebaseService{
     });
 
     print("///////////////  weather ///////////////////");
-    LoginVM result = _ref!.read(loginVMProvider);
-    if (result.currentUser != null) {
+    result = _ref!.read(loginVMProvider);
+    if (result?.currentUser != null) {
+      print("${result?.currentUser?.appUserId}-NewDataReceived");
       await firebaseMessaging!
-          .subscribeToTopic("${result.currentUser?.appUserId}-NewDataReceived")
+          .subscribeToTopic("${result?.currentUser?.appUserId}-NewDataReceived")
           .then((value) => print("weather topic subscribe"));
     }
 
@@ -117,6 +118,46 @@ class FirebaseService{
     // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
 
+  }
+
+  TurnOfChatNotification() {
+    var firebaseMessaging = FirebaseMessaging.instance;
+    // firebaseMessaging
+    //     .unsubscribeFromTopic(
+    //         "${deviceService.currentUser.appUserId}-NewMsgReceived")
+    //     .then((value) => null);
+  }
+
+  TurnOfReadingNotification() {
+
+    var firebaseMessaging = FirebaseMessaging.instance;
+    if (result?.currentUser != null){
+      firebaseMessaging
+          .unsubscribeFromTopic(
+          "${result?.currentUser?.appUserId}-NewDataReceived")
+          .then((value) => print("UnSub Topic${result?.currentUser?.appUserId}-NewDataReceived"));
+    }
+
+  }
+
+  TurnOnChatNotification() {
+    var firebaseMessaging = FirebaseMessaging.instance;
+    if (result?.currentUser != null){
+      // firebaseMessaging
+      //     .unsubscribeFromTopic(
+      //     "${result?.currentUser?.appUserId}-NewDataReceived")
+      //     .then((value) => null);
+    }
+  }
+
+  TurnOnReadingNotification() {
+    var firebaseMessaging = FirebaseMessaging.instance;
+    if (result?.currentUser != null){
+      firebaseMessaging
+          .subscribeToTopic(
+          "${result?.currentUser?.appUserId}-NewDataReceived")
+          .then((value) => null);
+    }
   }
 
   _onMessage(RemoteMessage message) async {

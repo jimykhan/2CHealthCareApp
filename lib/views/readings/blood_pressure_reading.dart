@@ -181,10 +181,12 @@ class BloodPressureReading extends HookWidget {
               markerSettings: const MarkerSettings(
                 color: Colors.white,
                 isVisible: true,
+                  width: 2,
+                  height: 2
               ),
               legendIconType: LegendIconType.circle,
               isVisibleInLegend: true,
-              color: AppBarStartColor,
+              color: appColor,
             ),
             FastLineSeries<BloodPressureReadingModel, String>(
               name: "Diastolic",
@@ -198,10 +200,13 @@ class BloodPressureReading extends HookWidget {
               markerSettings: const MarkerSettings(
                 color: Colors.white,
                 isVisible: true,
+                width: 2,
+                height: 2
               ),
               legendIconType: LegendIconType.circle,
               isVisibleInLegend: true,
-              color: appColor,
+
+              color: AppBarStartColor,
             ),
           ],
         ));

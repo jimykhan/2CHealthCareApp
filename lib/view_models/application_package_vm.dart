@@ -14,5 +14,6 @@ class ApplicationPackageVM extends ChangeNotifier{
   initPackageInfo() async {
     info = await PackageInfo.fromPlatform();
     currentVersion = info!.version;
+    notifyListeners();
   }
 }

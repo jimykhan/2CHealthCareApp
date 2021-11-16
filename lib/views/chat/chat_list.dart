@@ -1,8 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:twochealthcare/common_widgets/appbar_text_style.dart';
 import 'package:twochealthcare/common_widgets/bottom_bar.dart';
+import 'package:twochealthcare/common_widgets/circular_image.dart';
 import 'package:twochealthcare/common_widgets/custom_appbar.dart';
 import 'package:twochealthcare/common_widgets/notification_widget.dart';
 import 'package:twochealthcare/util/application_colors.dart';
@@ -59,9 +61,9 @@ class ChatList extends StatelessWidget {
           },
         ),
         bottomNavigationBar: BottomBar(selectedIndex: 2,),
-        body: _body());
+        body: _emptyChat());
   }
-  _body(){
+  _emptyChat(){
     return Container(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -80,4 +82,6 @@ class ChatList extends StatelessWidget {
       ),
     );
   }
+
 }
+

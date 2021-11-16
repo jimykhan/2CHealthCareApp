@@ -3,7 +3,7 @@ class ApiStrings {
   static const String test = "https://api.healthforcehub.net";
   static const String production = "https://api.2chealthsolutions.com";
   static const String development = "https://cea4-39-45-161-120.ngrok.io";
-  static const String baseUrl = test;
+  static const String baseUrl = production;
   static const String signIn = "/api/Account/token2";
   static const String getPatientInfoById =
       baseUrl + "/api/Patients/GetPatientById";

@@ -216,7 +216,7 @@ class Profile extends HookWidget {
                                   alignment: Alignment.centerLeft,
                                   child: tile(
                                       key: "Primary Phone No.",
-                                      value: profileVm.currentUserInfo?.emergencyContactPrimaryPhoneNo??""
+                                      value: profileVm.currentUserInfo?.homePhone??""
                                   ),
                                 )
                             ),

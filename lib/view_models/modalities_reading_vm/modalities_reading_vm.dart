@@ -46,7 +46,8 @@ class ModalitiesReadingVM extends ChangeNotifier{
        bGLastReadingMonth = _modalitiesReadingService!.bGLastReadingMonth;
        bGLastReadingYear = _modalitiesReadingService!.bGLastReadingYear;
       modalitiesList.forEach((element) {
-        if(element.id !=0) isActiveModality = true;
+        if(element.id != 0 || element.lastReading != null) isActiveModality = true;
+        // if(element.id != 0) isActiveModality = true;
       });
       // notifyListeners();
       setModalitiesLoading(false);

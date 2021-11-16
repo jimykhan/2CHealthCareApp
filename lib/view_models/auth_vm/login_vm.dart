@@ -102,6 +102,7 @@ class LoginVM extends ChangeNotifier{
 
   userLogout(){
     authService?.updateCurrentUser(null);
+
     Navigator.pushAndRemoveUntil(
       applicationContext!.currentContext!,
       MaterialPageRoute(

@@ -53,7 +53,7 @@ class bpReadingInTable extends StatelessWidget {
                         border: Border.all(
                             width: 1, color: appColor.withOpacity(0.5)),
                         borderRadius: BorderRadius.circular(5),
-                        boxShadow: [
+                        boxShadow: const [
                           BoxShadow(
                             color: Color(0Xff1d161712),
                             blurRadius: 20,
@@ -65,7 +65,7 @@ class bpReadingInTable extends StatelessWidget {
                       child: Row(
                         children: [
                           Expanded(
-                            flex: 1,
+                            flex: 2,
                             child: Container(
                               alignment: Alignment.centerLeft,
                               child: Text(
@@ -79,7 +79,7 @@ class bpReadingInTable extends StatelessWidget {
                             ),
                           ),
                           Expanded(
-                              flex: 3,
+                              flex: 4,
                               child: Container(
                                 alignment: Alignment.centerRight,
                                 child: Row(
@@ -89,23 +89,23 @@ class bpReadingInTable extends StatelessWidget {
                                       text: TextSpan(children: [
                                         TextSpan(
                                             text: bPReadings[index]
-                                                    .heartRate
-                                                    ?.toStringAsFixed(0) ??
+                                                .highPressure
+                                                ?.toStringAsFixed(0) ??
                                                 "",
                                             style: Styles.PoppinsBold(
                                               fontSize:
-                                                  ApplicationSizing.fontScale(
-                                                      20),
+                                              ApplicationSizing.fontScale(
+                                                  20),
                                               fontWeight: FontWeight.bold,
-                                              color: Colors.red,
+                                              color: appColor,
                                             )),
                                         TextSpan(
-                                            text: "HR",
+                                            text: "Sys",
                                             style: Styles.PoppinsRegular(
                                               fontSize:
-                                                  ApplicationSizing.fontScale(
-                                                      10),
-                                              color: Colors.red,
+                                              ApplicationSizing.fontScale(
+                                                  10),
+                                              color: appColor,
                                             )),
                                       ]),
                                     ),
@@ -117,48 +117,50 @@ class bpReadingInTable extends StatelessWidget {
                                         text: TextSpan(children: [
                                           TextSpan(
                                               text: bPReadings[index]
-                                                      .highPressure
-                                                      ?.toStringAsFixed(0) ??
+                                                  .lowPressure
+                                                  ?.toStringAsFixed(0) ??
                                                   "",
                                               style: Styles.PoppinsBold(
                                                 fontSize:
-                                                    ApplicationSizing.fontScale(
-                                                        20),
+                                                ApplicationSizing.fontScale(
+                                                    20),
                                                 fontWeight: FontWeight.bold,
-                                                color: appColor,
+                                                color: Color(0xff1D3D71),
                                               )),
                                           TextSpan(
-                                              text: "Sys",
+                                              text: "Dia",
                                               style: Styles.PoppinsRegular(
                                                 fontSize:
-                                                    ApplicationSizing.fontScale(
-                                                        10),
-                                                color: appColor,
+                                                ApplicationSizing.fontScale(
+                                                    10),
+                                                color: Color(0xff1D3D71),
                                               )),
                                         ]),
                                       ),
                                     ),
+
+
                                     RichText(
                                       text: TextSpan(children: [
                                         TextSpan(
                                             text: bPReadings[index]
-                                                    .lowPressure
-                                                    ?.toStringAsFixed(0) ??
+                                                .heartRate
+                                                ?.toStringAsFixed(0) ??
                                                 "",
                                             style: Styles.PoppinsBold(
                                               fontSize:
-                                                  ApplicationSizing.fontScale(
-                                                      20),
+                                              ApplicationSizing.fontScale(
+                                                  20),
                                               fontWeight: FontWeight.bold,
-                                              color: Color(0xff1D3D71),
+                                              color: drawerColor,
                                             )),
                                         TextSpan(
-                                            text: "Dia",
+                                            text: "HR",
                                             style: Styles.PoppinsRegular(
                                               fontSize:
-                                                  ApplicationSizing.fontScale(
-                                                      10),
-                                              color: Color(0xff1D3D71),
+                                              ApplicationSizing.fontScale(
+                                                  10),
+                                              color: drawerColor,
                                             )),
                                       ]),
                                     ),
@@ -185,7 +187,7 @@ class bpReadingInTable extends StatelessWidget {
                   border:
                       Border.all(width: 1, color: appColor.withOpacity(0.5)),
                   borderRadius: BorderRadius.circular(5),
-                  boxShadow: [
+                  boxShadow: const [
                     BoxShadow(
                       color: Color(0Xff1d161712),
                       blurRadius: 20,
@@ -196,18 +198,21 @@ class bpReadingInTable extends StatelessWidget {
               child: Row(
                 children: [
                   Expanded(
-                      flex: 1,
-                      child: Container(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          bPReadings[index].measurementDate!.substring(11),
-                          style: Styles.PoppinsRegular(
-                              fontSize: ApplicationSizing.fontScale(16),
-                              color: fontGrayColor),
-                        ),
-                      )),
+                    flex: 2,
+                    child: Container(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        bPReadings[index]
+                            .measurementDate!
+                            .substring(11),
+                        style: Styles.PoppinsRegular(
+                            fontSize: ApplicationSizing.fontScale(16),
+                            color: fontGrayColor),
+                      ),
+                    ),
+                  ),
                   Expanded(
-                      flex: 3,
+                      flex: 4,
                       child: Container(
                         alignment: Alignment.centerRight,
                         child: Row(
@@ -217,66 +222,78 @@ class bpReadingInTable extends StatelessWidget {
                               text: TextSpan(children: [
                                 TextSpan(
                                     text: bPReadings[index]
-                                            .heartRate
-                                            ?.toStringAsFixed(0) ??
+                                        .highPressure
+                                        ?.toStringAsFixed(0) ??
                                         "",
                                     style: Styles.PoppinsBold(
-                                      fontSize: ApplicationSizing.fontScale(20),
+                                      fontSize:
+                                      ApplicationSizing.fontScale(
+                                          20),
                                       fontWeight: FontWeight.bold,
-                                      color: Colors.red,
+                                      color: appColor,
                                     )),
                                 TextSpan(
-                                    text: "HR",
+                                    text: "Sys",
                                     style: Styles.PoppinsRegular(
-                                      fontSize: ApplicationSizing.fontScale(10),
-                                      color: Colors.red,
+                                      fontSize:
+                                      ApplicationSizing.fontScale(
+                                          10),
+                                      color: appColor,
                                     )),
                               ]),
                             ),
                             Container(
                               margin: EdgeInsets.symmetric(
-                                  horizontal:
-                                      ApplicationSizing.horizontalMargin(n: 5)),
+                                  horizontal: ApplicationSizing
+                                      .horizontalMargin(n: 5)),
                               child: RichText(
                                 text: TextSpan(children: [
                                   TextSpan(
                                       text: bPReadings[index]
-                                              .highPressure
-                                              ?.toStringAsFixed(0) ??
+                                          .lowPressure
+                                          ?.toStringAsFixed(0) ??
                                           "",
                                       style: Styles.PoppinsBold(
                                         fontSize:
-                                            ApplicationSizing.fontScale(20),
+                                        ApplicationSizing.fontScale(
+                                            20),
                                         fontWeight: FontWeight.bold,
-                                        color: appColor,
+                                        color: Color(0xff1D3D71),
                                       )),
                                   TextSpan(
-                                      text: "Sys",
+                                      text: "Dia",
                                       style: Styles.PoppinsRegular(
                                         fontSize:
-                                            ApplicationSizing.fontScale(10),
-                                        color: appColor,
+                                        ApplicationSizing.fontScale(
+                                            10),
+                                        color: Color(0xff1D3D71),
                                       )),
                                 ]),
                               ),
                             ),
+
+
                             RichText(
                               text: TextSpan(children: [
                                 TextSpan(
                                     text: bPReadings[index]
-                                            .lowPressure
-                                            ?.toStringAsFixed(0) ??
+                                        .heartRate
+                                        ?.toStringAsFixed(0) ??
                                         "",
                                     style: Styles.PoppinsBold(
-                                      fontSize: ApplicationSizing.fontScale(20),
+                                      fontSize:
+                                      ApplicationSizing.fontScale(
+                                          20),
                                       fontWeight: FontWeight.bold,
-                                      color: Color(0xff1D3D71),
+                                      color: drawerColor,
                                     )),
                                 TextSpan(
-                                    text: "Dia",
+                                    text: "HR",
                                     style: Styles.PoppinsRegular(
-                                      fontSize: ApplicationSizing.fontScale(10),
-                                      color: Color(0xff1D3D71),
+                                      fontSize:
+                                      ApplicationSizing.fontScale(
+                                          10),
+                                      color: drawerColor,
                                     )),
                               ]),
                             ),

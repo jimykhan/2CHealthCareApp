@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -83,10 +84,13 @@ class BottomBar extends StatelessWidget {
       elevation: 1,
       child: Container(
         margin: EdgeInsets.symmetric(
-            horizontal: ApplicationSizing.horizontalMargin()),
-        height: ApplicationSizing.convert(60),
-        color: Colors.transparent,
+            horizontal: ApplicationSizing.horizontalMargin()
+        ),
+
+        height: Platform.isIOS ? ApplicationSizing.convert(40)  : ApplicationSizing.convert(60),
+        // color: Colors.black,
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Expanded(
               flex: 1,

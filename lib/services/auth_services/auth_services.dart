@@ -62,6 +62,7 @@ class AuthServices{
     var token = _sharePrf?.getBearerToken();
     return token;
   }
+
   Future<int> getCurrentUserId() async {
 
     var currentUser = await getCurrentUserFromSharedPref();
@@ -69,5 +70,15 @@ class AuthServices{
     if(currentUser != null) Id = currentUser.id!;
     return Id;
   }
+  Future<String> getCurrentAppUserId() async {
+
+    var currentUser = await getCurrentUserFromSharedPref();
+    String appUserId = "" ;
+    if(currentUser != null) appUserId = currentUser.appUserId!;
+    return appUserId;
+  }
+
+
+
 
 }

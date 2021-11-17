@@ -2,6 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:twochealthcare/constants/api_strings.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
+import 'package:twochealthcare/services/chat_services/chat_list_service.dart';
+import 'package:twochealthcare/services/chat_services/chat_screen_service.dart';
 import 'package:twochealthcare/services/dio_services/dio_services.dart';
 import 'package:twochealthcare/services/firebase_service.dart';
 import 'package:twochealthcare/services/profile_service.dart';
@@ -9,8 +11,11 @@ import 'package:twochealthcare/services/reading_services/bg_reading_service.dart
 import 'package:twochealthcare/services/reading_services/blood_pressure_reading_service.dart';
 import 'package:twochealthcare/services/reading_services/modalities_reading_service.dart';
 import 'package:twochealthcare/services/shared_pref_services.dart';
+import 'package:twochealthcare/services/signal_r_services.dart';
 import 'package:twochealthcare/view_models/application_package_vm.dart';
 import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
+import 'package:twochealthcare/view_models/chat_vm/chat_list_vm.dart';
+import 'package:twochealthcare/view_models/chat_vm/chat_screen_vm.dart';
 import 'package:twochealthcare/view_models/home_vm.dart';
 import 'package:twochealthcare/view_models/modalities_reading_vm/bg_reading_vm.dart';
 import 'package:twochealthcare/view_models/modalities_reading_vm/blood_pressure_reading_vm.dart';
@@ -26,6 +31,8 @@ final bGReadingVMProvider = ChangeNotifierProvider<BGReadingVM>((ref)=>BGReading
 final profileVMProvider = ChangeNotifierProvider<ProfileVm>((ref)=>ProfileVm(ref: ref));
 final homeVMProvider = ChangeNotifierProvider<HomeVM>((ref)=>HomeVM(ref: ref));
 final applicationPackageVMProvider = ChangeNotifierProvider<ApplicationPackageVM>((ref)=>ApplicationPackageVM(ref: ref));
+final chatListVMProvider = ChangeNotifierProvider<ChatListVM>((ref)=>ChatListVM(ref: ref));
+final chatScreenVMProvider = ChangeNotifierProvider<ChatScreenVM>((ref)=>ChatScreenVM(ref: ref));
 /// ChangeNotifierProvider
 
 
@@ -38,5 +45,8 @@ final bloodPressureServiceProvider = Provider<BloodPressureReadingService>((ref)
 final bGReadingServiceProvider = Provider<BGReadingService>((ref)=>BGReadingService(ref: ref));
 final profileServiceProvider = Provider<ProfileService>((ref)=>ProfileService(ref: ref));
 final firebaseServiceProvider = Provider<FirebaseService>((ref)=>FirebaseService(ref: ref));
+final signalRServiceProvider = Provider<SignalRServices>((ref)=>SignalRServices(ref: ref));
+final chatScreenServiceProvider = Provider<ChatScreenService>((ref)=>ChatScreenService(ref: ref));
+final chatListServiceProvider = Provider<ChatListService>((ref)=>ChatListService(ref: ref));
 /// Simple Providers
 

@@ -34,7 +34,8 @@ class ConflictException extends DioError {
 }
 
 class UnauthorizedException extends DioError {
-  UnauthorizedException(RequestOptions r) : super(requestOptions: r);
+  dynamic? data;
+  UnauthorizedException(RequestOptions r, {this.data}) : super(requestOptions: r);
 
   @override
   String toString() {
@@ -44,11 +45,18 @@ class UnauthorizedException extends DioError {
 }
 
 class NotFoundException extends DioError {
-  NotFoundException(RequestOptions r) : super(requestOptions: r);
+  dynamic? data;
+  NotFoundException(RequestOptions r, {this.data}) : super(requestOptions: r);
 
   @override
   String toString() {
-    SnackBarMessage(message: "The requested information could not be found");
+
+    // if(data is String){
+    //   SnackBarMessage(message: data);
+    // }else{
+    //   SnackBarMessage(message:"The requested information could not be found");
+    // }
+    SnackBarMessage(message: data?.toString()??"The requested information could not be found");
     return 'The requested information could not be found';
   }
 }

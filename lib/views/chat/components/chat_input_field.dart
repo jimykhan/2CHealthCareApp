@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/all.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
+import 'package:twochealthcare/view_models/chat_vm/chat_screen_vm.dart';
 import 'package:twochealthcare/views/chat/constants.dart';
 import 'package:twochealthcare/views/chat/chat_screen.dart';
 
@@ -15,6 +16,7 @@ class ChatInputField extends HookWidget {
   @override
   Widget build(BuildContext context) {
     _textEditingController = useTextEditingController();
+    ChatScreenVM chatScreenVM = useProvider(chatScreenVMProvider);
     useEffect(
       () {
 
@@ -27,7 +29,7 @@ class ChatInputField extends HookWidget {
       const [],
     );
     return Container(
-      padding: EdgeInsets.symmetric(
+      padding: const EdgeInsets.symmetric(
         horizontal: kDefaultPadding,
         vertical: kDefaultPadding / 2,
       ),
@@ -48,7 +50,7 @@ class ChatInputField extends HookWidget {
             // SizedBox(width: kDefaultPadding),
             Expanded(
               child: Container(
-                padding: EdgeInsets.symmetric(
+                padding: const EdgeInsets.symmetric(
                   horizontal: kDefaultPadding * 0.75,
                 ),
                 decoration: BoxDecoration(
@@ -68,6 +70,8 @@ class ChatInputField extends HookWidget {
                     // SizedBox(width: kDefaultPadding / 4),
                     Expanded(
                       child: TextField(
+                        // expands: true,
+                        maxLines: 5,
                         style: Styles.PoppinsRegular(
                             color: drawerColor,
                             fontSize: ApplicationSizing.convert(16)),
@@ -77,46 +81,19 @@ class ChatInputField extends HookWidget {
                             border: InputBorder.none,
                             hintStyle: Styles.PoppinsRegular(
                                 color: drawerSelectMenuColor, fontSize: 16)),
-                        // onChanged: chatService.CheckMessageField,
+                        onChanged: chatScreenVM.checkMessageField,
                         // focusNode: myFocusNode,
                       ),
                     ),
-                    // chatService.isMessageEmpty
-                    false
+                    chatScreenVM.isMessageEmpty
                         ? Container()
                         : InkWell(
                             onTap: () async {
-                              // chatService.isMessageEmpty = true;
-                              // FocusScope.of(context).unfocus();
-                              // chatService.listOfMessage.add(ChatMessage(
-                              //   id: 0,
-                              //   message: _textEditingController.text.toString(),
-                              //   sentToAll: false,
-                              //   viewedByAll: false,
-                              //   senderUserId: deviceService?.currentUser?.appUserId??"",
-                              //   isSender: false,
-                              //   messageStatus: MessageStatus.not_sent,
-                              //   timeStamp: DateTime.now().toString(),
-                              // ));
+                              FocusScope.of(context).unfocus();
                               ChatScreen().jumpToListIndex();
-                              var messageVal =
-                                  _textEditingController?.text.toString();
+                              chatScreenVM.sendTextMessage(message: _textEditingController?.text.toString());
                               _textEditingController?.clear();
-                              // await chatService.SendTextMessage(
-                              //   context,
-                              //   body: {
-                              //     "senderUserId":
-                              //         deviceService?.currentUser?.appUserId??"",
-                              //     "chatGroupId":
-                              //         chatService?.selectedChatGroup?.id ?? 0,
-                              //     "message": messageVal,
-                              //     "linkUrl": "string",
-                              //   },
-                              //   token: deviceService?.currentUser?.bearerToken??"",
-                              //   UserId: deviceService?.currentUser?.appUserId ?? '',
-                              // );
                               print("work");
-
                             },
                             child: Icon(
                               Icons.send,

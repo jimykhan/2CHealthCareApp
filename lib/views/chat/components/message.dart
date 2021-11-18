@@ -34,7 +34,7 @@ class Message extends HookWidget {
     );
 
     Widget messageContaint(ChatMessage? message) {
-      switch (message!.messageType!) {
+      switch (message!.messageType) {
         case ChatMessageType.text:
           return TextMessage(message: message);
         case ChatMessageType.audio:
@@ -50,16 +50,16 @@ class Message extends HookWidget {
     return Container(
       padding:  EdgeInsets.only(top: kDefaultPadding),
       margin: EdgeInsets.only(
-        right: message!.isSender!
+        right: !(message!.isSender!)
             ? ApplicationSizing.convertWidth(20)
             : 0,
-        left: message!.isSender!
+        left: !(message!.isSender!)
             ? 0
             : ApplicationSizing.convertWidth(20)
       ),
       child: Row(
         mainAxisAlignment:
-            message!.isSender! ? MainAxisAlignment.start : MainAxisAlignment.end,
+            !(message!.isSender!) ? MainAxisAlignment.start : MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           // if (!(message.senderUserId == null)) ...[
@@ -70,7 +70,7 @@ class Message extends HookWidget {
           //   SizedBox(width: kDefaultPadding / 2),
           // ],
           Expanded(child: messageContaint(message)),
-          message!.isSender!
+          !(message!.isSender!)
               ? checkLoader(message!.messageStatus!)
               : MessageStatusDot(status: message!.messageStatus!)
         ],
@@ -84,7 +84,7 @@ class Message extends HookWidget {
             margin: EdgeInsets.only(left: kDefaultPadding / 2),
             height: 12,
             width: 12,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
                 // shape: BoxShape.circle,
                 ),
             child: loader()

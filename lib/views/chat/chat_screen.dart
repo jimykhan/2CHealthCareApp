@@ -5,6 +5,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:twochealthcare/common_widgets/alert_loader.dart';
 import 'package:twochealthcare/common_widgets/appbar_text_style.dart';
 import 'package:twochealthcare/common_widgets/circular_image.dart';
+import 'package:twochealthcare/common_widgets/circular_svg_icon.dart';
 import 'package:twochealthcare/common_widgets/custom_appbar.dart';
 import 'package:twochealthcare/common_widgets/loader.dart';
 import 'package:twochealthcare/common_widgets/no_data_inlist.dart';
@@ -77,7 +78,7 @@ class ChatScreen extends HookWidget {
                 ontap: () {
                   // Navigator.push(context, PageTransition(child: PatientProfile(), type: PageTransitionType.fade));
                 },
-                color: Colors.white,
+                color: Colors.blueAccent,
                 h: ApplicationSizing.convert(30),
                 w: ApplicationSizing.convert(30),
                 imageUrl: "assets/icons/personIcon.png",
@@ -85,8 +86,8 @@ class ChatScreen extends HookWidget {
               ),
               SizedBox(width: ApplicationSizing.convertWidth(10),),
               AppBarTextStyle(
-                text: "Text",
-                textsize: ApplicationSizing.convert(13),
+                text: getGroupsModel?.title??"Text",
+                textsize: ApplicationSizing.convert(14),
               ),
             ],
           ),
@@ -103,7 +104,16 @@ class ChatScreen extends HookWidget {
       //   preferredSize: Size.fromHeight(size.convert(context, 50)),
       //   child: buildAppBar(context, chatService: chatService),
       // ),
-      body: _body(context,chatScreenVM: chatScreenVM),
+      body: RefreshIndicator(
+        displacement: 10,
+        backgroundColor: Colors.white,
+        color: appColor,
+        strokeWidth: 3,
+        triggerMode: RefreshIndicatorTriggerMode.onEdge,
+        onRefresh: () => chatScreenVM.getAllMessages(chatGroupId: getGroupsModel?.id.toString()??"",pageNumber: chatScreenVM.loadingPageNumber),
+        child: _body(context,chatScreenVM: chatScreenVM),
+      ),
+      // body: _body(context,chatScreenVM: chatScreenVM),
       // body: test(),
     );
   }
@@ -132,12 +142,9 @@ class ChatScreen extends HookWidget {
                             shrinkWrap: true,
                             itemCount: chatScreenVM.chatMessageList.length,
                             itemBuilder: (context, index) {
-                              // if (date !=
-                              //     chatService?.listOfMessage[index]?.timeStamp
-                              //         ?.substring(0, 10))
-                                if (false){
-                                // date = chatService.listOfMessage[index].timeStamp
-                                //     .substring(0, 10);
+                              if (date != chatScreenVM.chatMessageList[index].timeStamp?.substring(0, 10))
+                                {
+                                date = chatScreenVM.chatMessageList[index].timeStamp!.substring(0, 10);
                                 return Container(
                                   margin: EdgeInsets.symmetric(
                                       horizontal: ApplicationSizing.convertWidth(20)),
@@ -154,14 +161,14 @@ class ChatScreen extends HookWidget {
                                             color: Colors.grey.shade200,
                                             borderRadius: BorderRadius.circular(10)),
                                         child: Text(
-                                          "{chatService.listOfMessage[index].timeStamp.substring(0, 10)}",
+                                          "$date",
                                           style: Styles.PoppinsRegular(
                                               color: drawerColor,
                                               fontSize: ApplicationSizing.convert(14)),
                                         ),
                                       ),
                                       Message(
-                                          // message: chatService.listOfMessage[index]
+                                        message: chatScreenVM.chatMessageList[index],
                                       ),
                                     ],
                                   ),
@@ -198,7 +205,6 @@ class ChatScreen extends HookWidget {
   }
 
   _scrollListener() {
-    print("this,");
     if (_scrollController!.offset >=
             _scrollController!.position.maxScrollExtent &&
         !_scrollController!.position.outOfRange) {
@@ -232,6 +238,7 @@ class ChatScreen extends HookWidget {
     });
 
   }
+
   Widget listOfParticepant(context,
       // {List<Participants> participants,videoCallingViewModel  callingViewModel}
       ){
@@ -278,27 +285,33 @@ class ChatScreen extends HookWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          CircularImage(
-
+                          CircularSvgIcon(
+                            iconSize: ApplicationSizing.convert(30),
+                            iconUrl: "assets/icons/Icon_Video.svg",
+                            padding: ApplicationSizing.convert(5),
+                            bgColor: Color(0xfff3f2f7),
+                            fluentSystemIcons: Icon(FluentSystemIcons.ic_fluent_video_regular,
+                              color: Color(0xff0479fb),
+                              size: ApplicationSizing.convert(18),
                             ),
-                            // on: () async {
-                            //
-                            //   await callingViewModel.initCalling(calleeId: participants[index]?.appUserId??"");
-                            //   Future.delayed(Duration(milliseconds: 500),(){
-                            //     Navigator.pushReplacement(context, PageTransition(child: videoCallingScreen(calleeName: participants[index]?.name??"",), type: PageTransitionType.fade));
-                            //   });
-                            // },
-                          // ),
+                            ontap: () async {
+
+                              // await callingViewModel.initCalling(calleeId: participants[index]?.appUserId??"");
+                              // Future.delayed(Duration(milliseconds: 500),(){
+                              //   Navigator.pushReplacement(context, PageTransition(child: videoCallingScreen(calleeName: participants[index]?.name??"",), type: PageTransitionType.fade));
+                              // });
+                            },
+                          ),
                           SizedBox(width: ApplicationSizing.convertWidth(15),),
-                          CircularImage(
-                            // iconSize: size.convert(context, 30),
-                            // // iconUrl: "assets/icons/call_end.svg",
-                            // padding: size.convert(context, 5),
-                            // bgColor: Color(0xfff3f2f7),
-                            // iconColor: Color(0xff0479fb),
-                            // fluentSystemIcons: Icon(FluentSystemIcons.ic_fluent_call_end_regular,
-                            // color: Color(0xff0479fb),
-                            //   size: size.convert(context, 18),),
+                          CircularSvgIcon(
+                            iconSize: ApplicationSizing.convert(30),
+                            // iconUrl: "assets/icons/call_end.svg",
+                            padding: ApplicationSizing.convert(5),
+                            bgColor: Color(0xfff3f2f7),
+                            iconColor: Color(0xff0479fb),
+                            fluentSystemIcons: Icon(FluentSystemIcons.ic_fluent_call_end_regular,
+                            color: Color(0xff0479fb),
+                              size: ApplicationSizing.convert(18),),
                           ),
                         ],
                       )),

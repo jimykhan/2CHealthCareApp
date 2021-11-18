@@ -307,7 +307,7 @@ class Profile extends HookWidget {
                 ApplicationSizing.verticalSpacer(n: 15),
                 infoWidget
                   (
-                  widgetTitle: 'Mailling Address',
+                  widgetTitle: 'Mailing Address',
                   child: Container(
                     child: Column(
                       children: [
@@ -318,7 +318,7 @@ class Profile extends HookWidget {
                                 child: Container(
                                   alignment: Alignment.centerLeft,
                                   child: tile(
-                                      key: "Mailling Address",
+                                      key: "Mailing Address",
                                       value: profileVm.currentUserInfo?.mailingAddress??""
                                   ),
                                 )

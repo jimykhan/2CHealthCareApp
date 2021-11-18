@@ -66,6 +66,8 @@ flutter:
     - assets/icons/i.svg
     - assets/loader.gif
     - assets/icons/splash_logo.png
+    - assets/icons/personIcon.png
+    - assets/icons/Icon_Video.svg
 
   fonts:
     - family: PoppinsRegular

@@ -10,7 +10,7 @@ class ChatScreenService{
     _ref = ref;
   }
 
-  Future<dynamic> getAllMessages({required var queryParameters}) async {
+  Future<dynamic> getAllMessages({String? userId, required var queryParameters}) async {
     try{
       final dio = _ref!.read(dioServicesProvider);
       Response response = await dio.dio!.get(ApiStrings.getPagedPrivateChatHistory,
@@ -21,7 +21,16 @@ class ChatScreenService{
         response.data.forEach((item) {
           newlist.add(ChatMessage.fromJson(item));
         });
-        return newlist;
+        newlist.forEach((element) {
+          element.messageStatus = MessageStatus.viewed;
+          if(element.senderUserId == userId){
+            element.isSender = true;
+          }else{
+            element.isSender = false;
+          }
+        });
+
+        return newlist.reversed.toList();
 
       }else{
         return null;
@@ -32,4 +41,56 @@ class ChatScreenService{
     }
 
   }
+
+  Future<dynamic> sendTextMessage({var body, String? currentUserAppUserId}) async {
+    try{
+      final dio = _ref!.read(dioServicesProvider);
+      Response response = await dio.dio!.post(ApiStrings.sendMessage,
+        data: body,
+      );
+      if(response.statusCode == 200){
+        ChatMessage newMessage = ChatMessage.fromJson(response.data);
+        newMessage.messageStatus = MessageStatus.not_view;
+        if (newMessage.senderUserId == currentUserAppUserId) {
+          newMessage.isSender = true;
+        } else {
+          newMessage.isSender = false;
+        }
+        return ;
+      }else{
+        return false;
+      }
+    }
+    catch(e){
+      print(e.toString());
+      return false;
+    }
+  }
 }
+
+// if (response is Response) {
+// print("THIS IS STATUS CODE ${response.statusCode}");
+// if (response.statusCode == 200) {
+// ChatMessage newMessage;
+// newMessage = ChatMessage.fromJson(response.data);
+// if (newMessage != null) {
+// newMessage.messageStatus = MessageStatus.not_view;
+// print(
+// "this is new Messager sender Id = ${newMessage.senderUserId} and this is current user id = ${UserId}");
+// if (newMessage.senderUserId == UserId) {
+// newMessage.isSender = false;
+// listOfMessage.removeLast();
+// listOfMessage.add(newMessage);
+// } else {
+// newMessage.isSender = true;
+// }
+// notifyListeners();
+// print("is sender = ${newMessage.isSender}");
+// }
+//
+// // notifyListeners();
+// } else if (response.statusCode == 204) {
+// } else {
+// return false;
+// }
+// }

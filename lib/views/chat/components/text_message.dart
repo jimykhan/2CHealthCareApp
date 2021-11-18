@@ -29,7 +29,7 @@ class TextMessage extends StatelessWidget {
       //   borderRadius: BorderRadius.circular(10),
       // ),
       child: Column(
-        crossAxisAlignment: message!.isSender!
+        crossAxisAlignment: !(message!.isSender!)
             ? CrossAxisAlignment.start
             : CrossAxisAlignment.end,
         children: [
@@ -38,7 +38,7 @@ class TextMessage extends StatelessWidget {
             margin: EdgeInsets.only(bottom: 2),
             decoration: BoxDecoration(
               // color: message.isSender ? drawerColor : appColor,
-              borderRadius: message!.isSender!
+              borderRadius: !(message!.isSender!)
                   ? BorderRadius.only(
                       topLeft: Radius.circular(5),
                       topRight: Radius.circular(5),
@@ -62,8 +62,8 @@ class TextMessage extends StatelessWidget {
           Container(
             child: Container(
               decoration: BoxDecoration(
-                color: message!.isSender! ? drawerColor : appColor,
-                borderRadius: message!.isSender!
+                color: !(message!.isSender!) ? drawerColor : appColor,
+                borderRadius: !(message!.isSender!)
                     ? BorderRadius.only(
                         topLeft: Radius.circular(5),
                         topRight: Radius.circular(5),
@@ -90,7 +90,7 @@ class TextMessage extends StatelessWidget {
                       message!.message??"",
                       style: TextStyle(
                         fontSize: ApplicationSizing.convert(16),
-                        color: message!.isSender! ? Colors.white : Colors.white,
+                        color: !(message!.isSender!) ? Colors.white : Colors.white,
                       ),
                     ),
                   ),
@@ -103,7 +103,7 @@ class TextMessage extends StatelessWidget {
           ),
           Container(
             child: Text(
-              "${message!.timeStamp!}",
+              "${Jiffy(message?.timeStamp).format("h:mm a")}",
               style: Styles.RobotoMedium(
                 fontSize: ApplicationSizing.convert(10),
                 color: Colors.red,

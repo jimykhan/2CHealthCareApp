@@ -20,7 +20,7 @@ class CircularImage extends StatelessWidget {
       this.fileImage = false,
       this.h,
       this.w,
-      this.assetImage = false,
+      this.assetImage = true,
       this.color,
       this.ontap});
 
@@ -37,7 +37,7 @@ class CircularImage extends StatelessWidget {
             image: imageUrl == null
                 ? null
                 : DecorationImage(
-                    image: checkImageType() ?? NetworkImage(""),
+                    image: checkImageType() ?? AssetImage(imageUrl??""),
                     fit: BoxFit.cover)),
       ),
     );
@@ -47,7 +47,7 @@ class CircularImage extends StatelessWidget {
       return FileImage(file!);
     }
     else if(assetImage){
-      AssetImage(imageUrl ?? "");
+      return AssetImage(imageUrl ?? "");
     }
     else{
       return NetworkImage(imageUrl ?? "");

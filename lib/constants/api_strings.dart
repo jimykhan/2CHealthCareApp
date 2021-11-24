@@ -43,9 +43,9 @@ class ApiStrings {
   static const String getPagedPrivateChatHistory =
       baseUrl + "/api/Chat/GetPagedPrivateChatHistory";
   static const String sendMessage = baseUrl + "/api/Chat";
+  static const String markChatViewed = baseUrl + "/api/Chat/MarkChatViewed";
   static const String changePassword = baseUrl + "/api/Account/ChangePassword";
   static const String errorUrl =
       "https://e62aa90a591644a1b3def848bcceeb57@o600993.ingest.sentry.io/5744159";
-  static const String sendError =
-      baseUrl + "/api/Exceptions/PostMobileAppException";
+  static const String sendError = baseUrl + "/api/Exceptions/PostMobileAppException";
 }

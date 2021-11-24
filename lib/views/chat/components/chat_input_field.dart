@@ -90,7 +90,7 @@ class ChatInputField extends HookWidget {
                         : InkWell(
                             onTap: () async {
                               FocusScope.of(context).unfocus();
-                              ChatScreen().jumpToListIndex();
+                              ChatScreen.jumpToListIndex();
                               chatScreenVM.sendTextMessage(message: _textEditingController?.text.toString());
                               _textEditingController?.clear();
                               print("work");

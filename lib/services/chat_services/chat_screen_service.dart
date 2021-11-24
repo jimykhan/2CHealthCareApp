@@ -42,6 +42,7 @@ class ChatScreenService{
 
   }
 
+
   Future<dynamic> sendTextMessage({var body, String? currentUserAppUserId}) async {
     try{
       final dio = _ref!.read(dioServicesProvider);
@@ -57,6 +58,28 @@ class ChatScreenService{
           newMessage.isSender = false;
         }
         return ;
+      }else{
+        return false;
+      }
+    }
+    catch(e){
+      print(e.toString());
+      return false;
+    }
+  }
+
+  Future<dynamic> markChatViewed({String? chatGroupId, String? currentUserAppUserId}) async {
+    try{
+      var body ={
+        "applicationUserId": currentUserAppUserId,
+        "chatGroupId": chatGroupId
+      };
+      final dio = _ref!.read(dioServicesProvider);
+      Response response = await dio.dio!.post(ApiStrings.markChatViewed,
+        data: body,
+      );
+      if(response.statusCode == 200){
+        return true;
       }else{
         return false;
       }

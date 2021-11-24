@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:twochealthcare/main.dart';
 import 'package:twochealthcare/models/chat_model/ChatMessage.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
 import 'package:twochealthcare/services/chat_services/chat_screen_service.dart';
+import 'package:twochealthcare/services/signal_r_services.dart';
+import 'package:twochealthcare/views/chat/chat_screen.dart';
 
 class ChatScreenVM extends ChangeNotifier{
   List<ChatMessage> chatMessageList = [];
@@ -16,21 +17,37 @@ class ChatScreenVM extends ChangeNotifier{
   ProviderReference? _ref;
   AuthServices? _authServices;
   ChatScreenService? _chatScreenService;
+  SignalRServices? _signalRServices;
   bool isMessageEmpty = true;
 
   ChatScreenVM({ProviderReference? ref}){
     _ref = ref;
     initService();
   }
+
   initService(){
     _authServices = _ref!.read(authServiceProvider);
     _chatScreenService = _ref!.read(chatScreenServiceProvider);
-
+    _signalRServices = _ref!.read(signalRServiceProvider);
+    _signalRServices?.newMessage.stream.listen((event) {
+      print("new message reached to Rx dart..");
+      if(event.senderUserId != currentUserAppUserId) {
+        event.isSender = false;
+        event.messageStatus = MessageStatus.viewed;
+        print(chatMessageList.length.toString());
+        chatMessageList.add(event);
+        print(chatMessageList.length.toString());
+        notifyListeners();
+        ChatScreen.jumpToListIndex(isDelayed: true);
+      }
+    });
   }
+
   setAllMessagesLoading(bool check){
     allMessagesLoading = check;
     notifyListeners();
   }
+
   setPageWiseLoading(bool check){
     pageWiseLoading = check;
     notifyListeners();
@@ -48,9 +65,6 @@ class ChatScreenVM extends ChangeNotifier{
 
   Future<dynamic> getAllMessages({String? chatGroupId,int? pageNumber}) async {
     try{
-      // pageNumber != null ? loadingPageNumber = pageNumber : null;
-      // loadingPageNumber = pageNumber!;
-      print("this is page Number $pageNumber");
       pageNumber == 1 ? setAllMessagesLoading(true) : setPageWiseLoading(true);
       String UserId = await _authServices!.getCurrentAppUserId();
       currentUserAppUserId = UserId;
@@ -71,11 +85,11 @@ class ChatScreenVM extends ChangeNotifier{
         }else{
           if(response.length !=0){
             chatMessageList.insertAll(0, response);
-            // chatMessageList.addAll(response);
           }
           setPageWiseLoading(false);
         }
         response.length > 0 ? loadingPageNumber ++ : null;
+        markChatViewed();
         return chatMessageList;
       }
       else{
@@ -85,7 +99,6 @@ class ChatScreenVM extends ChangeNotifier{
     }
     catch(e){
       loadingPageNumber == 1 ? setAllMessagesLoading(false) : setPageWiseLoading(false);
-      print(e.toString());
     }
 
   }
@@ -113,6 +126,7 @@ class ChatScreenVM extends ChangeNotifier{
       var response = await _chatScreenService?.sendTextMessage(body: body,currentUserAppUserId: currentUserAppUserId);
       if(response is ChatMessage){
         chatMessageList.removeLast();
+        response.messageStatus = MessageStatus.not_view;
         chatMessageList.add(response);
         notifyListeners();
         return true;
@@ -125,4 +139,24 @@ class ChatScreenVM extends ChangeNotifier{
       return false;
     }
   }
+
+  Future<dynamic> markChatViewed() async {
+    try{
+      var response = await _chatScreenService?.markChatViewed(chatGroupId: chatGroupId,currentUserAppUserId: currentUserAppUserId);
+      if(response is bool && response){
+        chatMessageList.forEach((element) {
+          element.messageStatus = MessageStatus.viewed;
+        });
+        notifyListeners();
+        return true;
+      }else{
+        return false;
+      }
+    }
+    catch(e){
+      print(e.toString());
+      return false;
+    }
+  }
+
 }

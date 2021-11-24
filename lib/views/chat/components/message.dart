@@ -88,9 +88,7 @@ class Message extends HookWidget {
                 // shape: BoxShape.circle,
                 ),
             child: loader()
-    )
-
-        : Container();
+    ) : Container();
   }
 }
 
@@ -100,12 +98,14 @@ class MessageStatusDot extends StatelessWidget {
   const MessageStatusDot({Key? key, required this.status}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+
     Color dotColor(MessageStatus status) {
+      print("this is green dot $status");
       switch (status) {
         case MessageStatus.not_sent:
           return kErrorColor;
         case MessageStatus.not_view:
-          return Theme.of(context).textTheme.bodyText1!.color!.withOpacity(0.1);
+          return fontGrayColor;
         case MessageStatus.viewed:
           return appColor;
         default:

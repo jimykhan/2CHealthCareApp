@@ -64,7 +64,6 @@ class AuthServices{
   }
 
   Future<int> getCurrentUserId() async {
-
     var currentUser = await getCurrentUserFromSharedPref();
     int Id = 0 ;
     if(currentUser != null) Id = currentUser.id!;

@@ -1,3 +1,4 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -67,9 +68,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     homeContext = context;
     return MaterialApp(
+      builder: BotToastInit(),
       navigatorKey: applicationContext,
       debugShowCheckedModeBanner: false,
       title: '2C Health Care',
+        navigatorObservers: [BotToastNavigatorObserver()],
       theme: ThemeData(
           primaryColor: Colors.green.shade50, primarySwatch: Colors.green),
       home: const Splash(),

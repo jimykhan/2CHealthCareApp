@@ -34,6 +34,10 @@ dependencies:
   jiffy: ^4.1.0
   package_info: ^2.0.2
   icofont_flutter: ^1.4.0
+  signalr_core: ^1.1.1
+  rxdart: ^0.27.3
+  bot_toast: ^4.0.1
+  connectivity_plus: ^2.0.3
 
 dev_dependencies:
   flutter_test:

@@ -198,7 +198,7 @@ class ChatList extends HookWidget {
                               maxLines: 1,
                             )),
                       ),
-                      Expanded(
+                      getGroupsModel?.unreadMsgCount == 0 ? Container() : Expanded(
                         flex: 1,
                           child: Container(
                               alignment: Alignment.center,

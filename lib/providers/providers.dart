@@ -4,6 +4,7 @@ import 'package:twochealthcare/constants/api_strings.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
 import 'package:twochealthcare/services/chat_services/chat_list_service.dart';
 import 'package:twochealthcare/services/chat_services/chat_screen_service.dart';
+import 'package:twochealthcare/services/connectivity_service.dart';
 import 'package:twochealthcare/services/dio_services/dio_services.dart';
 import 'package:twochealthcare/services/firebase_service.dart';
 import 'package:twochealthcare/services/profile_service.dart';
@@ -48,5 +49,6 @@ final firebaseServiceProvider = Provider<FirebaseService>((ref)=>FirebaseService
 final signalRServiceProvider = Provider<SignalRServices>((ref)=>SignalRServices(ref: ref));
 final chatScreenServiceProvider = Provider<ChatScreenService>((ref)=>ChatScreenService(ref: ref));
 final chatListServiceProvider = Provider<ChatListService>((ref)=>ChatListService(ref: ref));
+final connectivityServiceProvider = Provider<ConnectivityService>((ref)=>ConnectivityService(ref: ref));
 /// Simple Providers
 

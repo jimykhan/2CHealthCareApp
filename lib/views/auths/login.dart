@@ -12,6 +12,7 @@ import 'package:twochealthcare/common_widgets/filled_button.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
 import 'package:twochealthcare/services/firebase_service.dart';
+import 'package:twochealthcare/services/signal_r_services.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
@@ -27,6 +28,7 @@ class Login extends HookWidget {
     LoginVM loginVM = useProvider(loginVMProvider);
     FirebaseService firebaseService = useProvider(firebaseServiceProvider);
     ApplicationPackageVM applicationPackageVM = useProvider(applicationPackageVMProvider);
+    SignalRServices signalRServices = useProvider(signalRServiceProvider);
 
     useEffect(
       () {
@@ -59,7 +61,9 @@ class Login extends HookWidget {
     );
   }
 
-  _loginform(BuildContext context, {LoginVM? loginVM,FirebaseService? firebaseService,ApplicationPackageVM? applicationPackageVM}) {
+  _loginform(BuildContext context, {LoginVM? loginVM,FirebaseService? firebaseService,
+    ApplicationPackageVM? applicationPackageVM,
+  SignalRServices? signalRServices}) {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(ApplicationSizing.fontScale(5)),
@@ -238,7 +242,12 @@ class Login extends HookWidget {
                             PageTransition(
                                 child: Home(),
                                 type: PageTransitionType.bottomToTop));
-                        firebaseService?.initNotification();
+                        try{
+                          firebaseService?.initNotification();
+                          signalRServices?.initSignalR();
+                        }catch(e){
+                          print("$e");
+                        }
 
                       }
                     }

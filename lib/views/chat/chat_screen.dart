@@ -37,7 +37,6 @@ class ChatScreen extends HookWidget {
     ChatScreenVM chatScreenVM = useProvider(chatScreenVMProvider);
     useEffect(
       () {
-
         // chatService.initSigalR(token: deviceService?.currentUser?.bearerToken??"",appId: deviceService?.currentUser?.appUserId??"");
         Future.microtask(() async {
           chatScreenVM.chatGroupId = getGroupsModel?.id.toString();
@@ -223,7 +222,7 @@ class ChatScreen extends HookWidget {
     }
   }
 
-  jumpToListIndex({bool isDelayed = false}) {
+  static jumpToListIndex({bool isDelayed = false}) {
     print("this is jump function");
     // _scrollController.;
     // _scrollController.jumpTo()

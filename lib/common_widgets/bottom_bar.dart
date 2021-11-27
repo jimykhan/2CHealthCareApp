@@ -1,21 +1,39 @@
 import 'dart:io';
 import 'dart:math';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:twochealthcare/common_widgets/snackber_message.dart';
+import 'package:twochealthcare/providers/providers.dart';
+import 'package:twochealthcare/services/connectivity_service.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/views/chat/chat_list.dart';
 import 'package:twochealthcare/views/home/home.dart';
 import 'package:twochealthcare/views/home/profile.dart';
 
-class BottomBar extends StatelessWidget {
+class BottomBar extends HookWidget {
   int selectedIndex;
   BottomBar({Key? key, required this.selectedIndex}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    ConnectivityService connectivityService = useProvider(connectivityServiceProvider);
+
+
+    useEffect(
+          () {
+        Future.microtask(() async {});
+        return () {
+          // Dispose Objects here
+        };
+      },
+      const [],
+    );
     // return CustomPaint(
     //   size: Size(MediaQuery.of(context).size.width,70),
     //   painter: BottomBarPaint(),
@@ -120,11 +138,17 @@ class BottomBar extends StatelessWidget {
               child: InkWell(
                 onTap: () {
                   if (selectedIndex != 2) {
-                    Navigator.pushReplacement(
-                        context,
-                        PageTransition(
-                            child: ChatList(),
-                            type: PageTransitionType.bottomToTop));
+                    if(connectivityService.connectionStatus == ConnectivityResult.none){
+                      SnackBarMessage(message: "No internet connection detected, please try again.");
+                    }else{
+                      Navigator.pushReplacement(
+                          context,
+                          PageTransition(
+                              child: ChatList(),
+                              type: PageTransitionType.bottomToTop));
+                    }
+
+
                     print("do something on selected index $selectedIndex}");
                   }
                 },

@@ -21,7 +21,6 @@ class SharedPrefServices{
     _prefs?.setString("currentUser", jsonEncode(data));
   }
 
-
   Future<CurrentUser?> getCurrentUser()  async {
     await _initPref();
     var data1 = _prefs?.get("currentUser");
@@ -35,12 +34,24 @@ class SharedPrefServices{
     }
     return userdata;
   }
+
   dynamic getBearerToken() async {
     await _initPref();
     CurrentUser? currentUser = await getCurrentUser();
     String? token = currentUser?.bearerToken;
     print("this is token ${token}");
     return token;
+  }
+
+  lastLoggedInUser(var data) async {
+    await _initPref();
+    bool isKeyAvail = _prefs?.containsKey("loggedInUsers")??false;
+    if(_prefs?.containsKey("loggedInUsers")??false){
+      String? allUser = _prefs?.getString("loggedInUsers");
+
+    }
+
+    _prefs?.setString("loggedInUsers", jsonEncode(data));
   }
 
 }

@@ -40,21 +40,21 @@ class TextMessage extends StatelessWidget {
               // color: message.isSender ? drawerColor : appColor,
               borderRadius: !(message!.isSender!)
                   ? BorderRadius.only(
-                      topLeft: Radius.circular(5),
-                      topRight: Radius.circular(5),
-                      bottomLeft: Radius.circular(0),
-                      bottomRight: Radius.circular(5))
+                      topLeft: Radius.circular(8),
+                      topRight: Radius.circular(8),
+                      bottomLeft: Radius.circular(8),
+                      bottomRight: Radius.circular(8))
                   : BorderRadius.only(
-                      topLeft: Radius.circular(5),
-                      topRight: Radius.circular(5),
-                      bottomLeft: Radius.circular(5),
-                      bottomRight: Radius.circular(0),
+                      topLeft: Radius.circular(8),
+                      topRight: Radius.circular(8),
+                      bottomLeft: Radius.circular(8),
+                      bottomRight: Radius.circular(8),
                     ),
             ),
             child: Text(
               message?.senderName ?? "",
               style: Styles.PoppinsRegular(
-                fontSize: ApplicationSizing.convert(10),
+                fontSize: ApplicationSizing.convert(12),
                 color: drawerColor,
               ),
             ),
@@ -62,55 +62,91 @@ class TextMessage extends StatelessWidget {
           Container(
             child: Container(
               decoration: BoxDecoration(
-                color: !(message!.isSender!) ? drawerColor : appColor,
+                boxShadow: [
+                  BoxShadow(
+                    color: Color(0Xff1d161712),
+                    blurRadius: 3,
+                    offset: Offset(0, 6), // Shadow position
+                  ),
+                ],
+                color: !(message!.isSender!) ? Colors.white : Color(0xffDEEFDD),
                 borderRadius: !(message!.isSender!)
                     ? BorderRadius.only(
-                        topLeft: Radius.circular(5),
-                        topRight: Radius.circular(5),
-                        bottomLeft: Radius.circular(0),
-                        bottomRight: Radius.circular(5))
+                        topLeft: Radius.circular(8),
+                        topRight: Radius.circular(8),
+                        bottomLeft: Radius.circular(8),
+                        bottomRight: Radius.circular(8),
+                      )
                     : BorderRadius.only(
-                        topLeft: Radius.circular(5),
-                        topRight: Radius.circular(5),
-                        bottomLeft: Radius.circular(5),
-                        bottomRight: Radius.circular(0),
+                        topLeft: Radius.circular(8),
+                        topRight: Radius.circular(8),
+                        bottomLeft: Radius.circular(8),
+                        bottomRight: Radius.circular(8),
                       ),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    padding: EdgeInsets.only(
-                      right: ApplicationSizing.convertWidth(10),
-                      left: ApplicationSizing.convertWidth(10),
-                      bottom: ApplicationSizing.convertWidth(10),
-                      top: ApplicationSizing.convertWidth(10),
-                    ),
-                    child: Text(
-                      message!.message??"",
-                      style: TextStyle(
-                        fontSize: ApplicationSizing.convert(16),
-                        color: !(message!.isSender!) ? Colors.white : Colors.white,
+                      padding: EdgeInsets.only(
+                        right: ApplicationSizing.convertWidth(15),
+                        left: ApplicationSizing.convertWidth(15),
+                        bottom: ApplicationSizing.convertWidth(10),
+                        top: ApplicationSizing.convertWidth(10),
                       ),
-                    ),
-                  ),
+                      child: Column(
+                        crossAxisAlignment: message!.isSender!
+                            ? CrossAxisAlignment.end
+                            : CrossAxisAlignment.start,
+                        children: [
+                          Column(
+                            children: [
+                              Text(
+                                message!.message ?? "",
+                                style: TextStyle(
+                                  fontSize: ApplicationSizing.convert(18),
+                                  color: !(message!.isSender!)
+                                      ? Colors.black
+                                      : Colors.black,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: ApplicationSizing.convertWidth(5),
+                          ),
+                          Column(
+                            children: [
+                              Text(
+                                "${Jiffy(message?.timeStamp).format("h:mm a")}",
+                                style: Styles.RobotoMedium(
+                                  fontSize: ApplicationSizing.convert(12),
+                                  color: Colors.green,
+                                ),
+                                textAlign: TextAlign.right,
+                                // ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      )),
                 ],
               ),
             ),
           ),
           SizedBox(
-            height: ApplicationSizing.convertWidth( 5),
+            height: ApplicationSizing.convertWidth(10),
           ),
-          Container(
-            child: Text(
-              "${Jiffy(message?.timeStamp).format("h:mm a")}",
-              style: Styles.RobotoMedium(
-                fontSize: ApplicationSizing.convert(10),
-                color: Colors.red,
-              ),
-              // ),
-            ),
-          ),
+          // Container(
+          //   child: Text(
+          //     "${Jiffy(message?.timeStamp).format("h:mm a")}",
+          //     style: Styles.RobotoMedium(
+          //       fontSize: ApplicationSizing.convert(12),
+          //       color: Colors.red,
+          //     ),
+          //     // ),
+          //   ),
+          // ),
         ],
       ),
     );

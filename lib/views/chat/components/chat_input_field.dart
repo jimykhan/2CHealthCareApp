@@ -11,7 +11,9 @@ import 'package:twochealthcare/views/chat/chat_screen.dart';
 
 class ChatInputField extends HookWidget {
   TextEditingController? _textEditingController;
-  ChatInputField({Key? key,}) : super(key: key);
+  ChatInputField({
+    Key? key,
+  }) : super(key: key);
   // FocusNode myFocusNode;
   @override
   Widget build(BuildContext context) {
@@ -19,7 +21,6 @@ class ChatInputField extends HookWidget {
     ChatScreenVM chatScreenVM = useProvider(chatScreenVMProvider);
     useEffect(
       () {
-
         //
         // myFocusNode = FocusNode();
         return () {
@@ -69,20 +70,25 @@ class ChatInputField extends HookWidget {
                     // ),
                     // SizedBox(width: kDefaultPadding / 4),
                     Expanded(
-                      child: TextField(
-                        // expands: true,
-                        maxLines: 5,
-                        style: Styles.PoppinsRegular(
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 15, top: 3),
+                        child: TextField(
+                          // expands: true,
+                          maxLines: 5,
+                          style: Styles.PoppinsRegular(
                             color: drawerColor,
-                            fontSize: ApplicationSizing.convert(16)),
-                        controller: _textEditingController,
-                        decoration: InputDecoration(
+                            fontSize: ApplicationSizing.convert(16),
+                          ),
+                          controller: _textEditingController,
+                          decoration: InputDecoration(
                             hintText: "Type a message",
                             border: InputBorder.none,
                             hintStyle: Styles.PoppinsRegular(
-                                color: drawerSelectMenuColor, fontSize: 16)),
-                        onChanged: chatScreenVM.checkMessageField,
-                        // focusNode: myFocusNode,
+                                color: drawerSelectMenuColor, fontSize: 16),
+                          ),
+                          onChanged: chatScreenVM.checkMessageField,
+                          // focusNode: myFocusNode,
+                        ),
                       ),
                     ),
                     chatScreenVM.isMessageEmpty
@@ -91,7 +97,9 @@ class ChatInputField extends HookWidget {
                             onTap: () async {
                               FocusScope.of(context).unfocus();
                               ChatScreen.jumpToListIndex();
-                              chatScreenVM.sendTextMessage(message: _textEditingController?.text.toString());
+                              chatScreenVM.sendTextMessage(
+                                  message:
+                                      _textEditingController?.text.toString());
                               _textEditingController?.clear();
                               print("work");
                             },

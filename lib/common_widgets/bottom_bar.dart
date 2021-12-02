@@ -12,6 +12,7 @@ import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/connectivity_service.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
+import 'package:twochealthcare/view_models/home_vm.dart';
 import 'package:twochealthcare/views/chat/chat_list.dart';
 import 'package:twochealthcare/views/home/home.dart';
 import 'package:twochealthcare/views/home/profile.dart';
@@ -23,6 +24,7 @@ class BottomBar extends HookWidget {
   @override
   Widget build(BuildContext context) {
     ConnectivityService connectivityService = useProvider(connectivityServiceProvider);
+    HomeVM homeVM = useProvider(homeVMProvider);
 
 
     useEffect(
@@ -136,16 +138,22 @@ class BottomBar extends HookWidget {
             Expanded(
               flex: 1,
               child: InkWell(
-                onTap: () {
+                onTap: () async {
                   if (selectedIndex != 2) {
                     if(connectivityService.connectionStatus == ConnectivityResult.none){
                       SnackBarMessage(message: "No internet connection detected, please try again.");
                     }else{
-                      Navigator.pushReplacement(
-                          context,
-                          PageTransition(
-                              child: ChatList(),
-                              type: PageTransitionType.bottomToTop));
+                      bool check =  await homeVM.checkChatStatus();
+                      if(check){
+                        Navigator.pushReplacement(
+                            context,
+                            PageTransition(
+                                child: ChatList(),
+                                type: PageTransitionType.bottomToTop));
+                      }else{
+                        SnackBarMessage(message: "Chat disable for this user!");
+                      }
+
                     }
 
 

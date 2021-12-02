@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:twochealthcare/models/user/current_user.dart';
+import 'package:twochealthcare/models/user/loged_in_user.dart';
 
 class SharedPrefServices{
   ProviderReference? _ref;
@@ -43,15 +44,31 @@ class SharedPrefServices{
     return token;
   }
 
-  lastLoggedInUser(var data) async {
+  Future<LogedInUserModel?> lastLoggedInUser({var data, String? userId}) async {
     await _initPref();
-    bool isKeyAvail = _prefs?.containsKey("loggedInUsers")??false;
+    List newList = [];
+    LogedInUserModel? lastLoggedInUser;
+    // bool isKeyAvail = _prefs?.containsKey("loggedInUsers")??false;
     if(_prefs?.containsKey("loggedInUsers")??false){
       String? allUser = _prefs?.getString("loggedInUsers");
-
+      var listOfUser = jsonDecode(allUser??"");
+      if(listOfUser is List){
+        listOfUser.forEach((element) {
+          if(element["id"] == userId){
+            data == null ? null : element["lastLogedIn"] = data["lastLogedIn"];
+            lastLoggedInUser = LogedInUserModel.fromJson(element);
+          }
+        });
+        _prefs?.setString("loggedInUsers", jsonEncode(listOfUser));
+        return lastLoggedInUser!;
+      }
+    }else{
+      newList.add(data);
+      _prefs?.setString("loggedInUsers", jsonEncode(newList));
+      return LogedInUserModel.fromJson(data);
     }
-
-    _prefs?.setString("loggedInUsers", jsonEncode(data));
   }
+
+
 
 }

@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/all.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:twochealthcare/common_widgets/aler_dialogue.dart';
+import 'package:twochealthcare/common_widgets/alert_loader.dart';
 import 'package:twochealthcare/common_widgets/bottom_bar.dart';
 import 'package:twochealthcare/common_widgets/circular_image.dart';
 import 'package:twochealthcare/common_widgets/custom_appbar.dart';
@@ -88,7 +89,7 @@ class Home extends HookWidget {
           parentContext: context,
         ),
       ),
-      body: _body(loginVM: loginVM),
+      body: _body(loginVM: loginVM,homeVM: homeVM),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         // isExtended: true,
@@ -128,157 +129,162 @@ class Home extends HookWidget {
     );
   }
 
-  _body({required LoginVM loginVM}) {
-    return Container(
-      color: Colors.white,
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              margin: EdgeInsets.symmetric(
-                  horizontal: ApplicationSizing.horizontalMargin(n: 20)),
-              child: Column(
-                children: [
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    margin: EdgeInsets.only(
-                      top: ApplicationSizing.convert(10),
-                      bottom: ApplicationSizing.convert(0),
-                    ),
-                    child: Text(
-                      "Welcome Back,",
-                      style: Styles.PoppinsRegular(
-                        fontSize: ApplicationSizing.fontScale(12),
-                        color: fontGrayColor,
+  _body({required LoginVM loginVM,required HomeVM homeVM}) {
+    return Stack(
+      children: [
+        Container(
+          color: Colors.white,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Container(
+                  margin: EdgeInsets.symmetric(
+                      horizontal: ApplicationSizing.horizontalMargin(n: 20)),
+                  child: Column(
+                    children: [
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        margin: EdgeInsets.only(
+                          top: ApplicationSizing.convert(10),
+                          bottom: ApplicationSizing.convert(0),
+                        ),
+                        child: Text(
+                          "Welcome Back,",
+                          style: Styles.PoppinsRegular(
+                            fontSize: ApplicationSizing.fontScale(12),
+                            color: fontGrayColor,
+                          ),
+                        ),
                       ),
-                    ),
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          loginVM.currentUser?.fullName ?? "",
+                          style: Styles.PoppinsRegular(
+                              fontSize: ApplicationSizing.fontScale(20),
+                              color: Colors.black,
+                              fontWeight: FontWeight.w600),
+                        ),
+                      ),
+                    ],
                   ),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      loginVM.currentUser?.fullName ?? "",
-                      style: Styles.PoppinsRegular(
-                          fontSize: ApplicationSizing.fontScale(20),
-                          color: Colors.black,
-                          fontWeight: FontWeight.w600),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+                ApplicationSizing.verticalSpacer(n: 20),
+                Container(
+                    margin: EdgeInsets.symmetric(
+                        horizontal: ApplicationSizing.horizontalMargin()),
+                    child: StaggeredGridView.countBuilder(
+                      shrinkWrap: true,
+                      physics: const ScrollPhysics(),
+                      crossAxisCount: 2,
+                      itemCount: items?.length ?? 0,
+                      itemBuilder: (BuildContext context, int index) {
+                        return InkWell(
+                            onTap: () {
+                              if (index == 1) {
+                                Navigator.push(
+                                    context,
+                                    PageTransition(
+                                        child: ModalitiesReading(),
+                                        type: PageTransitionType.rightToLeft));
+                              }
+                              else if (index == 0) {
+                                Navigator.push(
+                                    context,
+                                    PageTransition(
+                                        child: Profile(),
+                                        type: PageTransitionType.rightToLeft));
+                              }
+                              else if(index == 2){
+                                CustomAlertDialog(message: "Coming Soon...");
+                              }
+                              else if(index == 3){
+                                CustomAlertDialog(message: "Coming Soon...");
+                              }
+                            },
+                            child: squareBox(item: items?[index], index: index));
+                      },
+                      staggeredTileBuilder: (int index) =>
+                          const StaggeredTile.fit(1),
+                      mainAxisSpacing: ApplicationSizing.convert(20),
+                      crossAxisSpacing: ApplicationSizing.convert(20),
+                    )),
+                // Container(
+                //   margin: EdgeInsets.symmetric(
+                //       horizontal: ApplicationSizing.horizontalMargin(n: 20)),
+                //   child: Row(
+                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //     crossAxisAlignment: CrossAxisAlignment.end,
+                //     children: [
+                //       Expanded(
+                //         flex: 6,
+                //         child: Container(
+                //           alignment: Alignment.bottomLeft,
+                //           child: Text(
+                //             "Recent Notifications",
+                //             style: Styles.PoppinsBold(
+                //               fontSize: ApplicationSizing.fontScale(16),
+                //             ),
+                //           ),
+                //         ),
+                //       ),
+                //       Expanded(
+                //         flex: 2,
+                //         child: Container(
+                //           alignment: Alignment.bottomRight,
+                //           child: Text(
+                //             "See All",
+                //             style: Styles.PoppinsRegular(
+                //               fontSize: ApplicationSizing.fontScale(12),
+                //               color: appColor,
+                //             ),
+                //           ),
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                // ),
+                // ApplicationSizing.verticalSpacer(n: 0),
+                // Container(
+                //   child: ListView.separated(
+                //       shrinkWrap: true,
+                //       physics: ScrollPhysics(),
+                //       itemBuilder: (context, index) {
+                //         return InkWell(
+                //           onTap: () {
+                //             Navigator.push(
+                //                 context,
+                //                 PageTransition(
+                //                     child: NotificationList(),
+                //                     type: PageTransitionType.bottomToTop));
+                //           },
+                //           child: Container(
+                //             margin: EdgeInsets.symmetric(
+                //                 horizontal: ApplicationSizing.horizontalMargin()),
+                //             child: NotificationWidget(
+                //               title: "Lorem ipsum",
+                //               date: "6 April",
+                //             ),
+                //           ),
+                //         );
+                //       },
+                //       separatorBuilder: (context, index) {
+                //         return Container(
+                //           height: 1,
+                //           color: fontGrayColor.withOpacity(0.5),
+                //           // margin: EdgeInsets.symmetric(vertical: ApplicationSizing.convert(10),
+                //           // horizontal: ApplicationSizing.horizontalMargin(n: 20)),
+                //         );
+                //       },
+                //       itemCount: 3),
+                // ),
+                ApplicationSizing.verticalSpacer(),
+              ],
             ),
-            ApplicationSizing.verticalSpacer(n: 20),
-            Container(
-                margin: EdgeInsets.symmetric(
-                    horizontal: ApplicationSizing.horizontalMargin()),
-                child: StaggeredGridView.countBuilder(
-                  shrinkWrap: true,
-                  physics: const ScrollPhysics(),
-                  crossAxisCount: 2,
-                  itemCount: items?.length ?? 0,
-                  itemBuilder: (BuildContext context, int index) {
-                    return InkWell(
-                        onTap: () {
-                          if (index == 1) {
-                            Navigator.push(
-                                context,
-                                PageTransition(
-                                    child: ModalitiesReading(),
-                                    type: PageTransitionType.rightToLeft));
-                          }
-                          else if (index == 0) {
-                            Navigator.push(
-                                context,
-                                PageTransition(
-                                    child: Profile(),
-                                    type: PageTransitionType.rightToLeft));
-                          }
-                          else if(index == 2){
-                            CustomAlertDialog(message: "Coming Soon...");
-                          }
-                          else if(index == 3){
-                            CustomAlertDialog(message: "Coming Soon...");
-                          }
-                        },
-                        child: squareBox(item: items?[index], index: index));
-                  },
-                  staggeredTileBuilder: (int index) =>
-                      const StaggeredTile.fit(1),
-                  mainAxisSpacing: ApplicationSizing.convert(20),
-                  crossAxisSpacing: ApplicationSizing.convert(20),
-                )),
-            // Container(
-            //   margin: EdgeInsets.symmetric(
-            //       horizontal: ApplicationSizing.horizontalMargin(n: 20)),
-            //   child: Row(
-            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //     crossAxisAlignment: CrossAxisAlignment.end,
-            //     children: [
-            //       Expanded(
-            //         flex: 6,
-            //         child: Container(
-            //           alignment: Alignment.bottomLeft,
-            //           child: Text(
-            //             "Recent Notifications",
-            //             style: Styles.PoppinsBold(
-            //               fontSize: ApplicationSizing.fontScale(16),
-            //             ),
-            //           ),
-            //         ),
-            //       ),
-            //       Expanded(
-            //         flex: 2,
-            //         child: Container(
-            //           alignment: Alignment.bottomRight,
-            //           child: Text(
-            //             "See All",
-            //             style: Styles.PoppinsRegular(
-            //               fontSize: ApplicationSizing.fontScale(12),
-            //               color: appColor,
-            //             ),
-            //           ),
-            //         ),
-            //       ),
-            //     ],
-            //   ),
-            // ),
-            // ApplicationSizing.verticalSpacer(n: 0),
-            // Container(
-            //   child: ListView.separated(
-            //       shrinkWrap: true,
-            //       physics: ScrollPhysics(),
-            //       itemBuilder: (context, index) {
-            //         return InkWell(
-            //           onTap: () {
-            //             Navigator.push(
-            //                 context,
-            //                 PageTransition(
-            //                     child: NotificationList(),
-            //                     type: PageTransitionType.bottomToTop));
-            //           },
-            //           child: Container(
-            //             margin: EdgeInsets.symmetric(
-            //                 horizontal: ApplicationSizing.horizontalMargin()),
-            //             child: NotificationWidget(
-            //               title: "Lorem ipsum",
-            //               date: "6 April",
-            //             ),
-            //           ),
-            //         );
-            //       },
-            //       separatorBuilder: (context, index) {
-            //         return Container(
-            //           height: 1,
-            //           color: fontGrayColor.withOpacity(0.5),
-            //           // margin: EdgeInsets.symmetric(vertical: ApplicationSizing.convert(10),
-            //           // horizontal: ApplicationSizing.horizontalMargin(n: 20)),
-            //         );
-            //       },
-            //       itemCount: 3),
-            // ),
-            ApplicationSizing.verticalSpacer(),
-          ],
+          ),
         ),
-      ),
+        homeVM.homeScreenLoading ? AlertLoader() : Container(),
+      ],
     );
   }
 

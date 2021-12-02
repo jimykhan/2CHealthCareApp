@@ -8,6 +8,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:twochealthcare/common_widgets/aler_dialogue.dart';
 import 'package:twochealthcare/common_widgets/circular_image.dart';
@@ -324,28 +325,56 @@ class CustomDrawer extends HookWidget {
                 ),
               ),
             ),
-            Container(
-              margin: EdgeInsets.symmetric(
-                horizontal: ApplicationSizing.horizontalMargin(),
-                vertical: ApplicationSizing.convert(15),
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  MenuTextStyle(
-                    text: "Versions: ",
-                    fontSize: ApplicationSizing.fontScale(10),
-                    isPadding: false,
+            Column(
+              children: [
+                Container(
+                  margin: EdgeInsets.symmetric(
+                    horizontal: ApplicationSizing.horizontalMargin(),
+                    // vertical: ApplicationSizing.convert(15),
                   ),
-                  MenuTextStyle(
-                    text: applicationPackageVM.currentVersion ?? "",
-                    fontSize: ApplicationSizing.fontScale(10),
-                    isPadding: false,
-                    color: appColor,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      MenuTextStyle(
+                        text: "Versions: ",
+                        fontSize: ApplicationSizing.fontScale(10),
+                        isPadding: false,
+                      ),
+                      MenuTextStyle(
+                        text: applicationPackageVM.currentVersion ?? "",
+                        fontSize: ApplicationSizing.fontScale(10),
+                        isPadding: false,
+                        color: appColor,
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(
+                    left: ApplicationSizing.horizontalMargin(),
+                    right: ApplicationSizing.horizontalMargin(),
+                    bottom: ApplicationSizing.convert(15),
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      MenuTextStyle(
+                        text: "Last loggedIn date : ",
+                        fontSize: ApplicationSizing.fontScale(10),
+                        isPadding: false,
+                      ),
+                      MenuTextStyle(
+                        text: Jiffy(loginVM.logedInUserModel?.lastLogedIn ?? "").format("dd MMM yy, h:mm a") ,
+                        fontSize: ApplicationSizing.fontScale(10),
+                        isPadding: false,
+                        color: appColor,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             )
           ],
         ));

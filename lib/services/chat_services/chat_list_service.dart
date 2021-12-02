@@ -34,4 +34,21 @@ class ChatListService{
     } finally {
     }
   }
+
+  Future<dynamic> checkChatStatus({int? currentUserId}) async {
+    try{
+      final dio = _ref!.read(dioServicesProvider);
+      Response response = await dio.dio!.get(ApiStrings.checkChatStatus+"/$currentUserId");
+      if(response.statusCode == 200){
+        return response.data;
+      }else{
+        return false;
+      }
+    }
+    catch(e){
+      print(e.toString());
+      return false;
+    }
+  }
+
 }

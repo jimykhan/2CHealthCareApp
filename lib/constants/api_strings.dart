@@ -1,9 +1,10 @@
 class ApiStrings {
   static const String checkInternetConnection = 'www.google.com';
-  static const String test = "https://api.healthforcehub.net";
+  static const String test = "https://api.healthforcehub.link";
+  // static const String test = "https://api.healthforcehub.net";
   static const String production = "https://api.2chealthsolutions.com";
   static const String development = "https://cea4-39-45-161-120.ngrok.io";
-  static const String baseUrl = production;
+  static const String baseUrl = test;
   static const String signIn = baseUrl +"/api/Account/token2";
   static const String getPatientInfoById =
       baseUrl + "/api/Patients/GetPatientById";
@@ -48,4 +49,5 @@ class ApiStrings {
   static const String errorUrl =
       "https://e62aa90a591644a1b3def848bcceeb57@o600993.ingest.sentry.io/5744159";
   static const String sendError = baseUrl + "/api/Exceptions/PostMobileAppException";
+  static const String checkChatStatus = baseUrl + "/api/Facility/IsChatServiceEnabled";
 }

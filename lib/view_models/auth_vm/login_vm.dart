@@ -3,13 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:twochealthcare/main.dart';
 import 'package:twochealthcare/models/user/current_user.dart';
+import 'package:twochealthcare/models/user/loged_in_user.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
 import 'package:twochealthcare/services/firebase_service.dart';
+import 'package:twochealthcare/services/shared_pref_services.dart';
 import 'package:twochealthcare/validator/login_validator.dart';
 import 'package:twochealthcare/views/auths/login.dart';
 
 class LoginVM extends ChangeNotifier{
+  LogedInUserModel? logedInUserModel;
   CurrentUser? currentUser;
   bool loading = false;
   TextEditingController emailController = TextEditingController();
@@ -22,6 +25,7 @@ class LoginVM extends ChangeNotifier{
   ProviderReference? _ref;
   AuthServices? authService;
   FirebaseService? firebaseService;
+  SharedPrefServices? sharedPrefServices;
   LoginVM({ProviderReference? ref}){
     _ref = ref;
     initServices();
@@ -29,6 +33,7 @@ class LoginVM extends ChangeNotifier{
   initServices(){
      authService = _ref!.read(authServiceProvider);
      firebaseService = _ref!.read(firebaseServiceProvider);
+     sharedPrefServices = _ref!.read(sharedPrefServiceProvider);
   }
 
   onChangeEmail(String val){
@@ -52,10 +57,29 @@ class LoginVM extends ChangeNotifier{
     if(res is CurrentUser){
       currentUser = res;
       setLoading(false);
+      checkLastLoggedInUser(body: {
+        "id":currentUser?.id?.toString()??"",
+        "userName": currentUser?.fullName??"",
+        "lastLogedIn": DateTime.now().toString()
+      },
+          currentUserId: currentUser?.id.toString()??""
+      );
       return true;
     }
     setLoading(false);
     return false;
+
+  }
+
+  checkLastLoggedInUser({var body, required String currentUserId}) async{
+    if(body !=null){
+      logedInUserModel = await sharedPrefServices!.lastLoggedInUser(data: body, userId: currentUserId
+      );
+    }
+    else{
+      logedInUserModel = await sharedPrefServices!.lastLoggedInUser(userId: currentUserId
+      );
+    }
 
   }
 

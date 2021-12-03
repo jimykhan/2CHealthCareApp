@@ -19,6 +19,7 @@ class ChatScreenVM extends ChangeNotifier{
   ChatScreenService? _chatScreenService;
   SignalRServices? _signalRServices;
   bool isMessageEmpty = true;
+  FocusNode? myFocusNode = FocusNode();
 
   ChatScreenVM({ProviderReference? ref}){
     _ref = ref;
@@ -54,11 +55,19 @@ class ChatScreenVM extends ChangeNotifier{
   }
 
   checkMessageField(var field) {
+
     if (field is String) {
-      if (field.length > 0)
+      if (field.length > 0){
         isMessageEmpty = false;
-      else
+
+        // if
+      }
+
+      else{
         isMessageEmpty = true;
+        myFocusNode!.unfocus();
+    }
+
     }
     notifyListeners();
   }

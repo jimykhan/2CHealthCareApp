@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -14,7 +15,7 @@ class ChatInputField extends HookWidget {
   ChatInputField({
     Key? key,
   }) : super(key: key);
-  // FocusNode myFocusNode;
+
   @override
   Widget build(BuildContext context) {
     _textEditingController = useTextEditingController();
@@ -49,7 +50,7 @@ class ChatInputField extends HookWidget {
           children: [
             // Icon(Icons.mic, color: kPrimaryColor),
             // SizedBox(width: kDefaultPadding),
-            Expanded(
+             Expanded(
               child: Container(
                 padding: const EdgeInsets.symmetric(
                   horizontal: kDefaultPadding * 0.75,
@@ -74,7 +75,12 @@ class ChatInputField extends HookWidget {
                         padding: const EdgeInsets.only(left: 15, top: 3),
                         child: TextField(
                           // expands: true,
-                          maxLines: 5,
+                          // maxLines: 4,
+                          // keyboardType: TextInputType.multiline,
+                           maxLines: 20,
+                          focusNode: chatScreenVM.myFocusNode,
+                          minLines: 1,
+                          maxLengthEnforcement: MaxLengthEnforcement.enforced,
                           style: Styles.PoppinsRegular(
                             color: drawerColor,
                             fontSize: ApplicationSizing.convert(16),
@@ -110,6 +116,14 @@ class ChatInputField extends HookWidget {
                             ))
                   ],
                 ),
+              ),
+            ),
+            chatScreenVM.myFocusNode!.hasFocus ? Container() : Container(
+              child: Row(
+                children: [
+                  Icon(Icons.image),
+                  Icon(Icons.document_scanner),
+                ],
               ),
             ),
           ],

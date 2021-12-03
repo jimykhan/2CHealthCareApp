@@ -136,10 +136,7 @@ class ChatScreen extends HookWidget {
 
   _body(context, {required ChatScreenVM chatScreenVM}) {
     String date = "";
-    return (!chatScreenVM.allMessagesLoading &&
-            chatScreenVM.chatMessageList.length == 0)
-        ? NoData()
-        : Stack(
+    return Stack(
             children: [
               Column(
                 children: [
@@ -222,7 +219,7 @@ class ChatScreen extends HookWidget {
                     ),
                   ),
                   Container(
-                      height: ApplicationSizing.convert(70),
+                      // height: ApplicationSizing.convert(70),
                       child: ChatInputField()),
                 ],
               ),

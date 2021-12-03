@@ -365,7 +365,8 @@ class CustomDrawer extends HookWidget {
                         fontSize: ApplicationSizing.fontScale(10),
                         isPadding: false,
                       ),
-                      MenuTextStyle(
+                      (loginVM.logedInUserModel?.lastLogedIn == "" || loginVM.logedInUserModel?.lastLogedIn == null)
+                          ? Container() :MenuTextStyle(
                         text: Jiffy(loginVM.logedInUserModel?.lastLogedIn ?? "").format("dd MMM yy, h:mm a") ,
                         fontSize: ApplicationSizing.fontScale(10),
                         isPadding: false,

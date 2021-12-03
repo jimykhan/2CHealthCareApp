@@ -135,7 +135,7 @@ class TextMessage extends StatelessWidget {
             ),
           ),
           SizedBox(
-            height: ApplicationSizing.convertWidth(10),
+            height: ApplicationSizing.convertWidth(3),
           ),
           // Container(
           //   child: Text(

@@ -21,6 +21,7 @@ class SignalRServices{
 
   }
   initSignalR() async{
+    // _startConnection();
     String appId  = await _authServices!.getCurrentAppUserId();
     String token  = await _authServices!.getBearerToken();
     // print("this is token to signalR = $token}");
@@ -44,7 +45,7 @@ class SignalRServices{
       SubscribeGroupsByUserId(appId: appId);
       subscribeSignalrMessages();
     });
-    connection?.onreconnected((connectionId) {
+    connection?.onreconnected((connectionId) async {
       print('2cCHat Reconnected');
       SubscribeGroupsByUserId(appId: appId);
     });
@@ -62,11 +63,17 @@ class SignalRServices{
   }
 
   Future<void> _startConnection() async {
+    Future.delayed(Duration(seconds: 5),()=>_startConnection());
     if (connection?.state == HubConnectionState.disconnected) {
+      print("try to connect..");
       await connection?.start();
       subscribeSignalrMessages();
+    }else{
+      print("connection status ${connection?.state}");
     }
   }
+
+
 
   Future<void> restartConnection() async {
     await _startConnection();

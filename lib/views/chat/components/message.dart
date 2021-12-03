@@ -1,4 +1,5 @@
 
+import 'package:twochealthcare/common_widgets/circular_image.dart';
 import 'package:twochealthcare/common_widgets/loader.dart';
 import 'package:twochealthcare/models/chat_model/ChatMessage.dart';
 import 'package:twochealthcare/providers/providers.dart';
@@ -8,18 +9,21 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/all.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
+import 'package:twochealthcare/util/styles.dart';
 import 'package:twochealthcare/views/chat/constants.dart';
 import 'audio_message.dart';
 import 'text_message.dart';
 import 'video_message.dart';
 
 class Message extends HookWidget {
-  const Message({
+   Message({
     Key? key,
     this.message,
+    this.participients
   }) : super(key: key);
 
   final ChatMessage? message;
+  List<Participients>? participients;
 
   @override
   Widget build(BuildContext context) {
@@ -49,31 +53,47 @@ class Message extends HookWidget {
 
     return Container(
       padding:  EdgeInsets.only(top: kDefaultPadding),
-      margin: EdgeInsets.only(
-        right: !(message!.isSender!)
-            ? ApplicationSizing.convertWidth(20)
-            : 0,
-        left: !(message!.isSender!)
-            ? 0
-            : ApplicationSizing.convertWidth(20)
-      ),
-      child: Row(
-        mainAxisAlignment:
-            !(message!.isSender!) ? MainAxisAlignment.start : MainAxisAlignment.end,
-        crossAxisAlignment: CrossAxisAlignment.end,
+      child: Column(
         children: [
-          // if (!(message.senderUserId == null)) ...[
-          //   CircleAvatar(
-          //     radius: 12,
-          //     backgroundImage: AssetImage("assets/icons/user_2.png"),
-          //   ),
-          //   SizedBox(width: kDefaultPadding / 2),
-          // ],
-          Expanded(child: messageContaint(message)),
-          !(message!.isSender!)
-              ? checkLoader(message!.messageStatus!)
-              : MessageStatusDot(status: message!.messageStatus!)
+          Row(
+            mainAxisAlignment:
+                !(message!.isSender!) ? MainAxisAlignment.start : MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Expanded(child: messageContaint(message)),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Container(
+                child: participients == null ? Container () : Wrap(
+                  children: participients!.map((e) => e.readIndex == message!.id ? viewTags(name: e.shortName?.replaceAll(" ", "")) : Container()).toList(),
+                ),
+              ),
+            ],
+          ),
+
+          // !(message!.isSender!)
+          //     ? checkLoader(message!.messageStatus!)
+          //     : MessageStatusDot(status: message!.messageStatus!)
         ],
+      ),
+    );
+  }
+
+  Widget viewTags({String? name}){
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 0.5),
+      width: 15,
+      height: 15,
+      decoration:  BoxDecoration(
+        shape: BoxShape.circle,
+        color: fontGrayColor
+      ),
+      child: Center(
+        child: Text(name??"",
+        style: Styles.PoppinsRegular(fontSize: 8),),
       ),
     );
   }
@@ -84,9 +104,7 @@ class Message extends HookWidget {
             margin: EdgeInsets.only(left: kDefaultPadding / 2),
             height: 12,
             width: 12,
-            decoration: const BoxDecoration(
-                // shape: BoxShape.circle,
-                ),
+            decoration: const BoxDecoration(),
             child: loader()
     ) : Container();
   }

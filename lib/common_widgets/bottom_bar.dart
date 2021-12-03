@@ -144,7 +144,7 @@ class BottomBar extends HookWidget {
                       SnackBarMessage(message: "No internet connection detected, please try again.");
                     }else{
                       bool check =  await homeVM.checkChatStatus();
-                      if(check){
+                      if(true){
                         Navigator.pushReplacement(
                             context,
                             PageTransition(

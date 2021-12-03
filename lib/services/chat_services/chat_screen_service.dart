@@ -17,11 +17,9 @@ class ChatScreenService{
           queryParameters: queryParameters,
       );
       if(response.statusCode == 200){
-        List<ChatMessage> newlist = [];
-        response.data.forEach((item) {
-          newlist.add(ChatMessage.fromJson(item));
-        });
-        newlist.forEach((element) {
+        ChatHistoryModel  chatlist;
+        chatlist = ChatHistoryModel.fromJson(response.data);
+        chatlist.chats?.forEach((element) {
           element.messageStatus = MessageStatus.viewed;
           if(element.senderUserId == userId){
             element.isSender = true;
@@ -29,8 +27,8 @@ class ChatScreenService{
             element.isSender = false;
           }
         });
-
-        return newlist.reversed.toList();
+        chatlist.chats = chatlist.chats?.reversed.toList();
+        return chatlist;
 
       }else{
         return null;
@@ -57,7 +55,7 @@ class ChatScreenService{
         } else {
           newMessage.isSender = false;
         }
-        return ;
+        return newMessage;
       }else{
         return false;
       }

@@ -8,7 +8,7 @@ import 'package:twochealthcare/services/signal_r_services.dart';
 import 'package:twochealthcare/views/chat/chat_screen.dart';
 
 class ChatScreenVM extends ChangeNotifier{
-  List<ChatMessage> chatMessageList = [];
+  ChatHistoryModel chatMessageList = ChatHistoryModel();
   bool allMessagesLoading = true;
   bool pageWiseLoading = false;
   String? currentUserAppUserId;
@@ -27,6 +27,8 @@ class ChatScreenVM extends ChangeNotifier{
   }
 
   initService(){
+    chatMessageList.chats = [];
+    chatMessageList.participients = [];
     _authServices = _ref!.read(authServiceProvider);
     _chatScreenService = _ref!.read(chatScreenServiceProvider);
     _signalRServices = _ref!.read(signalRServiceProvider);
@@ -35,9 +37,7 @@ class ChatScreenVM extends ChangeNotifier{
       if(event.senderUserId != currentUserAppUserId) {
         event.isSender = false;
         event.messageStatus = MessageStatus.viewed;
-        print(chatMessageList.length.toString());
-        chatMessageList.add(event);
-        print(chatMessageList.length.toString());
+        chatMessageList.chats!.add(event);
         notifyListeners();
         ChatScreen.jumpToListIndex(isDelayed: true);
       }
@@ -84,20 +84,24 @@ class ChatScreenVM extends ChangeNotifier{
       };
       print(queryParameters);
       var response = await _chatScreenService?.getAllMessages(userId: UserId,queryParameters: queryParameters);
-      if(response is List<ChatMessage>){
+      if(response is ChatHistoryModel){
         if(loadingPageNumber == 1){
-          chatMessageList = [];
-          response.forEach((item) {
-            chatMessageList.add(item);
+          chatMessageList.chats = [];
+          chatMessageList.participients = [];
+          response.chats?.forEach((item) {
+            chatMessageList.chats!.add(item);
+          });
+          response.participients?.forEach((item) {
+            chatMessageList.participients!.add(item);
           });
           setAllMessagesLoading(false);
         }else{
-          if(response.length !=0){
-            chatMessageList.insertAll(0, response);
+          if(response.chats?.length != 0){
+            chatMessageList.chats!.insertAll(0, response.chats??[]);
           }
           setPageWiseLoading(false);
         }
-        response.length > 0 ? loadingPageNumber ++ : null;
+        response.chats!.length > 0 ? loadingPageNumber ++ : null;
         markChatViewed();
         return chatMessageList;
       }
@@ -115,8 +119,8 @@ class ChatScreenVM extends ChangeNotifier{
   Future<dynamic> sendTextMessage({String? message}) async {
     try{
       isMessageEmpty = true;
-      chatMessageList.add(ChatMessage(
-        id: 0,
+      chatMessageList.chats!.add(ChatMessage(
+        id: -1,
         message: message,
         sentToAll: false,
         viewedByAll: false,
@@ -134,9 +138,9 @@ class ChatScreenVM extends ChangeNotifier{
         };
       var response = await _chatScreenService?.sendTextMessage(body: body,currentUserAppUserId: currentUserAppUserId);
       if(response is ChatMessage){
-        chatMessageList.removeLast();
+        chatMessageList.chats!.removeLast();
         response.messageStatus = MessageStatus.not_view;
-        chatMessageList.add(response);
+        chatMessageList.chats!.add(response);
         notifyListeners();
         return true;
       }else{
@@ -153,7 +157,7 @@ class ChatScreenVM extends ChangeNotifier{
     try{
       var response = await _chatScreenService?.markChatViewed(chatGroupId: chatGroupId,currentUserAppUserId: currentUserAppUserId);
       if(response is bool && response){
-        chatMessageList.forEach((element) {
+        chatMessageList.chats!.forEach((element) {
           element.messageStatus = MessageStatus.viewed;
         });
         notifyListeners();

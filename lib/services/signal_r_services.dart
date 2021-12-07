@@ -9,6 +9,7 @@ import 'package:twochealthcare/services/auth_services/auth_services.dart';
 import 'package:rxdart/rxdart.dart';
 class SignalRServices{
   PublishSubject<ChatMessage> newMessage = PublishSubject<ChatMessage>(sync: true);
+  PublishSubject<ChatMessage> onChatViewed = PublishSubject<ChatMessage>(sync: true);
   HubConnection? connection;
   ProviderReference? _ref;
   AuthServices? _authServices;
@@ -92,6 +93,10 @@ class SignalRServices{
   }
 
   subscribeSignalrMessages() {
+
+    connection?.on("OnChatViewed", (data) {
+    print("OnChatViewed call ${data}");
+    });
     connection?.on('OnDataReceived', (data) {
 
     });
@@ -137,6 +142,10 @@ class SignalRServices{
       print("OnChatViewed call $data}");
     });
   }
+  MarkChatGroupViewed(String chatGroupId, String userId){
+    connection?.invoke("MarkChatGroupViewed",args: [chatGroupId,userId]).onError((error, stackTrace) => print("error ${error.toString()}")).then((value) => print("than ${value.toString()}"));
+  }
+
 
   Future<String> accessToken(String token) async {
     return token;

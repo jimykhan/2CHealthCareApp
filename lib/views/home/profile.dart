@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:easy_mask/easy_mask.dart';
 import 'package:hooks_riverpod/all.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:twochealthcare/common_widgets/alert_loader.dart';
@@ -20,6 +20,7 @@ import 'package:twochealthcare/view_models/profile_vm.dart';
 import 'package:twochealthcare/views/home/components/widgets.dart';
 import 'package:twochealthcare/views/readings/bg_reading.dart';
 import 'package:twochealthcare/views/readings/blood_pressure_reading.dart';
+
 class Profile extends HookWidget {
   Profile({Key? key}) : super(key: key);
   @override
@@ -59,6 +60,7 @@ class Profile extends HookWidget {
     );
   }
   _body({LoginVM? loginVM,ProfileVm? profileVm}){
+    MagicMask mask = MagicMask.buildMask('\\+1 (999) 999 99 99');
     return Container(
       child: SingleChildScrollView(
         child: Stack(
@@ -125,7 +127,7 @@ class Profile extends HookWidget {
                               tile(
                                   key: "Contact No",
                                   // value: profileVm.currentUserInfo?.careProviders?[index].e??""
-                                  value: profileVm.patientCareProvider[index].contactNo??""
+                                  value: mask.getMaskedString(profileVm.patientCareProvider[index].contactNo??"")
                               ),
 
                             ],
@@ -216,7 +218,7 @@ class Profile extends HookWidget {
                                   alignment: Alignment.centerLeft,
                                   child: tile(
                                       key: "Primary Phone No.",
-                                      value: profileVm.currentUserInfo?.homePhone??""
+                                      value: mask.getMaskedString(profileVm.currentUserInfo?.homePhone??"",)
                                   ),
                                 )
                             ),
@@ -227,7 +229,7 @@ class Profile extends HookWidget {
                                   alignment: Alignment.centerRight,
                                   child: tile(
                                       key: "Secondary Contact No.",
-                                      value: profileVm.currentUserInfo?.emergencyContactSecondaryPhoneNo??""
+                                      value: mask.getMaskedString(profileVm.currentUserInfo?.personNumber??"")
                                   ),
                                 )
                             ),

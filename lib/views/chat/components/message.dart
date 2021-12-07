@@ -87,13 +87,14 @@ class Message extends HookWidget {
       margin: const EdgeInsets.symmetric(horizontal: 0.5),
       width: 15,
       height: 15,
-      decoration:  BoxDecoration(
+      decoration:   BoxDecoration(
         shape: BoxShape.circle,
-        color: fontGrayColor
+        color:appColorSecondary.withOpacity(0.3),
       ),
       child: Center(
         child: Text(name??"",
-        style: Styles.PoppinsRegular(fontSize: 8),),
+        style: Styles.PoppinsRegular(fontSize: 8,
+        color: appColorSecondary),),
       ),
     );
   }

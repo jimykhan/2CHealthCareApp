@@ -44,18 +44,27 @@ class BGReadingVM extends ChangeNotifier{
     _bGReadingService = _ref!.read(bGReadingServiceProvider);
 
   }
+  initialState({required int readingMonth, required int readingYear}){
+    selectedMonth = readingMonth;
+    selectedYear = readingYear;
+    timePeriodSelect = 2;
+    focusedDay1 = DateTime(selectedYear ,selectedMonth);
+    selectedDay1 = DateTime(selectedYear,selectedMonth);
+    bGReadingLoading = true;
+    getBGReading();
+  }
   changeTimePeriodSelectIndex(int? index){
     if(index != timePeriodSelect){
       timePeriodSelect = index??0;
       if(index == 0){
         calendarFormat = CalendarFormat.week;
-        dayHeight =40;
+        dayHeight = 40;
         headerDisable = false;
         daysOfWeekVisible = true;
       }
       else if(index == 1){
         calendarFormat = CalendarFormat.week;
-        dayHeight =0;
+        dayHeight = 0;
         headerDisable = true;
         daysOfWeekVisible = false;
       }
@@ -65,7 +74,6 @@ class BGReadingVM extends ChangeNotifier{
         headerDisable = true;
         daysOfWeekVisible = false;
       }
-
       notifyListeners();
     }
 
@@ -74,7 +82,6 @@ class BGReadingVM extends ChangeNotifier{
   onDaySelected(selectedDay, focusedDay){
     print("onDaySelected call ${selectedDay} ${focusedDay}");
     if (!isSameDay(selectedDay1, selectedDay)) {
-      // Call `setState()` when updating the selected day
       selectedDay1 = selectedDay;
       focusedDay1 = focusedDay;
     }
@@ -84,10 +91,6 @@ class BGReadingVM extends ChangeNotifier{
 
   onPageChanged(focusedDay) {
     print("onPageChanged call ${focusedDay}");
-    // No need to call `setState()` here
-    // if(!isSameDay(focusedDay1,focusedDay)){
-    //   print("day not same");
-    // }
     selectedDay1 = focusedDay;
     focusedDay1 = focusedDay;
     if(timePeriodSelect == 2){
@@ -103,11 +106,23 @@ class BGReadingVM extends ChangeNotifier{
 
   selectRange(start, end, focusedDay) {
     print("selected Range call");
-    selectedDay1 = null;
-    focusedDay1 = focusedDay;
-    rangeStart = start;
-    rangeEnd = end;
-    rangeSelectionMode = RangeSelectionMode.toggledOn;
+    print("start date = ${start}");
+    print("start end = ${end}");
+    print("focus date = ${focusedDay}");
+    if(start != null && end == null){
+      selectedDay1 = null;
+      focusedDay1 = start;
+      rangeStart = start;
+      rangeEnd = start;
+    }
+    if(start != null && end != null){
+      selectedDay1 = null;
+      focusedDay1 = start;
+      rangeStart = start;
+      rangeEnd = end;
+    }
+
+    // rangeSelectionMode = RangeSelectionMode.toggledOn;
     notifyListeners();
   }
 

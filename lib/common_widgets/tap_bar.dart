@@ -42,7 +42,7 @@ class TapBar extends StatelessWidget {
                 ),
                 alignment: Alignment.center,
                 child: Text(
-                  "Day",
+                  "Custom Range",
                   style: Styles.PoppinsRegular(
                     color: selectedIndx == 0 ? Colors.white : appColor,
                     fontSize: ApplicationSizing.convert(12),

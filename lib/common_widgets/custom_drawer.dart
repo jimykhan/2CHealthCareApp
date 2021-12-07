@@ -109,7 +109,7 @@ class CustomDrawer extends HookWidget {
                                         margin: EdgeInsets.only(
                                             bottom: 10, left: 10),
                                         child: Text(
-                                          loginVM.currentUser?.fullName ?? "",
+                                          loginVM.currentUser?.userName ?? "",
                                           style: Styles.PoppinsRegular(
                                               fontSize:
                                                   ApplicationSizing.fontScale(

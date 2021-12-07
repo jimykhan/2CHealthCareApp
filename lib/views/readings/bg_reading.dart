@@ -33,14 +33,8 @@ class BGReading extends HookWidget {
 
     useEffect(
       () {
-        bgReadingVM.selectedMonth = selectedMonth;
-        bgReadingVM.selectedYear = selectedYear;
-        bgReadingVM.focusedDay1 = DateTime(selectedYear ,selectedMonth);
-        bgReadingVM.selectedDay1 = DateTime(selectedYear,selectedMonth);
-        bgReadingVM.bGReadingLoading = true;
-        bgReadingVM.getBGReading();
+       bgReadingVM.initialState(readingMonth: selectedMonth, readingYear: selectedYear);
         Future.microtask(() async {});
-
         return () {
           // Dispose Objects here
         };
@@ -87,12 +81,12 @@ class BGReading extends HookWidget {
             Column(
               children: [
                 // ApplicationSizing.verticalSpacer(),
-                // TapBar(
-                //   selectedIndx: bgReadingVM.timePeriodSelect,
-                //   ontap: (val) {
-                //     bgReadingVM.changeTimePeriodSelectIndex(val);
-                //   },
-                // ),
+                TapBar(
+                  selectedIndx: bgReadingVM.timePeriodSelect,
+                  ontap: (val) {
+                    bgReadingVM.changeTimePeriodSelectIndex(val);
+                  },
+                ),
                 CustomCalendar(
                   selectedDayPredict: bgReadingVM.selectDayPredict,
                   onDaySelect: bgReadingVM.onDaySelected,
@@ -105,6 +99,8 @@ class BGReading extends HookWidget {
                   onPageChanged: bgReadingVM.onPageChanged,
                   selectedDay1: bgReadingVM.selectedDay1,
                   focusedDay1: bgReadingVM.focusedDay1,
+                  rangeEnd: bgReadingVM.rangeEnd,
+                  rangeStart: bgReadingVM.rangeStart,
                 ),
                 bgReadingVM.bPReadings.length == 0
                     ? NoData()

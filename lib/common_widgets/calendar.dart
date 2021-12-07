@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'dart:collection';
 import 'package:intl/intl.dart';
+import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
+import 'package:twochealthcare/util/application_colors.dart' as color;
 class CustomCalendar extends StatelessWidget {
   CalendarFormat? calendarFormat ;
   // DateTime? focusedDay1 = DateTime.now();
@@ -32,6 +34,7 @@ class CustomCalendar extends StatelessWidget {
     return Container(
       // height: 20,
       child: TableCalendar(
+        // selectedDay : DateTime.now(),
         headerStyle:  HeaderStyle(
           formatButtonShowsNext: false,
           formatButtonVisible: false,
@@ -54,8 +57,20 @@ class CustomCalendar extends StatelessWidget {
           cellMargin: EdgeInsets.all(0.0),
           markerMargin: EdgeInsets.all(0.0),
           cellPadding: EdgeInsets.all(0.0),
+          rangeHighlightColor: Colors.pink,
+          withinRangeDecoration: BoxDecoration(
+            color: Colors.green
+          ),
+          rangeEndDecoration: BoxDecoration(
+              color: Colors.red
+          ),
+          rangeStartDecoration: BoxDecoration(
+              color: Colors.brown
+          ),
 
+          // ran
         ),
+
         daysOfWeekVisible: daysOfWeekVisible!,
         headerVisible: headerDisable ?? true,
         daysOfWeekHeight: dayHeight ?? 1,
@@ -69,7 +84,6 @@ class CustomCalendar extends StatelessWidget {
         selectedDayPredicate: selectedDayPredict,
         onDaySelected: onDaySelect,
         onFormatChanged: formatChange,
-
         // selectedDayPredicate: (day) {
         //   // Use `selectedDayPredicate` to determine which day is currently selected.
         //   // If this returns true, then `day` will be marked as selected.
@@ -98,6 +112,7 @@ class CustomCalendar extends StatelessWidget {
         rangeSelectionMode: rangeSelectionMode?? RangeSelectionMode.toggledOn,
         onPageChanged: onPageChanged,
         onRangeSelected: onRangeSelect,
+
       ),
     );
   }

@@ -118,14 +118,14 @@ class ChatInputField extends HookWidget {
                 ),
               ),
             ),
-            chatScreenVM.myFocusNode!.hasFocus ? Container() : Container(
-              child: Row(
-                children: [
-                  Icon(Icons.image),
-                  Icon(Icons.document_scanner),
-                ],
-              ),
-            ),
+            // chatScreenVM.myFocusNode!.hasFocus ? Container() : Container(
+            //   child: Row(
+            //     children: [
+            //       Icon(Icons.image),
+            //       Icon(Icons.document_scanner),
+            //     ],
+            //   ),
+            // ),
           ],
         ),
       ),

@@ -38,6 +38,7 @@ dependencies:
   rxdart: ^0.27.3
   bot_toast: ^4.0.1
   connectivity_plus: ^2.0.3
+  easy_mask: ^2.0.1
 
 dev_dependencies:
   flutter_test:

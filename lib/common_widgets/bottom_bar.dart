@@ -16,6 +16,7 @@ import 'package:twochealthcare/view_models/home_vm.dart';
 import 'package:twochealthcare/views/chat/chat_list.dart';
 import 'package:twochealthcare/views/home/home.dart';
 import 'package:twochealthcare/views/home/profile.dart';
+import 'package:flutter/foundation.dart' as Foundation;
 
 class BottomBar extends HookWidget {
   int selectedIndex;
@@ -144,7 +145,8 @@ class BottomBar extends HookWidget {
                       SnackBarMessage(message: "No internet connection detected, please try again.");
                     }else{
                       bool check =  await homeVM.checkChatStatus();
-                      if(true){
+                      print("this is application mode = ${Foundation.kDebugMode}");
+                      if(Foundation.kDebugMode ? true : check){
                         Navigator.pushReplacement(
                             context,
                             PageTransition(
@@ -153,10 +155,7 @@ class BottomBar extends HookWidget {
                       }else{
                         SnackBarMessage(message: "Chat disable for this user!");
                       }
-
                     }
-
-
                     print("do something on selected index $selectedIndex}");
                   }
                 },

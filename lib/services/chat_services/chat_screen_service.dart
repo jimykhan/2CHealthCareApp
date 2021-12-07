@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:twochealthcare/constants/api_strings.dart';
 import 'package:twochealthcare/models/chat_model/ChatMessage.dart';
 import 'package:twochealthcare/providers/providers.dart';
+import 'package:twochealthcare/util/conversion.dart';
 
 class ChatScreenService{
   ProviderReference? _ref;
@@ -21,6 +22,7 @@ class ChatScreenService{
         chatlist = ChatHistoryModel.fromJson(response.data);
         chatlist.chats?.forEach((element) {
           element.messageStatus = MessageStatus.viewed;
+          element.timeStamp  = convertLocalToUtc(element.timeStamp);
           if(element.senderUserId == userId){
             element.isSender = true;
           }else{

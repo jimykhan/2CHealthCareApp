@@ -5,7 +5,10 @@ import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
 import 'package:twochealthcare/services/chat_services/chat_screen_service.dart';
 import 'package:twochealthcare/services/signal_r_services.dart';
+import 'package:twochealthcare/util/conversion.dart';
+import 'package:twochealthcare/views/chat/chat_list.dart';
 import 'package:twochealthcare/views/chat/chat_screen.dart';
+import 'package:twochealthcare/view_models/chat_vm/chat_list_vm.dart';
 
 class ChatScreenVM extends ChangeNotifier{
   ChatHistoryModel chatMessageList = ChatHistoryModel();
@@ -17,6 +20,7 @@ class ChatScreenVM extends ChangeNotifier{
   ProviderReference? _ref;
   AuthServices? _authServices;
   ChatScreenService? _chatScreenService;
+  ChatListVM? _chatListVM;
   SignalRServices? _signalRServices;
   bool isMessageEmpty = true;
   FocusNode? myFocusNode = FocusNode();
@@ -26,20 +30,28 @@ class ChatScreenVM extends ChangeNotifier{
     initService();
   }
 
+  dispose(){
+    chatMessageList.chats = [];
+    chatMessageList.participients = [];
+  }
+
   initService(){
     chatMessageList.chats = [];
     chatMessageList.participients = [];
     _authServices = _ref!.read(authServiceProvider);
+    _chatListVM = _ref!.read(chatListVMProvider);
     _chatScreenService = _ref!.read(chatScreenServiceProvider);
     _signalRServices = _ref!.read(signalRServiceProvider);
     _signalRServices?.newMessage.stream.listen((event) {
       print("new message reached to Rx dart..");
+      print(event.timeStamp.toString());
       if(event.senderUserId != currentUserAppUserId) {
         event.isSender = false;
         event.messageStatus = MessageStatus.viewed;
+        event.timeStamp = convertLocalToUtc(event.timeStamp!.replaceAll("Z", ""));
         chatMessageList.chats!.add(event);
         notifyListeners();
-        ChatScreen.jumpToListIndex(isDelayed: true);
+        chatMessageList.chats!.length == 0 ? null : ChatScreen.jumpToListIndex(isDelayed: true);
       }
     });
   }
@@ -86,6 +98,7 @@ class ChatScreenVM extends ChangeNotifier{
       var response = await _chatScreenService?.getAllMessages(userId: UserId,queryParameters: queryParameters);
       if(response is ChatHistoryModel){
         if(loadingPageNumber == 1){
+          _chatListVM!.resetCounter(chatGroupId!);
           chatMessageList.chats = [];
           chatMessageList.participients = [];
           response.chats?.forEach((item) {
@@ -102,7 +115,7 @@ class ChatScreenVM extends ChangeNotifier{
           setPageWiseLoading(false);
         }
         response.chats!.length > 0 ? loadingPageNumber ++ : null;
-        markChatViewed();
+        // markChatViewed();
         return chatMessageList;
       }
       else{
@@ -127,6 +140,7 @@ class ChatScreenVM extends ChangeNotifier{
         senderUserId: currentUserAppUserId,
         isSender: true,
         messageStatus: MessageStatus.not_sent,
+        // timeStamp: DateTime(2021,DateTime.now().month,DateTime.now().month,03,33).toString(),
         timeStamp: DateTime.now().toString(),
       ));
       notifyListeners();
@@ -138,6 +152,7 @@ class ChatScreenVM extends ChangeNotifier{
         };
       var response = await _chatScreenService?.sendTextMessage(body: body,currentUserAppUserId: currentUserAppUserId);
       if(response is ChatMessage){
+        print("yes run this okay");
         chatMessageList.chats!.removeLast();
         response.messageStatus = MessageStatus.not_view;
         chatMessageList.chats!.add(response);

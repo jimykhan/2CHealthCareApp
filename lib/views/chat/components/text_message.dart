@@ -119,6 +119,7 @@ class TextMessage extends StatelessWidget {
                             children: [
                               Text(
                                 "${Jiffy(message?.timeStamp).format("h:mm a")}",
+                                // "${message?.timeStamp}",
                                 style: Styles.RobotoMedium(
                                   fontSize: ApplicationSizing.convert(12),
                                   color: Colors.green,

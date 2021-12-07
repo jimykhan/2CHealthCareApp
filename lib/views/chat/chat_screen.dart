@@ -51,6 +51,8 @@ class ChatScreen extends HookWidget {
         // _scrollController.jumpTo(_scrollController.position.maxScrollExtent); i am trying
 
         return () {
+          chatScreenVM.dispose();
+          print("chat bot Dispose call ");
           // Dispose Objects here
         };
       },

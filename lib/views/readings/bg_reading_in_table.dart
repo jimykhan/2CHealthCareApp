@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/all.dart';
 import 'package:twochealthcare/models/modalities_models/blood_pressure_reading_model.dart';
 import 'package:twochealthcare/models/modalities_models/gb_reading_model.dart';
+import 'package:twochealthcare/providers/providers.dart';
+import 'package:twochealthcare/services/application_route_service.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
 
-class bGReadingInTable extends StatelessWidget {
+class bGReadingInTable extends HookWidget {
   List<BGDataModel> bGReadings = [];
   bGReadingInTable({Key? key, required this.bGReadings}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    ApplicationRouteService applicationRouteService = useProvider(applicationRouteServiceProvider);
     String measureDate = "00 000 00";
     bGReadings.sort((a, b) {
       return b.measurementDate!.compareTo(a.measurementDate!);

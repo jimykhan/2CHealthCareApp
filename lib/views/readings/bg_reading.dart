@@ -12,6 +12,7 @@ import 'package:twochealthcare/common_widgets/floating_button.dart';
 import 'package:twochealthcare/common_widgets/line_chart.dart';
 import 'package:twochealthcare/common_widgets/no_data_inlist.dart';
 import 'package:twochealthcare/models/modalities_models/gb_reading_model.dart';
+import 'package:twochealthcare/services/application_route_service.dart';
 import 'package:twochealthcare/util/styles.dart';
 import 'package:twochealthcare/view_models/modalities_reading_vm/bg_reading_vm.dart';
 import 'package:twochealthcare/views/readings/bg_reading_in_table.dart';
@@ -30,6 +31,7 @@ class BGReading extends HookWidget {
   @override
   Widget build(BuildContext context) {
     BGReadingVM bgReadingVM = useProvider(bGReadingVMProvider);
+    ApplicationRouteService applicationRouteService = useProvider(applicationRouteServiceProvider);
 
     useEffect(
       () {
@@ -81,12 +83,12 @@ class BGReading extends HookWidget {
             Column(
               children: [
                 // ApplicationSizing.verticalSpacer(),
-                TapBar(
-                  selectedIndx: bgReadingVM.timePeriodSelect,
-                  ontap: (val) {
-                    bgReadingVM.changeTimePeriodSelectIndex(val);
-                  },
-                ),
+                // TapBar(
+                //   selectedIndx: bgReadingVM.timePeriodSelect,
+                //   ontap: (val) {
+                //     bgReadingVM.changeTimePeriodSelectIndex(val);
+                //   },
+                // ),
                 CustomCalendar(
                   selectedDayPredict: bgReadingVM.selectDayPredict,
                   onDaySelect: bgReadingVM.onDaySelected,

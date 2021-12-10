@@ -10,6 +10,7 @@ import 'package:twochealthcare/common_widgets/custom_text_field.dart';
 import 'package:twochealthcare/common_widgets/error_text.dart';
 import 'package:twochealthcare/common_widgets/filled_button.dart';
 import 'package:twochealthcare/providers/providers.dart';
+import 'package:twochealthcare/services/application_route_service.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
 import 'package:twochealthcare/services/firebase_service.dart';
 import 'package:twochealthcare/services/signal_r_services.dart';
@@ -29,9 +30,11 @@ class Login extends HookWidget {
     FirebaseService firebaseService = useProvider(firebaseServiceProvider);
     ApplicationPackageVM applicationPackageVM = useProvider(applicationPackageVMProvider);
     SignalRServices signalRServices = useProvider(signalRServiceProvider);
+    ApplicationRouteService applicationRouteService = useProvider(applicationRouteServiceProvider);
 
     useEffect(
       () {
+
         Future.microtask(() async {});
 
         return () {
@@ -50,7 +53,8 @@ class Login extends HookWidget {
                   Container(
                     child: Image.asset("assets/icons/loginBg.png"),
                   ),
-                  _loginform(context, loginVM: loginVM,firebaseService: firebaseService,applicationPackageVM: applicationPackageVM),
+                  _loginform(context, loginVM: loginVM,firebaseService: firebaseService,applicationPackageVM: applicationPackageVM,
+                  applicationRouteService: applicationRouteService),
                 ],
               ),
               loginVM.loading ? AlertLoader() : Container(),
@@ -63,7 +67,9 @@ class Login extends HookWidget {
 
   _loginform(BuildContext context, {LoginVM? loginVM,FirebaseService? firebaseService,
     ApplicationPackageVM? applicationPackageVM,
-  SignalRServices? signalRServices}) {
+  SignalRServices? signalRServices,
+    required ApplicationRouteService applicationRouteService
+  }) {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(ApplicationSizing.fontScale(5)),
@@ -237,6 +243,7 @@ class Login extends HookWidget {
                     if (checkMail && checkPassword) {
                       bool isValid = await loginVM.userLogin();
                       if (isValid) {
+                        applicationRouteService.addAndRemoveScreen(screenName: "Home");
                         Navigator.pushReplacement(
                             context,
                             PageTransition(

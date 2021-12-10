@@ -46,11 +46,11 @@ class Participients {
       {this.userId, this.fullName, this.shortName, this.readIndex, this.email});
 
   Participients.fromJson(Map<String, dynamic> json) {
-    userId = json['userId'];
-    fullName = json['fullName'];
-    shortName = json['shortName'];
-    readIndex = json['readIndex'];
-    email = json['email'];
+    userId = json['userId']??json['UserId'];
+    fullName = json['fullName']??json['FullName'];
+    shortName = json['shortName']??json['ShortName'];
+    readIndex = json['readIndex']??json['ReadIndex'];
+    email = json['email']??json['Email'];
   }
 
   Map<String, dynamic> toJson() {

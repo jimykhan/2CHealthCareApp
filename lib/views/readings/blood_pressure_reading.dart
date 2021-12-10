@@ -12,6 +12,7 @@ import 'package:twochealthcare/common_widgets/floating_button.dart';
 import 'package:twochealthcare/common_widgets/line_chart.dart';
 import 'package:twochealthcare/common_widgets/no_data_inlist.dart';
 import 'package:twochealthcare/models/modalities_models/blood_pressure_reading_model.dart';
+import 'package:twochealthcare/services/application_route_service.dart';
 import 'package:twochealthcare/util/styles.dart';
 import 'package:twochealthcare/views/readings/pb_reading_in_table.dart';
 import 'package:twochealthcare/common_widgets/tap_bar.dart';
@@ -29,6 +30,7 @@ class BloodPressureReading extends HookWidget {
   Widget build(BuildContext context) {
     BloodPressureReadingVM bloodPressureReadingVM =
         useProvider(bloodPressureReadingVMProvider);
+    ApplicationRouteService applicationRouteService = useProvider(applicationRouteServiceProvider);
 
     useEffect(
       () {

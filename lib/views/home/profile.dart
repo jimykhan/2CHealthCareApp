@@ -10,6 +10,7 @@ import 'package:twochealthcare/common_widgets/custom_appbar.dart';
 import 'package:twochealthcare/common_widgets/floating_button.dart';
 import 'package:twochealthcare/models/modalities_models/modalities_model.dart';
 import 'package:twochealthcare/providers/providers.dart';
+import 'package:twochealthcare/services/application_route_service.dart';
 import 'package:twochealthcare/services/shared_pref_services.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
@@ -27,6 +28,7 @@ class Profile extends HookWidget {
   Widget build(BuildContext context) {
     LoginVM loginVM = useProvider(loginVMProvider);
     ProfileVm profileVm = useProvider(profileVMProvider);
+    ApplicationRouteService applicationRouteService = useProvider(applicationRouteServiceProvider);
     // final modalitiesReadingVM = useProvider(modalitiesReadingVMProvider);
     useEffect(
           () {
@@ -34,6 +36,7 @@ class Profile extends HookWidget {
           profileVm.getUserInfo();
         });
         return () {
+          applicationRouteService.removeScreen(screenName: "Profile");
           // Dispose Objects here
         };
       },

@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:twochealthcare/constants/api_strings.dart';
+import 'package:twochealthcare/services/application_route_service.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
 import 'package:twochealthcare/services/chat_services/chat_list_service.dart';
 import 'package:twochealthcare/services/chat_services/chat_screen_service.dart';
@@ -50,5 +51,6 @@ final signalRServiceProvider = Provider<SignalRServices>((ref)=>SignalRServices(
 final chatScreenServiceProvider = Provider<ChatScreenService>((ref)=>ChatScreenService(ref: ref));
 final chatListServiceProvider = Provider<ChatListService>((ref)=>ChatListService(ref: ref));
 final connectivityServiceProvider = Provider<ConnectivityService>((ref)=>ConnectivityService(ref: ref));
+final applicationRouteServiceProvider = Provider<ApplicationRouteService>((ref)=>ApplicationRouteService());
 /// Simple Providers
 

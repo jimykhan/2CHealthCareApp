@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:twochealthcare/common_widgets/alert_loader.dart';
 import 'package:twochealthcare/common_widgets/appbar_text_style.dart';
@@ -19,10 +20,12 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:twochealthcare/services/application_route_service.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
 import 'package:twochealthcare/view_models/chat_vm/chat_screen_vm.dart';
+import 'package:twochealthcare/views/chat/chat_info.dart';
 import 'package:twochealthcare/views/chat/components/chat_input_field.dart';
 import 'package:twochealthcare/views/chat/components/message.dart';
 
@@ -35,8 +38,11 @@ class ChatScreen extends HookWidget {
   Widget build(BuildContext context) {
     _scrollController = useScrollController();
     ChatScreenVM chatScreenVM = useProvider(chatScreenVMProvider);
+    ApplicationRouteService applicationRouteService = useProvider(applicationRouteServiceProvider);
     useEffect(
+
       () {
+        print("this is current route = ${applicationRouteService.currentScreen()}");
         // chatService.initSigalR(token: deviceService?.currentUser?.bearerToken??"",appId: deviceService?.currentUser?.appUserId??"");
         Future.microtask(() async {
           chatScreenVM.chatGroupId = getGroupsModel?.id.toString();
@@ -52,6 +58,7 @@ class ChatScreen extends HookWidget {
 
         return () {
           chatScreenVM.dispose();
+          applicationRouteService.removeScreen(screenName: "${getGroupsModel?.id}");
           print("chat bot Dispose call ");
           // Dispose Objects here
         };
@@ -89,22 +96,31 @@ class ChatScreen extends HookWidget {
               SizedBox(
                 width: ApplicationSizing.convertWidth(5),
               ),
-              CircularImage(
-                ontap: () {
-                  // Navigator.push(context, PageTransition(child: PatientProfile(), type: PageTransitionType.fade));
+              InkWell(
+                onTap: (){
+                  Navigator.push(context, PageTransition(child: ChatInfo(title: getGroupsModel?.title ?? "Text"), type: PageTransitionType.leftToRight));
                 },
-                color: Colors.blueAccent,
-                h: ApplicationSizing.convert(35),
-                w: ApplicationSizing.convert(35),
-                imageUrl: "assets/icons/personIcon.png",
-                assetImage: true,
-              ),
-              SizedBox(
-                width: ApplicationSizing.convertWidth(10),
-              ),
-              AppBarTextStyle(
-                  text: getGroupsModel?.title ?? "Text",
-                  textsize: ApplicationSizing.convert(18)),
+                child: Row(
+                  children: [
+                    CircularImage(
+                      ontap: () {
+                        // Navigator.push(context, PageTransition(child: PatientProfile(), type: PageTransitionType.fade));
+                      },
+                      color: Colors.blueAccent,
+                      h: ApplicationSizing.convert(35),
+                      w: ApplicationSizing.convert(35),
+                      imageUrl: "assets/icons/personIcon.png",
+                      assetImage: true,
+                    ),
+                    SizedBox(
+                      width: ApplicationSizing.convertWidth(10),
+                    ),
+                    AppBarTextStyle(
+                        text: getGroupsModel?.title ?? "Text",
+                        textsize: ApplicationSizing.convert(18)),
+                  ],
+                ),
+              )
             ],
           ),
           // trailingIcon: GestureDetector(
@@ -185,7 +201,7 @@ class ChatScreen extends HookWidget {
                                               borderRadius:
                                                   BorderRadius.circular(10)),
                                           child: Text(
-                                            "$date",
+                                            Jiffy(chatScreenVM.chatMessageList.chats![index].timeStamp??"0000-00-00T00:00:00.000000").format("dd MMM yyyy"),
                                             style: Styles.PoppinsRegular(
                                                 color: drawerColor,
                                                 fontSize:

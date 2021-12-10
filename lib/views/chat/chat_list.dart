@@ -13,6 +13,7 @@ import 'package:twochealthcare/common_widgets/no_data_inlist.dart';
 import 'package:twochealthcare/common_widgets/notification_widget.dart';
 import 'package:twochealthcare/models/chat_model/GetGroups.dart';
 import 'package:twochealthcare/providers/providers.dart';
+import 'package:twochealthcare/services/application_route_service.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
@@ -26,6 +27,7 @@ class ChatList extends HookWidget {
   @override
   Widget build(BuildContext context) {
     ChatListVM chatListVM = useProvider(chatListVMProvider);
+    ApplicationRouteService applicationRouteService = useProvider(applicationRouteServiceProvider);
     useEffect(
           () {
         Future.microtask(() async {
@@ -33,6 +35,7 @@ class ChatList extends HookWidget {
         });
 
         return () {
+          applicationRouteService.removeScreen(screenName: "ChatList");
           // Dispose Objects here
         };
       },
@@ -73,6 +76,7 @@ class ChatList extends HookWidget {
                     colors: [Color(0Xff4EAF48), Color(0xff60E558)])),
           ),
           onPressed: () {
+            applicationRouteService.removeAllAndAdd(screenName: "Home");
             Navigator.pushReplacement(
                 context,
                 PageTransition(
@@ -82,7 +86,7 @@ class ChatList extends HookWidget {
           },
         ),
         bottomNavigationBar: BottomBar(selectedIndex: 2,),
-        body: _body(chatListVM: chatListVM));
+        body: _body(chatListVM: chatListVM,applicationRouteService: applicationRouteService));
   }
   _emptyChat(){
     return Container(
@@ -104,7 +108,7 @@ class ChatList extends HookWidget {
     );
   }
 
-  _body({ChatListVM? chatListVM}){
+  _body({ChatListVM? chatListVM,required ApplicationRouteService applicationRouteService}){
     return (chatListVM?.groupIds.length == 0 && !chatListVM!.loadingGroupId) ? NoData() :   Container(
       child: Stack(
         children: [
@@ -114,6 +118,7 @@ class ChatList extends HookWidget {
               itemBuilder: (BuildContext context,int index){
                 return  GestureDetector(
                     onTap: (){
+                      applicationRouteService.addScreen(screenName: "${chatListVM?.groupIds[index].id}");
                       Navigator.push(context, PageTransition(child: ChatScreen(getGroupsModel: chatListVM?.groupIds[index],), type: PageTransitionType.fade));
                     },
                   child: chatTile(getGroupsModel: chatListVM?.groupIds[index]),
@@ -166,8 +171,9 @@ class ChatList extends HookWidget {
                             )),
                       ),
                       Expanded(
-                        flex: 2,
+                        flex: 3,
                         child: Container(
+                          // color: Colors.brown,
                             alignment: Alignment.centerRight,
                             // color: Colors.pink,
                             child: Text(getGroupsModel?.lastMessageTime??"",

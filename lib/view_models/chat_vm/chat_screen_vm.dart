@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:twochealthcare/models/chat_model/ChatMessage.dart';
 import 'package:twochealthcare/providers/providers.dart';
+import 'package:twochealthcare/services/application_route_service.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
 import 'package:twochealthcare/services/chat_services/chat_screen_service.dart';
 import 'package:twochealthcare/services/signal_r_services.dart';
@@ -12,8 +13,11 @@ import 'package:twochealthcare/view_models/chat_vm/chat_list_vm.dart';
 
 class ChatScreenVM extends ChangeNotifier{
   ChatHistoryModel chatMessageList = ChatHistoryModel();
+  List<Participients>? participients = [];
   bool allMessagesLoading = true;
   bool pageWiseLoading = false;
+  // bool isSearchFieldValid = true;
+  TextEditingController? searchController;
   String? currentUserAppUserId;
   String? chatGroupId;
   int loadingPageNumber = 1;
@@ -21,6 +25,7 @@ class ChatScreenVM extends ChangeNotifier{
   AuthServices? _authServices;
   ChatScreenService? _chatScreenService;
   ChatListVM? _chatListVM;
+  ApplicationRouteService? _applicationRouteService;
   SignalRServices? _signalRServices;
   bool isMessageEmpty = true;
   FocusNode? myFocusNode = FocusNode();
@@ -35,6 +40,31 @@ class ChatScreenVM extends ChangeNotifier{
     chatMessageList.participients = [];
   }
 
+  searchListener(){
+    searchController = TextEditingController();
+    participients = [];
+    participients!.addAll(chatMessageList.participients??[]);
+    searchController?.addListener(() {
+      print(searchController!.text);
+      if(searchController!.text == ""){
+        participients = [];
+        participients!.addAll(chatMessageList.participients??[]);
+      }
+      else{
+        participients = [];
+        chatMessageList.participients!.forEach((element) {
+          if(element.fullName!.toLowerCase().contains(searchController!.text.toLowerCase())){
+            participients!.add(element);
+          }
+        });
+      }
+      notifyListeners();
+    });
+  }
+  disposeSearchController(){
+    searchController?.dispose();
+  }
+
   initService(){
     chatMessageList.chats = [];
     chatMessageList.participients = [];
@@ -42,6 +72,8 @@ class ChatScreenVM extends ChangeNotifier{
     _chatListVM = _ref!.read(chatListVMProvider);
     _chatScreenService = _ref!.read(chatScreenServiceProvider);
     _signalRServices = _ref!.read(signalRServiceProvider);
+    _applicationRouteService = _ref!.read(applicationRouteServiceProvider);
+    
     _signalRServices?.newMessage.stream.listen((event) {
       print("new message reached to Rx dart..");
       print(event.timeStamp.toString());
@@ -53,6 +85,27 @@ class ChatScreenVM extends ChangeNotifier{
         notifyListeners();
         chatMessageList.chats!.length == 0 ? null : ChatScreen.jumpToListIndex(isDelayed: true);
       }
+    });
+    _signalRServices?.onChatViewed.stream.listen((event) {
+      print("new message reached to Rx dart..");
+      if(chatMessageList.chats!.length>0){
+        if(event["chatGroupId"] == chatMessageList.chats![0].chatGroupId) {
+          List<Participients> updateParticipantList = [];
+          event["participients"].forEach((e){
+            updateParticipantList.add(Participients.fromJson(e));
+          });
+          chatMessageList.participients = [];
+          chatMessageList.participients!.addAll(updateParticipantList);
+          print("${_applicationRouteService!.currentScreen()} ==  ${event["chatGroupId"]}");
+          if(_applicationRouteService!.currentScreen() == event["chatGroupId"] ){
+            _signalRServices!.MarkChatGroupViewed(chatGroupId: event["chatGroupId"], userId: currentUserAppUserId!);
+          }
+          notifyListeners();
+        }
+      }
+
+
+
     });
   }
 

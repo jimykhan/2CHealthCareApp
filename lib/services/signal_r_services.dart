@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:http/io_client.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -5,20 +6,23 @@ import 'package:signalr_core/signalr_core.dart';
 import 'package:twochealthcare/constants/api_strings.dart';
 import 'package:twochealthcare/models/chat_model/ChatMessage.dart';
 import 'package:twochealthcare/providers/providers.dart';
+import 'package:twochealthcare/services/application_route_service.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
 import 'package:rxdart/rxdart.dart';
 class SignalRServices{
   PublishSubject<ChatMessage> newMessage = PublishSubject<ChatMessage>(sync: true);
-  PublishSubject<ChatMessage> onChatViewed = PublishSubject<ChatMessage>(sync: true);
+  PublishSubject<dynamic> onChatViewed = PublishSubject<dynamic>(sync: true);
   HubConnection? connection;
   ProviderReference? _ref;
   AuthServices? _authServices;
+  ApplicationRouteService? _applicationRouteService;
   SignalRServices({ProviderReference? ref}){
     _ref = ref;
     initService();
   }
   initService(){
     _authServices = _ref!.read(authServiceProvider);
+    _applicationRouteService = _ref!.read(applicationRouteServiceProvider);
 
   }
   initSignalR() async{
@@ -95,7 +99,23 @@ class SignalRServices{
   subscribeSignalrMessages() {
 
     connection?.on("OnChatViewed", (data) {
-    print("OnChatViewed call ${data}");
+      print("On Chat Viewed");
+      var makeJson = [
+        {
+          "participients": [],
+          "chatGroupId":"",
+          "chatGroupId" :"",
+        }
+      ];
+      data!.forEach((element) {
+        var newData = jsonDecode(element);
+        onChatViewed.add(newData);
+
+        print("OnChatViewed call ${jsonDecode(element)}");
+      });
+
+      // chatGroupId
+      //channelName
     });
     connection?.on('OnDataReceived', (data) {
 
@@ -142,7 +162,8 @@ class SignalRServices{
       print("OnChatViewed call $data}");
     });
   }
-  MarkChatGroupViewed(String chatGroupId, String userId){
+  MarkChatGroupViewed({required String chatGroupId, required String userId}){
+    print("MarkChatGroupViewed call");
     connection?.invoke("MarkChatGroupViewed",args: [chatGroupId,userId]).onError((error, stackTrace) => print("error ${error.toString()}")).then((value) => print("than ${value.toString()}"));
   }
 

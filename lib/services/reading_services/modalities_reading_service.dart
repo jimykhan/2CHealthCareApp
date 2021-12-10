@@ -6,6 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:twochealthcare/constants/api_strings.dart';
 import 'package:twochealthcare/models/modalities_models/modalities_model.dart';
 import 'package:twochealthcare/providers/providers.dart';
+import 'package:twochealthcare/util/conversion.dart';
 
 class ModalitiesReadingService{
   int bPLastReadingMonth = DateTime.now().month;
@@ -32,6 +33,12 @@ class ModalitiesReadingService{
          });
         modalities.forEach((element) {
           if(element.lastReadingDate != null){
+
+            //   element.lastReadingDate = convertLocalToUtc(element.lastReadingDate!.replaceAll("Z", "")
+            //   .replaceAll("/", "-").replaceAll("A", "").replaceAll("P", "").replaceAll("M", "")
+            //       .replaceFirst(" ", "T").replaceAll(" ", ""),);
+            // print(element.lastReading);
+
             int month = int.parse(element.lastReadingDate!.split("/")[0]);
             int year = int.parse(element.lastReadingDate!.split("/")[2].split(" ")[0]);
             if(element.modality == "BG") {

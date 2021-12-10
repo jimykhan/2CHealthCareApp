@@ -11,6 +11,7 @@ import 'package:twochealthcare/common_widgets/no_data_inlist.dart';
 import 'package:twochealthcare/common_widgets/toggle_button.dart';
 import 'package:twochealthcare/models/modalities_models/modalities_model.dart';
 import 'package:twochealthcare/providers/providers.dart';
+import 'package:twochealthcare/services/application_route_service.dart';
 import 'package:twochealthcare/services/shared_pref_services.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
@@ -61,6 +62,7 @@ class ModalitiesReading extends HookWidget {
   Widget build(BuildContext context) {
     final sharedPrefService = useProvider(sharedPrefServiceProvider);
     final modalitiesReadingVM = useProvider(modalitiesReadingVMProvider);
+    ApplicationRouteService applicationRouteService = useProvider(applicationRouteServiceProvider);
     useEffect(
       () {
         Future.microtask(() async {});

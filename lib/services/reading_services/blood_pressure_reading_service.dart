@@ -6,6 +6,7 @@ import 'package:twochealthcare/models/modalities_models/blood_pressure_reading_m
 import 'package:twochealthcare/models/modalities_models/modalities_model.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/shared_pref_services.dart';
+import 'package:twochealthcare/util/conversion.dart';
 
 class BloodPressureReadingService{
   double bloodPressureMaxLimit = 100;
@@ -26,17 +27,26 @@ class BloodPressureReadingService{
           bPReadings.add(BloodPressureReadingModel.fromJson(element));
         });
         if (bPReadings.length > 0) {
+          bPReadings.forEach((element) {
+            element.measurementDate = convertLocalToUtc(element.measurementDate!.replaceAll("Z", ""));
+          });
           bPReadings.sort((a, b) {
             return double.parse(a.measurementDate!
                 .trim()
                 .replaceAll("-", "")
                 .replaceAll("T", "")
-                .replaceAll(":", ""))
+                .replaceAll(":", "")
+                .replaceAll("Z", "")
+                .replaceAll(" ", "")
+            )
                 .compareTo(double.parse(b.measurementDate!
                 .trim()
                 .replaceAll("-", "")
                 .replaceAll("T", "")
-                .replaceAll(":", "")));
+                .replaceAll(":", "")
+                .replaceAll("Z", "")
+                .replaceAll(" ", "")
+            ));
           });
           bPReadings.forEach((element) {
             // element.dat = DateTime.parse(element.measurementDate!

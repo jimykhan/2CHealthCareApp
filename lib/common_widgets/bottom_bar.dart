@@ -9,6 +9,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:twochealthcare/common_widgets/snackber_message.dart';
 import 'package:twochealthcare/providers/providers.dart';
+import 'package:twochealthcare/services/application_route_service.dart';
 import 'package:twochealthcare/services/connectivity_service.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
@@ -26,6 +27,7 @@ class BottomBar extends HookWidget {
   Widget build(BuildContext context) {
     ConnectivityService connectivityService = useProvider(connectivityServiceProvider);
     HomeVM homeVM = useProvider(homeVMProvider);
+    ApplicationRouteService applicationRouteService = useProvider(applicationRouteServiceProvider);
 
 
     useEffect(
@@ -118,6 +120,7 @@ class BottomBar extends HookWidget {
               child: InkWell(
                 onTap: () {
                   if (selectedIndex != 1) {
+                    applicationRouteService.addAndRemoveScreen(screenName: "Profile");
                     Navigator.pushReplacement(
                         context,
                         PageTransition(
@@ -147,6 +150,7 @@ class BottomBar extends HookWidget {
                       bool check =  await homeVM.checkChatStatus();
                       print("this is application mode = ${Foundation.kDebugMode}");
                       if(Foundation.kDebugMode ? true : check){
+                        applicationRouteService.addAndRemoveScreen(screenName: "ChatList");
                         Navigator.pushReplacement(
                             context,
                             PageTransition(

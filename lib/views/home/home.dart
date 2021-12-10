@@ -12,6 +12,7 @@ import 'package:twochealthcare/common_widgets/custom_appbar.dart';
 import 'package:twochealthcare/common_widgets/custom_drawer.dart';
 import 'package:twochealthcare/common_widgets/notification_widget.dart';
 import 'package:twochealthcare/providers/providers.dart';
+import 'package:twochealthcare/services/application_route_service.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'dart:math';
@@ -60,8 +61,10 @@ class Home extends HookWidget {
   Widget build(BuildContext context) {
     LoginVM loginVM = useProvider(loginVMProvider);
     HomeVM homeVM = useProvider(homeVMProvider);
+    ApplicationRouteService applicationRouteService = useProvider(applicationRouteServiceProvider);
     useEffect((){
       homeVM.checkForUpdate();
+
       Future.microtask(() async{});
       return (){};
       },
@@ -89,7 +92,7 @@ class Home extends HookWidget {
           parentContext: context,
         ),
       ),
-      body: _body(loginVM: loginVM,homeVM: homeVM),
+      body: _body(loginVM: loginVM,homeVM: homeVM,applicationRouteService: applicationRouteService),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         // isExtended: true,
@@ -129,7 +132,7 @@ class Home extends HookWidget {
     );
   }
 
-  _body({required LoginVM loginVM,required HomeVM homeVM}) {
+  _body({required LoginVM loginVM,required HomeVM homeVM,required ApplicationRouteService applicationRouteService}) {
     return Stack(
       children: [
         Container(
@@ -182,6 +185,7 @@ class Home extends HookWidget {
                         return InkWell(
                             onTap: () {
                               if (index == 1) {
+                                applicationRouteService.addScreen(screenName: "ModalitiesReading");
                                 Navigator.push(
                                     context,
                                     PageTransition(
@@ -189,6 +193,7 @@ class Home extends HookWidget {
                                         type: PageTransitionType.rightToLeft));
                               }
                               else if (index == 0) {
+                                applicationRouteService.addScreen(screenName: "Profile");
                                 Navigator.push(
                                     context,
                                     PageTransition(
@@ -196,9 +201,11 @@ class Home extends HookWidget {
                                         type: PageTransitionType.rightToLeft));
                               }
                               else if(index == 2){
+                                // applicationRouteService.addScreen(screenName: "Profile");
                                 CustomAlertDialog(message: "Coming Soon...");
                               }
                               else if(index == 3){
+                                // applicationRouteService.addScreen(screenName: "Profile");
                                 CustomAlertDialog(message: "Coming Soon...");
                               }
                             },

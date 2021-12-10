@@ -84,16 +84,22 @@ class FirebaseService{
   _subNotification() async {
     // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
     FirebaseMessaging.onMessage.listen((event) {
-      Navigator.pushAndRemoveUntil(
-        applicationContext!.currentContext!,
-        MaterialPageRoute(
-          builder: (BuildContext context) =>
-              Home(),
-        ),
-            (route) => false,
-      );
-      Navigator.push(applicationContext!.currentContext!, PageTransition(
-          child: ModalitiesReading(), type: PageTransitionType.fade));
+      print("this is event${event.notification?.title}");
+      if(event.notification?.title == "New Message Received"){
+
+      }else{
+        Navigator.pushAndRemoveUntil(
+          applicationContext!.currentContext!,
+          MaterialPageRoute(
+            builder: (BuildContext context) =>
+                Home(),
+          ),
+              (route) => false,
+        );
+        Navigator.push(applicationContext!.currentContext!, PageTransition(
+            child: ModalitiesReading(), type: PageTransitionType.fade));
+      }
+
     });
     FirebaseMessaging.onMessageOpenedApp.listen((event) {
       Navigator.push(applicationContext!.currentContext!, PageTransition(
@@ -103,32 +109,29 @@ class FirebaseService{
     print("///////////////  weather ///////////////////");
     result = _ref!.read(loginVMProvider);
     if (result?.currentUser != null) {
-      print("${result?.currentUser?.appUserId}-NewDataReceived");
       await firebaseMessaging!
           .subscribeToTopic("${result?.currentUser?.appUserId}-NewDataReceived")
-          .then((value) => print("weather topic subscribe"));
+          .then((value) => print("${result?.currentUser?.appUserId}-NewDataReceived weather topic subscribe"));
+      await firebaseMessaging!
+          .subscribeToTopic("${result?.currentUser?.appUserId}-NewMsgReceived")
+          .then((value) => print("${result?.currentUser?.appUserId}-NewMsgReceived weather topic subscribe"));
     }
 
-    //
-    // FirebaseMessaging.onMessage.listen(_onMessage);
-    //
-    // FirebaseMessaging.onMessageOpenedApp.listen(_onMessageOpenedApp);
-    // // firebaseMessaging.on
-    //
-    // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-
 
   }
 
-  TurnOfChatNotification() {
+  turnOfChatNotification() {
     var firebaseMessaging = FirebaseMessaging.instance;
-    // firebaseMessaging
-    //     .unsubscribeFromTopic(
-    //         "${deviceService.currentUser.appUserId}-NewMsgReceived")
-    //     .then((value) => null);
+    if(result?.currentUser!=null){
+      firebaseMessaging
+          .unsubscribeFromTopic(
+          "${result?.currentUser?.appUserId}-NewMsgReceived")
+          .then((value) => null);
+    }
+
   }
 
-  TurnOfReadingNotification() {
+  turnOfReadingNotification() {
 
     var firebaseMessaging = FirebaseMessaging.instance;
     if (result?.currentUser != null){
@@ -140,7 +143,7 @@ class FirebaseService{
 
   }
 
-  TurnOnChatNotification() {
+  turnOnChatNotification() {
     var firebaseMessaging = FirebaseMessaging.instance;
     if (result?.currentUser != null){
       // firebaseMessaging
@@ -150,7 +153,7 @@ class FirebaseService{
     }
   }
 
-  TurnOnReadingNotification() {
+  turnOnReadingNotification() {
     var firebaseMessaging = FirebaseMessaging.instance;
     if (result?.currentUser != null){
       firebaseMessaging
@@ -159,6 +162,9 @@ class FirebaseService{
           .then((value) => null);
     }
   }
+
+
+
 
   _onMessage(RemoteMessage message) async {
     print('Handling a _onMessage message ${message.messageId}');

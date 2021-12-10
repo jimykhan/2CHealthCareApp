@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:twochealthcare/constants/api_strings.dart';
 import 'package:twochealthcare/models/chat_model/GetGroups.dart';
 import 'package:twochealthcare/providers/providers.dart';
+import 'package:twochealthcare/util/conversion.dart';
 
 class ChatListService{
   ProviderReference? _ref;
@@ -20,6 +21,9 @@ class ChatListService{
           List<GetGroupsModel> groupIds= [];
           response.data.forEach((item) {
             groupIds.add(GetGroupsModel.fromJson(item));
+          });
+          groupIds.forEach((element) {
+            element.lastMessageTime = convertLocalToUtc(element.lastMessageTime!.replaceAll("Z", ""));
           });
           if (groupIds.length == 0) {
 

@@ -82,6 +82,11 @@ class ChatScreenVM extends ChangeNotifier{
         event.messageStatus = MessageStatus.viewed;
         event.timeStamp = convertLocalToUtc(event.timeStamp!.replaceAll("Z", ""));
         chatMessageList.chats!.add(event);
+        print("${_applicationRouteService!.currentScreen()} ==  ${event.chatGroupId}");
+        if(_applicationRouteService!.currentScreen() == event.chatGroupId.toString() ){
+          print("this is appUserId  = ${currentUserAppUserId}");
+          _signalRServices!.MarkChatGroupViewed(chatGroupId: event.chatGroupId!, userId: currentUserAppUserId!);
+        }
         notifyListeners();
         chatMessageList.chats!.length == 0 ? null : ChatScreen.jumpToListIndex(isDelayed: true);
       }
@@ -96,10 +101,6 @@ class ChatScreenVM extends ChangeNotifier{
           });
           chatMessageList.participients = [];
           chatMessageList.participients!.addAll(updateParticipantList);
-          print("${_applicationRouteService!.currentScreen()} ==  ${event["chatGroupId"]}");
-          if(_applicationRouteService!.currentScreen() == event["chatGroupId"] ){
-            _signalRServices!.MarkChatGroupViewed(chatGroupId: event["chatGroupId"], userId: currentUserAppUserId!);
-          }
           notifyListeners();
         }
       }

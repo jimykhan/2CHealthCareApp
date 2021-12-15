@@ -17,8 +17,9 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // _subNotification();
   print('Handling a background message ${message.messageId}');
   print('Handling a background message ${message.data}');
-  Navigator.push(applicationContext!.currentContext!, PageTransition(
-      child: ModalitiesReading(), type: PageTransitionType.topToBottom));
+
+  // Navigator.push(applicationContext!.currentContext!, PageTransition(
+  //     child: ModalitiesReading(), type: PageTransitionType.topToBottom));
 }
 
 void requestNotificationPermission() async {
@@ -47,7 +48,6 @@ Future<void> main() async {
   try{
     WidgetsFlutterBinding.ensureInitialized();
     await Firebase.initializeApp();
-    requestNotificationPermission();
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
     // SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.top]);
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(

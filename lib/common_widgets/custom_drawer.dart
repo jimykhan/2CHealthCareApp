@@ -89,8 +89,8 @@ class CustomDrawer extends HookWidget {
                                         child: CircularImage(
                                           w: ApplicationSizing.convert(80),
                                           h: ApplicationSizing.convert(80),
-                                          imageUrl:
-                                              'https://www.propertytwinsswfl.com/wp-content/uploads/2018/09/dummy-profile-pic-male.jpg',
+                                          imageUrl: "assets/icons/personIcon.png",
+                                          assetImage: true,
                                         ),
                                       ),
                                       Container(

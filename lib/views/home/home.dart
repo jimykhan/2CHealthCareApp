@@ -10,9 +10,11 @@ import 'package:twochealthcare/common_widgets/bottom_bar.dart';
 import 'package:twochealthcare/common_widgets/circular_image.dart';
 import 'package:twochealthcare/common_widgets/custom_appbar.dart';
 import 'package:twochealthcare/common_widgets/custom_drawer.dart';
+import 'package:twochealthcare/common_widgets/filled_button.dart';
 import 'package:twochealthcare/common_widgets/notification_widget.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/application_route_service.dart';
+import 'package:twochealthcare/services/firebase_service.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'dart:math';
@@ -62,6 +64,7 @@ class Home extends HookWidget {
     LoginVM loginVM = useProvider(loginVMProvider);
     HomeVM homeVM = useProvider(homeVMProvider);
     ApplicationRouteService applicationRouteService = useProvider(applicationRouteServiceProvider);
+    FirebaseService firebaseService = useProvider(firebaseServiceProvider);
     useEffect((){
       homeVM.checkForUpdate();
 
@@ -216,6 +219,7 @@ class Home extends HookWidget {
                       mainAxisSpacing: ApplicationSizing.convert(20),
                       crossAxisSpacing: ApplicationSizing.convert(20),
                     )),
+
                 // Container(
                 //   margin: EdgeInsets.symmetric(
                 //       horizontal: ApplicationSizing.horizontalMargin(n: 20)),

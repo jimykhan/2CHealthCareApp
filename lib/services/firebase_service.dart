@@ -8,29 +8,22 @@ import 'package:hooks_riverpod/all.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:twochealthcare/main.dart';
 import 'package:twochealthcare/providers/providers.dart';
+import 'package:twochealthcare/services/local_notification_service.dart';
 import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
+import 'package:twochealthcare/views/chat/chat_list.dart';
 import 'package:twochealthcare/views/home/home.dart';
 import 'package:twochealthcare/views/readings/modalities_reading.dart';
 
 class FirebaseService{
   ProviderReference? _ref;
   FirebaseMessaging? firebaseMessaging;
-  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-  FlutterLocalNotificationsPlugin();
-  AndroidNotificationChannel channel = const AndroidNotificationChannel(
-      'high_importance_channel', // id
-      'HighNotifications', // title
-      description: 'This channel is used for important notifications.', // description
-      importance: Importance.high,
-      playSound: true,
-      showBadge: true,
-
-  );
   LoginVM? result;
+  LocalNotificationService? localNotificationService;
   FirebaseService({ProviderReference? ref}){
     _ref = ref;
     initFirebase();
   }
+
 
   initFirebase(){
     print("try calling firebase initialzeApp");
@@ -42,28 +35,19 @@ class FirebaseService{
 
   initNotification() async {
     firebaseMessaging = FirebaseMessaging.instance;
-    // firebaseMessaging.
-    // NotificationSettings notificationSettings = await firebaseMessaging!.getNotificationSettings();
-    // var requestPermission = firebaseMessaging!.requestPermission(
-    //   alert: true,
-    //   announcement: true,
-    //   badge: true,
-    //   carPlay: true,
-    //   criticalAlert: true,
-    //   provisional: true,
-    //   sound: true,
-    // );
-
+     firebaseMessaging!.requestPermission(
+      alert: true,
+      announcement: true,
+      badge: true,
+      carPlay: true,
+      criticalAlert: true,
+      provisional: true,
+      sound: true,
+    );
+     localNotificationService = _ref!.read(localNotificationServiceProvider);
+     // localNotificationService!.initLocalNoticationChannel();
 
     if (Platform.isAndroid) {
-      await flutterLocalNotificationsPlugin
-          .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
-          ?.createNotificationChannel(channel);
-      await firebaseMessaging!.setForegroundNotificationPresentationOptions(
-        alert: true,
-        badge: true,
-        sound: true,
-      );
       firebaseMessaging!
           .getToken()
           .then((value) => print("this is mobile token ${value.toString()}"));
@@ -82,12 +66,13 @@ class FirebaseService{
 
 
   _subNotification() async {
-    // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
     FirebaseMessaging.onMessage.listen((event) {
       print("this is event${event.notification?.title}");
       if(event.notification?.title == "New Message Received"){
 
-      }else{
+      }
+      else{
         Navigator.pushAndRemoveUntil(
           applicationContext!.currentContext!,
           MaterialPageRoute(
@@ -101,9 +86,18 @@ class FirebaseService{
       }
 
     });
+    // FirebaseMessaging.onMessage.listen(localNotificationService!.onMessage);
+
     FirebaseMessaging.onMessageOpenedApp.listen((event) {
-      Navigator.push(applicationContext!.currentContext!, PageTransition(
-          child: ModalitiesReading(), type: PageTransitionType.topToBottom));
+      if(event.notification?.title == "New Message Received"){
+        Navigator.pushReplacement(applicationContext!.currentContext!, PageTransition(
+            child: ChatList(), type: PageTransitionType.topToBottom));
+      }
+      else{
+        Navigator.pushReplacement(applicationContext!.currentContext!, PageTransition(
+            child: ModalitiesReading(), type: PageTransitionType.topToBottom));
+      }
+
     });
 
     print("///////////////  weather ///////////////////");
@@ -117,8 +111,15 @@ class FirebaseService{
           .then((value) => print("${result?.currentUser?.appUserId}-NewMsgReceived weather topic subscribe"));
     }
 
-
   }
+
+  // setPushNotification() async {
+  //   if (result?.currentUser != null) {
+  //     await firebaseMessaging!
+  //       .se("${result?.currentUser?.appUserId}-NewDataReceived")
+  //       .then((value) => print("${result?.currentUser?.appUserId}-NewDataReceived weather topic subscribe"));
+  // }
+  // }
 
   turnOfChatNotification() {
     var firebaseMessaging = FirebaseMessaging.instance;
@@ -166,83 +167,10 @@ class FirebaseService{
 
 
 
-  _onMessage(RemoteMessage message) async {
-    print('Handling a _onMessage message ${message.messageId}');
-    RemoteNotification? notification = message.notification;
-    AndroidNotification? android = message.notification?.android;
-    // stop notifications on Foreground
-    // return;
-    if (notification != null && android != null) {
-      flutterLocalNotificationsPlugin.show(
-          notification.hashCode,
-          notification.title,
-          notification.body,
-          NotificationDetails(
-            android: AndroidNotificationDetails(
-              channel.id,
-              channel.name,
-              channelDescription:channel.description,
-              color: Colors.blue,
-              playSound: true,
-              icon: 'ic_launcher',
-              largeIcon: DrawableResourceAndroidBitmap('ic_launcher'),
-            ),
-          ));
-    }
-    else {
-      await firebaseMessaging!.getAPNSToken();
-    flutterLocalNotificationsPlugin.show(
-    notification.hashCode,
-    notification?.title??"",
-    notification?.body??"",
-    const NotificationDetails(
-    iOS: IOSNotificationDetails(
-    // this.presentAlert,
-    // this.presentBadge,
-    // this.presentSound,
-    // this.sound,
-    // this.badgeNumber,
-    // this.attachments,
-    // this.subtitle,
-    // this.threadIdentifier,
-    presentAlert: true,
-    presentBadge: true,
-    presentSound: true,
-    ),
-    ));
-  }
-  }
 
-  _onMessageOpenedApp(RemoteMessage message){
-    print("data  = ${message.data}");
-    print('Handling a _onMessageOpenedApp message ${message.messageId??""}');
-    print('A new onMessageOpenedApp event was published!');
-    Navigator.push(applicationContext!.currentContext!, PageTransition(
-        child: ModalitiesReading(), type: PageTransitionType.topToBottom));
-    RemoteNotification? notification = message.notification;
-    AndroidNotification? android = message.notification?.android;
-    print("this is notification body = ${message.toString()}");
-    if (notification != null && android != null) {
-      showDialog(
-          context: applicationContext!.currentContext!,
-          builder: (_) {
-            return AlertDialog(
-              title: Text(notification.title??""),
-              content: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [Text(notification.body??"")],
-                ),
-              ),
-            );
-          });
-    }
-  }
 
-  Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     await Firebase.initializeApp();
-    // _subNotification();
-    print('Handling a background message ${message.messageId}');
     Navigator.push(applicationContext!.currentContext!, PageTransition(
         child: ModalitiesReading(), type: PageTransitionType.topToBottom));
   }

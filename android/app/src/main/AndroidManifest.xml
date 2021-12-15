@@ -44,13 +44,16 @@
               />
             <meta-data
                 android:name="com.google.firebase.messaging.default_notification_channel_id"
-                android:value="high_importance_channel"
+                android:value="2c_health"
                 />
 
+            <meta-data
+                android:name="com.google.firebase.messaging.default_notification_icon"
+                android:resource="@drawable/ic_launcher" />
 
-<!--            <meta-data-->
-<!--                android:name="com.google.firebase.messaging.default_notification_channel_id"-->
-<!--                android:value="easyapproach"/>-->
+            <meta-data
+                android:name="com.google.firebase.messaging.default_notification_icon"
+                android:resource="@drawable/ic_launcher" />
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

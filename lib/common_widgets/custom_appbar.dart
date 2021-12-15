@@ -40,7 +40,8 @@ class CustomAppBar extends StatelessWidget {
           //   colors: [color1??AppBarStartColor,color2??AppBarEndColor],
           //   end: Alignment.centerRight,
           //   begin: Alignment.centerLeft,
-          // )
+          // ),
+          // color: Colors.red
         ),
         child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

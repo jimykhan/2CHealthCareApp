@@ -145,6 +145,8 @@ class ChatList extends HookWidget {
           CircularImage(
             h: 45,
             w: 45,
+            imageUrl: "assets/icons/personIcon.png",
+            assetImage: true,
           ),
           ApplicationSizing.horizontalSpacer(),
           Expanded(

@@ -80,13 +80,13 @@ class Profile extends HookWidget {
                   child: CircularImage(
                     w: ApplicationSizing.convert(100),
                     h: ApplicationSizing.convert(100),
-                    imageUrl:
-                        'https://www.propertytwinsswfl.com/wp-content/uploads/2018/09/dummy-profile-pic-male.jpg',
+                    imageUrl: "assets/icons/personIcon.png",
+                    assetImage: true,
                   ),
                 ),
                 Container(
                   alignment: Alignment.center,
-                  padding: EdgeInsets.only(top: 20),
+                  padding: EdgeInsets.only(top: 10),
                   margin: EdgeInsets.symmetric(
                       horizontal: ApplicationSizing.horizontalMargin()),
                   child: Column(

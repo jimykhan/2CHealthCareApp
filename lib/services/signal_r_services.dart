@@ -162,9 +162,12 @@ class SignalRServices{
       print("OnChatViewed call $data}");
     });
   }
-  MarkChatGroupViewed({required String chatGroupId, required String userId}){
+  MarkChatGroupViewed({required int chatGroupId, required String userId}) async {
     print("MarkChatGroupViewed call");
-    connection?.invoke("MarkChatGroupViewed",args: [chatGroupId,userId]).onError((error, stackTrace) => print("error ${error.toString()}")).then((value) => print("than ${value.toString()}"));
+
+    await this.connection?.invoke("MarkChatGroupViewed",args: [chatGroupId,userId.trim()])
+        .onError((error, stackTrace) => print("error ${error.toString()}"))
+        .then((value) => print("than ${value.toString()}"));
   }
 
 

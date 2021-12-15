@@ -8,6 +8,7 @@ import 'package:twochealthcare/services/chat_services/chat_screen_service.dart';
 import 'package:twochealthcare/services/connectivity_service.dart';
 import 'package:twochealthcare/services/dio_services/dio_services.dart';
 import 'package:twochealthcare/services/firebase_service.dart';
+import 'package:twochealthcare/services/local_notification_service.dart';
 import 'package:twochealthcare/services/profile_service.dart';
 import 'package:twochealthcare/services/reading_services/bg_reading_service.dart';
 import 'package:twochealthcare/services/reading_services/blood_pressure_reading_service.dart';
@@ -52,5 +53,6 @@ final chatScreenServiceProvider = Provider<ChatScreenService>((ref)=>ChatScreenS
 final chatListServiceProvider = Provider<ChatListService>((ref)=>ChatListService(ref: ref));
 final connectivityServiceProvider = Provider<ConnectivityService>((ref)=>ConnectivityService(ref: ref));
 final applicationRouteServiceProvider = Provider<ApplicationRouteService>((ref)=>ApplicationRouteService());
+final localNotificationServiceProvider = Provider<LocalNotificationService>((ref)=>LocalNotificationService(ref: ref));
 /// Simple Providers
 

@@ -55,6 +55,6 @@ final chatListServiceProvider = Provider<ChatListService>((ref)=>ChatListService
 final connectivityServiceProvider = Provider<ConnectivityService>((ref)=>ConnectivityService(ref: ref));
 final applicationRouteServiceProvider = Provider<ApplicationRouteService>((ref)=>ApplicationRouteService());
 final localNotificationServiceProvider = Provider<LocalNotificationService>((ref)=>LocalNotificationService(ref: ref));
-final onlounhActivityServiceProvider = Provider<OnLunchActivityService>((ref)=>OnLunchActivityService(ref: ref));
+final onLaunchActivityServiceProvider = Provider<OnLaunchActivityService>((ref)=>OnLaunchActivityService(ref: ref));
 /// Simple Providers
 

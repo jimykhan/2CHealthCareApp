@@ -13,6 +13,7 @@ import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/application_route_service.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
 import 'package:twochealthcare/services/firebase_service.dart';
+import 'package:twochealthcare/services/onlunch_activity_service.dart';
 import 'package:twochealthcare/services/signal_r_services.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
@@ -31,6 +32,7 @@ class Login extends HookWidget {
     ApplicationPackageVM applicationPackageVM = useProvider(applicationPackageVMProvider);
     SignalRServices signalRServices = useProvider(signalRServiceProvider);
     ApplicationRouteService applicationRouteService = useProvider(applicationRouteServiceProvider);
+    OnLaunchActivityService onLaunchActivityService = useProvider(onLaunchActivityServiceProvider);
 
     useEffect(
       () {
@@ -54,7 +56,8 @@ class Login extends HookWidget {
                     child: Image.asset("assets/icons/loginBg.png"),
                   ),
                   _loginform(context, loginVM: loginVM,firebaseService: firebaseService,applicationPackageVM: applicationPackageVM,
-                  applicationRouteService: applicationRouteService),
+                  applicationRouteService: applicationRouteService,
+                  onLaunchActivityService: onLaunchActivityService),
                 ],
               ),
               loginVM.loading ? AlertLoader() : Container(),
@@ -68,7 +71,8 @@ class Login extends HookWidget {
   _loginform(BuildContext context, {LoginVM? loginVM,FirebaseService? firebaseService,
     ApplicationPackageVM? applicationPackageVM,
   SignalRServices? signalRServices,
-    required ApplicationRouteService applicationRouteService
+    required ApplicationRouteService applicationRouteService,
+    required OnLaunchActivityService onLaunchActivityService
   }) {
     return Container(
       decoration: BoxDecoration(
@@ -244,6 +248,7 @@ class Login extends HookWidget {
                       bool isValid = await loginVM.userLogin();
                       if (isValid) {
                         applicationRouteService.addAndRemoveScreen(screenName: "Home");
+                        onLaunchActivityService.syncLastApplicationUseDateAndTime();
                         Navigator.pushReplacement(
                             context,
                             PageTransition(

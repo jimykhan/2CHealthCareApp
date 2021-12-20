@@ -6,6 +6,7 @@ import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/application_route_service.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
 import 'package:twochealthcare/services/firebase_service.dart';
+import 'package:twochealthcare/services/onlunch_activity_service.dart';
 import 'package:twochealthcare/services/shared_pref_services.dart';
 import 'package:twochealthcare/services/signal_r_services.dart';
 import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
@@ -32,6 +33,8 @@ class SplashVM extends ChangeNotifier{
      LoginVM loginVM =  _ref!.read(loginVMProvider);
      FirebaseService firebaseService =  _ref!.read(firebaseServiceProvider);
      SignalRServices signalRServices =  _ref!.read(signalRServiceProvider);
+     OnLaunchActivityService onLunchActivityService =  _ref!.read(onLaunchActivityServiceProvider);
+
      var bearerToken = await sharedPrefServices.getBearerToken();
      int currenUserId = await authServices.getCurrentUserId();
      if(bearerToken == null){
@@ -39,8 +42,8 @@ class SplashVM extends ChangeNotifier{
        Navigator.pushReplacement(applicationContext!.currentContext!,
            PageTransition(child:const Login() , type: PageTransitionType.leftToRight));
      }else{
-
        applicationRouteService.addAndRemoveScreen(screenName: "Home");
+       onLunchActivityService.syncLastApplicationUseDateAndTime();
        Navigator.pushReplacement(applicationContext!.currentContext!,
            PageTransition(child:  Home()  , type: PageTransitionType.leftToRight));
        loginVM.checkLastLoggedInUser(currentUserId: currenUserId.toString());

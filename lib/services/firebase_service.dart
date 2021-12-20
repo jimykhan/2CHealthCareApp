@@ -9,6 +9,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:twochealthcare/main.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/local_notification_service.dart';
+import 'package:twochealthcare/services/onlunch_activity_service.dart';
 import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
 import 'package:twochealthcare/views/chat/chat_list.dart';
 import 'package:twochealthcare/views/home/home.dart';
@@ -16,9 +17,10 @@ import 'package:twochealthcare/views/readings/modalities_reading.dart';
 
 class FirebaseService{
   ProviderReference? _ref;
-  FirebaseMessaging? firebaseMessaging;
-  LoginVM? result;
-  LocalNotificationService? localNotificationService;
+  FirebaseMessaging? _firebaseMessaging;
+  LoginVM? _result;
+  LocalNotificationService? _localNotificationService;
+  OnLaunchActivityService? _onLaunchActivityService;
   FirebaseService({ProviderReference? ref}){
     _ref = ref;
     initFirebase();
@@ -34,8 +36,8 @@ class FirebaseService{
   }
 
   initNotification() async {
-    firebaseMessaging = FirebaseMessaging.instance;
-     firebaseMessaging!.requestPermission(
+    _firebaseMessaging = FirebaseMessaging.instance;
+    _firebaseMessaging!.requestPermission(
       alert: true,
       announcement: true,
       badge: true,
@@ -44,18 +46,18 @@ class FirebaseService{
       provisional: true,
       sound: true,
     );
-     localNotificationService = _ref!.read(localNotificationServiceProvider);
+    _localNotificationService = _ref!.read(localNotificationServiceProvider);
      // localNotificationService!.initLocalNoticationChannel();
 
     if (Platform.isAndroid) {
-      firebaseMessaging!
+      _firebaseMessaging!
           .getToken()
           .then((value) => print("this is mobile token ${value.toString()}"));
     }
     else {
-      firebaseMessaging!.requestPermission();
-      String? apnsToken = await firebaseMessaging!.getAPNSToken();
-      firebaseMessaging!
+      _firebaseMessaging!.requestPermission();
+      String? apnsToken = await _firebaseMessaging!.getAPNSToken();
+      _firebaseMessaging!
           .getToken()
           .then((value) => print("this is mobile token ${value.toString()}"));
     }
@@ -69,6 +71,7 @@ class FirebaseService{
 
     FirebaseMessaging.onMessage.listen((event) {
       print("this is event${event.notification?.title}");
+      _onLaunchActivityService!.syncLastApplicationUseDateAndTime();
       if(event.notification?.title == "New Message Received"){
         // Navigator.pushAndRemoveUntil(
         //   applicationContext!.currentContext!,
@@ -97,6 +100,7 @@ class FirebaseService{
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((event) {
+      _onLaunchActivityService!.syncLastApplicationUseDateAndTime();
       if(event.notification?.title == "New Message Received"){
         Navigator.pushAndRemoveUntil(
           applicationContext!.currentContext!,
@@ -125,14 +129,14 @@ class FirebaseService{
     });
 
     print("///////////////  weather ///////////////////");
-    result = _ref!.read(loginVMProvider);
-    if (result?.currentUser != null) {
-      await firebaseMessaging!
-          .subscribeToTopic("${result?.currentUser?.appUserId}-NewDataReceived")
-          .then((value) => print("${result?.currentUser?.appUserId}-NewDataReceived weather topic subscribe"));
-      await firebaseMessaging!
-          .subscribeToTopic("${result?.currentUser?.appUserId}-NewMsgReceived")
-          .then((value) => print("${result?.currentUser?.appUserId}-NewMsgReceived weather topic subscribe"));
+    _result = _ref!.read(loginVMProvider);
+    if (_result?.currentUser != null) {
+      await _firebaseMessaging!
+          .subscribeToTopic("${_result?.currentUser?.appUserId}-NewDataReceived")
+          .then((value) => print("${_result?.currentUser?.appUserId}-NewDataReceived weather topic subscribe"));
+      await _firebaseMessaging!
+          .subscribeToTopic("${_result?.currentUser?.appUserId}-NewMsgReceived")
+          .then((value) => print("${_result?.currentUser?.appUserId}-NewMsgReceived weather topic subscribe"));
     }
 
   }
@@ -147,10 +151,10 @@ class FirebaseService{
 
   turnOfChatNotification() {
     var firebaseMessaging = FirebaseMessaging.instance;
-    if(result?.currentUser!=null){
+    if(_result?.currentUser!=null){
       firebaseMessaging
           .unsubscribeFromTopic(
-          "${result?.currentUser?.appUserId}-NewMsgReceived")
+          "${_result?.currentUser?.appUserId}-NewMsgReceived")
           .then((value) => null);
     }
 
@@ -159,18 +163,18 @@ class FirebaseService{
   turnOfReadingNotification() {
 
     var firebaseMessaging = FirebaseMessaging.instance;
-    if (result?.currentUser != null){
+    if (_result?.currentUser != null){
       firebaseMessaging
           .unsubscribeFromTopic(
-          "${result?.currentUser?.appUserId}-NewDataReceived")
-          .then((value) => print("UnSub Topic${result?.currentUser?.appUserId}-NewDataReceived"));
+          "${_result?.currentUser?.appUserId}-NewDataReceived")
+          .then((value) => print("UnSub Topic${_result?.currentUser?.appUserId}-NewDataReceived"));
     }
 
   }
 
   turnOnChatNotification() {
     var firebaseMessaging = FirebaseMessaging.instance;
-    if (result?.currentUser != null){
+    if (_result?.currentUser != null){
       // firebaseMessaging
       //     .unsubscribeFromTopic(
       //     "${result?.currentUser?.appUserId}-NewDataReceived")
@@ -180,10 +184,10 @@ class FirebaseService{
 
   turnOnReadingNotification() {
     var firebaseMessaging = FirebaseMessaging.instance;
-    if (result?.currentUser != null){
+    if (_result?.currentUser != null){
       firebaseMessaging
           .subscribeToTopic(
-          "${result?.currentUser?.appUserId}-NewDataReceived")
+          "${_result?.currentUser?.appUserId}-NewDataReceived")
           .then((value) => null);
     }
   }

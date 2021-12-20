@@ -70,7 +70,16 @@ class FirebaseService{
     FirebaseMessaging.onMessage.listen((event) {
       print("this is event${event.notification?.title}");
       if(event.notification?.title == "New Message Received"){
-
+        Navigator.pushAndRemoveUntil(
+          applicationContext!.currentContext!,
+          MaterialPageRoute(
+            builder: (BuildContext context) =>
+                Home(),
+          ),
+              (route) => false,
+        );
+        Navigator.push(applicationContext!.currentContext!, PageTransition(
+            child: ChatList(), type: PageTransitionType.fade));
       }
       else{
         Navigator.pushAndRemoveUntil(

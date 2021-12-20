@@ -70,6 +70,34 @@ class FirebaseService{
     FirebaseMessaging.onMessage.listen((event) {
       print("this is event${event.notification?.title}");
       if(event.notification?.title == "New Message Received"){
+        // Navigator.pushAndRemoveUntil(
+        //   applicationContext!.currentContext!,
+        //   MaterialPageRoute(
+        //     builder: (BuildContext context) =>
+        //         Home(),
+        //   ),
+        //       (route) => false,
+        // );
+        // Navigator.push(applicationContext!.currentContext!, PageTransition(
+        //     child: ChatList(), type: PageTransitionType.fade));
+      }
+      else{
+        Navigator.pushAndRemoveUntil(
+          applicationContext!.currentContext!,
+          MaterialPageRoute(
+            builder: (BuildContext context) =>
+                Home(),
+          ),
+              (route) => false,
+        );
+        Navigator.push(applicationContext!.currentContext!, PageTransition(
+            child: ModalitiesReading(), type: PageTransitionType.fade));
+      }
+
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((event) {
+      if(event.notification?.title == "New Message Received"){
         Navigator.pushAndRemoveUntil(
           applicationContext!.currentContext!,
           MaterialPageRoute(
@@ -92,19 +120,6 @@ class FirebaseService{
         );
         Navigator.push(applicationContext!.currentContext!, PageTransition(
             child: ModalitiesReading(), type: PageTransitionType.fade));
-      }
-
-    });
-    // FirebaseMessaging.onMessage.listen(localNotificationService!.onMessage);
-
-    FirebaseMessaging.onMessageOpenedApp.listen((event) {
-      if(event.notification?.title == "New Message Received"){
-        Navigator.pushReplacement(applicationContext!.currentContext!, PageTransition(
-            child: ChatList(), type: PageTransitionType.topToBottom));
-      }
-      else{
-        Navigator.pushReplacement(applicationContext!.currentContext!, PageTransition(
-            child: ModalitiesReading(), type: PageTransitionType.topToBottom));
       }
 
     });

@@ -35,7 +35,7 @@ class LocalNotificationService{
 
     if (Platform.isAndroid){
       channel =  const AndroidNotificationChannel(
-        '2c_health', // id
+        'test_1', // id
         'High Importance Notifications', // title
         // 'This channel is used for important notifications.', // description
         importance: Importance.max,

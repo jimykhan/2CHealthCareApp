@@ -44,7 +44,7 @@
               />
             <meta-data
                 android:name="com.google.firebase.messaging.default_notification_channel_id"
-                android:value="2c_health"
+                android:value="test_1"
                 />
 
             <meta-data

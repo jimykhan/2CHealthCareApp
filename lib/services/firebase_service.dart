@@ -45,7 +45,7 @@ class FirebaseService{
       sound: true,
     );
      localNotificationService = _ref!.read(localNotificationServiceProvider);
-     localNotificationService!.initLocalNoticationChannel();
+     // localNotificationService!.initLocalNoticationChannel();
 
     if (Platform.isAndroid) {
       firebaseMessaging!
@@ -67,35 +67,59 @@ class FirebaseService{
 
   _subNotification() async {
 
-    // FirebaseMessaging.onMessage.listen((event) {
-    //   print("this is event${event.notification?.title}");
-    //   if(event.notification?.title == "New Message Received"){
-    //
-    //   }
-    //   else{
-    //     Navigator.pushAndRemoveUntil(
-    //       applicationContext!.currentContext!,
-    //       MaterialPageRoute(
-    //         builder: (BuildContext context) =>
-    //             Home(),
-    //       ),
-    //           (route) => false,
-    //     );
-    //     Navigator.push(applicationContext!.currentContext!, PageTransition(
-    //         child: ModalitiesReading(), type: PageTransitionType.fade));
-    //   }
-    //
-    // });
-    FirebaseMessaging.onMessage.listen(localNotificationService!.onMessage);
+    FirebaseMessaging.onMessage.listen((event) {
+      print("this is event${event.notification?.title}");
+      if(event.notification?.title == "New Message Received"){
+        // Navigator.pushAndRemoveUntil(
+        //   applicationContext!.currentContext!,
+        //   MaterialPageRoute(
+        //     builder: (BuildContext context) =>
+        //         Home(),
+        //   ),
+        //       (route) => false,
+        // );
+        // Navigator.push(applicationContext!.currentContext!, PageTransition(
+        //     child: ChatList(), type: PageTransitionType.fade));
+      }
+      else{
+        Navigator.pushAndRemoveUntil(
+          applicationContext!.currentContext!,
+          MaterialPageRoute(
+            builder: (BuildContext context) =>
+                Home(),
+          ),
+              (route) => false,
+        );
+        Navigator.push(applicationContext!.currentContext!, PageTransition(
+            child: ModalitiesReading(), type: PageTransitionType.fade));
+      }
+
+    });
 
     FirebaseMessaging.onMessageOpenedApp.listen((event) {
       if(event.notification?.title == "New Message Received"){
-        Navigator.pushReplacement(applicationContext!.currentContext!, PageTransition(
-            child: ChatList(), type: PageTransitionType.topToBottom));
+        Navigator.pushAndRemoveUntil(
+          applicationContext!.currentContext!,
+          MaterialPageRoute(
+            builder: (BuildContext context) =>
+                Home(),
+          ),
+              (route) => false,
+        );
+        Navigator.push(applicationContext!.currentContext!, PageTransition(
+            child: ChatList(), type: PageTransitionType.fade));
       }
       else{
-        Navigator.pushReplacement(applicationContext!.currentContext!, PageTransition(
-            child: ModalitiesReading(), type: PageTransitionType.topToBottom));
+        Navigator.pushAndRemoveUntil(
+          applicationContext!.currentContext!,
+          MaterialPageRoute(
+            builder: (BuildContext context) =>
+                Home(),
+          ),
+              (route) => false,
+        );
+        Navigator.push(applicationContext!.currentContext!, PageTransition(
+            child: ModalitiesReading(), type: PageTransitionType.fade));
       }
 
     });

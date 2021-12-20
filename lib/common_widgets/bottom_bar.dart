@@ -149,7 +149,7 @@ class BottomBar extends HookWidget {
                     }else{
                       bool check =  await homeVM.checkChatStatus();
                       print("this is application mode = ${Foundation.kDebugMode}");
-                      if(Foundation.kDebugMode ? true : check){
+                      if(check){
                         applicationRouteService.addAndRemoveScreen(screenName: "ChatList");
                         Navigator.pushReplacement(
                             context,

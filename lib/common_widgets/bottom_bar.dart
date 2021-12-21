@@ -110,7 +110,7 @@ class BottomBar extends HookWidget {
             horizontal: ApplicationSizing.horizontalMargin()
         ),
 
-        height: Platform.isIOS ? ApplicationSizing.convert(40)  : ApplicationSizing.convert(60),
+        height: Platform.isIOS ? ApplicationSizing.convert(50)  : ApplicationSizing.convert(60),
         // color: Colors.black,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,

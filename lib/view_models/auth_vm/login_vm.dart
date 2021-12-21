@@ -73,12 +73,10 @@ class LoginVM extends ChangeNotifier{
 
   checkLastLoggedInUser({var body, required String currentUserId}) async{
     if(body !=null){
-      logedInUserModel = await sharedPrefServices!.lastLoggedInUser(data: body, userId: currentUserId
-      );
+      logedInUserModel = await sharedPrefServices!.lastLoggedInUser(data: body);
     }
     else{
-      logedInUserModel = await sharedPrefServices!.lastLoggedInUser(userId: currentUserId
-      );
+      logedInUserModel = await sharedPrefServices!.lastLoggedInUser();
     }
 
   }

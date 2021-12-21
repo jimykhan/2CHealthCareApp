@@ -16,10 +16,10 @@ class BGReadingService{
     _ref = ref;
   }
 
-  getBGReading({int? currentUserId,int? month,int? year}) async {
+  getBGReading({int? currentUserId,DateTime? startDate,DateTime? endDate}) async {
     try{
       final dio = _ref!.read(dioServicesProvider);
-      Response response = await dio.dio!.get(ApiStrings.getBloodGlucoseDeviceDatabyPatientId+"/"+"$currentUserId/$month/$year",
+      Response response = await dio.dio!.get(ApiStrings.getBloodGlucoseDeviceDatabyPatientId+"/$currentUserId"+"?startDate=${startDate.toString()}&endDate=${endDate.toString()}",
       );
       if(response.statusCode == 200){
         // sharePrf.setCurrentUser(response.data);

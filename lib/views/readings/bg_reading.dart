@@ -22,6 +22,7 @@ import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/view_models/modalities_reading_vm/blood_pressure_reading_vm.dart';
+import 'package:twochealthcare/views/readings/tab_and_calender.dart';
 
 class BGReading extends HookWidget {
   int selectedMonth;
@@ -82,28 +83,29 @@ class BGReading extends HookWidget {
           children: [
             Column(
               children: [
-                // ApplicationSizing.verticalSpacer(),
+                ApplicationSizing.verticalSpacer(),
                 // TapBar(
                 //   selectedIndx: bgReadingVM.timePeriodSelect,
                 //   ontap: (val) {
                 //     bgReadingVM.changeTimePeriodSelectIndex(val);
                 //   },
                 // ),
-                CustomCalendar(
-                  selectedDayPredict: bgReadingVM.selectDayPredict,
-                  onDaySelect: bgReadingVM.onDaySelected,
-                  formatChange: bgReadingVM.onFormatChanged,
-                  onRangeSelect: bgReadingVM.selectRange,
-                  calendarFormat: bgReadingVM.calendarFormat,
-                  headerDisable: bgReadingVM.headerDisable,
-                  dayHeight: bgReadingVM.dayHeight,
-                  daysOfWeekVisible: bgReadingVM.daysOfWeekVisible,
-                  onPageChanged: bgReadingVM.onPageChanged,
-                  selectedDay1: bgReadingVM.selectedDay1,
-                  focusedDay1: bgReadingVM.focusedDay1,
-                  rangeEnd: bgReadingVM.rangeEnd,
-                  rangeStart: bgReadingVM.rangeStart,
-                ),
+                // CustomCalendar(
+                //   selectedDayPredict: bgReadingVM.selectDayPredict,
+                //   onDaySelect: bgReadingVM.onDaySelected,
+                //   formatChange: bgReadingVM.onFormatChanged,
+                //   onRangeSelect: bgReadingVM.selectRange,
+                //   calendarFormat: bgReadingVM.calendarFormat,
+                //   headerDisable: bgReadingVM.headerDisable,
+                //   dayHeight: bgReadingVM.dayHeight,
+                //   daysOfWeekVisible: bgReadingVM.daysOfWeekVisible,
+                //   onPageChanged: bgReadingVM.onPageChanged,
+                //   selectedDay1: bgReadingVM.selectedDay1,
+                //   focusedDay1: bgReadingVM.focusedDay1,
+                //   rangeEnd: bgReadingVM.rangeEnd,
+                //   rangeStart: bgReadingVM.rangeStart,
+                // ),
+                TabAndCalender(),
                 bgReadingVM.bPReadings.length == 0
                     ? NoData()
                     : Column(

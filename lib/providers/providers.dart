@@ -24,6 +24,7 @@ import 'package:twochealthcare/view_models/home_vm.dart';
 import 'package:twochealthcare/view_models/modalities_reading_vm/bg_reading_vm.dart';
 import 'package:twochealthcare/view_models/modalities_reading_vm/blood_pressure_reading_vm.dart';
 import 'package:twochealthcare/view_models/modalities_reading_vm/modalities_reading_vm.dart';
+import 'package:twochealthcare/view_models/modalities_reading_vm/tab_and_calender_vm.dart';
 import 'package:twochealthcare/view_models/profile_vm.dart';
 import 'package:twochealthcare/view_models/splash_vm/splash_vm.dart';
 /// ChangeNotifierProvider
@@ -37,6 +38,7 @@ final homeVMProvider = ChangeNotifierProvider<HomeVM>((ref)=>HomeVM(ref: ref));
 final applicationPackageVMProvider = ChangeNotifierProvider<ApplicationPackageVM>((ref)=>ApplicationPackageVM(ref: ref));
 final chatListVMProvider = ChangeNotifierProvider<ChatListVM>((ref)=>ChatListVM(ref: ref));
 final chatScreenVMProvider = ChangeNotifierProvider<ChatScreenVM>((ref)=>ChatScreenVM(ref: ref));
+final tabAndCalenderVMProvider = ChangeNotifierProvider<TabAndCalenderVM>((ref)=>TabAndCalenderVM(ref: ref));
 /// ChangeNotifierProvider
 
 

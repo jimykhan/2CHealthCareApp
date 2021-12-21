@@ -7,32 +7,35 @@ import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
 import 'package:twochealthcare/services/reading_services/bg_reading_service.dart';
 import 'package:twochealthcare/services/reading_services/blood_pressure_reading_service.dart';
+import 'package:twochealthcare/util/conversion.dart';
+import 'package:twochealthcare/view_models/modalities_reading_vm/tab_and_calender_vm.dart';
 class BGReadingVM extends ChangeNotifier{
   double bGMaxLimit = 100;
-  int selectedYear = DateTime.now().year;
-  int selectedMonth = DateTime.now().month;
-  int timePeriodSelect = 2;
+  // DateTime startDate = DateTime.now();
+  // DateTime endDate = DateTime.now();
+  // int timePeriodSelect = 2;
   List<BGDataModel> bPReadings = [];
   bool bGReadingLoading = true;
-  /// Calendar work start from there
-  CalendarFormat? calendarFormat = CalendarFormat.month;
-  // DateTime? focusedDay1 = DateTime.now();
-  DateTime? focusedDay1 ;
-  DateTime? selectedDay1;
-  RangeSelectionMode? rangeSelectionMode;
-  DateTime? rangeStart;
-  DateTime? rangeEnd;
-  bool headerDisable = true;
-  double dayHeight = 0;
-  bool daysOfWeekVisible = false;
-  // dayHeight =1;
-  // headerDisable = true;
-  // daysOfWeekVisible = false;
-  /// Calendar work start from there
+  // /// Calendar work start from there
+  // CalendarFormat? calendarFormat = CalendarFormat.month;
+  // // DateTime? focusedDay1 = DateTime.now();
+  // DateTime? focusedDay1 ;
+  // DateTime? selectedDay1;
+  // RangeSelectionMode? rangeSelectionMode;
+  // DateTime? rangeStart;
+  // DateTime? rangeEnd;
+  // bool headerDisable = true;
+  // double dayHeight = 0;
+  // bool daysOfWeekVisible = false;
+  // // dayHeight =1;
+  // // headerDisable = true;
+  // // daysOfWeekVisible = false;
+  // /// Calendar work start from there
 
 
   AuthServices? _authService;
   BGReadingService? _bGReadingService;
+  TabAndCalenderVM? _tabAndCalenderVM;
   ProviderReference? _ref;
 
   BGReadingVM({ProviderReference? ref}){
@@ -42,107 +45,117 @@ class BGReadingVM extends ChangeNotifier{
   initService(){
     _authService = _ref!.read(authServiceProvider);
     _bGReadingService = _ref!.read(bGReadingServiceProvider);
+    _tabAndCalenderVM = _ref!.read(tabAndCalenderVMProvider);
+    _tabAndCalenderVM!.newDateRange.listen((value) {
+      getBGReading(startDate: value.startDate, endDate: value.endDate);
+    });
 
   }
   initialState({required int readingMonth, required int readingYear}){
-    selectedMonth = readingMonth;
-    selectedYear = readingYear;
-    timePeriodSelect = 2;
-    focusedDay1 = DateTime(selectedYear ,selectedMonth);
-    selectedDay1 = DateTime(selectedYear,selectedMonth);
-    bGReadingLoading = true;
-    getBGReading();
-  }
-  changeTimePeriodSelectIndex(int? index){
-    if(index != timePeriodSelect){
-      timePeriodSelect = index??0;
-      if(index == 0){
-        calendarFormat = CalendarFormat.week;
-        dayHeight = 40;
-        headerDisable = false;
-        daysOfWeekVisible = true;
-      }
-      else if(index == 1){
-        calendarFormat = CalendarFormat.week;
-        dayHeight = 0;
-        headerDisable = true;
-        daysOfWeekVisible = false;
-      }
-      else if(index == 2){
-        calendarFormat = CalendarFormat.month;
-        dayHeight =0;
-        headerDisable = true;
-        daysOfWeekVisible = false;
-      }
-      notifyListeners();
-    }
+    _tabAndCalenderVM!.initialState(readingMonth: readingMonth, readingYear: readingYear);
+    DateTime startDate = DateTime(readingYear,readingMonth,1);
+    DateTime endDate = DateTime(readingYear,readingMonth,countMonthDays(year: readingYear,month: readingMonth));
+    // timePeriodSelect = 2;
+    // focusedDay1 = DateTime(readingYear ,readingMonth);
+    // selectedDay1 = DateTime(readingYear,readingMonth);
+    // bGReadingLoading = true;
 
+    getBGReading(startDate: startDate,endDate: endDate);
   }
 
-  onDaySelected(selectedDay, focusedDay){
-    print("onDaySelected call ${selectedDay} ${focusedDay}");
-    if (!isSameDay(selectedDay1, selectedDay)) {
-      selectedDay1 = selectedDay;
-      focusedDay1 = focusedDay;
-    }
+  // changeTimePeriodSelectIndex(int? index){
+  //   if(index != timePeriodSelect){
+  //     timePeriodSelect = index??0;
+  //     if(index == 0){
+  //       calendarFormat = CalendarFormat.week;
+  //       dayHeight = 40;
+  //       headerDisable = false;
+  //       daysOfWeekVisible = true;
+  //     }
+  //     else if(index == 1){
+  //       calendarFormat = CalendarFormat.week;
+  //       dayHeight = 0;
+  //       headerDisable = true;
+  //       daysOfWeekVisible = false;
+  //       startDate = DateTime(startDate.year,startDate.month,1);
+  //       endDate = DateTime(startDate.year,startDate.month,7);
+  //       getBGReading();
+  //
+  //     }
+  //     else if(index == 2){
+  //       calendarFormat = CalendarFormat.month;
+  //       dayHeight =0;
+  //       headerDisable = true;
+  //       daysOfWeekVisible = false;
+  //     }
+  //     notifyListeners();
+  //   }
+  //
+  // }
+  //
+  // onDaySelected(selectedDay, focusedDay){
+  //   print("onDaySelected call ${selectedDay} ${focusedDay}");
+  //   if (!isSameDay(selectedDay1, selectedDay)) {
+  //     selectedDay1 = selectedDay;
+  //     focusedDay1 = focusedDay;
+  //   }
+  //   notifyListeners();
+  // }
+  //
+  // onPageChanged(focusedDay) {
+  //   print("onPageChanged call ${focusedDay}");
+  //   selectedDay1 = focusedDay;
+  //   focusedDay1 = focusedDay;
+  //   if(timePeriodSelect == 2){
+  //     startDate = selectedDay1!;
+  //     endDate = DateTime(selectedDay1!.year,selectedDay1!.month,countMonthDays(year: selectedDay1!.year, month: selectedDay1!.month));
+  //     getBGReading();
+  //   }
+  //
+  //
+  //
+  //   // notifyListeners();
+  // }
+  //
+  // selectRange(start, end, focusedDay) {
+  //   print("selected Range call");
+  //   print("start date = ${start}");
+  //   print("start end = ${end}");
+  //   print("focus date = ${focusedDay}");
+  //   if(start != null && end == null){
+  //     selectedDay1 = null;
+  //     focusedDay1 = start;
+  //     rangeStart = start;
+  //     rangeEnd = start;
+  //   }
+  //   if(start != null && end != null){
+  //     selectedDay1 = null;
+  //     focusedDay1 = start;
+  //     rangeStart = start;
+  //     rangeEnd = end;
+  //   }
+  //
+  //   // rangeSelectionMode = RangeSelectionMode.toggledOn;
+  //   notifyListeners();
+  // }
+  //
+  // bool selectDayPredict(day){
+  //   DateTime time = DateTime.parse(day.toString());
+  //   // if(time.month != selectedMonth){
+  //   //
+  //   // }
+  //   return isSameDay(selectedDay1, day);
+  // }
+  //
+  // onFormatChanged(format){
+  //   print("onFormat change ${format}");
+  // }
 
-    notifyListeners();
-  }
-
-  onPageChanged(focusedDay) {
-    print("onPageChanged call ${focusedDay}");
-    selectedDay1 = focusedDay;
-    focusedDay1 = focusedDay;
-    if(timePeriodSelect == 2){
-      selectedMonth = selectedDay1!.month;
-      selectedYear = selectedDay1!.year;
-      getBGReading();
-    }
-
-
-
-    // notifyListeners();
-  }
-
-  selectRange(start, end, focusedDay) {
-    print("selected Range call");
-    print("start date = ${start}");
-    print("start end = ${end}");
-    print("focus date = ${focusedDay}");
-    if(start != null && end == null){
-      selectedDay1 = null;
-      focusedDay1 = start;
-      rangeStart = start;
-      rangeEnd = start;
-    }
-    if(start != null && end != null){
-      selectedDay1 = null;
-      focusedDay1 = start;
-      rangeStart = start;
-      rangeEnd = end;
-    }
-
-    // rangeSelectionMode = RangeSelectionMode.toggledOn;
-    notifyListeners();
-  }
-
-  bool selectDayPredict(day){
-    DateTime time = DateTime.parse(day.toString());
-    if(time.month != selectedMonth){
-
-    }
-    return isSameDay(selectedDay1, day);
-  }
-
-  onFormatChanged(format){
-    print("onFormat change ${format}");
-  }
-
-  getBGReading()async{
+  getBGReading({DateTime? startDate, DateTime? endDate})async{
     int id  = await _authService!.getCurrentUserId();
     setBGReadingLoading(true);
     var res = await _bGReadingService?.getBGReading(currentUserId: id,
-        month: selectedMonth,year: selectedYear);
+        startDate: startDate,endDate: endDate);
     if(res is List){
       bPReadings = [];
       res.forEach((element){

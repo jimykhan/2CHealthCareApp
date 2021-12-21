@@ -5,6 +5,7 @@ String convertLocalToUtc(String? dateTime){
   }else{
     return "";
   }
-
-
+}
+int countMonthDays({required int year, required int month}){
+  return DateTime(year, month + 1, 0).day;
 }

@@ -151,7 +151,7 @@ class Home extends HookWidget {
                       Container(
                         alignment: Alignment.centerLeft,
                         margin: EdgeInsets.only(
-                          top: ApplicationSizing.convert(10),
+                          top: ApplicationSizing.convert(0),
                           bottom: ApplicationSizing.convert(0),
                         ),
                         child: Text(

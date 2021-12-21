@@ -7,6 +7,7 @@ import 'package:twochealthcare/services/auth_services/auth_services.dart';
 import 'package:twochealthcare/services/chat_services/chat_list_service.dart';
 
 class HomeVM extends ChangeNotifier{
+  bool reset = false;
   AuthServices? _authService;
   ChatListService? chatListService;
   ProviderReference? _ref;
@@ -19,6 +20,13 @@ class HomeVM extends ChangeNotifier{
   initService(){
     _authService = _ref!.read(authServiceProvider);
     chatListService = _ref!.read(chatListServiceProvider);
+  }
+
+  resetHome(){
+    if(!reset){
+      reset = true;
+      notifyListeners();
+    }
   }
 
   setHomeScreenLoading(check){

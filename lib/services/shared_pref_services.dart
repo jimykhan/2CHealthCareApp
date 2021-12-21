@@ -44,28 +44,15 @@ class SharedPrefServices{
     return token;
   }
 
-  Future<LogedInUserModel?> lastLoggedInUser({var data, String? userId}) async {
+  Future<LogedInUserModel?> lastLoggedInUser({var data}) async {
     await _initPref();
-    List newList = [];
     LogedInUserModel? lastLoggedInUser;
-    // bool isKeyAvail = _prefs?.containsKey("loggedInUsers")??false;
-    if(_prefs?.containsKey("loggedInUsers")??false){
-      String? allUser = _prefs?.getString("loggedInUsers");
-      var listOfUser = jsonDecode(allUser??"");
-      if(listOfUser is List){
-        listOfUser.forEach((element) {
-          if(element["id"] == userId){
-            data == null ? null : element["lastLogedIn"] = data["lastLogedIn"];
-            lastLoggedInUser = LogedInUserModel.fromJson(element);
-          }
-        });
-        _prefs?.setString("loggedInUsers", jsonEncode(listOfUser));
-        return lastLoggedInUser!;
-      }
-    }else{
-      newList.add(data);
-      _prefs?.setString("loggedInUsers", jsonEncode(newList));
+    if(data != null){
+      var data1 = _prefs?.setString("loggedInUsers", jsonEncode(data));
       return LogedInUserModel.fromJson(data);
+    }else{
+      var User = _prefs?.getString("loggedInUsers");
+      return LogedInUserModel.fromJson(jsonDecode(User.toString()));
     }
   }
 

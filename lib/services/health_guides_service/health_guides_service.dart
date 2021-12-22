@@ -7,6 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:signalr_core/signalr_core.dart';
 import 'package:twochealthcare/constants/api_strings.dart';
 import 'package:twochealthcare/models/chat_model/ChatMessage.dart';
+import 'package:twochealthcare/models/health_guide_models/health_guide_model.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/application_route_service.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
@@ -27,8 +28,18 @@ class HealthGuidesService {
   }
 
 
-  getAllHealthGuides() async{
-    Response response = await dio!.dio!.get(ApiStrings.healthGuideLines);
+  Future<List<HealthGuideModel>> getAllHealthGuides() async{
+    List<HealthGuideModel> healthGuides = [];
+    var response = await dio!.dio!.get(ApiStrings.healthGuideLines);
+    if(response.statusCode == 200){
+        response.data.forEach((element) {
+          healthGuides.add(HealthGuideModel.fromJson(element));
+        });
+    }
+    else{
+
+    }
+    return healthGuides;
   }
 
 }

@@ -46,7 +46,6 @@ class SplashVM extends ChangeNotifier{
        onLunchActivityService.syncLastApplicationUseDateAndTime();
        Navigator.pushReplacement(applicationContext!.currentContext!,
            PageTransition(child:  Home()  , type: PageTransitionType.leftToRight));
-       loginVM.checkLastLoggedInUser(currentUserId: currenUserId.toString());
        firebaseService.initNotification();
        loginVM.getCurrentUserFromSharedPref();
        signalRServices.initSignalR();

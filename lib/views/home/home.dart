@@ -22,6 +22,7 @@ import 'dart:math';
 import 'package:twochealthcare/util/styles.dart';
 import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
 import 'package:twochealthcare/view_models/home_vm.dart';
+import 'package:twochealthcare/views/health_guides/health_guides.dart';
 import 'package:twochealthcare/views/home/profile.dart';
 import 'package:twochealthcare/views/notifiction/notifiction_list.dart';
 import 'package:twochealthcare/views/readings/modalities_reading.dart';
@@ -208,8 +209,12 @@ class Home extends HookWidget {
                                 CustomAlertDialog(message: "Coming Soon...");
                               }
                               else if(index == 3){
-                                // applicationRouteService.addScreen(screenName: "Profile");
-                                CustomAlertDialog(message: "Coming Soon...");
+                                applicationRouteService.addScreen(screenName: "HealthGuides");
+                                Navigator.push(
+                                    context,
+                                    PageTransition(
+                                        child: HealthGuides(),
+                                        type: PageTransitionType.rightToLeft));
                               }
                             },
                             child: squareBox(item: items?[index], index: index));

@@ -8,6 +8,7 @@ import 'package:twochealthcare/services/chat_services/chat_screen_service.dart';
 import 'package:twochealthcare/services/connectivity_service.dart';
 import 'package:twochealthcare/services/dio_services/dio_services.dart';
 import 'package:twochealthcare/services/firebase_service.dart';
+import 'package:twochealthcare/services/health_guides_service/health_guides_service.dart';
 import 'package:twochealthcare/services/local_notification_service.dart';
 import 'package:twochealthcare/services/onlunch_activity_service.dart';
 import 'package:twochealthcare/services/profile_service.dart';
@@ -20,6 +21,7 @@ import 'package:twochealthcare/view_models/application_package_vm.dart';
 import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
 import 'package:twochealthcare/view_models/chat_vm/chat_list_vm.dart';
 import 'package:twochealthcare/view_models/chat_vm/chat_screen_vm.dart';
+import 'package:twochealthcare/view_models/health_guides_vm/health_guides_vm.dart';
 import 'package:twochealthcare/view_models/home_vm.dart';
 import 'package:twochealthcare/view_models/modalities_reading_vm/bg_reading_vm.dart';
 import 'package:twochealthcare/view_models/modalities_reading_vm/blood_pressure_reading_vm.dart';
@@ -39,6 +41,7 @@ final applicationPackageVMProvider = ChangeNotifierProvider<ApplicationPackageVM
 final chatListVMProvider = ChangeNotifierProvider<ChatListVM>((ref)=>ChatListVM(ref: ref));
 final chatScreenVMProvider = ChangeNotifierProvider<ChatScreenVM>((ref)=>ChatScreenVM(ref: ref));
 final tabAndCalenderVMProvider = ChangeNotifierProvider<TabAndCalenderVM>((ref)=>TabAndCalenderVM(ref: ref));
+final healthGuidesVMProviders = ChangeNotifierProvider<HealthGuidesVM>((ref)=>HealthGuidesVM(ref: ref));
 /// ChangeNotifierProvider
 
 
@@ -58,5 +61,6 @@ final connectivityServiceProvider = Provider<ConnectivityService>((ref)=>Connect
 final applicationRouteServiceProvider = Provider<ApplicationRouteService>((ref)=>ApplicationRouteService());
 final localNotificationServiceProvider = Provider<LocalNotificationService>((ref)=>LocalNotificationService(ref: ref));
 final onLaunchActivityServiceProvider = Provider<OnLaunchActivityService>((ref)=>OnLaunchActivityService(ref: ref));
+final healthGuidesServiceProvider = Provider<HealthGuidesService>((ref)=>HealthGuidesService(ref: ref));
 /// Simple Providers
 

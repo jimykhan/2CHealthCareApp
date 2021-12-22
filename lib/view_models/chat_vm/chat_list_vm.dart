@@ -56,7 +56,10 @@ class ChatListVM extends ChangeNotifier{
       if (response is List<GetGroupsModel>) {
         groupIds = [];
         response.forEach((element) {
-          element.lastMessageTime = Jiffy(element.lastMessageTime).format("dd MMM yy, h:mm a");
+          if(element.lastMessageTime != null){
+            element.lastMessageTime = Jiffy(element.lastMessageTime).format("dd MMM yy, h:mm a");
+
+          }
           groupIds.add(element);
         });
 

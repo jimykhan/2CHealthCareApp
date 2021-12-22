@@ -2,13 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/all.dart';
+import 'package:twochealthcare/common_widgets/alert_loader.dart';
 import 'package:twochealthcare/common_widgets/appbar_text_style.dart';
 import 'package:twochealthcare/common_widgets/custom_appbar.dart';
+import 'package:twochealthcare/common_widgets/no_data_inlist.dart';
 import 'package:twochealthcare/common_widgets/notification_widget.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/application_route_service.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
+import 'package:twochealthcare/util/styles.dart';
+import 'package:twochealthcare/view_models/health_guides_vm/health_guides_vm.dart';
 
 class HealthGuides extends HookWidget {
   const HealthGuides({Key? key}) : super(key: key);
@@ -16,6 +20,21 @@ class HealthGuides extends HookWidget {
   @override
   Widget build(BuildContext context) {
     ApplicationRouteService applicationRouteService = useProvider(applicationRouteServiceProvider);
+    HealthGuidesVM healthGuidesVM = useProvider(healthGuidesVMProviders);
+
+    useEffect(
+          () {
+        healthGuidesVM.loadingHealthGuides = true;
+
+        Future.microtask(() async {
+          healthGuidesVM.getAllHealthGuides();
+        });
+        return () {
+          // Dispose Objects here
+        };
+      },
+      const [],
+    );
     return Scaffold(
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(ApplicationSizing.convert(80)),
@@ -38,51 +57,83 @@ class HealthGuides extends HookWidget {
             hight: ApplicationSizing.convert(80),
             parentContext: context,
             centerWigets: AppBarTextStyle(
-              text: "Notification",
+              text: "Health Guidelines",
             ),
           ),
         ),
-        body: _body());
+        body: _body(healthGuidesVM: healthGuidesVM));
   }
 
-  _body() {
+  _body({required HealthGuidesVM healthGuidesVM}) {
     return Container(
       child: SingleChildScrollView(
-        child: Column(
+        child: Stack(
           children: [
-            ApplicationSizing.verticalSpacer(n: 20),
-            Container(
-              child: ListView.separated(
-                  shrinkWrap: true,
-                  physics: ScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    return InkWell(
-                      onTap: () {
-                        // Navigator.push(context, PageTransition(
-                        //     child: NotificationList(), type: PageTransitionType.bottomToTop));
+            Column(
+              children: [
+                ApplicationSizing.verticalSpacer(n: 20),
+                (!healthGuidesVM.loadingHealthGuides && healthGuidesVM.listOfHealthGuide.length ==0)
+                    ? NoData()
+                    :
+                Container(
+                  child: ListView.separated(
+                      shrinkWrap: true,
+                      physics: ScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        return InkWell(
+                          onTap: () {
+                            // Navigator.push(context, PageTransition(
+                            //     child: NotificationList(), type: PageTransitionType.bottomToTop));
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 10,
+                              horizontal: 20
+                            ),
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: appColor,
+                                width: 1
+                              ),
+                              borderRadius: BorderRadius.circular(10)
+                            ),
+                            margin: EdgeInsets.symmetric(
+                                horizontal: ApplicationSizing.horizontalMargin()),
+                            child: Column(
+                              children: [
+                                Container(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(healthGuidesVM.listOfHealthGuide[index].title??"",
+                                  style: Styles.PoppinsRegular(
+                                      color:  Colors.black,
+                                      fontSize: ApplicationSizing.fontScale(16),
+                                    fontWeight: FontWeight.w700
+                                  ),
+                                    maxLines: 2,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        );
                       },
-                      child: Container(
-                        margin: EdgeInsets.symmetric(
-                            horizontal: ApplicationSizing.horizontalMargin()),
-                        child: NotificationWidget(
-                          title: "Lorem Ipsum",
-                          date: "6 April",
-                        ),
-                      ),
-                    );
-                  },
-                  separatorBuilder: (context, index) {
-                    return Container(
-                      height: 1,
-                      color: fontGrayColor.withOpacity(0.5),
-                    );
-                  },
-                  itemCount: 5),
+                      separatorBuilder: (context, index) {
+                        return Container(
+                          height: 10,
+                        );
+                      },
+                      itemCount: healthGuidesVM.listOfHealthGuide.length),
+                ),
+                ApplicationSizing.verticalSpacer(),
+              ],
             ),
-            ApplicationSizing.verticalSpacer(),
+            healthGuidesVM.loadingHealthGuides
+                ? AlertLoader()
+                : Container(),
           ],
         ),
       ),
     );
+
   }
 }

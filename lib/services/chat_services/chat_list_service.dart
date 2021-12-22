@@ -23,7 +23,10 @@ class ChatListService{
             groupIds.add(GetGroupsModel.fromJson(item));
           });
           groupIds.forEach((element) {
-            element.lastMessageTime = convertLocalToUtc(element.lastMessageTime!.replaceAll("Z", ""));
+            if(element.lastMessageTime !=null){
+              element.lastMessageTime = convertLocalToUtc(element.lastMessageTime!.replaceAll("Z", ""));
+            }
+
           });
           if (groupIds.length == 0) {
 

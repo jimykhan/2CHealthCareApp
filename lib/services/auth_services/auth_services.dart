@@ -21,8 +21,6 @@ class AuthServices{
   }
 
   Future<dynamic> userLogin({String? userName, String? password, bool? rememberMe}) async {
-
-
     var body = {
       "userName": userName??"",
       "password": password??"",
@@ -69,6 +67,7 @@ class AuthServices{
     if(currentUser != null) Id = currentUser.id!;
     return Id;
   }
+
   Future<String> getCurrentAppUserId() async {
 
     var currentUser = await getCurrentUserFromSharedPref();

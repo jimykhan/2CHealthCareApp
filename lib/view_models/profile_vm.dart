@@ -5,6 +5,7 @@ import 'package:twochealthcare/models/profile_models/paitent_care_providers_mode
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
 import 'package:twochealthcare/services/profile_service.dart';
+import 'package:twochealthcare/services/shared_pref_services.dart';
 
 class ProfileVm extends ChangeNotifier{
   bool loading = true;
@@ -12,6 +13,7 @@ class ProfileVm extends ChangeNotifier{
   List<PatientCareProvider> patientCareProvider = [];
   AuthServices? _authService;
   ProfileService? _profileService;
+  SharedPrefServices? _sharedPrefServices;
   ProviderReference? _ref;
 
   ProfileVm({ProviderReference? ref}){
@@ -21,6 +23,7 @@ class ProfileVm extends ChangeNotifier{
   initService(){
     _authService = _ref!.read(authServiceProvider);
     _profileService = _ref!.read(profileServiceProvider);
+    _sharedPrefServices = _ref!.read(sharedPrefServiceProvider);
 
   }
   setLoading(bool f){
@@ -28,7 +31,7 @@ class ProfileVm extends ChangeNotifier{
     notifyListeners();
   }
 
-  Future<dynamic> getUserInfo({int? currentUserId}) async {
+  Future<dynamic> getUserInfo() async {
     try{
       int userId = await _authService!.getCurrentUserId();
       setLoading(true);
@@ -42,6 +45,7 @@ class ProfileVm extends ChangeNotifier{
       }
       if(res is CurrentUserInfo){
         currentUserInfo = res;
+        _sharedPrefServices!.setPatientInfo(res);
         setLoading(false);
       }else{
         setLoading(false);

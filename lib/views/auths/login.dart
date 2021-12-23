@@ -20,6 +20,7 @@ import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
 import 'package:twochealthcare/view_models/application_package_vm.dart';
 import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
+import 'package:twochealthcare/view_models/profile_vm.dart';
 import 'package:twochealthcare/views/home/home.dart';
 
 class Login extends HookWidget {
@@ -33,6 +34,7 @@ class Login extends HookWidget {
     SignalRServices signalRServices = useProvider(signalRServiceProvider);
     ApplicationRouteService applicationRouteService = useProvider(applicationRouteServiceProvider);
     OnLaunchActivityService onLaunchActivityService = useProvider(onLaunchActivityServiceProvider);
+    ProfileVm profileVm = useProvider(profileVMProvider);
 
     useEffect(
       () {
@@ -57,7 +59,9 @@ class Login extends HookWidget {
                   ),
                   _loginform(context, loginVM: loginVM,firebaseService: firebaseService,applicationPackageVM: applicationPackageVM,
                   applicationRouteService: applicationRouteService,
-                  onLaunchActivityService: onLaunchActivityService),
+                  onLaunchActivityService: onLaunchActivityService,
+                    profileVm: profileVm
+                  ),
                 ],
               ),
               loginVM.loading ? AlertLoader() : Container(),
@@ -72,7 +76,8 @@ class Login extends HookWidget {
     ApplicationPackageVM? applicationPackageVM,
   SignalRServices? signalRServices,
     required ApplicationRouteService applicationRouteService,
-    required OnLaunchActivityService onLaunchActivityService
+    required OnLaunchActivityService onLaunchActivityService,
+    required ProfileVm profileVm
   }) {
     return Container(
       decoration: BoxDecoration(
@@ -257,6 +262,9 @@ class Login extends HookWidget {
                         try{
                           firebaseService?.initNotification();
                           signalRServices?.initSignalR();
+                          if(loginVM.currentUser?.userType == 1){
+                            profileVm.getUserInfo();
+                          }
                         }catch(e){
                           print("$e");
                         }

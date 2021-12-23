@@ -3,8 +3,9 @@ import 'package:jiffy/jiffy.dart';
 import 'package:twochealthcare/models/chat_model/ChatMessage.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
+import 'package:twochealthcare/util/conversion.dart';
 import 'package:twochealthcare/util/styles.dart';
-
+import 'package:flutter_linkify/flutter_linkify.dart';
 class TextMessage extends StatelessWidget {
   const TextMessage({
     Key? key,
@@ -101,14 +102,22 @@ class TextMessage extends StatelessWidget {
                         children: [
                           Column(
                             children: [
-                              Text(
-                                message!.message ?? "",
+                              SelectableLinkify(
+                                onOpen: (data){
+                                  print(data.url);
+                                  launchURL(url: data.url);
+                                },
+                                onTap:(){
+                                  //
+                                } ,
+                                text:message!.message ?? "",
                                 style: TextStyle(
                                   fontSize: ApplicationSizing.convert(18),
                                   color: !(message!.isSender!)
                                       ? Colors.black
                                       : Colors.black,
                                 ),
+                                options: LinkifyOptions(humanize: false),
                               ),
                             ],
                           ),

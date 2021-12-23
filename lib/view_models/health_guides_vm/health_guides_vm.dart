@@ -30,6 +30,7 @@ class HealthGuidesVM extends ChangeNotifier{
         if(snapshot.hasError){}
           return WebView(
             initialUrl: initailUrl,
+            javascriptMode: JavascriptMode.unrestricted,
                 onWebViewCreated: (WebViewController webViewController) {
                   controller.complete(webViewController);
                 },

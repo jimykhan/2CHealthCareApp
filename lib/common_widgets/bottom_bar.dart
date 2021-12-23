@@ -25,13 +25,14 @@ class BottomBar extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    ConnectivityService connectivityService = useProvider(connectivityServiceProvider);
+    ConnectivityService connectivityService =
+        useProvider(connectivityServiceProvider);
     HomeVM homeVM = useProvider(homeVMProvider);
-    ApplicationRouteService applicationRouteService = useProvider(applicationRouteServiceProvider);
-
+    ApplicationRouteService applicationRouteService =
+        useProvider(applicationRouteServiceProvider);
 
     useEffect(
-          () {
+      () {
         Future.microtask(() async {});
         return () {
           // Dispose Objects here
@@ -100,17 +101,18 @@ class BottomBar extends HookWidget {
     //     ),
     //   ),
     // );
-     return BottomAppBar(
+    return BottomAppBar(
       color: appColor,
       shape: const CircularNotchedRectangle(),
       notchMargin: 9.0,
       elevation: 1,
       child: Container(
         margin: EdgeInsets.symmetric(
-            horizontal: ApplicationSizing.horizontalMargin()
-        ),
+            horizontal: ApplicationSizing.horizontalMargin()),
 
-        height: Platform.isIOS ? ApplicationSizing.convert(50)  : ApplicationSizing.convert(60),
+        height: Platform.isIOS
+            ? ApplicationSizing.convert(50)
+            : ApplicationSizing.convert(60),
         // color: Colors.black,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -120,12 +122,13 @@ class BottomBar extends HookWidget {
               child: InkWell(
                 onTap: () {
                   if (selectedIndex != 1) {
-                    applicationRouteService.addAndRemoveScreen(screenName: "Profile");
+                    applicationRouteService.addAndRemoveScreen(
+                        screenName: "Profile");
                     Navigator.pushReplacement(
                         context,
                         PageTransition(
                             child: Profile(),
-                            type: PageTransitionType.topToBottom));
+                            type: PageTransitionType.leftToRight));
                     print("do something on selected index $selectedIndex}");
                   }
                 },
@@ -144,19 +147,24 @@ class BottomBar extends HookWidget {
               child: InkWell(
                 onTap: () async {
                   if (selectedIndex != 2) {
-                    if(connectivityService.connectionStatus == ConnectivityResult.none){
-                      SnackBarMessage(message: "No internet connection detected, please try again.");
-                    }else{
-                      bool check =  await homeVM.checkChatStatus();
-                      print("this is application mode = ${Foundation.kDebugMode}");
-                      if(check){
-                        applicationRouteService.addAndRemoveScreen(screenName: "ChatList");
+                    if (connectivityService.connectionStatus ==
+                        ConnectivityResult.none) {
+                      SnackBarMessage(
+                          message:
+                              "No internet connection detected, please try again.");
+                    } else {
+                      bool check = await homeVM.checkChatStatus();
+                      print(
+                          "this is application mode = ${Foundation.kDebugMode}");
+                      if (check) {
+                        applicationRouteService.addAndRemoveScreen(
+                            screenName: "ChatList");
                         Navigator.pushReplacement(
                             context,
                             PageTransition(
                                 child: ChatList(),
                                 type: PageTransitionType.bottomToTop));
-                      }else{
+                      } else {
                         SnackBarMessage(message: "Chat disable for this user!");
                       }
                     }

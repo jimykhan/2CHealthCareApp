@@ -40,6 +40,7 @@ dependencies:
   connectivity_plus: ^2.0.3
   easy_mask: ^2.0.1
   marquee: ^2.2.0
+  webview_flutter: ^3.0.0
 
 dev_dependencies:
   flutter_test:

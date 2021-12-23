@@ -59,6 +59,8 @@
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<key>io.flutter.embedded_views_preview</key>
+	<string>yes</string>
 	<false/>
 </dict>
 </plist>

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/all.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:twochealthcare/common_widgets/alert_loader.dart';
 import 'package:twochealthcare/common_widgets/appbar_text_style.dart';
 import 'package:twochealthcare/common_widgets/custom_appbar.dart';
@@ -13,6 +14,7 @@ import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
 import 'package:twochealthcare/view_models/health_guides_vm/health_guides_vm.dart';
+import 'package:twochealthcare/views/health_guides/in_app_browser.dart';
 
 class HealthGuides extends HookWidget {
   const HealthGuides({Key? key}) : super(key: key);
@@ -82,8 +84,8 @@ class HealthGuides extends HookWidget {
                       itemBuilder: (context, index) {
                         return InkWell(
                           onTap: () {
-                            // Navigator.push(context, PageTransition(
-                            //     child: NotificationList(), type: PageTransitionType.bottomToTop));
+                            Navigator.push(context, PageTransition(
+                                child: InAppBrowser(url: healthGuidesVM.listOfHealthGuide[index].url??"",), type: PageTransitionType.fade));
                           },
                           child: Container(
                             padding: const EdgeInsets.symmetric(
@@ -111,7 +113,18 @@ class HealthGuides extends HookWidget {
                                   ),
                                     maxLines: 2,
                                   ),
-                                )
+                                ),
+                                Container(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(healthGuidesVM.listOfHealthGuide[index].createdOn??"",
+                                  style: Styles.PoppinsRegular(
+                                      color:  appColor,
+                                      fontSize: ApplicationSizing.fontScale(8),
+                                    fontWeight: FontWeight.w400
+                                  ),
+                                    maxLines: 2,
+                                  ),
+                                ),
                               ],
                             ),
                           ),

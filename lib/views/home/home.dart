@@ -54,7 +54,7 @@ class Home extends HookWidget {
     {
       "icon": "assets/icons/home/health-guide-icon.svg",
       "title": "Health Guides",
-      "hints": "Coming Soon...",
+      "hints": "",
       "color": Color(0XffFFA654),
       "bordercolor": Color(0Xff4eaf4840),
     },
@@ -64,13 +64,15 @@ class Home extends HookWidget {
   Widget build(BuildContext context) {
     LoginVM loginVM = useProvider(loginVMProvider);
     HomeVM homeVM = useProvider(homeVMProvider);
-    ApplicationRouteService applicationRouteService = useProvider(applicationRouteServiceProvider);
+    ApplicationRouteService applicationRouteService =
+        useProvider(applicationRouteServiceProvider);
     FirebaseService firebaseService = useProvider(firebaseServiceProvider);
-    useEffect((){
-      homeVM.checkForUpdate();
-      homeVM.resetHome();
-      Future.microtask(() async{});
-      return (){};
+    useEffect(
+      () {
+        homeVM.checkForUpdate();
+        homeVM.resetHome();
+        Future.microtask(() async {});
+        return () {};
       },
       const [],
     );
@@ -96,13 +98,16 @@ class Home extends HookWidget {
           parentContext: context,
         ),
       ),
-      body: _body(loginVM: loginVM,homeVM: homeVM,applicationRouteService: applicationRouteService),
+      body: _body(
+          loginVM: loginVM,
+          homeVM: homeVM,
+          applicationRouteService: applicationRouteService),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         // isExtended: true,
         // mini: true,
         // backgroundColor: Colors.black,
-       // clipBehavior: Clip.hardEdge,
+        // clipBehavior: Clip.hardEdge,
         enableFeedback: false,
         child: Container(
           width: 60,
@@ -136,7 +141,10 @@ class Home extends HookWidget {
     );
   }
 
-  _body({required LoginVM loginVM,required HomeVM homeVM,required ApplicationRouteService applicationRouteService}) {
+  _body(
+      {required LoginVM loginVM,
+      required HomeVM homeVM,
+      required ApplicationRouteService applicationRouteService}) {
     return Stack(
       children: [
         Container(
@@ -189,27 +197,27 @@ class Home extends HookWidget {
                         return InkWell(
                             onTap: () {
                               if (index == 1) {
-                                applicationRouteService.addScreen(screenName: "ModalitiesReading");
+                                applicationRouteService.addScreen(
+                                    screenName: "ModalitiesReading");
                                 Navigator.push(
                                     context,
                                     PageTransition(
                                         child: ModalitiesReading(),
                                         type: PageTransitionType.rightToLeft));
-                              }
-                              else if (index == 0) {
-                                applicationRouteService.addScreen(screenName: "Profile");
+                              } else if (index == 0) {
+                                applicationRouteService.addScreen(
+                                    screenName: "Profile");
                                 Navigator.push(
                                     context,
                                     PageTransition(
                                         child: Profile(),
                                         type: PageTransitionType.rightToLeft));
-                              }
-                              else if(index == 2){
+                              } else if (index == 2) {
                                 // applicationRouteService.addScreen(screenName: "Profile");
                                 CustomAlertDialog(message: "Coming Soon...");
-                              }
-                              else if(index == 3){
-                                applicationRouteService.addScreen(screenName: "HealthGuides");
+                              } else if (index == 3) {
+                                applicationRouteService.addScreen(
+                                    screenName: "HealthGuides");
                                 Navigator.push(
                                     context,
                                     PageTransition(
@@ -217,7 +225,8 @@ class Home extends HookWidget {
                                         type: PageTransitionType.rightToLeft));
                               }
                             },
-                            child: squareBox(item: items?[index], index: index));
+                            child:
+                                squareBox(item: items?[index], index: index));
                       },
                       staggeredTileBuilder: (int index) =>
                           const StaggeredTile.fit(1),

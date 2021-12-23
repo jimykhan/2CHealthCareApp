@@ -56,6 +56,21 @@ class SharedPrefServices{
     }
   }
 
+  setPatientInfo(var data) async {
+    await _initPref();
+    _prefs?.setString("patientInfo", jsonEncode(data));
+  }
+
+  Future<dynamic> getPatientInfo(var data) async {
+    await _initPref();
+    var p_info = _prefs?.get("patientInfo");
+    if(p_info is String){
+      return jsonDecode(p_info);
+    }
+      return null;
+  }
+
+
 
 
 }

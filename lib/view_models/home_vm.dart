@@ -13,6 +13,7 @@ class HomeVM extends ChangeNotifier{
   SharedPrefServices? _sharedPrefServices;
   ProviderReference? _ref;
   bool homeScreenLoading = false;
+  bool reset = false;
 
   HomeVM({ProviderReference? ref}){
     _ref = ref;
@@ -22,6 +23,16 @@ class HomeVM extends ChangeNotifier{
     _authService = _ref!.read(authServiceProvider);
     chatListService = _ref!.read(chatListServiceProvider);
     _sharedPrefServices = _ref!.read(sharedPrefServiceProvider);
+  }
+  resetHome(){
+    if(!reset){
+      Future.delayed(Duration(seconds: 2),(){
+        reset = true;
+        notifyListeners();
+      });
+    }
+
+
   }
 
   setHomeScreenLoading(check){

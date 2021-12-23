@@ -22,7 +22,6 @@ import 'dart:math';
 import 'package:twochealthcare/util/styles.dart';
 import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
 import 'package:twochealthcare/view_models/home_vm.dart';
-import 'package:twochealthcare/views/health_guides/health_guides.dart';
 import 'package:twochealthcare/views/home/profile.dart';
 import 'package:twochealthcare/views/notifiction/notifiction_list.dart';
 import 'package:twochealthcare/views/readings/modalities_reading.dart';
@@ -68,7 +67,7 @@ class Home extends HookWidget {
     FirebaseService firebaseService = useProvider(firebaseServiceProvider);
     useEffect((){
       homeVM.checkForUpdate();
-
+      homeVM.resetHome();
       Future.microtask(() async{});
       return (){};
       },
@@ -152,7 +151,7 @@ class Home extends HookWidget {
                       Container(
                         alignment: Alignment.centerLeft,
                         margin: EdgeInsets.only(
-                          top: ApplicationSizing.convert(0),
+                          top: ApplicationSizing.convert(10),
                           bottom: ApplicationSizing.convert(0),
                         ),
                         child: Text(
@@ -209,12 +208,8 @@ class Home extends HookWidget {
                                 CustomAlertDialog(message: "Coming Soon...");
                               }
                               else if(index == 3){
-                                applicationRouteService.addScreen(screenName: "HealthGuides");
-                                Navigator.push(
-                                    context,
-                                    PageTransition(
-                                        child: HealthGuides(),
-                                        type: PageTransitionType.rightToLeft));
+                                // applicationRouteService.addScreen(screenName: "Profile");
+                                CustomAlertDialog(message: "Coming Soon...");
                               }
                             },
                             child: squareBox(item: items?[index], index: index));

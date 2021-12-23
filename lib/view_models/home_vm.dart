@@ -5,13 +5,15 @@ import 'package:twochealthcare/main.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
 import 'package:twochealthcare/services/chat_services/chat_list_service.dart';
+import 'package:twochealthcare/services/shared_pref_services.dart';
 
 class HomeVM extends ChangeNotifier{
-  bool reset = false;
   AuthServices? _authService;
   ChatListService? chatListService;
+  SharedPrefServices? _sharedPrefServices;
   ProviderReference? _ref;
   bool homeScreenLoading = false;
+  bool reset = false;
 
   HomeVM({ProviderReference? ref}){
     _ref = ref;
@@ -20,13 +22,17 @@ class HomeVM extends ChangeNotifier{
   initService(){
     _authService = _ref!.read(authServiceProvider);
     chatListService = _ref!.read(chatListServiceProvider);
+    _sharedPrefServices = _ref!.read(sharedPrefServiceProvider);
   }
-
   resetHome(){
     if(!reset){
-      reset = true;
-      notifyListeners();
+      Future.delayed(Duration(seconds: 2),(){
+        reset = true;
+        notifyListeners();
+      });
     }
+
+
   }
 
   setHomeScreenLoading(check){
@@ -57,8 +63,8 @@ class HomeVM extends ChangeNotifier{
   Future<dynamic> checkChatStatus() async {
     try{
      setHomeScreenLoading(true);
-      int UserId = await _authService!.getCurrentUserId();
-      bool response = await chatListService!.checkChatStatus(currentUserId: UserId);
+      int facilityId = await _sharedPrefServices!.getPatientFacilityId();
+      bool response = await chatListService!.checkChatStatus(facilityId: facilityId);
       if(response){
         setHomeScreenLoading(false);
         return true;

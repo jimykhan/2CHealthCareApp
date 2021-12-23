@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:twochealthcare/models/profile_models/current_user_info_model.dart';
 import 'package:twochealthcare/models/user/current_user.dart';
 import 'package:twochealthcare/models/user/loged_in_user.dart';
 
@@ -61,7 +62,7 @@ class SharedPrefServices{
     _prefs?.setString("patientInfo", jsonEncode(data));
   }
 
-  Future<dynamic> getPatientInfo(var data) async {
+  Future<dynamic> getPatientInfo() async {
     await _initPref();
     var p_info = _prefs?.get("patientInfo");
     if(p_info is String){
@@ -70,7 +71,14 @@ class SharedPrefServices{
       return null;
   }
 
-
-
+  Future<int> getPatientFacilityId() async {
+    await _initPref();
+    var p_info = _prefs?.get("patientInfo");
+    if(p_info is String){
+      CurrentUserInfo currentUserInfo = CurrentUserInfo.fromJson(jsonDecode(p_info));
+      return currentUserInfo.facilityId??-1;
+    }
+    return -1;
+  }
 
 }

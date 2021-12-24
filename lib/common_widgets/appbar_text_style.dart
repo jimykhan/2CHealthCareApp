@@ -16,6 +16,7 @@ class AppBarTextStyle extends StatelessWidget {
             color: textColor?? Colors.black,
             fontSize: textsize?? ApplicationSizing.fontScale(18)
         ),
+        maxLines: 1,
       ),
     );
   }

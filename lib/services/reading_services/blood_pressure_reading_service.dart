@@ -15,10 +15,10 @@ class BloodPressureReadingService{
     _ref = ref;
   }
 
-  getBloodPressureReading({int? currentUserId,int? month,int? year}) async {
+  getBloodPressureReading({int? currentUserId,DateTime? startDate,DateTime? endDate}) async {
     try{
       final dio = _ref!.read(dioServicesProvider);
-      Response response = await dio.dio!.get(ApiStrings.getBPDeviceDataByPatientId+"/"+"$currentUserId/$month/$year",
+      Response response = await dio.dio!.get(ApiStrings.getBPDeviceDataByPatientId+"/$currentUserId"+"?startDate=${startDate.toString()}&endDate=${endDate.toString()}",
       );
       if(response.statusCode == 200){
         // sharePrf.setCurrentUser(response.data);

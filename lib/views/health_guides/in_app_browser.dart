@@ -17,7 +17,8 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 class InAppBrowser extends HookWidget {
   String url;
-   InAppBrowser({Key? key,required this.url}) : super(key: key);
+  String title;
+   InAppBrowser({Key? key,required this.url,required this.title}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +58,7 @@ class InAppBrowser extends HookWidget {
             hight: ApplicationSizing.convert(80),
             parentContext: context,
             centerWigets: AppBarTextStyle(
-              text: "Health Guidelines",
+              text: title,
             ),
             trailingIcon: healthGuidesVM.navigationControl(),
           ),

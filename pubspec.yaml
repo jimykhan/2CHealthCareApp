@@ -1,6 +1,6 @@
 name: twochealthcare
 description: A new Flutter project.
-
+# flutter 2.5.3  to 2.8
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -43,6 +43,7 @@ dependencies:
   webview_flutter: ^3.0.0
   flutter_linkify: ^5.0.2
   url_launcher: ^6.0.17
+  jwt_decoder: ^2.0.1
 
 dev_dependencies:
   flutter_test:

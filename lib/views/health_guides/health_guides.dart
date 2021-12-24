@@ -85,7 +85,10 @@ class HealthGuides extends HookWidget {
                         return InkWell(
                           onTap: () {
                             Navigator.push(context, PageTransition(
-                                child: InAppBrowser(url: healthGuidesVM.listOfHealthGuide[index].url??"",), type: PageTransitionType.fade));
+                                child: InAppBrowser(
+                                  url: healthGuidesVM.listOfHealthGuide[index].url??"",
+                                  title: healthGuidesVM.listOfHealthGuide[index].title??"",
+                                ), type: PageTransitionType.fade));
                           },
                           child: Container(
                             padding: const EdgeInsets.symmetric(

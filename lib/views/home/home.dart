@@ -315,9 +315,9 @@ class Home extends HookWidget {
 
   Widget squareBox({var item, int index = 0}) {
     return Container(
-      width: 150,
-      height: 160,
-      padding: EdgeInsets.symmetric(vertical: ApplicationSizing.convert(15)),
+      // width: 150,
+      height: ApplicationSizing.convert(150),
+       padding: EdgeInsets.symmetric(horizontal: ApplicationSizing.convert(10)),
       decoration: BoxDecoration(
         color: item["color"],
         // color: Colors.blueAccent,
@@ -341,12 +341,13 @@ class Home extends HookWidget {
           SvgPicture.asset(item["icon"]),
           Container(
             margin:
-                EdgeInsets.symmetric(vertical: ApplicationSizing.convert(7)),
+                EdgeInsets.symmetric(vertical: ApplicationSizing.convert(5)),
             child: Text(
               item["title"],
               style: Styles.PoppinsBold(
                   fontSize: ApplicationSizing.fontScale(16),
                   color: Colors.white),
+              textAlign: TextAlign.center,
             ),
           ),
           item["hints"] == ""

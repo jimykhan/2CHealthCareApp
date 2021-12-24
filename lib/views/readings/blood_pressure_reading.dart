@@ -20,6 +20,7 @@ import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/view_models/modalities_reading_vm/blood_pressure_reading_vm.dart';
+import 'package:twochealthcare/views/readings/tab_and_calender.dart';
 
 class BloodPressureReading extends HookWidget {
   int selectedMonth = DateTime.now().month;
@@ -34,12 +35,8 @@ class BloodPressureReading extends HookWidget {
 
     useEffect(
       () {
-        bloodPressureReadingVM.selectedMonth = selectedMonth;
-        bloodPressureReadingVM.selectedYear = selectedYear;
-        bloodPressureReadingVM.focusedDay1 = DateTime(selectedYear ,selectedMonth);
-        bloodPressureReadingVM.selectedDay1 = DateTime(selectedYear,selectedMonth);
         bloodPressureReadingVM.bPReadingLoading = true;
-        bloodPressureReadingVM.getBloodPressureReading();
+        bloodPressureReadingVM.initialState(readingMonth: selectedMonth, readingYear: selectedYear);
         Future.microtask(() async {});
 
         return () {
@@ -86,28 +83,8 @@ class BloodPressureReading extends HookWidget {
           children: [
             Column(
               children: [
-                // ApplicationSizing.verticalSpacer(),
-                // TapBar(
-                //   selectedIndx: bloodPressureReadingVM?.timePeriodSelect ?? 0,
-                //   ontap: (val) {
-                //     bloodPressureReadingVM?.changeTimePeriodSelectIndex(val);
-                //   },
-                // ),
-                CustomCalendar(
-                    selectedDayPredict:
-                        bloodPressureReadingVM!.selectDayPredict,
-                    onDaySelect: bloodPressureReadingVM.onDaySelected,
-                    formatChange: bloodPressureReadingVM.onFormatChanged,
-                    onRangeSelect: bloodPressureReadingVM.selectRange,
-                    calendarFormat: bloodPressureReadingVM.calendarFormat,
-                    headerDisable: bloodPressureReadingVM.headerDisable,
-                    dayHeight: bloodPressureReadingVM.dayHeight,
-                    selectedDay1: bloodPressureReadingVM.selectedDay1,
-                    onPageChanged: bloodPressureReadingVM.onPageChanged,
-                    focusedDay1: bloodPressureReadingVM.focusedDay1,
-                    daysOfWeekVisible:
-                        bloodPressureReadingVM.daysOfWeekVisible),
-                bloodPressureReadingVM.bPReadings.length == 0
+                TabAndCalender(),
+                bloodPressureReadingVM!.bPReadings.length == 0
                     ? NoData()
                     : Column(
                         children: [

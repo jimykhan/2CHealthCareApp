@@ -123,7 +123,7 @@ class LoginVM extends ChangeNotifier{
 
   userLogout(){
     authService?.updateCurrentUser(null);
-
+    currentUser = null;
     Navigator.pushAndRemoveUntil(
       applicationContext!.currentContext!,
       MaterialPageRoute(

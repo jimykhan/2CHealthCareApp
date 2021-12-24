@@ -48,25 +48,29 @@ class ApiInterceptor extends Interceptor{
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
      LoginVM loginVM =  ref!.read(loginVMProvider);
-     String token = loginVM.currentUser?.bearerToken??"";
-     bool hasExpired = JwtDecoder.isExpired(token);
-     DateTime expirationDate = JwtDecoder.getExpirationDate(token);
-      if(hasExpired){
-        Navigator.pushAndRemoveUntil(
-          applicationContext!.currentContext!,
-          MaterialPageRoute(
-            builder: (BuildContext context) =>
-            const Login(),
-          ),
-              (route) => false,
-        );
-        return;
-      }
-      else{
-        options.headers = {
-          "Authorization": "Bearer ${loginVM.currentUser?.bearerToken??""}"
-        };
-      }
+
+     if(loginVM.currentUser?.bearerToken!=null){
+       String token = loginVM.currentUser?.bearerToken??"";
+       bool hasExpired = JwtDecoder.isExpired(token);
+       DateTime expirationDate = JwtDecoder.getExpirationDate(token);
+       if(hasExpired){
+         Navigator.pushAndRemoveUntil(
+           applicationContext!.currentContext!,
+           MaterialPageRoute(
+             builder: (BuildContext context) =>
+             const Login(),
+           ),
+               (route) => false,
+         );
+         return;
+       }
+       else{
+         options.headers = {
+           "Authorization": "Bearer ${loginVM.currentUser?.bearerToken??""}"
+         };
+       }
+     }
+
 
     // TODO: implement onRequest
     super.onRequest(options, handler);

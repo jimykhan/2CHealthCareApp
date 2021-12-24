@@ -1,8 +1,11 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/services.dart';
+import 'package:twochealthcare/common_widgets/snackber_message.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/all.dart';
+import 'package:twochealthcare/services/connectivity_service.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
@@ -20,6 +23,7 @@ class ChatInputField extends HookWidget {
   Widget build(BuildContext context) {
     _textEditingController = useTextEditingController();
     ChatScreenVM chatScreenVM = useProvider(chatScreenVMProvider);
+    ConnectivityService connectivityService = useProvider(connectivityServiceProvider);
     useEffect(
       () {
         //
@@ -101,13 +105,19 @@ class ChatInputField extends HookWidget {
                             ? Container()
                             : InkWell(
                             onTap: () async {
-                              FocusScope.of(context).unfocus();
-                              ChatScreen.jumpToListIndex();
-                              chatScreenVM.sendTextMessage(
-                                  message:
-                                  _textEditingController?.text.toString());
-                              _textEditingController?.clear();
-                              print("work");
+    if(connectivityService.connectionStatus == ConnectivityResult.none){
+    SnackBarMessage(message: "No internet connection detected, please try again.");
+    }else{
+      FocusScope.of(context).unfocus();
+      ChatScreen.jumpToListIndex();
+      chatScreenVM.sendTextMessage(
+          message:
+          _textEditingController?.text.toString());
+      _textEditingController?.clear();
+      print("work");
+    }
+
+
                             },
                             child: Icon(
                               Icons.send,

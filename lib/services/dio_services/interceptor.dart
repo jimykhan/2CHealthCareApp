@@ -54,14 +54,8 @@ class ApiInterceptor extends Interceptor{
        bool hasExpired = JwtDecoder.isExpired(token);
        DateTime expirationDate = JwtDecoder.getExpirationDate(token);
        if(hasExpired){
-         Navigator.pushAndRemoveUntil(
-           applicationContext!.currentContext!,
-           MaterialPageRoute(
-             builder: (BuildContext context) =>
-             const Login(),
-           ),
-               (route) => false,
-         );
+         SnackBarMessage(message: "Sorry, your token expired, please login again");
+         loginVM.userLogout();
          return;
        }
        else{
@@ -70,6 +64,7 @@ class ApiInterceptor extends Interceptor{
          };
        }
      }
+     print(options.path);
 
 
     // TODO: implement onRequest

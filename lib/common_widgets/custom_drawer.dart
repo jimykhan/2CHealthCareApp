@@ -291,8 +291,6 @@ class CustomDrawer extends HookWidget {
                                 InkWell(
                                   onTap: () {
                                     loginVM.userLogout();
-                                    firebaseService.turnOfReadingNotification();
-                                    firebaseService.turnOfChatNotification();
 
                                   },
                                   child: Container(

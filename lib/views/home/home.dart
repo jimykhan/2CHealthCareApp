@@ -69,6 +69,7 @@ class Home extends HookWidget {
     FirebaseService firebaseService = useProvider(firebaseServiceProvider);
     useEffect(
       () {
+        homeVM.homeScreenLoading = false;
         homeVM.checkForUpdate();
         homeVM.resetHome();
         Future.microtask(() async {});

@@ -161,7 +161,6 @@ class FirebaseService{
   }
 
   turnOfReadingNotification() {
-
     var firebaseMessaging = FirebaseMessaging.instance;
     if (_result?.currentUser != null){
       firebaseMessaging

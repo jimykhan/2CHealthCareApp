@@ -26,6 +26,7 @@ class LoginVM extends ChangeNotifier{
   AuthServices? authService;
   FirebaseService? firebaseService;
   SharedPrefServices? sharedPrefServices;
+
   LoginVM({ProviderReference? ref}){
     _ref = ref;
     initServices();
@@ -116,8 +117,10 @@ class LoginVM extends ChangeNotifier{
 
 
   userLogout(){
+    firebaseService!.turnOfChatNotification();
+    firebaseService!.turnOfReadingNotification();
     authService?.updateCurrentUser(null);
-
+    currentUser = null;
     Navigator.pushAndRemoveUntil(
       applicationContext!.currentContext!,
       MaterialPageRoute(

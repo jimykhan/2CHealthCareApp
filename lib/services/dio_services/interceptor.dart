@@ -1,10 +1,14 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:twochealthcare/common_widgets/snackber_message.dart';
+import 'package:twochealthcare/main.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/dio_services/error_handlers.dart';
 import 'package:twochealthcare/services/shared_pref_services.dart';
 import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:twochealthcare/views/auths/login.dart';
 
 class ApiInterceptor extends Interceptor{
   ProviderReference? ref;
@@ -44,14 +48,27 @@ class ApiInterceptor extends Interceptor{
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
      LoginVM loginVM =  ref!.read(loginVMProvider);
+     String token = loginVM.currentUser?.bearerToken??"";
+     bool hasExpired = JwtDecoder.isExpired(token);
+     DateTime expirationDate = JwtDecoder.getExpirationDate(token);
+      if(hasExpired){
+        Navigator.pushAndRemoveUntil(
+          applicationContext!.currentContext!,
+          MaterialPageRoute(
+            builder: (BuildContext context) =>
+            const Login(),
+          ),
+              (route) => false,
+        );
+        return;
+      }
+      else{
+        options.headers = {
+          "Authorization": "Bearer ${loginVM.currentUser?.bearerToken??""}"
+        };
+      }
 
     // TODO: implement onRequest
-    options.headers = {
-      "Authorization": "Bearer ${loginVM.currentUser?.bearerToken??""}"
-    };
-    print(loginVM.currentUser?.bearerToken??"");
-    print("appUserId = ${loginVM.currentUser?.appUserId??""}" );
-    print(options.path);
     super.onRequest(options, handler);
   }
   @override

@@ -60,7 +60,8 @@ class Login extends HookWidget {
                   _loginform(context, loginVM: loginVM,firebaseService: firebaseService,applicationPackageVM: applicationPackageVM,
                   applicationRouteService: applicationRouteService,
                  // onLaunchActivityService: onLaunchActivityService,
-                    profileVm: profileVm
+                    profileVm: profileVm,
+                    signalRServices: signalRServices
                   ),
                 ],
               ),
@@ -259,8 +260,8 @@ class Login extends HookWidget {
                                 child: Home(),
                                 type: PageTransitionType.bottomToTop));
                         try{
-                          firebaseService?.initNotification();
-                          signalRServices?.initSignalR();
+                          await firebaseService?.initNotification();
+                          await signalRServices?.initSignalR();
                           if(loginVM.currentUser?.userType == 1){
                             profileVm.getUserInfo();
                           }

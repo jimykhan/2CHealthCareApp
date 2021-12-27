@@ -8,6 +8,7 @@ import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
 import 'package:twochealthcare/services/firebase_service.dart';
 import 'package:twochealthcare/services/shared_pref_services.dart';
+import 'package:twochealthcare/services/signal_r_services.dart';
 import 'package:twochealthcare/validator/login_validator.dart';
 import 'package:twochealthcare/views/auths/login.dart';
 
@@ -25,6 +26,7 @@ class LoginVM extends ChangeNotifier{
   ProviderReference? _ref;
   AuthServices? authService;
   FirebaseService? firebaseService;
+  SignalRServices? signalRServices;
   SharedPrefServices? sharedPrefServices;
 
   LoginVM({ProviderReference? ref}){
@@ -35,6 +37,7 @@ class LoginVM extends ChangeNotifier{
      authService = _ref!.read(authServiceProvider);
      firebaseService = _ref!.read(firebaseServiceProvider);
      sharedPrefServices = _ref!.read(sharedPrefServiceProvider);
+     signalRServices = _ref!.read(signalRServiceProvider);
   }
 
   onChangeEmail(String val){
@@ -126,6 +129,7 @@ class LoginVM extends ChangeNotifier{
     firebaseService!.turnOfChatNotification();
     firebaseService!.turnOfReadingNotification();
     authService?.updateCurrentUser(null);
+    signalRServices?.disConnectSignalR();
     currentUser = null;
     Navigator.pushAndRemoveUntil(
       applicationContext!.currentContext!,

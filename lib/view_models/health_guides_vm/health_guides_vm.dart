@@ -10,6 +10,8 @@ import 'package:webview_flutter/webview_flutter.dart';
 class HealthGuidesVM extends ChangeNotifier{
   Completer<WebViewController> controller = Completer<WebViewController>();
   List<HealthGuideModel> listOfHealthGuide = [];
+  double progressWebPageLoad = 0;
+  bool webPageLoading = true;
   bool loadingHealthGuides = true;
   ProviderReference? _ref;
   HealthGuidesService? _healthGuidesService;
@@ -34,6 +36,14 @@ class HealthGuidesVM extends ChangeNotifier{
                 onWebViewCreated: (WebViewController webViewController) {
                   controller.complete(webViewController);
                 },
+            onProgress: (progress){
+              print("progrss $progress");
+              if(progress == 100){
+                // webPageLoading = false;
+                notifyListeners();
+              }
+                progressWebPageLoad = progress/100;
+            },
           );
       },
     );
@@ -68,6 +78,8 @@ class HealthGuidesVM extends ChangeNotifier{
       );
     }
   }
+
+
 
 
   setLoadingHealthGuide(check){

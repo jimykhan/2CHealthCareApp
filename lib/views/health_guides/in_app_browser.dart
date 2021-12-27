@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/all.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:twochealthcare/common_widgets/alert_loader.dart';
 import 'package:twochealthcare/common_widgets/appbar_text_style.dart';
+import 'package:twochealthcare/common_widgets/back_button.dart';
 import 'package:twochealthcare/common_widgets/custom_appbar.dart';
 import 'package:twochealthcare/common_widgets/no_data_inlist.dart';
 import 'package:twochealthcare/common_widgets/notification_widget.dart';
@@ -27,7 +29,7 @@ class InAppBrowser extends HookWidget {
 
     useEffect(
           () {
-
+        healthGuidesVM.webPageLoading = true;
         Future.microtask(() async {
         });
         return () {
@@ -40,19 +42,7 @@ class InAppBrowser extends HookWidget {
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(ApplicationSizing.convert(80)),
           child: CustomAppBar(
-            leadingIcon: InkWell(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: Container(
-                padding:
-                EdgeInsets.only(right: ApplicationSizing.convertWidth(10)),
-                child: RotatedBox(
-                    quarterTurns: 2,
-                    child: SvgPicture.asset(
-                        "assets/icons/home/right-arrow-icon.svg")),
-              ),
-            ),
+            leadingIcon: CustomBackButton(),
             color1: Colors.white,
             color2: Colors.white,
             hight: ApplicationSizing.convert(80),
@@ -60,10 +50,40 @@ class InAppBrowser extends HookWidget {
             centerWigets: AppBarTextStyle(
               text: title,
             ),
-            trailingIcon: healthGuidesVM.navigationControl(),
+            // trailingIcon: healthGuidesVM.navigationControl(),
           ),
         ),
-          body: healthGuidesVM.inAppWebView(initailUrl: url),
+          body: Container(
+            child: Column(
+              children: [
+            Container(
+                height: 3,
+                child: LinearPercentIndicator(//leaner progress bar
+                  padding: EdgeInsets.zero,
+                animation: true,
+                width: MediaQuery.of(context).size.width,
+                animationDuration: 1000,
+                lineHeight: 3.0,
+                percent: healthGuidesVM.progressWebPageLoad == 0.1 ? 0 : healthGuidesVM.progressWebPageLoad,
+                // center: Text(
+                //   percent.toString() + "%",
+                //   style: TextStyle(
+                //       fontSize: 12.0,
+                //       fontWeight: FontWeight.w600,
+                //       color: Colors.black),
+                // ),
+                // linearStrokeCap: LinearStrokeCap.,
+                progressColor: appColor,
+                backgroundColor: Colors.grey[300],
+            ),
+              ),
+                Expanded(
+                  child: healthGuidesVM.inAppWebView(initailUrl: url),)
+              ],
+            ),
+          ),
+
+
         // body: Container(
         //   child: !healthGuidesVM.controller.isCompleted ? AlertLoader() : WebView(
         //     initialUrl: url,

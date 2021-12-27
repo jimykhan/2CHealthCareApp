@@ -62,6 +62,11 @@ class Login extends HookWidget {
                   onLaunchActivityService: onLaunchActivityService,
                     profileVm: profileVm
                   ),
+                  applicationRouteService: applicationRouteService,
+                 // onLaunchActivityService: onLaunchActivityService,
+                    profileVm: profileVm,
+                    signalRServices: signalRServices
+                  ),
                 ],
               ),
               loginVM.loading ? AlertLoader() : Container(),
@@ -253,15 +258,14 @@ class Login extends HookWidget {
                       bool isValid = await loginVM.userLogin();
                       if (isValid) {
                         applicationRouteService.addAndRemoveScreen(screenName: "Home");
-                        onLaunchActivityService.syncLastApplicationUseDateAndTime();
                         Navigator.pushReplacement(
                             context,
                             PageTransition(
                                 child: Home(),
                                 type: PageTransitionType.bottomToTop));
                         try{
-                          firebaseService?.initNotification();
-                          signalRServices?.initSignalR();
+                          await firebaseService?.initNotification();
+                          await signalRServices?.initSignalR();
                           if(loginVM.currentUser?.userType == 1){
                             profileVm.getUserInfo();
                           }

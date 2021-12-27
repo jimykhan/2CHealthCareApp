@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/material.dart';
 import 'package:http/io_client.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:signalr_core/signalr_core.dart';
@@ -9,10 +10,12 @@ import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/application_route_service.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:twochealthcare/util/application_colors.dart';
 class SignalRServices{
   PublishSubject<ChatMessage> newMessage = PublishSubject<ChatMessage>(sync: true);
   PublishSubject<dynamic> onChatViewed = PublishSubject<dynamic>(sync: true);
   HubConnection? connection;
+
   ProviderReference? _ref;
   AuthServices? _authServices;
   ApplicationRouteService? _applicationRouteService;
@@ -29,8 +32,8 @@ class SignalRServices{
     // _startConnection();
     String appId  = await _authServices!.getCurrentAppUserId();
     String token  = await _authServices!.getBearerToken();
-    // print("this is token to signalR = $token}");
-    // print("2cch this is AppId to signalR = ${appId}");
+    print("this is token to signalR = $token}");
+    print("2cch this is AppId to signalR = ${appId}");
     connection = HubConnectionBuilder()
         .withUrl(
             ApiStrings.baseUrl + "/chatHub",
@@ -45,6 +48,7 @@ class SignalRServices{
     // if (connection.state == HubConnectionState.connected) {
     //   // _connectionStarted.sink.add(HubConnectionState.connected);
     // }
+
     connection?.start()?.then((value) {
       print("2cCHat than call");
       SubscribeGroupsByUserId(appId: appId);
@@ -61,18 +65,20 @@ class SignalRServices{
     });
   }
 
+
   Future<void> disConnectSignalR() async {
     if (connection?.state == HubConnectionState.connected) {
       await connection?.stop();
+      connection = null;
+
     }
   }
 
+
   Future<void> _startConnection() async {
-    Future.delayed(Duration(seconds: 5),()=>_startConnection());
     if (connection?.state == HubConnectionState.disconnected) {
       print("try to connect..");
       await connection?.start();
-      subscribeSignalrMessages();
     }else{
       print("connection status ${connection?.state}");
     }
@@ -162,6 +168,7 @@ class SignalRServices{
       print("OnChatViewed call $data}");
     });
   }
+
   MarkChatGroupViewed({required int chatGroupId, required String userId}) async {
     print("MarkChatGroupViewed call");
 

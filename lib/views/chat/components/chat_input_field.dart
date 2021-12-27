@@ -53,59 +53,59 @@ class ChatInputField extends HookWidget {
           ],
         ),
         child: Row(
-          children: [
-            // Icon(Icons.mic, color: kPrimaryColor),
-            // SizedBox(width: kDefaultPadding),
-            Expanded(
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: kDefaultPadding * 0.75,
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade300,
-                  borderRadius: BorderRadius.circular(40),
-                ),
-                child: Row(
-                  children: [
-                    // Icon(
-                    //   Icons.sentiment_satisfied_alt_outlined,
-                    //   color: Theme.of(context)
-                    //       .textTheme
-                    //       .bodyText1
-                    //       .color
-                    //       .withOpacity(0.64),
-                    // ),
-                    // SizedBox(width: kDefaultPadding / 4),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 15, top: 3),
-                        child: TextField(
-                          // expands: true,
-                          // maxLines: 4,
-                          // keyboardType: TextInputType.multiline,
-                          maxLines: 20,
-                          focusNode: chatScreenVM.myFocusNode,
-                          minLines: 1,
-                          maxLengthEnforcement: MaxLengthEnforcement.enforced,
-                          style: Styles.PoppinsRegular(
-                            color: drawerColor,
-                            fontSize: ApplicationSizing.convert(16),
-                          ),
-                          controller: _textEditingController,
-                          decoration: InputDecoration(
-                            hintText: "Type a message",
-                            border: InputBorder.none,
-                            hintStyle: Styles.PoppinsRegular(
-                                color: drawerSelectMenuColor, fontSize: 16),
-                          ),
-                          onChanged: chatScreenVM.checkMessageField,
-                          // focusNode: myFocusNode,
-                        ),
-                      ),
+              children: [
+                // Icon(Icons.mic, color: kPrimaryColor),
+                // SizedBox(width: kDefaultPadding),
+                Expanded(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: kDefaultPadding * 0.75,
                     ),
-                    chatScreenVM.isMessageEmpty
-                        ? Container()
-                        : InkWell(
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade300,
+                      borderRadius: BorderRadius.circular(40),
+                    ),
+                    child: Row(
+                      children: [
+                        // Icon(
+                        //   Icons.sentiment_satisfied_alt_outlined,
+                        //   color: Theme.of(context)
+                        //       .textTheme
+                        //       .bodyText1
+                        //       .color
+                        //       .withOpacity(0.64),
+                        // ),
+                        // SizedBox(width: kDefaultPadding / 4),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 15, top: 3),
+                            child: TextField(
+                              // expands: true,
+                              // maxLines: 4,
+                              // keyboardType: TextInputType.multiline,
+                              maxLines: 20,
+                              focusNode: chatScreenVM.myFocusNode,
+                              minLines: 1,
+                              maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                              style: Styles.PoppinsRegular(
+                                color: drawerColor,
+                                fontSize: ApplicationSizing.convert(16),
+                              ),
+                              controller: _textEditingController,
+                              decoration: InputDecoration(
+                                hintText: "Type a message",
+                                border: InputBorder.none,
+                                hintStyle: Styles.PoppinsRegular(
+                                    color: drawerSelectMenuColor, fontSize: 16),
+                              ),
+                              onChanged: chatScreenVM.checkMessageField,
+                              // focusNode: myFocusNode,
+                            ),
+                          ),
+                        ),
+                        chatScreenVM.isMessageEmpty
+                            ? Container()
+                            : InkWell(
                             onTap: () async {
                               if (connectivityService.connectionStatus ==
                                   ConnectivityResult.none) {
@@ -127,20 +127,22 @@ class ChatInputField extends HookWidget {
                               color: AppBarEndColor,
                               size: ApplicationSizing.convert(30),
                             ))
-                  ],
+                      ],
+                    ),
+                  ),
                 ),
-              ),
+                // chatScreenVM.myFocusNode!.hasFocus ? Container() : Container(
+                //   child: Row(
+                //     children: [
+                //       Icon(Icons.image),
+                //       Icon(Icons.document_scanner),
+                //     ],
+                //   ),
+                // ),
+              ],
             ),
-            // chatScreenVM.myFocusNode!.hasFocus ? Container() : Container(
-            //   child: Row(
-            //     children: [
-            //       Icon(Icons.image),
-            //       Icon(Icons.document_scanner),
-            //     ],
-            //   ),
-            // ),
-          ],
-        ),
+          
+
       ),
     );
   }

@@ -17,6 +17,7 @@ import 'package:twochealthcare/services/reading_services/blood_pressure_reading_
 import 'package:twochealthcare/services/reading_services/modalities_reading_service.dart';
 import 'package:twochealthcare/services/shared_pref_services.dart';
 import 'package:twochealthcare/services/signal_r_services.dart';
+import 'package:twochealthcare/view_models/app_bar_vm.dart';
 import 'package:twochealthcare/view_models/application_package_vm.dart';
 import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
 import 'package:twochealthcare/view_models/chat_vm/chat_list_vm.dart';
@@ -26,7 +27,6 @@ import 'package:twochealthcare/view_models/home_vm.dart';
 import 'package:twochealthcare/view_models/modalities_reading_vm/bg_reading_vm.dart';
 import 'package:twochealthcare/view_models/modalities_reading_vm/blood_pressure_reading_vm.dart';
 import 'package:twochealthcare/view_models/modalities_reading_vm/modalities_reading_vm.dart';
-import 'package:twochealthcare/view_models/modalities_reading_vm/tab_and_calender_vm.dart';
 import 'package:twochealthcare/view_models/profile_vm.dart';
 import 'package:twochealthcare/view_models/splash_vm/splash_vm.dart';
 /// ChangeNotifierProvider
@@ -42,6 +42,7 @@ final chatListVMProvider = ChangeNotifierProvider<ChatListVM>((ref)=>ChatListVM(
 final chatScreenVMProvider = ChangeNotifierProvider<ChatScreenVM>((ref)=>ChatScreenVM(ref: ref));
 final tabAndCalenderVMProvider = ChangeNotifierProvider<TabAndCalenderVM>((ref)=>TabAndCalenderVM(ref: ref));
 final healthGuidesVMProviders = ChangeNotifierProvider<HealthGuidesVM>((ref)=>HealthGuidesVM(ref: ref));
+final appBarVMProvider = ChangeNotifierProvider<AppBarVM>((ref)=>AppBarVM(ref: ref));
 /// ChangeNotifierProvider
 
 

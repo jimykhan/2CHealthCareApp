@@ -1,12 +1,17 @@
 
 
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/all.dart';
+import 'package:twochealthcare/providers/providers.dart';
+import 'package:twochealthcare/services/signal_r_services.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
+import 'package:twochealthcare/view_models/app_bar_vm.dart';
 
-class CustomAppBar extends StatelessWidget {
+class CustomAppBar extends HookWidget {
   BuildContext? parentContext;
   Function()? clickOnDrawer;
   Color? color1;
@@ -25,46 +30,64 @@ class CustomAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppBarVM appBarVM = useProvider(appBarVMProvider);
     return Container(
       height: ApplicationSizing.convert(80),
       decoration: BoxDecoration(
       ),
-      child:  Container(
-        padding: EdgeInsets.only(
-            left: ApplicationSizing.convertWidth(20),
-            right: ApplicationSizing.convertWidth(20),
-          top: ApplicationSizing.convert(30)
-        ),
-        decoration: BoxDecoration(
-          // gradient: LinearGradient(
-          //   colors: [color1??AppBarStartColor,color2??AppBarEndColor],
-          //   end: Alignment.centerRight,
-          //   begin: Alignment.centerLeft,
-          // ),
-          // color: Colors.red
-        ),
-        child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              InkWell(
-                onTap: clickOnDrawer,
-                //     () async {
-                //   // await FlutterBlue.instance.stopScan();
-                //   Navigator.pushReplacement(context,
-                //       PageTransition(
-                //           child: HealthDevicesScreen(),
-                //           type: PageTransitionType.fade
-                //       ));
-                // },
-                child: leadingIcon ?? Icon(Icons.menu,
-                  size: ApplicationSizing.convert(25),
-                ) ,
-              ),
-              centerWigets ??  Container(),
-              trailingIcon ?? Container(),
-            ],
+      child:  Row(
+        children: [
+          Container(
+            height:ApplicationSizing.convert(80),
+            width: 5,
+            decoration: BoxDecoration(
+              color: appBarVM.connectionColor,
+              borderRadius: BorderRadius.only(
+                bottomRight: Radius.circular(10),
+                topRight: Radius.circular(10)
+              )
+            ),
           ),
+          Expanded(
+            child: Container(
+              padding: EdgeInsets.only(
+                  left: ApplicationSizing.convertWidth(15),
+                  right: ApplicationSizing.convertWidth(20),
+                top: ApplicationSizing.convert(30)
+              ),
+              decoration: BoxDecoration(
+                // gradient: LinearGradient(
+                //   colors: [color1??AppBarStartColor,color2??AppBarEndColor],
+                //   end: Alignment.centerRight,
+                //   begin: Alignment.centerLeft,
+                // ),
+                // color: Colors.red
+              ),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    InkWell(
+                      onTap: clickOnDrawer,
+                      //     () async {
+                      //   // await FlutterBlue.instance.stopScan();
+                      //   Navigator.pushReplacement(context,
+                      //       PageTransition(
+                      //           child: HealthDevicesScreen(),
+                      //           type: PageTransitionType.fade
+                      //       ));
+                      // },
+                      child: leadingIcon ?? Icon(Icons.menu,
+                        size: ApplicationSizing.convert(25),
+                      ) ,
+                    ),
+                    centerWigets ??  Container(),
+                    trailingIcon ?? Container(),
+                  ],
+                ),
+            ),
+          ),
+        ],
       ),
     );
   }

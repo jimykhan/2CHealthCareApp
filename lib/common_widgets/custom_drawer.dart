@@ -30,7 +30,7 @@ class CustomDrawer extends HookWidget {
   @override
   Widget build(BuildContext context) {
     LoginVM loginVM = useProvider(loginVMProvider);
-
+    FirebaseService firebaseService = useProvider(firebaseServiceProvider);
     ApplicationPackageVM applicationPackageVM =
         useProvider(applicationPackageVMProvider);
     useEffect(

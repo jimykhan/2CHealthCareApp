@@ -7,15 +7,15 @@ import 'package:twochealthcare/services/auth_services/auth_services.dart';
 import 'package:twochealthcare/services/chat_services/chat_screen_service.dart';
 import 'package:twochealthcare/services/signal_r_services.dart';
 import 'package:twochealthcare/util/conversion.dart';
-import 'package:twochealthcare/views/chat/chat_list.dart';
-import 'package:twochealthcare/views/chat/chat_screen.dart';
 import 'package:twochealthcare/view_models/chat_vm/chat_list_vm.dart';
+import 'package:twochealthcare/views/chat/chat_screen.dart';
 
-class ChatScreenVM extends ChangeNotifier{
+class ChatScreenVM extends ChangeNotifier {
   ChatHistoryModel chatMessageList = ChatHistoryModel();
   List<Participients>? participients = [];
   bool allMessagesLoading = true;
   bool pageWiseLoading = false;
+
   // bool isSearchFieldValid = true;
   TextEditingController? searchController;
   String? currentUserAppUserId;
@@ -30,30 +30,31 @@ class ChatScreenVM extends ChangeNotifier{
   bool isMessageEmpty = true;
   FocusNode? myFocusNode = FocusNode();
 
-  ChatScreenVM({ProviderReference? ref}){
+  ChatScreenVM({ProviderReference? ref}) {
     _ref = ref;
     initService();
   }
 
-  dispose(){
+  dispose() {
     chatMessageList.chats = [];
     chatMessageList.participients = [];
   }
 
-  searchListener(){
+  searchListener() {
     searchController = TextEditingController();
     participients = [];
-    participients!.addAll(chatMessageList.participients??[]);
+    participients!.addAll(chatMessageList.participients ?? []);
     searchController?.addListener(() {
       print(searchController!.text);
-      if(searchController!.text == ""){
+      if (searchController!.text == "") {
         participients = [];
-        participients!.addAll(chatMessageList.participients??[]);
-      }
-      else{
+        participients!.addAll(chatMessageList.participients ?? []);
+      } else {
         participients = [];
         chatMessageList.participients!.forEach((element) {
-          if(element.fullName!.toLowerCase().contains(searchController!.text.toLowerCase())){
+          if (element.fullName!
+              .toLowerCase()
+              .contains(searchController!.text.toLowerCase())) {
             participients!.add(element);
           }
         });
@@ -61,11 +62,12 @@ class ChatScreenVM extends ChangeNotifier{
       notifyListeners();
     });
   }
-  disposeSearchController(){
+
+  disposeSearchController() {
     searchController?.dispose();
   }
 
-  initService(){
+  initService() {
     chatMessageList.chats = [];
     chatMessageList.participients = [];
     _authServices = _ref!.read(authServiceProvider);
@@ -73,30 +75,36 @@ class ChatScreenVM extends ChangeNotifier{
     _chatScreenService = _ref!.read(chatScreenServiceProvider);
     _signalRServices = _ref!.read(signalRServiceProvider);
     _applicationRouteService = _ref!.read(applicationRouteServiceProvider);
-    
+
     _signalRServices?.newMessage.stream.listen((event) {
       print("new message reached to Rx dart..");
       print(event.timeStamp.toString());
-      if(event.senderUserId != currentUserAppUserId) {
+      if (event.senderUserId != currentUserAppUserId) {
         event.isSender = false;
         event.messageStatus = MessageStatus.viewed;
-        event.timeStamp = convertLocalToUtc(event.timeStamp!.replaceAll("Z", ""));
+        event.timeStamp =
+            convertLocalToUtc(event.timeStamp!.replaceAll("Z", ""));
         chatMessageList.chats!.add(event);
-        print("${_applicationRouteService!.currentScreen()} ==  ${event.chatGroupId}");
-        if(_applicationRouteService!.currentScreen() == event.chatGroupId.toString() ){
+        print(
+            "${_applicationRouteService!.currentScreen()} ==  ${event.chatGroupId}");
+        if (_applicationRouteService!.currentScreen() ==
+            event.chatGroupId.toString()) {
           print("this is appUserId  = ${currentUserAppUserId}");
-          _signalRServices!.MarkChatGroupViewed(chatGroupId: event.chatGroupId!, userId: currentUserAppUserId!);
+          _signalRServices!.MarkChatGroupViewed(
+              chatGroupId: event.chatGroupId!, userId: currentUserAppUserId!);
         }
         notifyListeners();
-        chatMessageList.chats!.length == 0 ? null : ChatScreen.jumpToListIndex(isDelayed: true);
+        chatMessageList.chats!.length == 0
+            ? null
+            : ChatScreen.jumpToListIndex(isDelayed: true);
       }
     });
     _signalRServices?.onChatViewed.stream.listen((event) {
       print("new message reached to Rx dart..");
-      if(chatMessageList.chats!.length>0){
-        if(event["chatGroupId"] == chatMessageList.chats![0].chatGroupId) {
+      if (chatMessageList.chats!.length > 0) {
+        if (event["chatGroupId"] == chatMessageList.chats![0].chatGroupId) {
           List<Participients> updateParticipantList = [];
-          event["participients"].forEach((e){
+          event["participients"].forEach((e) {
             updateParticipantList.add(Participients.fromJson(e));
           });
           chatMessageList.participients = [];
@@ -104,42 +112,35 @@ class ChatScreenVM extends ChangeNotifier{
           notifyListeners();
         }
       }
-
-
-
     });
   }
 
-  setAllMessagesLoading(bool check){
+  setAllMessagesLoading(bool check) {
     allMessagesLoading = check;
     notifyListeners();
   }
 
-  setPageWiseLoading(bool check){
+  setPageWiseLoading(bool check) {
     pageWiseLoading = check;
     notifyListeners();
   }
 
   checkMessageField(var field) {
-
     if (field is String) {
-      if (field.length > 0){
+      if (field.length > 0) {
         isMessageEmpty = false;
 
         // if
-      }
-
-      else{
+      } else {
         isMessageEmpty = true;
         myFocusNode!.unfocus();
-    }
-
+      }
     }
     notifyListeners();
   }
 
-  Future<dynamic> getAllMessages({String? chatGroupId,int? pageNumber}) async {
-    try{
+  Future<dynamic> getAllMessages({String? chatGroupId, int? pageNumber}) async {
+    try {
       pageNumber == 1 ? setAllMessagesLoading(true) : setPageWiseLoading(true);
       String UserId = await _authServices!.getCurrentAppUserId();
       currentUserAppUserId = UserId;
@@ -149,9 +150,10 @@ class ChatScreenVM extends ChangeNotifier{
         "pageNumber": loadingPageNumber.toString()
       };
       print(queryParameters);
-      var response = await _chatScreenService?.getAllMessages(userId: UserId,queryParameters: queryParameters);
-      if(response is ChatHistoryModel){
-        if(loadingPageNumber == 1){
+      var response = await _chatScreenService?.getAllMessages(
+          userId: UserId, queryParameters: queryParameters);
+      if (response is ChatHistoryModel) {
+        if (loadingPageNumber == 1) {
           _chatListVM!.resetCounter(chatGroupId!);
           chatMessageList.chats = [];
           chatMessageList.participients = [];
@@ -162,29 +164,30 @@ class ChatScreenVM extends ChangeNotifier{
             chatMessageList.participients!.add(item);
           });
           setAllMessagesLoading(false);
-        }else{
-          if(response.chats?.length != 0){
-            chatMessageList.chats!.insertAll(0, response.chats??[]);
+        } else {
+          if (response.chats?.length != 0) {
+            chatMessageList.chats!.insertAll(0, response.chats ?? []);
           }
           setPageWiseLoading(false);
         }
-        response.chats!.length > 0 ? loadingPageNumber ++ : null;
+        response.chats!.length > 0 ? loadingPageNumber++ : null;
         // markChatViewed();
         return chatMessageList;
-      }
-      else{
-        loadingPageNumber == 1 ? setAllMessagesLoading(false) : setPageWiseLoading(false);
+      } else {
+        loadingPageNumber == 1
+            ? setAllMessagesLoading(false)
+            : setPageWiseLoading(false);
         return null;
       }
+    } catch (e) {
+      loadingPageNumber == 1
+          ? setAllMessagesLoading(false)
+          : setPageWiseLoading(false);
     }
-    catch(e){
-      loadingPageNumber == 1 ? setAllMessagesLoading(false) : setPageWiseLoading(false);
-    }
-
   }
 
   Future<dynamic> sendTextMessage({String? message}) async {
-    try{
+    try {
       isMessageEmpty = true;
       chatMessageList.chats!.add(ChatMessage(
         id: -1,
@@ -198,47 +201,46 @@ class ChatScreenVM extends ChangeNotifier{
         timeStamp: DateTime.now().toString(),
       ));
       notifyListeners();
-       var body = {
-          "senderUserId": currentUserAppUserId,
-          "chatGroupId": chatGroupId,
-          "message": message,
-          "linkUrl": "string",
-        };
-      var response = await _chatScreenService?.sendTextMessage(body: body,currentUserAppUserId: currentUserAppUserId);
-      if(response is ChatMessage){
+      var body = {
+        "senderUserId": currentUserAppUserId,
+        "chatGroupId": chatGroupId,
+        "message": message,
+        "linkUrl": "string",
+      };
+      var response = await _chatScreenService?.sendTextMessage(
+          body: body, currentUserAppUserId: currentUserAppUserId);
+      if (response is ChatMessage) {
         print("yes run this okay");
         chatMessageList.chats!.removeLast();
         response.messageStatus = MessageStatus.not_view;
         chatMessageList.chats!.add(response);
         notifyListeners();
         return true;
-      }else{
+      } else {
         return false;
       }
-    }
-    catch(e){
+    } catch (e) {
       print(e.toString());
       return false;
     }
   }
 
   Future<dynamic> markChatViewed() async {
-    try{
-      var response = await _chatScreenService?.markChatViewed(chatGroupId: chatGroupId,currentUserAppUserId: currentUserAppUserId);
-      if(response is bool && response){
+    try {
+      var response = await _chatScreenService?.markChatViewed(
+          chatGroupId: chatGroupId, currentUserAppUserId: currentUserAppUserId);
+      if (response is bool && response) {
         chatMessageList.chats!.forEach((element) {
           element.messageStatus = MessageStatus.viewed;
         });
         notifyListeners();
         return true;
-      }else{
+      } else {
         return false;
       }
-    }
-    catch(e){
+    } catch (e) {
       print(e.toString());
       return false;
     }
   }
-
 }

@@ -123,6 +123,7 @@ class LoginVM extends ChangeNotifier{
     firebaseService!.turnOfChatNotification();
     firebaseService!.turnOfReadingNotification();
     authService?.updateCurrentUser(null);
+    signalRServices?.disConnectSignalR();
     currentUser = null;
     Navigator.pushAndRemoveUntil(
       applicationContext!.currentContext!,

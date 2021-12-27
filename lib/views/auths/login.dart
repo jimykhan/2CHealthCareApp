@@ -57,15 +57,12 @@ class Login extends HookWidget {
                   Container(
                     child: Image.asset("assets/icons/loginBg.png"),
                   ),
-                  _loginform(context, loginVM: loginVM,firebaseService: firebaseService,applicationPackageVM: applicationPackageVM,
+                  _loginform
+                    (context, loginVM: loginVM,firebaseService: firebaseService,applicationPackageVM: applicationPackageVM,
                   applicationRouteService: applicationRouteService,
                   onLaunchActivityService: onLaunchActivityService,
-                    profileVm: profileVm
-                  ),
-                  applicationRouteService: applicationRouteService,
-                 // onLaunchActivityService: onLaunchActivityService,
                     profileVm: profileVm,
-                    signalRServices: signalRServices
+                      signalRServices: signalRServices
                   ),
                 ],
               ),

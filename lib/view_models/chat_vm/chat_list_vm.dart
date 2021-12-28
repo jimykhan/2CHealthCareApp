@@ -31,6 +31,7 @@ class ChatListVM extends ChangeNotifier{
           print("call chat list equal id");
          element.lastMessage = event.message;
          element.lastMessageTime = convertLocalToUtc(event.timeStamp!.replaceAll("Z", ""));
+         element.lastMessageTime = Jiffy(element.lastMessageTime).format("dd MMM yy, h:mm a");
          print("${_applicationRouteService!.currentScreen()} != ${event.chatGroupId.toString()}");
          if(_applicationRouteService!.currentScreen() != event.chatGroupId.toString()){
            element.unreadMsgCount = element.unreadMsgCount! + 1;

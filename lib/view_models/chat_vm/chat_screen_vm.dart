@@ -85,10 +85,8 @@ class ChatScreenVM extends ChangeNotifier {
         event.timeStamp =
             convertLocalToUtc(event.timeStamp!.replaceAll("Z", ""));
         chatMessageList.chats!.add(event);
-        print(
-            "${_applicationRouteService!.currentScreen()} ==  ${event.chatGroupId}");
-        if (_applicationRouteService!.currentScreen() ==
-            event.chatGroupId.toString()) {
+        print("${_applicationRouteService!.currentScreen()} ==  ${event.chatGroupId}");
+        if (_applicationRouteService!.currentScreen() == event.chatGroupId.toString()) {
           print("this is appUserId  = ${currentUserAppUserId}");
           _signalRServices!.MarkChatGroupViewed(
               chatGroupId: event.chatGroupId!, userId: currentUserAppUserId!);

@@ -9,11 +9,14 @@ class AppBarVM extends ChangeNotifier{
   ProviderReference? _ref;
   SignalRServices? signalRServices;
   Color connectionColor = Colors.red;
+  bool tryToConnect = true;
   HubConnectionState connectState = HubConnectionState.connecting;
 
   AppBarVM({ProviderReference? ref}){
     _ref = ref;
     initServices();
+    setTryToConnectFlag();
+
   }
   initServices(){
     signalRServices = _ref?.read(signalRServiceProvider);
@@ -26,16 +29,34 @@ class AppBarVM extends ChangeNotifier{
     if(signalRServices?.connection !=null){
       if(connectState != signalRServices?.connection?.state){
         connectState = signalRServices?.connection?.state ?? HubConnectionState.disconnected;
-        if(connectState == HubConnectionState.connected) connectionColor = Colors.green;
-        if(connectState == HubConnectionState.disconnected) connectionColor = Colors.red;
+        if(connectState == HubConnectionState.connected) {
+          tryToConnect = false;
+          connectionColor = Colors.green;
+        }
+        if(connectState == HubConnectionState.disconnected) {
+          connectionColor = Colors.red;
+          }
         if(connectState == HubConnectionState.connecting) connectionColor = Colors.amber;
         if(connectState == HubConnectionState.disconnecting) connectionColor = Colors.lightGreenAccent;
         if(connectState == HubConnectionState.reconnecting) connectionColor = Colors.lightGreenAccent;
         notifyListeners();
       }
+      if(connectState == HubConnectionState.disconnected) {
+        if(!tryToConnect) {
+          tryToConnect = true;
+          signalRServices?.initSignalR();
+          setTryToConnectFlag();
+        }
+      }
+
     }
 
 
+  }
+  setTryToConnectFlag(){
+    Future.delayed(Duration(seconds: 15),()=>
+    tryToConnect = false
+    );
   }
 
 }

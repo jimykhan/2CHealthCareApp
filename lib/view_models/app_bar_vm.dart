@@ -25,7 +25,7 @@ class AppBarVM extends ChangeNotifier{
 
    checkSignalRConnectionState(){
     Future.delayed(Duration(seconds: 2),()=>checkSignalRConnectionState());
-    print("Connect state before = ${connectState},Connect state = ${signalRServices?.connection?.state??""}");
+    // print("Connect state before = ${connectState},Connect state = ${signalRServices?.connection?.state??""}");
     if(signalRServices?.connection !=null){
       if(connectState != signalRServices?.connection?.state){
         connectState = signalRServices?.connection?.state ?? HubConnectionState.disconnected;

@@ -60,8 +60,8 @@ class SignalRServices{
     });
     connection?.onclose((connectionId) async {
       print('2cCHat Dismissed');
-      await _startConnection();
-      SubscribeGroupsByUserId();
+      // await _startConnection();
+      unSubscribeSignalrMessages();
     });
   }
 
@@ -69,6 +69,7 @@ class SignalRServices{
   Future<void> disConnectSignalR() async {
     if (connection?.state == HubConnectionState.connected) {
       await connection?.stop();
+      unSubscribeSignalrMessages();
       connection = null;
 
     }
@@ -103,7 +104,6 @@ class SignalRServices{
   }
 
   subscribeSignalrMessages() {
-
     connection?.on("OnChatViewed", (data) {
       print("On Chat Viewed");
       var makeJson = [
@@ -116,7 +116,6 @@ class SignalRServices{
       data!.forEach((element) {
         var newData = jsonDecode(element);
         onChatViewed.add(newData);
-
         print("OnChatViewed call ${jsonDecode(element)}");
       });
 
@@ -167,6 +166,23 @@ class SignalRServices{
     connection?.on('OnChatViewed', (data) {
       print("OnChatViewed call $data}");
     });
+  }
+  unSubscribeSignalrMessages() {
+    connection?.off("OnChatViewed");
+    connection?.off('OnDataReceived');
+    connection?.off('ReceiveMessage');
+    connection?.off('OnAppNotifications');
+    connection?.off('OnStopConnectionRequest');
+    connection?.off('OnConfirmation');
+    connection?.off('OnHistoryViewedConfirmation');
+    connection?.off('OnRpmAlertDataChanged');
+    connection?.off('OnTmPatientOnlineStatusChanged');
+    connection?.off('OnTmEncounterStatusChanged');
+    connection?.off('OnVideoChat');
+    connection?.off('OnChatMessageReceived');
+    // connection?.off('OnChatMessageReceived', (data) => newMessage.add() );
+    connection?.off('OnChatRequest');
+    connection?.off('OnChatViewed');
   }
 
   MarkChatGroupViewed({required int chatGroupId, required String userId}) async {

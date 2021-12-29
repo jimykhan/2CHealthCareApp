@@ -217,7 +217,12 @@ class Login extends HookWidget {
                         radius: ApplicationSizing.fontScale(10),
                       ))
                   : InkWell(
-                      onTap: () async {},
+                      onTap: () async {
+                        if (loginVM.fieldValidation(loginVM.emailController.text)){
+                          loginVM.isSmsOrEmailVerified();
+                        }
+
+                      },
                       child: Container(
                         width: ApplicationSizing.convertWidth(150),
                         height: ApplicationSizing.convert(30),

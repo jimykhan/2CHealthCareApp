@@ -19,6 +19,7 @@ import 'package:twochealthcare/services/shared_pref_services.dart';
 import 'package:twochealthcare/services/signal_r_services.dart';
 import 'package:twochealthcare/view_models/app_bar_vm.dart';
 import 'package:twochealthcare/view_models/application_package_vm.dart';
+import 'package:twochealthcare/view_models/auth_vm/forget-password-vm.dart';
 import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
 import 'package:twochealthcare/view_models/chat_vm/chat_list_vm.dart';
 import 'package:twochealthcare/view_models/chat_vm/chat_screen_vm.dart';
@@ -44,6 +45,7 @@ final chatScreenVMProvider = ChangeNotifierProvider<ChatScreenVM>((ref)=>ChatScr
 final tabAndCalenderVMProvider = ChangeNotifierProvider<TabAndCalenderVM>((ref)=>TabAndCalenderVM(ref: ref));
 final healthGuidesVMProviders = ChangeNotifierProvider<HealthGuidesVM>((ref)=>HealthGuidesVM(ref: ref));
 final appBarVMProvider = ChangeNotifierProvider<AppBarVM>((ref)=>AppBarVM(ref: ref));
+final forgetPasswordVMProvider = ChangeNotifierProvider<ForgetPasswordVM>((ref)=>ForgetPasswordVM(ref: ref));
 /// ChangeNotifierProvider
 
 

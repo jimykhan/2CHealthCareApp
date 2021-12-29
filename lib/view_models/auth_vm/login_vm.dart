@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:twochealthcare/common_widgets/snackber_message.dart';
 import 'package:twochealthcare/main.dart';
 import 'package:twochealthcare/models/user/current_user.dart';
+import 'package:twochealthcare/models/user/is-sms-email-verified.dart';
 import 'package:twochealthcare/models/user/loged_in_user.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
@@ -10,6 +13,7 @@ import 'package:twochealthcare/services/firebase_service.dart';
 import 'package:twochealthcare/services/shared_pref_services.dart';
 import 'package:twochealthcare/services/signal_r_services.dart';
 import 'package:twochealthcare/validator/login_validator.dart';
+import 'package:twochealthcare/views/auths/forget-password.dart';
 import 'package:twochealthcare/views/auths/login.dart';
 
 class LoginVM extends ChangeNotifier{
@@ -55,7 +59,6 @@ class LoginVM extends ChangeNotifier{
 
   Future<bool> userLogin({String? userName, String? password, String? rememberMe}) async {
     setLoading(true);
-
     var res = await authService?.userLogin(userName: emailController.text,
         password: passwordController.text);
     if(res is CurrentUser){
@@ -65,7 +68,21 @@ class LoginVM extends ChangeNotifier{
     }
     setLoading(false);
     return false;
+  }
 
+  isSmsOrEmailVerified({String? userName})async{
+    setLoading(true);
+    var res = await authService?.isSmsOrEmailVerified(userName: emailController.text);
+    if(res is IsSmsEmailVerified){
+      setLoading(false);
+      Navigator.push(applicationContext!.currentContext!,PageTransition(child: forgetPassword(
+        userName: emailController.text,
+        isEmailVerify: res.verifiedEmail!,
+        isSmsVerify: res.verifiedSMS!,
+      ), type: PageTransitionType.fade));
+    }
+    setLoading(false);
+    return false;
   }
 
   checkLastLoggedInUser({var body}) async{
@@ -117,6 +134,8 @@ class LoginVM extends ChangeNotifier{
     else{return false;}
 
   }
+
+
 
 
   userLogout(){

@@ -3,9 +3,11 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:twochealthcare/common_widgets/snackber_message.dart';
 import 'package:twochealthcare/constants/api_strings.dart';
 import 'package:twochealthcare/main.dart';
 import 'package:twochealthcare/models/user/current_user.dart';
+import 'package:twochealthcare/models/user/is-sms-email-verified.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/shared_pref_services.dart';
 
@@ -37,6 +39,49 @@ class AuthServices{
 
       }else{
         return null;
+      }
+    }
+    catch(e){
+        print(e.toString());
+    }
+  }
+
+  Future<dynamic> isSmsOrEmailVerified({required String userName}) async {
+
+    try{
+      final dio = _ref!.read(dioServicesProvider);
+      Response response = await dio.dio!.post(ApiStrings.isSmsOrEmailVerified+"?userName=$userName",
+      );
+      if(response.statusCode == 200){
+        IsSmsEmailVerified isSmsEmailVerified = IsSmsEmailVerified.fromJson(response.data);
+        return isSmsEmailVerified;
+      }else{
+        SnackBarMessage(message: response.data?.toString()??"");
+        return null;
+      }
+    }
+    catch(e){
+        print(e.toString());
+    }
+  }
+
+  Future<dynamic> sendVerificationCode({String? userName, String? sendBy}) async {
+
+    try{
+      Map<String,String> resquestBody = {
+        "userName":userName??"",
+        "sendBy":sendBy??""
+      };
+      final dio = _ref!.read(dioServicesProvider);
+      Response response = await dio.dio!.post(ApiStrings.forgotPassword,
+        data: resquestBody
+      );
+      if(response.statusCode == 200){
+        SnackBarMessage(message: response.data?.toString()??"");
+        return true;
+      }else{
+        SnackBarMessage(message: response.data?.toString()??"");
+        return false;
       }
     }
     catch(e){

@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/all.dart';
 import 'package:twochealthcare/constants/api_strings.dart';
 import 'package:twochealthcare/models/profile_models/current_user_info_model.dart';
 import 'package:twochealthcare/models/profile_models/paitent_care_providers_model.dart';
+import 'package:twochealthcare/models/profile_models/state_model.dart';
 import 'package:twochealthcare/providers/providers.dart';
 
 class ProfileService{
@@ -51,6 +52,48 @@ class ProfileService{
 
       }else{
         return null;
+      }
+    }
+    catch(e){
+      print(e.toString());
+    }
+
+  }
+
+  Future<dynamic> editPatientContactInfo({int? currentUserId, var data}) async {
+
+    // SharedPrefServices sharePrf = _ref!.read(sharedPrefServiceProvider);
+
+    try{
+      final dio = _ref!.read(dioServicesProvider);
+      Response response = await dio.dio!.put(ApiStrings.editPatientProfile,
+        data: data
+      );
+      if(response.statusCode == 200){
+        return true;
+      }else{
+        return false;
+      }
+    }
+    catch(e){
+      print(e.toString());
+      return false;
+    }
+
+  }
+  Future<dynamic> getStatesList() async {
+    try{
+      final dio = _ref!.read(dioServicesProvider);
+      Response response = await dio.dio!.get(ApiStrings.getStatesList
+      );
+      if(response.statusCode == 200){
+        List<StateModel> stateList = [];
+        response.data.forEach((elemet){
+          stateList.add(StateModel.fromJson(elemet));
+        });
+        return stateList;
+      }else{
+        return false;
       }
     }
     catch(e){

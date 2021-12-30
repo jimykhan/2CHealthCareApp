@@ -8,7 +8,7 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:twochealthcare/main.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
-import 'package:twochealthcare/views/auths/otp-verification.dart';
+import 'package:twochealthcare/views/auths/otp_verification.dart';
 
 class ForgetPasswordVM extends ChangeNotifier{
   ProviderReference? _ref;

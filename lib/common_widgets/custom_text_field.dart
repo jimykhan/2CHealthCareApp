@@ -40,7 +40,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       padding: EdgeInsets.only(right: 8, left: 8),
       decoration: BoxDecoration(
           border: Border.all(
-            color: borderColor ?? widget.color1 ?? Colors.green,
+            color: borderColor ?? widget.color1 ?? disableColor,
             width: widget.borderWidth ?? 1.2,
           ),
           borderRadius: BorderRadius.circular(7)),

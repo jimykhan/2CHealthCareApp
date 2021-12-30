@@ -13,7 +13,7 @@ import 'package:twochealthcare/services/firebase_service.dart';
 import 'package:twochealthcare/services/shared_pref_services.dart';
 import 'package:twochealthcare/services/signal_r_services.dart';
 import 'package:twochealthcare/validator/login_validator.dart';
-import 'package:twochealthcare/views/auths/forget-password.dart';
+import 'package:twochealthcare/views/auths/forget_password.dart';
 import 'package:twochealthcare/views/auths/login.dart';
 
 class LoginVM extends ChangeNotifier{

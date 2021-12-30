@@ -5,7 +5,7 @@ import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
 
-Widget infoWidget({required String widgetTitle, Widget? child}) {
+Widget infoWidget({required String widgetTitle, Widget? child,Widget? trallingWidget}) {
   return Row(
     children: [
       Expanded(
@@ -34,24 +34,20 @@ Widget infoWidget({required String widgetTitle, Widget? child}) {
                       padding: EdgeInsets.symmetric(
                           horizontal: ApplicationSizing.horizontalMargin(),
                           vertical: ApplicationSizing.convert(5)),
-                      decoration: BoxDecoration(
-                          color: appColorSecondary,
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(
-                                  ApplicationSizing.convert(10)),
-                              bottomRight: Radius.circular(
-                                  ApplicationSizing.convert(10)),
-                              topRight:
-                                  Radius.circular(ApplicationSizing.convert(2)),
-                              bottomLeft: Radius.circular(
-                                  ApplicationSizing.convert(2)))),
-                      child: Text(
-                        widgetTitle,
-                        style: Styles.PoppinsRegular(
-                          fontWeight: FontWeight.w400,
-                          fontSize: ApplicationSizing.fontScale(16),
-                          color: Colors.white,
-                        ),
+                      decoration: boxDecoration,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            widgetTitle,
+                            style: Styles.PoppinsRegular(
+                              fontWeight: FontWeight.w400,
+                              fontSize: ApplicationSizing.fontScale(16),
+                              color: Colors.white,
+                            ),
+                          ),
+                          trallingWidget??Container(),
+                        ],
                       ),
                     ),
                   ),
@@ -66,6 +62,18 @@ Widget infoWidget({required String widgetTitle, Widget? child}) {
     ],
   );
 }
+
+BoxDecoration boxDecoration = BoxDecoration(
+    color: appColorSecondary,
+    borderRadius: BorderRadius.only(
+        topLeft: Radius.circular(
+            ApplicationSizing.convert(10)),
+        bottomRight: Radius.circular(
+            ApplicationSizing.convert(10)),
+        topRight:
+        Radius.circular(ApplicationSizing.convert(2)),
+        bottomLeft: Radius.circular(
+            ApplicationSizing.convert(2))));
 
 tile({String? key, String? value}){
   return Container(

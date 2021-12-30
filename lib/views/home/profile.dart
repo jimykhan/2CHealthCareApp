@@ -19,6 +19,7 @@ import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
 import 'package:twochealthcare/view_models/modalities_reading_vm/modalities_reading_vm.dart';
 import 'package:twochealthcare/view_models/profile_vm.dart';
 import 'package:twochealthcare/views/home/components/widgets.dart';
+import 'package:twochealthcare/views/home/edit-contact-info.dart';
 import 'package:twochealthcare/views/readings/bg_reading.dart';
 import 'package:twochealthcare/views/readings/blood_pressure_reading.dart';
 
@@ -59,10 +60,10 @@ class Profile extends HookWidget {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
       floatingActionButton: FloatingButton(),
-      body: _body(loginVM: loginVM, profileVm: profileVm),
+      body: _body(context,loginVM: loginVM, profileVm: profileVm),
     );
   }
-  _body({LoginVM? loginVM,ProfileVm? profileVm}){
+  _body(context,{LoginVM? loginVM,ProfileVm? profileVm}){
     MagicMask mask = MagicMask.buildMask('\\+1 (999) 999 99 99');
     return Container(
       child: SingleChildScrollView(
@@ -210,6 +211,30 @@ class Profile extends HookWidget {
                 infoWidget
                   (
                   widgetTitle: 'Contact Information',
+                  trallingWidget: InkWell(
+                    onTap: (){
+                      Navigator.push(context, PageTransition(child: EditContactInfo(), type: PageTransitionType.bottomToTop));
+                    },
+                    child: Container(
+                      alignment: Alignment.bottomLeft,
+                        child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                         Icon(Icons.edit,
+                          color: Colors.white,
+                          size: ApplicationSizing.fontScale(15),
+                        ),
+                        ApplicationSizing.horizontalSpacer(n: 3),
+                        Container(
+                          alignment: Alignment.bottomLeft,
+                          child: Text("Edit",style: Styles.PoppinsRegular(
+                            color: Colors.white,
+                            fontSize: ApplicationSizing.fontScale(12)
+                          ),),
+                        )
+                      ],
+                    )),
+                  ),
                   child: Container(
                     child: Column(
                       children: [
@@ -242,6 +267,7 @@ class Profile extends HookWidget {
                       ],
                     ),
                   ),
+
                 ),
 
                 ApplicationSizing.verticalSpacer(n: 15),

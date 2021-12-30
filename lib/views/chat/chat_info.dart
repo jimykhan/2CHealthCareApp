@@ -143,14 +143,20 @@ class ChatInfo extends HookWidget {
                           ),
                           SizedBox(width: ApplicationSizing.convertWidth(10),),
                           Expanded(
-                            child: Container(
-                              // color: Colors.black,
-                              padding: EdgeInsets.only(top: 5),
-                              child: Text(
-                                chatScreenVM.participients?[index].fullName??"",
-                                style: Styles.PoppinsRegular(
-                                  fontSize: ApplicationSizing.fontScale(15),
-                                  color: Colors.black,
+                            child: InkWell(
+                              onTap: (){
+                                chatScreenVM.searchController?.text = chatScreenVM.participients?[index].fullName??"";
+                                FocusScope.of(context).unfocus();
+                              },
+                              child: Container(
+                                // color: Colors.black,
+                                padding: EdgeInsets.only(top: 5),
+                                child: Text(
+                                  chatScreenVM.participients?[index].fullName??"",
+                                  style: Styles.PoppinsRegular(
+                                    fontSize: ApplicationSizing.fontScale(15),
+                                    color: Colors.black,
+                                  ),
                                 ),
                               ),
                             ),

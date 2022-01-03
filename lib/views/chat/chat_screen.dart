@@ -4,6 +4,7 @@ import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:twochealthcare/common_widgets/Back_Button.dart';
 import 'package:twochealthcare/common_widgets/alert_loader.dart';
 import 'package:twochealthcare/common_widgets/appbar_text_style.dart';
 import 'package:twochealthcare/common_widgets/circular_image.dart';
@@ -80,20 +81,21 @@ class ChatScreen extends HookWidget {
           // },
           leadingIcon: Row(
             children: [
-              InkWell(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: Container(
-                  alignment: Alignment.centerLeft,
-                  padding: const EdgeInsets.only(right: 20, top: 6, bottom: 6),
-                  child: RotatedBox(
-                    quarterTurns: 2,
-                    child: SvgPicture.asset(
-                        "assets/icons/home/right-arrow-icon.svg"),
-                  ),
-                ),
-              ),
+              // InkWell(
+              //   onTap: () {
+              //     Navigator.pop(context);
+              //   },
+              //   child: Container(
+              //     alignment: Alignment.centerLeft,
+              //     padding: const EdgeInsets.only(right: 20, top: 6, bottom: 6),
+              //     child: RotatedBox(
+              //       quarterTurns: 2,
+              //       child: SvgPicture.asset(
+              //           "assets/icons/home/right-arrow-icon.svg"),
+              //     ),
+              //   ),
+              // ),
+              CustomBackButton(),
               SizedBox(
                 width: ApplicationSizing.convertWidth(5),
               ),

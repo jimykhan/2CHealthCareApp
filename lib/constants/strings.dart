@@ -31,4 +31,42 @@ class Strings {
   // Account page
   static const String account = 'Account';
   static const String accountPage = 'Account Page';
+
+  static const List<String> relationshipList =[
+    "Spouse",
+    "Mother",
+    "Father",
+    "Siblings",
+    "Son",
+    "Daughter",
+    "Step-Son",
+    "Step-Daughter",
+    "Grand Father",
+    "Grand Mother",
+    "Grand Son",
+    "Cousin",
+    "Niece",
+    "Nephew",
+    "Neighbor/Friend",
+    "Other",
+  ];
+  // <ng-option [value]="'Spouse'">Spouse</ng-option>
+  // <ng-option [value]="'Mother'">Mother</ng-option>
+  // <ng-option [value]="'Father'">Father</ng-option>
+  // <ng-option [value]="'Siblings'">Siblings</ng-option>
+  // <ng-option [value]="'Son'">Son</ng-option>
+  // <ng-option [value]="'Daughter'">Daughter</ng-option>
+  // <ng-option [value]="'Step-Son'">Step-Son</ng-option>
+  // <ng-option [value]="'Step-Daughter'">Step-Daughter</ng-option>
+  // <ng-option [value]="'Grand Father'">Grand Father</ng-option>
+  // <ng-option [value]="'Grand Mother'">Grand Mother</ng-option>
+  // <ng-option [value]="'Grand Son'">Grand Son</ng-option>
+  // <ng-option [value]="'Grand Daughter'">Grand Daughter</ng-option>
+  // <ng-option [value]="'Cousin'">Cousin</ng-option>
+  // <ng-option [value]="'Niece'">Niece</ng-option>
+  // <ng-option [value]="'Nephew'">Nephew</ng-option>
+  // <ng-option [value]="'Neighbor/Friend'">Neighbor/Friend</ng-option>
+  // <ng-option [value]="'Other'">Other</ng-option>
+
+
 }

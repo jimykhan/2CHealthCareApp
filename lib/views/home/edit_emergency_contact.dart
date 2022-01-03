@@ -13,6 +13,7 @@ import 'package:twochealthcare/common_widgets/filled_button.dart';
 import 'package:twochealthcare/common_widgets/loader.dart';
 import 'package:twochealthcare/common_widgets/mask_formatter.dart';
 import 'package:twochealthcare/common_widgets/notification_widget.dart';
+import 'package:twochealthcare/constants/strings.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/application_route_service.dart';
 import 'package:twochealthcare/util/application_colors.dart';
@@ -106,7 +107,7 @@ class EditEmergencyContact extends HookWidget {
       ),
     );
   }
-    String dropdownValue = "One";
+    String dropdownValue = "Spouse";
   _contactInfomation(context,{required ProfileVm profileVm}) {
     return Container(
       padding: EdgeInsets.symmetric(
@@ -262,31 +263,49 @@ class EditEmergencyContact extends HookWidget {
     );
   }
   Widget dropDown(BuildContext context) {
-    return DropdownButton<String>(
-      value: dropdownValue,
-      icon: const Icon(Icons.arrow_downward),
-      iconSize: 24,
-      elevation: 16,
-      style: const TextStyle(
-          color: Colors.deepPurple
-      ),
-      underline: Container(
-        height: 2,
-        color: Colors.deepPurpleAccent,
-      ),
-      onChanged: (String? newValue) {
-        // setState(() {
-        //   dropdownValue = newValue!;
-        // });
-      },
-      items: <String>['One', 'Two', 'Free', 'Four']
-          .map<DropdownMenuItem<String>>((String value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Text(value),
-        );
-      })
-          .toList(),
+    return Row(
+      children: [
+        Expanded(
+          child: Container(
+            padding: EdgeInsets.only(right: 8, left: 8),
+            decoration: BoxDecoration(
+                border: Border.all(
+                  color:  disableColor,
+                  width:  1.2,
+                ),
+                borderRadius: BorderRadius.circular(7)),
+            child: DropdownButton<String>(
+              value: dropdownValue,
+              isExpanded: true,
+              icon: const Icon(Icons.keyboard_arrow_down,
+              size: 30,),
+              // iconSize: 24,
+              // elevation: 16,
+              style: Styles.PoppinsRegular(
+                fontSize: ApplicationSizing.fontScale(14),
+              ),
+              underline: Container(),
+              onChanged: (String? newValue) {
+                // setState(() {
+                //   dropdownValue = newValue!;
+                // });
+              },
+              items: Strings.relationshipList
+                  .map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value,
+                  style: Styles.PoppinsRegular(
+                    fontSize: ApplicationSizing.fontScale(14),
+                  ),
+                  ),
+                );
+              })
+                  .toList(),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

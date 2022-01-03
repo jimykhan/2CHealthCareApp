@@ -72,6 +72,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
                       print(val);
                     },
                     child: TextFormField(
+                      style: Styles.PoppinsRegular(
+                        fontSize: ApplicationSizing.fontScale(14),
+                      ),
                       inputFormatters: widget.inputFormatter,
                       onFieldSubmitted: widget.onSubmit,
                       onChanged: widget.onchange,
@@ -87,7 +90,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
                           hintText: widget.hints ?? "",
                           hintStyle: Styles.PoppinsRegular(
                               color: fontGrayColor,
-                              fontSize: ApplicationSizing.fontScale(12))),
+                              fontSize: ApplicationSizing.fontScale(12)),
+                        labelStyle: TextStyle()
+                      ),
                     ),
                   ),
                 ),

@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/all.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:twochealthcare/common_widgets/Back_Button.dart';
 import 'package:twochealthcare/common_widgets/alert_loader.dart';
 import 'package:twochealthcare/common_widgets/appbar_text_style.dart';
 import 'package:twochealthcare/common_widgets/calendar.dart';
@@ -52,19 +53,7 @@ class BloodPressureReading extends HookWidget {
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(ApplicationSizing.convert(80)),
           child: CustomAppBar(
-            leadingIcon: InkWell(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: Container(
-                padding:
-                    EdgeInsets.only(right: ApplicationSizing.convertWidth(10)),
-                child: RotatedBox(
-                    quarterTurns: 2,
-                    child: SvgPicture.asset(
-                        "assets/icons/home/right-arrow-icon.svg")),
-              ),
-            ),
+            leadingIcon: CustomBackButton(),
             color1: Colors.white,
             color2: Colors.white,
             hight: ApplicationSizing.convert(80),

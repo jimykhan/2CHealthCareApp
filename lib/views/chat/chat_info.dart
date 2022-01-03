@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/all.dart';
+import 'package:twochealthcare/common_widgets/Back_Button.dart';
 import 'package:twochealthcare/common_widgets/appbar_text_style.dart';
 import 'package:twochealthcare/common_widgets/circular_image.dart';
 import 'package:twochealthcare/common_widgets/custom_appbar.dart';
@@ -49,20 +50,7 @@ class ChatInfo extends HookWidget {
           // },
           leadingIcon: Row(
             children: [
-              InkWell(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: Container(
-                  alignment: Alignment.centerLeft,
-                  padding: const EdgeInsets.only(right: 20, top: 6, bottom: 6),
-                  child: RotatedBox(
-                    quarterTurns: 2,
-                    child: SvgPicture.asset(
-                        "assets/icons/home/right-arrow-icon.svg"),
-                  ),
-                ),
-              ),
+              CustomBackButton(),
               SizedBox(
                 width: ApplicationSizing.convertWidth(5),
               ),

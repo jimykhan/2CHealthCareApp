@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/all.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:twochealthcare/common_widgets/Back_Button.dart';
 import 'package:twochealthcare/common_widgets/alert_loader.dart';
 import 'package:twochealthcare/common_widgets/appbar_text_style.dart';
 import 'package:twochealthcare/common_widgets/custom_appbar.dart';
@@ -81,20 +82,7 @@ class ModalitiesReading extends HookWidget {
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(ApplicationSizing.convert(80)),
           child: CustomAppBar(
-            leadingIcon: InkWell(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: Container(
-                alignment: Alignment.centerLeft,
-                padding: const EdgeInsets.only(right: 20, top: 6, bottom: 6),
-                child: RotatedBox(
-                  quarterTurns: 2,
-                  child: SvgPicture.asset(
-                      "assets/icons/home/right-arrow-icon.svg"),
-                ),
-              ),
-            ),
+            leadingIcon: CustomBackButton(),
             color1: Colors.white,
             color2: Colors.white,
             hight: ApplicationSizing.convert(80),

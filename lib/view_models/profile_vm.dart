@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/all.dart';
+import 'package:twochealthcare/constants/validator.dart';
 import 'package:twochealthcare/models/profile_models/current_user_info_model.dart';
 import 'package:twochealthcare/models/profile_models/paitent_care_providers_model.dart';
 import 'package:twochealthcare/models/profile_models/state_model.dart';
@@ -39,6 +40,10 @@ class ProfileVm extends ChangeNotifier{
   List<StateModel> filterStateList = [];
   /// Edit Contact Info Variable
 
+  /// Edit Emergency Contact Variable
+
+  /// Edit Emergency Contact Variable
+
 
 
 
@@ -69,6 +74,9 @@ class ProfileVm extends ChangeNotifier{
           patientCareProvider.add(element);
         });
       }
+      if(res1 == null){
+        patientCareProvider = [];
+      }
       if(res is CurrentUserInfo){
         currentUserInfo = res;
         _sharedPrefServices!.setPatientInfo(res);
@@ -86,10 +94,38 @@ class ProfileVm extends ChangeNotifier{
 
 
   /// Edit Contact Information Code portion
-  onPrimaryPhoneChange(String val){}
-  onCurrentAddressChange(String val){}
-  oncAZipCodeChange(String val){}
+  onPrimaryPhoneChange(String val){
+    if(Validator.PhoneNumberValidator(val)){
+      if(!isPrimaryPhoneFieldValid){
+        primaryPhoneErrorText = "";
+        isPrimaryPhoneFieldValid = true;
+        notifyListeners();
+      }
+    }else{
+      if(isPrimaryPhoneFieldValid){
+        primaryPhoneErrorText = "Please Enter your primary phone number";
+        isPrimaryPhoneFieldValid = false;
+        notifyListeners();
+      }
+    }
+  }
+  onCurrentAddressChange(String val){
+    if(Validator.AddressValidator(val)){
+      if(!isCurrentAddressFieldValid){
+        currentAddressErrorText = "";
+        isCurrentAddressFieldValid = true;
+        notifyListeners();
+      }
+    }else{
+      if(isCurrentAddressFieldValid){
+        currentAddressErrorText = "Please Enter your current address";
+        isCurrentAddressFieldValid = false;
+        notifyListeners();
+      }
+    }
 
+  }
+  oncAZipCodeChange(String val){}
   isFieldEmpty({required String text,required String fieldType}){
     if(text.isEmpty){
       if(fieldType.toUpperCase() == "PH"){
@@ -110,7 +146,6 @@ class ProfileVm extends ChangeNotifier{
     isMailingSame = !isMailingSame;
     notifyListeners();
   }
-
   initEditContactInfo(){
     primaryPhoneEditController = TextEditingController();
     secondaryPhoneEditController = TextEditingController();
@@ -166,7 +201,6 @@ class ProfileVm extends ChangeNotifier{
     mACityEditController?.dispose();
     mAStateEditController?.dispose();
   }
-
   editPatientContactInfo()async{
 
     try{
@@ -199,7 +233,6 @@ class ProfileVm extends ChangeNotifier{
       print(e.toString());
     }
   }
-
   Future<dynamic> getStateList() async {
     try{
       var res = await _profileService!.getStatesList();
@@ -216,4 +249,9 @@ class ProfileVm extends ChangeNotifier{
 
   }
   /// Edit Contact Information Code portion
+
+
+  /// Edit Emergency Contact code portion
+
+  /// Edit Emergency Contact code portion
 }

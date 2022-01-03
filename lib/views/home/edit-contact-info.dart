@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/all.dart';
+import 'package:twochealthcare/common_widgets/alert_loader.dart';
 import 'package:twochealthcare/common_widgets/appbar_text_style.dart';
 import 'package:twochealthcare/common_widgets/back_button.dart';
 import 'package:twochealthcare/common_widgets/check_button.dart';
@@ -10,6 +11,7 @@ import 'package:twochealthcare/common_widgets/custom_text_field.dart';
 import 'package:twochealthcare/common_widgets/error_text.dart';
 import 'package:twochealthcare/common_widgets/filled_button.dart';
 import 'package:twochealthcare/common_widgets/loader.dart';
+import 'package:twochealthcare/common_widgets/mask_formatter.dart';
 import 'package:twochealthcare/common_widgets/notification_widget.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/application_route_service.dart';
@@ -51,34 +53,59 @@ class EditContactInfo extends HookWidget {
             centerWigets: AppBarTextStyle(
               text: "Update Contact Info",
             ),
+            trailingIcon: InkWell(
+              onTap: (){
+                profileVM.editPatientContactInfo();
+              },
+              child: Container(
+                padding: EdgeInsets.all(5),
+                child: Icon(Icons.check,
+                color: appColor,),
+              ),
+            ),
           ),
         ),
-        body: _body(profileVm: profileVM));
+        body: Stack(
+          children: [
+            _body(profileVm: profileVM),
+            profileVM.loading ? AlertLoader() : Container(),
+          ],
+        )
+    );
   }
 
   _body({required ProfileVm profileVm}) {
     return Container(
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            ApplicationSizing.verticalSpacer(n: 15),
-            _contactInfomation(profileVm: profileVm),
-            ApplicationSizing.verticalSpacer(n: 15),
-            _currentAddress(profileVm: profileVm),
-            ApplicationSizing.verticalSpacer(n: 15),
-            _mailingAddress(profileVm: profileVm),
-            ApplicationSizing.verticalSpacer(n: 15),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin()),
-              child: profileVm.loading ? loader() : FilledButton(
-                  onTap: (){
-                    profileVm.editPatientContactInfo();
-                  },
-                txt: "Update",
-              ),
-            )
-          ],
-        ),
+      child: Stack(
+        children: [
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                ApplicationSizing.verticalSpacer(n: 15),
+                _contactInfomation(profileVm: profileVm),
+                ApplicationSizing.verticalSpacer(n: 15),
+                _currentAddress(profileVm: profileVm),
+                ApplicationSizing.verticalSpacer(n: 15),
+                _mailingAddress(profileVm: profileVm),
+                ApplicationSizing.verticalSpacer(n: 80),
+
+              ],
+            ),
+          ),
+          // Align(
+          //   alignment: Alignment.bottomCenter,
+          //   child: Container(
+          //     margin: EdgeInsets.only(bottom: 10),
+          //     padding: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin()),
+          //     child: profileVm.loading ? loader() : FilledButton(
+          //       onTap: (){
+          //         profileVm.editPatientContactInfo();
+          //       },
+          //       txt: "Update",
+          //     ),
+          //   ),
+          // )
+        ],
       ),
     );
   }
@@ -121,21 +148,28 @@ class EditContactInfo extends HookWidget {
               children: [
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 5),
-                  child: RichText(
-                    text: TextSpan(
-                      text: "Primary Phone *",
-                      style: Styles.PoppinsBold(
-                          fontSize: ApplicationSizing.fontScale(12),
-                          color: Colors.black),
-                    ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      RichText(
+                        text: TextSpan(
+                          text: "Primary Phone *",
+                          style: Styles.PoppinsBold(
+                              fontSize: ApplicationSizing.fontScale(12),
+                              color: Colors.black),
+                        ),
+                      ),
+                      isContactVerified(isVerified: profileVm.currentUserInfo?.phoneNumberConfirmed??false),
+                    ],
                   ),
                 ),
                 Container(
                   padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
                   child: CustomTextField(
+                    inputFormatter: [MaskFormatter("000-000-0000")],
                     onchange: profileVm.onPrimaryPhoneChange,
                     textEditingController: profileVm.primaryPhoneEditController,
-                    textInputType: TextInputType.text,
+                    textInputType: TextInputType.phone,
                     hints: "Primary Contact",
                     color1: profileVm.isPrimaryPhoneFieldValid
                         ? disableColor
@@ -170,9 +204,10 @@ class EditContactInfo extends HookWidget {
                 Container(
                   padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
                   child: CustomTextField(
+                    inputFormatter: [MaskFormatter("000-000-0000")],
                     onchange: (val) {},
                     textEditingController: profileVm.secondaryPhoneEditController,
-                    textInputType: TextInputType.text,
+                    textInputType: TextInputType.phone,
                     hints: "Secondary Phone",
                     // color1:
                     // profileVm.isPrimaryPhoneFieldValid ? disableColor : errorColor,
@@ -309,6 +344,7 @@ class EditContactInfo extends HookWidget {
                 Container(
                   padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
                   child: CustomTextField(
+                    inputFormatter: [MaskFormatter("00000")],
                     onchange: profileVm.oncAZipCodeChange,
                     textEditingController: profileVm.cAZipCodeEditController,
                     textInputType: TextInputType.number,
@@ -597,6 +633,35 @@ class EditContactInfo extends HookWidget {
           ),
         ],
       ),
+    );
+  }
+
+  isContactVerified({required bool isVerified}){
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        Container(
+          padding: EdgeInsets.all(1),
+          decoration: BoxDecoration(
+            color: isVerified ? appColor : Colors.red,
+            shape: BoxShape.circle
+          ),
+          child: isVerified
+              ? Icon(Icons.check,size: 15, color: Colors.white,)
+              : Icon(Icons.close,size: 15,color: Colors.white,),
+        ),
+        ApplicationSizing.horizontalSpacer(n: 5),
+        Container(
+          child: Text(
+            isVerified ? "Verified" : "Not Verified",
+            style: Styles.PoppinsRegular(
+              color: isVerified ? appColor : Colors.red,
+              fontSize: ApplicationSizing.fontScale(11),
+              fontWeight: FontWeight.w700
+            ),
+          ),
+        )
+      ],
     );
   }
 }

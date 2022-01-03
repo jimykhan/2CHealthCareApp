@@ -20,6 +20,7 @@ import 'package:twochealthcare/view_models/modalities_reading_vm/modalities_read
 import 'package:twochealthcare/view_models/profile_vm.dart';
 import 'package:twochealthcare/views/home/components/widgets.dart';
 import 'package:twochealthcare/views/home/edit-contact-info.dart';
+import 'package:twochealthcare/views/home/edit_emergency_contact.dart';
 import 'package:twochealthcare/views/readings/bg_reading.dart';
 import 'package:twochealthcare/views/readings/blood_pressure_reading.dart';
 
@@ -240,8 +241,7 @@ class Profile extends HookWidget {
                       children: [
                         Row(
                           children: [
-                            Expanded(
-                                flex: 1,
+                            Expanded(flex: 1,
                                 child: Container(
                                   alignment: Alignment.centerLeft,
                                   child: tile(
@@ -443,6 +443,30 @@ class Profile extends HookWidget {
                 infoWidget
                   (
                   widgetTitle: 'Emergency Contact',
+                  trallingWidget: InkWell(
+                    onTap: (){
+                      Navigator.push(context, PageTransition(child: EditEmergencyContact(), type: PageTransitionType.bottomToTop));
+                    },
+                    child: Container(
+                        alignment: Alignment.bottomLeft,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Icon(Icons.edit,
+                              color: Colors.white,
+                              size: ApplicationSizing.fontScale(15),
+                            ),
+                            ApplicationSizing.horizontalSpacer(n: 3),
+                            Container(
+                              alignment: Alignment.bottomLeft,
+                              child: Text("Edit",style: Styles.PoppinsRegular(
+                                  color: Colors.white,
+                                  fontSize: ApplicationSizing.fontScale(12)
+                              ),),
+                            )
+                          ],
+                        )),
+                  ),
                   child: Container(
                     child: Column(
                       children: [

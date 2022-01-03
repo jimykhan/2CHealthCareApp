@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
 import 'package:twochealthcare/util/application_colors.dart';
@@ -15,6 +16,7 @@ class CustomTextField extends StatefulWidget {
   TextEditingController? textEditingController;
   bool? obscureText;
   bool? isEnable;
+  List<TextInputFormatter>? inputFormatter;
   CustomTextField(
       {this.isEnable = true,
       this.obscureText,
@@ -26,7 +28,9 @@ class CustomTextField extends StatefulWidget {
       this.iconWidget,
       this.textEditingController,
       required this.onchange,
-      required this.onSubmit});
+      required this.onSubmit,
+       this.inputFormatter,
+      });
   @override
   _CustomTextFieldState createState() => _CustomTextFieldState();
 }
@@ -68,6 +72,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                       print(val);
                     },
                     child: TextFormField(
+                      inputFormatters: widget.inputFormatter,
                       onFieldSubmitted: widget.onSubmit,
                       onChanged: widget.onchange,
                       enabled: widget.isEnable ?? true,

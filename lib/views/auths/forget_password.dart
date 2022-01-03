@@ -24,7 +24,7 @@ class forgetPassword extends HookWidget {
   Widget build(BuildContext context) {
      ForgetPasswordVM forgetPasswordVM = useProvider(forgetPasswordVMProvider);
     useEffect(() {
-      forgetPasswordVM.initScreen(userName: userName);
+      forgetPasswordVM.initForgetPasswordScreen(userName: userName);
 
       return () {
         // Dispose Objects here

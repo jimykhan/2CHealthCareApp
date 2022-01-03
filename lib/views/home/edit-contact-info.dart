@@ -166,7 +166,7 @@ class EditContactInfo extends HookWidget {
                 Container(
                   padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
                   child: CustomTextField(
-                    inputFormatter: [MaskFormatter("000-000-0000")],
+                    // inputFormatter: [MaskFormatter("000-000-0000")],
                     onchange: profileVm.onPrimaryPhoneChange,
                     textEditingController: profileVm.primaryPhoneEditController,
                     textInputType: TextInputType.phone,
@@ -636,32 +636,33 @@ class EditContactInfo extends HookWidget {
     );
   }
 
-  isContactVerified({required bool isVerified}){
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        Container(
-          padding: EdgeInsets.all(1),
-          decoration: BoxDecoration(
+
+}
+isContactVerified({required bool isVerified}){
+  return Row(
+    crossAxisAlignment: CrossAxisAlignment.end,
+    children: [
+      Container(
+        padding: EdgeInsets.all(1),
+        decoration: BoxDecoration(
             color: isVerified ? appColor : Colors.red,
             shape: BoxShape.circle
-          ),
-          child: isVerified
-              ? Icon(Icons.check,size: 15, color: Colors.white,)
-              : Icon(Icons.close,size: 15,color: Colors.white,),
         ),
-        ApplicationSizing.horizontalSpacer(n: 5),
-        Container(
-          child: Text(
-            isVerified ? "Verified" : "Not Verified",
-            style: Styles.PoppinsRegular(
+        child: isVerified
+            ? Icon(Icons.check,size: 15, color: Colors.white,)
+            : Icon(Icons.close,size: 15,color: Colors.white,),
+      ),
+      ApplicationSizing.horizontalSpacer(n: 5),
+      Container(
+        child: Text(
+          isVerified ? "Verified" : "Not Verified",
+          style: Styles.PoppinsRegular(
               color: isVerified ? appColor : Colors.red,
               fontSize: ApplicationSizing.fontScale(11),
               fontWeight: FontWeight.w700
-            ),
           ),
-        )
-      ],
-    );
-  }
+        ),
+      )
+    ],
+  );
 }

@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:hooks_riverpod/all.dart';
+import 'package:twochealthcare/common_widgets/snackber_message.dart';
 import 'package:twochealthcare/constants/api_strings.dart';
 import 'package:twochealthcare/models/profile_models/current_user_info_model.dart';
 import 'package:twochealthcare/models/profile_models/paitent_care_providers_model.dart';
@@ -75,8 +76,10 @@ class ProfileService{
         data: data
       );
       if(response.statusCode == 200){
+        SnackBarMessage(message: response.data??"",error: false);
         return true;
       }else{
+        SnackBarMessage(message: response.data??"");
         return false;
       }
     }

@@ -15,9 +15,11 @@ import 'package:twochealthcare/services/shared_pref_services.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
+import 'package:twochealthcare/view_models/auth_vm/forget-password-vm.dart';
 import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
 import 'package:twochealthcare/view_models/modalities_reading_vm/modalities_reading_vm.dart';
 import 'package:twochealthcare/view_models/profile_vm.dart';
+import 'package:twochealthcare/views/auths/otp_verification.dart';
 import 'package:twochealthcare/views/home/components/widgets.dart';
 import 'package:twochealthcare/views/home/edit-contact-info.dart';
 import 'package:twochealthcare/views/home/edit_emergency_contact.dart';
@@ -30,10 +32,12 @@ class Profile extends HookWidget {
   Widget build(BuildContext context) {
     LoginVM loginVM = useProvider(loginVMProvider);
     ProfileVm profileVm = useProvider(profileVMProvider);
+    ForgetPasswordVM forgetPasswordVM = useProvider(forgetPasswordVMProvider);
     ApplicationRouteService applicationRouteService = useProvider(applicationRouteServiceProvider);
     // final modalitiesReadingVM = useProvider(modalitiesReadingVMProvider);
     useEffect(
           () {
+            forgetPasswordVM.listenForAutoSms();
         Future.microtask(() async {
           profileVm.getUserInfo();
         });
@@ -61,10 +65,12 @@ class Profile extends HookWidget {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
       floatingActionButton: FloatingButton(),
-      body: _body(context,loginVM: loginVM, profileVm: profileVm),
+      body: _body(context,loginVM: loginVM, profileVm: profileVm,forgetPasswordVM: forgetPasswordVM),
     );
   }
-  _body(context,{LoginVM? loginVM,ProfileVm? profileVm}){
+  _body(context,{LoginVM? loginVM,ProfileVm? profileVm,
+    ForgetPasswordVM? forgetPasswordVM,
+  }){
     MagicMask mask = MagicMask.buildMask('\\+1 (999) 999 99 99');
     return Container(
       child: SingleChildScrollView(
@@ -242,12 +248,35 @@ class Profile extends HookWidget {
                         Row(
                           children: [
                             Expanded(flex: 1,
-                                child: Container(
-                                  alignment: Alignment.centerLeft,
-                                  child: tile(
-                                      key: "Primary Phone No.",
-                                      value: mask.getMaskedString(profileVm.currentUserInfo?.homePhone??"",)
-                                  ),
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      alignment: Alignment.centerLeft,
+                                      child: tile(
+                                          key: "Primary Phone No.",
+                                          value: mask.getMaskedString(profileVm.currentUserInfo?.homePhone??"",)
+                                      ),
+                                    ),
+
+                                    profileVm.currentUserInfo == null ? Container() :InkWell(
+                                      onTap: profileVm.currentUserInfo?.phoneNumberConfirmed?? false ?  null : (){
+                                        Navigator.push(context,
+                                          PageTransition(child: OtpVerification(userName: profileVm.currentUserInfo?.userName??"", phone: profileVm.currentUserInfo?.homePhone,
+                                              isForgetPassword: false
+                                          ), type: PageTransitionType.leftToRight)
+                                        );
+                                        forgetPasswordVM?.sendVerificationCodeToPhone(userName: profileVm.currentUserInfo?.userName??"",phoneNumber: profileVm.currentUserInfo?.homePhone??"");
+
+                                      },
+                                      child: Container(
+                                        margin: EdgeInsets.only(top: 10),
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: ApplicationSizing.horizontalMargin()),
+                                        child: isContactVerified(isVerified: profileVm.currentUserInfo?.phoneNumberConfirmed?? false),
+                                      ),
+                                    ),
+
+                                  ],
                                 )
                             ),
 

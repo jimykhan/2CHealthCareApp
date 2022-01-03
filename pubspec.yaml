@@ -46,6 +46,7 @@ dependencies:
   jwt_decoder: ^2.0.1
   percent_indicator: ^3.4.0
   pin_code_fields: ^7.3.0
+  sms_autofill: ^2.2.0
 
 dev_dependencies:
   flutter_test:

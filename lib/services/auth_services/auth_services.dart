@@ -89,6 +89,32 @@ class AuthServices{
     }
   }
 
+  Future<dynamic> sendVerificationCodeToPhone({String? userName, String? phoneNumber}) async {
+
+    try{
+      Map<String,String> resquestBody = {
+        "phonenumber":phoneNumber??"",
+        "username":userName??""}
+
+
+      ;
+      final dio = _ref!.read(dioServicesProvider);
+      Response response = await dio.dio!.post(ApiStrings.sendPhoneNoVerificationToken,
+          data: resquestBody
+      );
+      if(response.statusCode == 200){
+        SnackBarMessage(message: response.data?.toString()??"",error: false);
+        return true;
+      }else{
+        SnackBarMessage(message: response.data?.toString()??"");
+        return false;
+      }
+    }
+    catch(e){
+      print(e.toString());
+    }
+  }
+
   updateCurrentUser(var data){
     initServices();
     _sharePrf!.setCurrentUser(data);

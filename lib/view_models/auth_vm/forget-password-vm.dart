@@ -9,6 +9,7 @@ import 'package:twochealthcare/main.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
 import 'package:twochealthcare/views/auths/otp_verification.dart';
+import 'package:sms_autofill/sms_autofill.dart';
 
 class ForgetPasswordVM extends ChangeNotifier{
   ProviderReference? _ref;
@@ -25,7 +26,31 @@ class ForgetPasswordVM extends ChangeNotifier{
     "password": [true, ""]
   };
 
-  TextEditingController? textEditingController = TextEditingController();
+  listenForAutoSms() async {
+   var data = await SmsAutoFill().listenForCode();
+   // String appsign = await SmsAutoFill().getAppSignature;
+   // String? hint = await SmsAutoFill().hint;
+   SmsAutoFill().code.listen((event) {
+     otpTextEditingController?.text = event.toString();
+     notifyListeners();
+     print(event.toUpperCase());
+   });
+
+  }
+
+  autoFill(){
+    return PinFieldAutoFill(
+      codeLength: 6,
+      onCodeChanged: (val){
+        print(val);
+      },
+    );
+    // TextFieldPinAutoFill(
+    //   // currentCode: _code,
+    // ),
+  }
+
+  TextEditingController? otpTextEditingController;
   StreamController<ErrorAnimationType>? errorController;
   // FirebaseService? firebaseService;
   // SignalRServices? signalRServices;
@@ -38,17 +63,20 @@ class ForgetPasswordVM extends ChangeNotifier{
   initServices(){
     authService = _ref?.read(authServiceProvider);
   }
-  initScreen({required String userName}){
+  initForgetPasswordScreen({required String userName}){
     emailController.text = userName;
     verificationWithPhone = false;
     verificationWithEmail = false;
+  }
+  initOtpVerificationScreen(){
+    otpTextEditingController = TextEditingController();
+    errorController = StreamController<ErrorAnimationType>();
   }
 
   sendVerificationCode({String? userName, String? sendBy})async{
     SetVerifyOtpLoadingState(true);
     var res = await authService?.sendVerificationCode(userName: userName,sendBy: sendBy);
     if(res is bool){
-
       if(res){
         Future.delayed(Duration(seconds: 3),(){
           SetVerifyOtpLoadingState(false);
@@ -60,14 +88,28 @@ class ForgetPasswordVM extends ChangeNotifier{
         SetVerifyOtpLoadingState(false);
       }
     }
+
+
     SetVerifyOtpLoadingState(false);
 
   }
 
+  sendVerificationCodeToPhone({String? userName,String? phoneNumber}) async{
+    SetVerifyOtpLoadingState(true);
+    var res = await authService?.sendVerificationCodeToPhone(userName: userName,phoneNumber: phoneNumber);
+    if(res is bool){
+      if(res){
+        SetVerifyOtpLoadingState(false);
+      }else{
+        SetVerifyOtpLoadingState(false);
+      }
+    }
+  }
+  sendVerificationCodeToEmail(){}
+
   VerifyPinCode({required String userName, required String pinCode}) async {
 
   }
-
 
   SetVerificationWithPhone(bool isTrue) {
     verificationWithPhone = isTrue;
@@ -90,5 +132,6 @@ class ForgetPasswordVM extends ChangeNotifier{
     otpLength = val;
     notifyListeners();
   }
+  // hash: 9vXNm+dASeo
 
 }

@@ -259,6 +259,7 @@ class Login extends HookWidget {
                     if (checkMail && checkPassword) {
                       bool isValid = await loginVM.userLogin();
                       if (isValid) {
+                        onLaunchActivityService.syncLastApplicationUseDateAndTime();
                         applicationRouteService.addAndRemoveScreen(screenName: "Home");
                         Navigator.pushReplacement(
                             context,

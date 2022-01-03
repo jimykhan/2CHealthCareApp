@@ -54,4 +54,8 @@ class ApiStrings {
   static const String healthGuideLines = baseUrl + "/api/HealthGuideLines";
   static const String editPatientProfile = baseUrl + "/api/Patients/EditPatientProfile";
   static const String getStatesList = baseUrl + "/api/AppData/GetStatesList";
+  static const String sendPhoneNoVerificationToken = baseUrl + "/api/Account/SendPhoneNoVerificationToken";
+  static const String verifyPhoneNumber = baseUrl + "/api/Account/VerifyPhoneNumber";
+  static const String sendVerificationEmail = baseUrl + "/api/Account/SendVerificationEmail";
 }
+// ?Username=ffa.a@hotmail.com&Email=ffa.a@hotmail.com

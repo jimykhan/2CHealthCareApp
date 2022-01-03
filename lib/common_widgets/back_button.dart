@@ -11,7 +11,7 @@ class CustomBackButton extends StatelessWidget {
         decoration: BoxDecoration(
         ),
         child: Icon(Icons.arrow_back_ios,
-        color: Colors.black,),
+          color: Colors.black,),
       ),
     );
   }

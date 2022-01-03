@@ -6,28 +6,41 @@ import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
 import 'package:twochealthcare/util/application_colors.dart' as color;
+
 class CustomCalendar extends StatelessWidget {
-  CalendarFormat? calendarFormat ;
+  CalendarFormat? calendarFormat;
   // DateTime? focusedDay1 = DateTime.now();
-  DateTime? focusedDay1 ;
+  DateTime? focusedDay1;
   DateTime? selectedDay1;
   RangeSelectionMode? rangeSelectionMode;
   DateTime? rangeStart;
   DateTime? rangeEnd;
   bool Function(dynamic) selectedDayPredict;
-  void Function(DateTime,DateTime) onDaySelect;
+  void Function(DateTime, DateTime) onDaySelect;
   void Function(CalendarFormat) formatChange;
   void Function(DateTime) onPageChanged;
-  void Function(DateTime?,DateTime?,DateTime) onRangeSelect;
+  void Function(DateTime?, DateTime?, DateTime) onRangeSelect;
   bool? headerDisable;
   double? dayHeight;
   bool? daysOfWeekVisible;
 
-  CustomCalendar({Key? key,this.calendarFormat,this.focusedDay1,this.rangeEnd,this.rangeSelectionMode,this.rangeStart,
-  this.selectedDay1,required this.selectedDayPredict,required this.onDaySelect,required this.formatChange,
-  this.headerDisable,required this.onRangeSelect,this.dayHeight,
-  this.daysOfWeekVisible = false,
-  required this.onPageChanged}) : super(key: key);
+  CustomCalendar(
+      {Key? key,
+      this.calendarFormat,
+      this.focusedDay1,
+      this.rangeEnd,
+      this.rangeSelectionMode,
+      this.rangeStart,
+      this.selectedDay1,
+      required this.selectedDayPredict,
+      required this.onDaySelect,
+      required this.formatChange,
+      this.headerDisable,
+      required this.onRangeSelect,
+      this.dayHeight,
+      this.daysOfWeekVisible = false,
+      required this.onPageChanged})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -35,37 +48,49 @@ class CustomCalendar extends StatelessWidget {
       // height: 20,
       child: TableCalendar(
         // selectedDay : DateTime.now(),
-        headerStyle:  HeaderStyle(
-          formatButtonShowsNext: false,
-          formatButtonVisible: false,
-          titleCentered: true,
-          headerPadding: EdgeInsets.all(0.0),
-          titleTextStyle: Styles.PoppinsRegular(
-            fontSize: ApplicationSizing.fontScale(17)
-          ),
-          leftChevronIcon: Icon(Icons.chevron_left_sharp,size: ApplicationSizing.convert(25),),
-          rightChevronIcon: Icon(Icons.chevron_right_sharp,size: ApplicationSizing.convert(25),)
-        ),
+        headerStyle: HeaderStyle(
+            formatButtonShowsNext: false,
+            formatButtonVisible: false,
+            titleCentered: true,
+            headerPadding: EdgeInsets.all(0.0),
+            titleTextStyle: Styles.PoppinsRegular(
+                fontSize: ApplicationSizing.fontScale(17)),
+            leftChevronIcon: Icon(
+              Icons.chevron_left_sharp,
+              size: ApplicationSizing.convert(25),
+            ),
+            rightChevronIcon: Icon(
+              Icons.chevron_right_sharp,
+              size: ApplicationSizing.convert(25),
+            )),
         calendarStyle: const CalendarStyle(
-          isTodayHighlighted : false,
-          canMarkersOverflow : false,
-          outsideDaysVisible : false,
-          markersAutoAligned : false,
-          markerSizeScale : 0.0,
-          markersAnchor : 0.0,
-          rangeHighlightScale : 0.0,
+          isTodayHighlighted: false,
+          canMarkersOverflow: false,
+          outsideDaysVisible: false,
+          markersAutoAligned: false,
+          markerSizeScale: 0.0,
+          markersAnchor: 0.0,
+          rangeHighlightScale: 0.0,
           cellMargin: EdgeInsets.all(0.0),
           markerMargin: EdgeInsets.all(0.0),
           cellPadding: EdgeInsets.all(0.0),
           rangeHighlightColor: Colors.pink,
           withinRangeDecoration: BoxDecoration(
-            color: Colors.green
+            color: Colors.green,
           ),
           rangeEndDecoration: BoxDecoration(
-              color: Colors.red
+            color: Colors.green,
+            borderRadius: BorderRadius.only(
+              topRight: Radius.circular(10.0),
+              bottomRight: Radius.circular(10.0),
+            ),
           ),
           rangeStartDecoration: BoxDecoration(
-              color: Colors.brown
+            color: Colors.green,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(10.0),
+              bottomLeft: Radius.circular(10.0),
+            ),
           ),
 
           // ran
@@ -79,7 +104,7 @@ class CustomCalendar extends StatelessWidget {
         rangeEndDay: rangeEnd ?? DateTime.now(),
         firstDay: kFirstDay,
         lastDay: kLastDay,
-        focusedDay: focusedDay1?? DateTime.now(),
+        focusedDay: focusedDay1 ?? DateTime.now(),
         calendarFormat: calendarFormat ?? CalendarFormat.twoWeeks,
         selectedDayPredicate: selectedDayPredict,
         onDaySelected: onDaySelect,
@@ -109,15 +134,13 @@ class CustomCalendar extends StatelessWidget {
         //     });
         //   }
         // },
-        rangeSelectionMode: rangeSelectionMode?? RangeSelectionMode.toggledOn,
+        rangeSelectionMode: rangeSelectionMode ?? RangeSelectionMode.toggledOn,
         onPageChanged: onPageChanged,
         onRangeSelected: onRangeSelect,
-
       ),
     );
   }
 }
-
 
 class TableBasicsExample extends StatefulWidget {
   @override
@@ -172,7 +195,7 @@ class _TableBasicsExampleState extends State<TableBasicsExample> {
         //     });
         //   }
         // },
-        rangeSelectionMode: rangeSelectionMode?? RangeSelectionMode.toggledOn,
+        rangeSelectionMode: rangeSelectionMode ?? RangeSelectionMode.toggledOn,
         onPageChanged: (focusedDay) {
           // No need to call `setState()` here
           focusedDay1 = focusedDay;
@@ -182,22 +205,16 @@ class _TableBasicsExampleState extends State<TableBasicsExample> {
     );
   }
 
-
-
-
-
   selectRange(start, end, focusedDay) {
-  setState(() {
-  selectedDay1 = null;
-  focusedDay = focusedDay;
-  rangeStart = start;
-  rangeEnd = end;
-  rangeSelectionMode = RangeSelectionMode.toggledOn;
-  });
+    setState(() {
+      selectedDay1 = null;
+      focusedDay = focusedDay;
+      rangeStart = start;
+      rangeEnd = end;
+      rangeSelectionMode = RangeSelectionMode.toggledOn;
+    });
   }
 }
-
-
 
 /// Example event class.
 class Event {
@@ -237,17 +254,13 @@ List<DateTime> daysInRange(DateTime first, DateTime last) {
   final dayCount = last.difference(first).inDays + 1;
   return List.generate(
     dayCount,
-        (index) => DateTime.utc(first.year, first.month, first.day + index),
+    (index) => DateTime.utc(first.year, first.month, first.day + index),
   );
 }
 
 final kToday = DateTime.now();
 final kFirstDay = DateTime(kToday.year - 1, 1, 1);
 final kLastDay = DateTime(kToday.year, kToday.month, kToday.day);
-
-
-
-
 
 class TableComplexExample extends StatefulWidget {
   @override

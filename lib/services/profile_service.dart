@@ -49,7 +49,12 @@ class ProfileService{
         }
         return careProviders;
 
-      }else{
+      }
+      else if(response.statusCode == 204){
+        List<PatientCareProvider> careProviders = [];
+        return careProviders;
+      }
+      else{
         return null;
       }
     }

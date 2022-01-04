@@ -55,7 +55,10 @@ class EditContactInfo extends HookWidget {
             ),
             trailingIcon: InkWell(
               onTap: (){
-                profileVM.editPatientContactInfo();
+                if(profileVM.checkRequireFieldValid()){
+                  profileVM.editPatientContactInfo();
+                }
+
               },
               child: Container(
                 padding: EdgeInsets.all(5),
@@ -166,7 +169,7 @@ class EditContactInfo extends HookWidget {
                 Container(
                   padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
                   child: CustomTextField(
-                    // inputFormatter: [MaskFormatter("000-000-0000")],
+                    inputFormatter: [MaskFormatter("000-000-0000")],
                     onchange: profileVm.onPrimaryPhoneChange,
                     textEditingController: profileVm.primaryPhoneEditController,
                     textInputType: TextInputType.phone,

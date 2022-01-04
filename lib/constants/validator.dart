@@ -24,4 +24,12 @@ class Validator{
       return false;
     }
   }
+  static bool ZipCodeValidator(String val){
+    if(val.length == 5){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
 }

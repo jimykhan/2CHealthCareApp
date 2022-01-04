@@ -37,7 +37,6 @@ class Profile extends HookWidget {
     // final modalitiesReadingVM = useProvider(modalitiesReadingVMProvider);
     useEffect(
           () {
-            forgetPasswordVM.listenForAutoSms();
         Future.microtask(() async {
           profileVm.getUserInfo();
         });

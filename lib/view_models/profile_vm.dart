@@ -1,6 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/all.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:twochealthcare/common_widgets/snackber_message.dart';
+import 'package:twochealthcare/constants/strings.dart';
 import 'package:twochealthcare/constants/validator.dart';
+import 'package:twochealthcare/main.dart';
 import 'package:twochealthcare/models/profile_models/current_user_info_model.dart';
 import 'package:twochealthcare/models/profile_models/paitent_care_providers_model.dart';
 import 'package:twochealthcare/models/profile_models/state_model.dart';
@@ -8,6 +12,7 @@ import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
 import 'package:twochealthcare/services/profile_service.dart';
 import 'package:twochealthcare/services/shared_pref_services.dart';
+import 'package:twochealthcare/views/home/profile.dart';
 
 class ProfileVm extends ChangeNotifier{
   bool loading = true;
@@ -39,8 +44,11 @@ class ProfileVm extends ChangeNotifier{
   List<StateModel> stateList = [];
   List<StateModel> filterStateList = [];
   /// Edit Contact Info Variable
-
+  TextEditingController? emergencyNameEditController;
+  TextEditingController? emergencyPrimaryPhoneEditController;
+  TextEditingController? emergencySecondaryPhoneEditController;
   /// Edit Emergency Contact Variable
+  String dropdownValue = "Spouse";
 
   /// Edit Emergency Contact Variable
 
@@ -109,7 +117,7 @@ class ProfileVm extends ChangeNotifier{
       }
     }
   }
-  onCurrentAddressChange(String val){
+   onCurrentAddressChange(String val){
     if(Validator.AddressValidator(val)){
       if(!isCurrentAddressFieldValid){
         currentAddressErrorText = "";
@@ -125,7 +133,23 @@ class ProfileVm extends ChangeNotifier{
     }
 
   }
-  oncAZipCodeChange(String val){}
+  oncAZipCodeChange(String val){
+    if(Validator.ZipCodeValidator(val)){
+      if(!isCAZipCodePhoneFieldValid){
+        cAZipCodeErrorText = "";
+        isCAZipCodePhoneFieldValid = true;
+        notifyListeners();
+
+      }
+    }else{
+      if(isCAZipCodePhoneFieldValid){
+        cAZipCodeErrorText = "Please Enter your current address";
+        isCAZipCodePhoneFieldValid = false;
+        notifyListeners();
+      }
+    }
+  }
+
   isFieldEmpty({required String text,required String fieldType}){
     if(text.isEmpty){
       if(fieldType.toUpperCase() == "PH"){
@@ -202,7 +226,6 @@ class ProfileVm extends ChangeNotifier{
     mAStateEditController?.dispose();
   }
   editPatientContactInfo()async{
-
     try{
       int userId = await _authService!.getCurrentUserId();
       Map data = {
@@ -213,15 +236,16 @@ class ProfileVm extends ChangeNotifier{
         "city": mACityEditController?.text??"",
         "state": mAStateEditController?.text??"",
         "zip": mAZipCodeEditController?.text??"",
-        "emergencyContactName": "string",
-        "emergencyContactRelationship": "string",
-        "emergencyContactPrimaryPhoneNo": "string",
-        "emergencyContactSecondaryPhoneNo": "string",
+        "emergencyContactName": currentUserInfo?.emergencyContactName??"",
+        "emergencyContactRelationship": currentUserInfo?.emergencyContactRelationship??"",
+        "emergencyContactPrimaryPhoneNo": currentUserInfo?.emergencyContactPrimaryPhoneNo??"",
+        "emergencyContactSecondaryPhoneNo": currentUserInfo?.emergencyContactSecondaryPhoneNo??"",
         "patientId": userId
       };
       setLoading(true);
       var res = await _profileService!.editPatientContactInfo(data: data);
       if(res){
+        Navigator.pushReplacement(applicationContext!.currentContext!, PageTransition(child: Profile(), type: PageTransitionType.fade));
         setLoading(false);
       }
       else{
@@ -232,6 +256,21 @@ class ProfileVm extends ChangeNotifier{
       setLoading(false);
       print(e.toString());
     }
+  }
+
+  bool checkRequireFieldValid(){
+      bool primaryNo = Validator.PhoneNumberValidator(primaryPhoneEditController?.text??"");
+      bool currentAddress = Validator.AddressValidator(currentAddressEditController?.text??"");
+      bool currenZipCode = Validator.ZipCodeValidator(cAZipCodeEditController?.text??"");
+      if(primaryNo && currentAddress && currenZipCode){
+        return true;
+      }else{
+        SnackBarMessage(message: "Please enter require field !");
+        oncAZipCodeChange(cAZipCodeEditController?.text??"");
+        onCurrentAddressChange(currentAddressEditController?.text??"");
+        onPrimaryPhoneChange(primaryPhoneEditController?.text??"");
+        return false;
+      }
   }
   Future<dynamic> getStateList() async {
     try{
@@ -252,6 +291,56 @@ class ProfileVm extends ChangeNotifier{
 
 
   /// Edit Emergency Contact code portion
+  onRelationShipChange(val){
+    dropdownValue = val;
+    notifyListeners();
+  }
+  initEditEmergencyContactInfo(){
+    emergencyNameEditController = TextEditingController();
+    emergencyPrimaryPhoneEditController = TextEditingController();
+    emergencySecondaryPhoneEditController = TextEditingController();
+    emergencyNameEditController?.text = currentUserInfo?.emergencyContactName??"";
+    emergencyPrimaryPhoneEditController?.text = currentUserInfo?.emergencyContactPrimaryPhoneNo??"";
+    emergencySecondaryPhoneEditController?.text = currentUserInfo?.emergencyContactSecondaryPhoneNo??"";
+    Strings.relationshipList.forEach((element) {
+      if(element == currentUserInfo?.emergencyContactRelationship){
+        dropdownValue = currentUserInfo?.emergencyContactRelationship??"";
+      }
+    });
+    // dropdownValue = currentUserInfo?.emergencyContactRelationship??"Other";
+  }
 
+  editEmergencyContactInfo()async{
+    try{
+      int userId = await _authService!.getCurrentUserId();
+      Map data = {
+        "primaryPhoneNo": currentUserInfo?.homePhone??"",
+        "secondaryContactNo": currentUserInfo?.emergencyContactSecondaryPhoneNo??"",
+        "currentAddress": currentUserInfo?.currentAddress??"",
+        "mailingAddress": currentUserInfo?.mailingAddress??"",
+        "city": currentUserInfo?.city??"",
+        "state": currentUserInfo?.state??"",
+        "zip": currentUserInfo?.zip??"",
+        "emergencyContactName": emergencyNameEditController?.text??"",
+        "emergencyContactRelationship": dropdownValue,
+        "emergencyContactPrimaryPhoneNo": emergencyPrimaryPhoneEditController?.text??"",
+        "emergencyContactSecondaryPhoneNo": emergencySecondaryPhoneEditController?.text??"",
+        "patientId": userId
+      };
+      setLoading(true);
+      var res = await _profileService!.editPatientContactInfo(data: data);
+      if(res){
+        Navigator.pushReplacement(applicationContext!.currentContext!, PageTransition(child: Profile(), type: PageTransitionType.fade));
+        setLoading(false);
+      }
+      else{
+        setLoading(false);
+      }
+    }
+    catch(e){
+      setLoading(false);
+      print(e.toString());
+    }
+  }
   /// Edit Emergency Contact code portion
 }

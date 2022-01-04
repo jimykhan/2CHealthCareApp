@@ -10,6 +10,7 @@ import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
 import 'package:twochealthcare/views/auths/otp_verification.dart';
 import 'package:sms_autofill/sms_autofill.dart';
+import 'package:twochealthcare/views/home/profile.dart';
 
 class ForgetPasswordVM extends ChangeNotifier{
   ProviderReference? _ref;
@@ -28,27 +29,24 @@ class ForgetPasswordVM extends ChangeNotifier{
 
   listenForAutoSms() async {
    var data = await SmsAutoFill().listenForCode();
-   // String appsign = await SmsAutoFill().getAppSignature;
-   // String? hint = await SmsAutoFill().hint;
    SmsAutoFill().code.listen((event) {
      otpTextEditingController?.text = event.toString();
      notifyListeners();
-     print(event.toUpperCase());
    });
 
   }
 
-  autoFill(){
-    return PinFieldAutoFill(
-      codeLength: 6,
-      onCodeChanged: (val){
-        print(val);
-      },
-    );
-    // TextFieldPinAutoFill(
-    //   // currentCode: _code,
-    // ),
-  }
+  // autoFill(){
+  //   return PinFieldAutoFill(
+  //     codeLength: 6,
+  //     onCodeChanged: (val){
+  //       print(val);
+  //     },
+  //   );
+  //   // TextFieldPinAutoFill(
+  //   //   // currentCode: _code,
+  //   // ),
+  // }
 
   TextEditingController? otpTextEditingController;
   StreamController<ErrorAnimationType>? errorController;
@@ -74,27 +72,39 @@ class ForgetPasswordVM extends ChangeNotifier{
   }
 
   sendVerificationCode({String? userName, String? sendBy})async{
+    otpTextEditingController?.text = "";
+    listenForAutoSms();
     SetVerifyOtpLoadingState(true);
     var res = await authService?.sendVerificationCode(userName: userName,sendBy: sendBy);
     if(res is bool){
       if(res){
-        Future.delayed(Duration(seconds: 3),(){
-          SetVerifyOtpLoadingState(false);
-          Navigator.push(applicationContext!.currentContext!, PageTransition(child: OtpVerification(
-            userName: userName??"",
-          ), type: PageTransitionType.fade));
-        });
+        SetVerifyOtpLoadingState(false);
       }else{
         SetVerifyOtpLoadingState(false);
       }
     }
+    SetVerifyOtpLoadingState(false);
 
-
+  }
+  verifyResetPasswordCode({String? userName, String? pinCode})async{
+    listenForAutoSms();
+    SetVerifyOtpLoadingState(true);
+    var res = await authService?.verifyResetPasswordCode(userName: userName,pinCode: pinCode);
+    if(res is bool){
+      if(res){
+        SetVerifyOtpLoadingState(false);
+      }else{
+        SetVerifyOtpLoadingState(false);
+      }
+    }
     SetVerifyOtpLoadingState(false);
 
   }
 
+
   sendVerificationCodeToPhone({String? userName,String? phoneNumber}) async{
+    otpTextEditingController?.text = "";
+    listenForAutoSms();
     SetVerifyOtpLoadingState(true);
     var res = await authService?.sendVerificationCodeToPhone(userName: userName,phoneNumber: phoneNumber);
     if(res is bool){
@@ -104,6 +114,22 @@ class ForgetPasswordVM extends ChangeNotifier{
         SetVerifyOtpLoadingState(false);
       }
     }
+    SetVerifyOtpLoadingState(false);
+  }
+
+  verifyVerificationCodeToPhone({String? userName,String? pinCode}) async{
+
+    SetVerifyOtpLoadingState(true);
+    var res = await authService?.verifyVerificationCodeToPhone(userName: userName,pinCode: pinCode);
+    if(res is bool){
+      if(res){
+        SetVerifyOtpLoadingState(false);
+        Navigator.pushReplacement(applicationContext!.currentContext!, PageTransition(child: Profile(), type: PageTransitionType.fade));
+      }else{
+        SetVerifyOtpLoadingState(false);
+      }
+    }
+    SetVerifyOtpLoadingState(false);
   }
   sendVerificationCodeToEmail(){}
 

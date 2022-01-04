@@ -67,6 +67,7 @@ class ApiInterceptor extends Interceptor{
        }
      }
      print(options.path);
+     print("${options.data??""}");
 
 
     // TODO: implement onRequest

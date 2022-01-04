@@ -32,7 +32,7 @@ class EditEmergencyContact extends HookWidget {
     ProfileVm profileVM = useProvider(profileVMProvider);
     useEffect(
           () {
-        profileVM.initEditContactInfo();
+        profileVM.initEditEmergencyContactInfo();
         Future.microtask(() async {});
 
         return () {
@@ -56,7 +56,7 @@ class EditEmergencyContact extends HookWidget {
             ),
             trailingIcon: InkWell(
               onTap: (){
-                profileVM.editPatientContactInfo();
+                profileVM.editEmergencyContactInfo();
               },
               child: Container(
                 padding: EdgeInsets.all(5),
@@ -107,7 +107,7 @@ class EditEmergencyContact extends HookWidget {
       ),
     );
   }
-    String dropdownValue = "Spouse";
+
   _contactInfomation(context,{required ProfileVm profileVm}) {
     return Container(
       padding: EdgeInsets.symmetric(
@@ -159,8 +159,8 @@ class EditEmergencyContact extends HookWidget {
                   padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
                   child: CustomTextField(
                     onchange: (val) {},
-                    textEditingController: profileVm.secondaryPhoneEditController,
-                    textInputType: TextInputType.phone,
+                    textEditingController: profileVm.emergencyNameEditController,
+                    textInputType: TextInputType.text,
                     hints: "Name",
                     // color1:
                     // profileVm.isPrimaryPhoneFieldValid ? disableColor : errorColor,
@@ -191,9 +191,9 @@ class EditEmergencyContact extends HookWidget {
                   child: CustomTextField(
                     inputFormatter: [MaskFormatter("000-000-0000")],
                     onchange: (val) {},
-                    textEditingController: profileVm.secondaryPhoneEditController,
+                    textEditingController: profileVm.emergencyPrimaryPhoneEditController,
                     textInputType: TextInputType.phone,
-                    hints: "Secondary Phone",
+                    hints: "Primary Phone",
                     // color1:
                     // profileVm.isPrimaryPhoneFieldValid ? disableColor : errorColor,
                     onSubmit: (val) {},
@@ -221,7 +221,7 @@ class EditEmergencyContact extends HookWidget {
                 ),
                 Container(
                   padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
-                  child: dropDown(context),
+                  child: dropDown(context,profileVm: profileVm),
                 ),
               ],
             ),
@@ -247,7 +247,7 @@ class EditEmergencyContact extends HookWidget {
                   child: CustomTextField(
                     inputFormatter: [MaskFormatter("000-000-0000")],
                     onchange: (val) {},
-                    textEditingController: profileVm.secondaryPhoneEditController,
+                    textEditingController: profileVm.emergencySecondaryPhoneEditController,
                     textInputType: TextInputType.phone,
                     hints: "Secondary Phone",
                     // color1:
@@ -262,7 +262,7 @@ class EditEmergencyContact extends HookWidget {
       ),
     );
   }
-  Widget dropDown(BuildContext context) {
+  Widget dropDown(BuildContext context,{required ProfileVm profileVm}) {
     return Row(
       children: [
         Expanded(
@@ -275,7 +275,7 @@ class EditEmergencyContact extends HookWidget {
                 ),
                 borderRadius: BorderRadius.circular(7)),
             child: DropdownButton<String>(
-              value: dropdownValue,
+              value: profileVm.dropdownValue,
               isExpanded: true,
               icon: const Icon(Icons.keyboard_arrow_down,
               size: 30,),
@@ -285,11 +285,7 @@ class EditEmergencyContact extends HookWidget {
                 fontSize: ApplicationSizing.fontScale(14),
               ),
               underline: Container(),
-              onChanged: (String? newValue) {
-                // setState(() {
-                //   dropdownValue = newValue!;
-                // });
-              },
+              onChanged: profileVm.onRelationShipChange,
               items: Strings.relationshipList
                   .map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(

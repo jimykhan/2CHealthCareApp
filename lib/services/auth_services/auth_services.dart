@@ -77,7 +77,27 @@ class AuthServices{
         data: resquestBody
       );
       if(response.statusCode == 200){
+        SnackBarMessage(message: response.data?.toString()??"",error: false);
+        return true;
+      }else{
         SnackBarMessage(message: response.data?.toString()??"");
+        return false;
+      }
+    }
+    catch(e){
+        print(e.toString());
+    }
+  }
+  Future<dynamic> verifyResetPasswordCode({String? userName, String? pinCode}) async {
+
+    try{
+      Map<String,String> resquestBody = {"userName": userName??"", "code": pinCode??""};
+      final dio = _ref!.read(dioServicesProvider);
+      Response response = await dio.dio!.post(ApiStrings.verifyResetPasswordCode,
+        data: resquestBody
+      );
+      if(response.statusCode == 200){
+        SnackBarMessage(message: response.data?.toString()??"",error: false);
         return true;
       }else{
         SnackBarMessage(message: response.data?.toString()??"");
@@ -90,16 +110,34 @@ class AuthServices{
   }
 
   Future<dynamic> sendVerificationCodeToPhone({String? userName, String? phoneNumber}) async {
-
     try{
       Map<String,String> resquestBody = {
         "phonenumber":phoneNumber??"",
-        "username":userName??""}
-
-
-      ;
+        "username":userName??""};
       final dio = _ref!.read(dioServicesProvider);
       Response response = await dio.dio!.post(ApiStrings.sendPhoneNoVerificationToken,
+          data: resquestBody
+      );
+      if(response.statusCode == 200){
+        SnackBarMessage(message: response.data?.toString()??"",error: false);
+        return true;
+      }else{
+        SnackBarMessage(message: response.data?.toString()??"");
+        return false;
+      }
+    }
+    catch(e){
+      print(e.toString());
+    }
+  }
+  Future<dynamic> verifyVerificationCodeToPhone({String? userName, String? pinCode}) async {
+    try{
+      Map<String,String> resquestBody = {
+        "code":pinCode??"",
+        "username":userName??""
+      };
+      final dio = _ref!.read(dioServicesProvider);
+      Response response = await dio.dio!.post(ApiStrings.verifyPhoneNumber,
           data: resquestBody
       );
       if(response.statusCode == 200){

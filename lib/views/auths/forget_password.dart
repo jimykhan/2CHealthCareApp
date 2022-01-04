@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/all.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:twochealthcare/common_widgets/custom_text_field.dart';
 import 'package:twochealthcare/common_widgets/error_text.dart';
 import 'package:twochealthcare/common_widgets/filled_button.dart';
 import 'package:twochealthcare/common_widgets/loader.dart';
 import 'package:twochealthcare/common_widgets/radio-button.dart';
+import 'package:twochealthcare/main.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
 import 'package:twochealthcare/view_models/auth_vm/forget-password-vm.dart';
+import 'package:twochealthcare/views/auths/login.dart';
+import 'package:twochealthcare/views/auths/otp_verification.dart';
 
 class forgetPassword extends HookWidget {
   bool isSmsVerify = false;
@@ -112,6 +116,7 @@ class forgetPassword extends HookWidget {
                                 // onSubmit: () {
                                 //   // fieldValidation("email");
                                 // },
+                                isEnable: false,
                               ),
                               forgetPasswordVM.error["email"][0]
                                   ? ErrorText( text: forgetPasswordVM.error["email"][1] ?? "",)
@@ -173,9 +178,16 @@ class forgetPassword extends HookWidget {
                               borderwidth: 0,
                               onTap: forgetPasswordVM.verificationWithPhone || forgetPasswordVM.verificationWithEmail?
                                   () async {
-
                                 await forgetPasswordVM.sendVerificationCode(userName: userName ,sendBy: forgetPasswordVM.verificationWithPhone? "phone":"email");
-                                // Future.delayed(Duration(seconds: 2),(){applicatonState.SetVerifyOtpLoadingState(false)});
+                                if(forgetPasswordVM.verificationWithEmail){
+                                  Navigator.pushReplacement(applicationContext!.currentContext!, PageTransition(child: Login(), type: PageTransitionType.fade));
+                                }else{
+                                  Navigator.push(applicationContext!.currentContext!, PageTransition(child: OtpVerification(
+                                    userName: userName,
+                                    sendBy: forgetPasswordVM.verificationWithPhone? "phone":"email",
+                                  ), type: PageTransitionType.fade));
+                                }
+
                               } :(){print("none");},
                             ),
                           ),

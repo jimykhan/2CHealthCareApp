@@ -5,6 +5,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/all.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:twochealthcare/common_widgets/alert_loader.dart';
 import 'package:twochealthcare/common_widgets/filled_button.dart';
@@ -14,12 +15,14 @@ import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
 import 'package:twochealthcare/view_models/auth_vm/forget-password-vm.dart';
+import 'package:twochealthcare/views/auths/reset_password.dart';
 
 class OtpVerification extends HookWidget {
   String userName;
   String? phone;
   bool isForgetPassword;
-  OtpVerification({required this.userName,this.phone, this.isForgetPassword = true});
+  String sendBy;
+  OtpVerification({required this.userName,this.phone, this.isForgetPassword = true,this.sendBy = "phone"});
 
   @override
   Widget build(BuildContext context) {
@@ -129,6 +132,15 @@ class OtpVerification extends HookWidget {
                                   ),
                                   onCompleted: (v) {
                                     print("Completed${v} ${forgetPasswordVM.otpTextEditingController?.text??""}");
+                                    if(isForgetPassword){
+                                      forgetPasswordVM.verifyResetPasswordCode(userName: userName,pinCode: v.toString());
+                                      Navigator.push(context, PageTransition(child: ResetPassword(), type: PageTransitionType.fade));
+                                    }
+                                    else{
+                                      forgetPasswordVM.verifyVerificationCodeToPhone(userName: userName,pinCode: v.toString());
+
+                                    }
+
                                   },
                                   onChanged: (value) {
                                     forgetPasswordVM.setOtpLength(value.length);
@@ -157,7 +169,11 @@ class OtpVerification extends HookWidget {
                                         TextSpan(
                                             recognizer: TapGestureRecognizer()
                                           ..onTap = () {
-                                            isForgetPassword ? null : forgetPasswordVM.sendVerificationCodeToPhone(userName: userName,phoneNumber: phone);
+                                              if(isForgetPassword){
+                                                forgetPasswordVM.sendVerificationCode(userName: userName,sendBy: sendBy);
+                                              }else{
+                                                forgetPasswordVM.sendVerificationCodeToPhone(userName: userName,phoneNumber: phone);
+                                              }
                                           },
                                             text: "  Resend Code",
                                             style: Styles.PoppinsRegular(

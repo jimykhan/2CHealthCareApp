@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/all.dart';
+import 'package:table_calendar/table_calendar.dart';
 import 'package:twochealthcare/common_widgets/calendar.dart';
 import 'package:twochealthcare/common_widgets/tap_bar.dart';
 import 'package:twochealthcare/providers/providers.dart';
@@ -18,7 +19,7 @@ class TabAndCalender extends HookWidget {
 
     useEffect(
           () {
-
+        tabAndCalender.CalendarFormatMonth();
         Future.microtask(() async {});
         return () {
           // Dispose Objects here

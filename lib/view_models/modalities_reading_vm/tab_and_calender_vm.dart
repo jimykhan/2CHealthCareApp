@@ -52,33 +52,45 @@ class TabAndCalenderVM extends ChangeNotifier{
     if(index != timePeriodSelect){
       timePeriodSelect = index??0;
       if(index == 0){
-        calendarFormat = CalendarFormat.week;
-        dayHeight = 40;
-        headerDisable = false;
-        daysOfWeekVisible = true;
-        notifyListeners();
+        CalendarFormatCustomRange();
       }
       else if(index == 1){
-        calendarFormat = CalendarFormat.week;
-        dayHeight = 0;
-        headerDisable = true;
-        daysOfWeekVisible = false;
-        startDate = DateTime(startDate.year,startDate.month,1);
-        endDate = DateTime(startDate.year,startDate.month,7);
-        newDateRange.add(CalenderDate(startDate: startDate,endDate: endDate));
-        // getBGReading();
+        CalendarFormatWeek();
 
       }
       else if(index == 2){
-        calendarFormat = CalendarFormat.month;
-        dayHeight =0;
-        headerDisable = true;
-        daysOfWeekVisible = false;
-        newDateRange.add(CalenderDate(startDate: startDate,endDate: endDate));
+        CalendarFormatMonth();
       }
 
     }
 
+  }
+  CalendarFormatMonth(){
+    calendarFormat = CalendarFormat.month;
+    dayHeight = 0;
+    headerDisable = true;
+    daysOfWeekVisible = false;
+    newDateRange.add(CalenderDate(startDate: startDate,endDate: endDate));
+  }
+  CalendarFormatWeek(){
+    calendarFormat = CalendarFormat.week;
+    dayHeight = 0;
+    headerDisable = true;
+    daysOfWeekVisible = false;
+
+    startDate = DateTime.now().subtract(Duration(days: 7));
+    endDate = DateTime.now();
+    selectedDay1 = startDate;
+    focusedDay1 = startDate;
+    newDateRange.add(CalenderDate(startDate: startDate,endDate: endDate));
+    // getBGReading();
+  }
+  CalendarFormatCustomRange(){
+    calendarFormat = CalendarFormat.week;
+    dayHeight = 40;
+    headerDisable = false;
+    daysOfWeekVisible = true;
+    notifyListeners();
   }
 
   onDaySelected(selectedDay, focusedDay){
@@ -101,8 +113,9 @@ class TabAndCalenderVM extends ChangeNotifier{
       // getBGReading();
     }
     if(timePeriodSelect == 1){
-      startDate = selectedDay1!;
-      endDate = DateTime(selectedDay1!.year,selectedDay1!.month,countMonthDays(year: selectedDay1!.year, month: selectedDay1!.month));
+      endDate = focusedDay;
+      startDate = focusedDay?.subtract(const Duration(days: 7));
+      newDateRange.add(CalenderDate(startDate: startDate,endDate: endDate));
     }
 
 

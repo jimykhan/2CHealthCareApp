@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'dart:collection';
 import 'package:intl/intl.dart';
@@ -74,22 +75,31 @@ class CustomCalendar extends StatelessWidget {
           cellMargin: EdgeInsets.all(0.0),
           markerMargin: EdgeInsets.all(0.0),
           cellPadding: EdgeInsets.all(0.0),
-          rangeHighlightColor: Colors.pink,
+          // rangeHighlightColor: Colors.pink,
           withinRangeDecoration: BoxDecoration(
             color: Colors.green,
+            shape: BoxShape.rectangle,
           ),
           rangeEndDecoration: BoxDecoration(
             color: Colors.green,
+            shape: BoxShape.rectangle,
             borderRadius: BorderRadius.only(
               topRight: Radius.circular(10.0),
               bottomRight: Radius.circular(10.0),
+
+              topLeft: Radius.circular(0.0),
+              bottomLeft: Radius.circular(0.0),
             ),
           ),
           rangeStartDecoration: BoxDecoration(
             color: Colors.green,
+            shape: BoxShape.rectangle,
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(10.0),
               bottomLeft: Radius.circular(10.0),
+
+              topRight: Radius.circular(0.0),
+              bottomRight: Radius.circular(0.0),
             ),
           ),
 

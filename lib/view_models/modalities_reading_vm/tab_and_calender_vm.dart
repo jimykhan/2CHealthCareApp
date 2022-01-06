@@ -67,7 +67,7 @@ class TabAndCalenderVM extends ChangeNotifier{
   }
   CalendarFormatMonth(){
     calendarFormat = CalendarFormat.month;
-    dayHeight =0;
+    dayHeight = 0;
     headerDisable = true;
     daysOfWeekVisible = false;
     newDateRange.add(CalenderDate(startDate: startDate,endDate: endDate));

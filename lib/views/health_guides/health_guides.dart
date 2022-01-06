@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/all.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:twochealthcare/common_widgets/alert_loader.dart';
 import 'package:twochealthcare/common_widgets/appbar_text_style.dart';
+import 'package:twochealthcare/common_widgets/back_button.dart';
 import 'package:twochealthcare/common_widgets/custom_appbar.dart';
 import 'package:twochealthcare/common_widgets/no_data_inlist.dart';
 import 'package:twochealthcare/common_widgets/notification_widget.dart';
@@ -12,6 +13,7 @@ import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/application_route_service.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
+import 'package:twochealthcare/util/conversion.dart';
 import 'package:twochealthcare/util/styles.dart';
 import 'package:twochealthcare/view_models/health_guides_vm/health_guides_vm.dart';
 import 'package:twochealthcare/views/health_guides/in_app_browser.dart';
@@ -41,19 +43,7 @@ class HealthGuides extends HookWidget {
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(ApplicationSizing.convert(80)),
           child: CustomAppBar(
-            leadingIcon: InkWell(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: Container(
-                padding:
-                EdgeInsets.only(right: ApplicationSizing.convertWidth(10)),
-                child: RotatedBox(
-                    quarterTurns: 2,
-                    child: SvgPicture.asset(
-                        "assets/icons/home/right-arrow-icon.svg")),
-              ),
-            ),
+            leadingIcon: CustomBackButton(),
             color1: Colors.white,
             color2: Colors.white,
             hight: ApplicationSizing.convert(80),
@@ -84,11 +74,20 @@ class HealthGuides extends HookWidget {
                       itemBuilder: (context, index) {
                         return InkWell(
                           onTap: () {
-                            Navigator.push(context, PageTransition(
-                                child: InAppBrowser(
-                                  url: healthGuidesVM.listOfHealthGuide[index].url??"",
-                                  title: healthGuidesVM.listOfHealthGuide[index].title??"",
-                                ), type: PageTransitionType.fade));
+                            String? isPdf = healthGuidesVM.listOfHealthGuide[index].url?.substring(
+                                healthGuidesVM.listOfHealthGuide[index].url!.length - 3);
+                            print(healthGuidesVM.listOfHealthGuide[index].url);
+                            print(isPdf?.toUpperCase());
+                            if(isPdf?.toUpperCase() == "PDF"){
+                              launchURL(url: healthGuidesVM.listOfHealthGuide[index].url!);
+                            }else{
+                              Navigator.push(context, PageTransition(
+                                  child: InAppBrowser(
+                                    url: healthGuidesVM.listOfHealthGuide[index].url??"",
+                                    title: healthGuidesVM.listOfHealthGuide[index].title??"",
+                                  ), type: PageTransitionType.fade));
+                            }
+
                           },
                           child: Container(
                             padding: const EdgeInsets.symmetric(

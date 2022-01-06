@@ -22,7 +22,7 @@ class TabAndCalender extends HookWidget {
 
     useEffect(
           () {
-        tabAndCalender.CalendarFormatMonth();
+        tabAndCalender.CalendarFormatMonth(isDateSet: false);
         Future.microtask(() async {});
         return () {
           // Dispose Objects here

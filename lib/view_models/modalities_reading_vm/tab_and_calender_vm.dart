@@ -65,11 +65,15 @@ class TabAndCalenderVM extends ChangeNotifier{
     }
 
   }
-  CalendarFormatMonth(){
+  CalendarFormatMonth({bool isDateSet = true}){
     calendarFormat = CalendarFormat.month;
     dayHeight = 0;
     headerDisable = true;
     daysOfWeekVisible = false;
+    if(isDateSet){
+      startDate = DateTime.now().subtract(Duration(days: 30));
+      endDate = DateTime.now();
+    }
     newDateRange.add(CalenderDate(startDate: startDate,endDate: endDate));
   }
   CalendarFormatWeek(){
@@ -80,8 +84,8 @@ class TabAndCalenderVM extends ChangeNotifier{
 
     startDate = DateTime.now().subtract(Duration(days: 7));
     endDate = DateTime.now();
-    selectedDay1 = startDate;
-    focusedDay1 = startDate;
+    selectedDay1 = DateTime.now();
+    focusedDay1 = DateTime.now();
     newDateRange.add(CalenderDate(startDate: startDate,endDate: endDate));
     // getBGReading();
   }

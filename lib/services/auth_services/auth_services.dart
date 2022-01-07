@@ -45,6 +45,32 @@ class AuthServices{
         print(e.toString());
     }
   }
+  Future<dynamic> changePassword({String? userName, String? password, String? confirmPassword,
+    String? pinCode,}) async {
+    var body = {
+      "Email": userName??"",
+      "password": password??"",
+      "confirmPassword": confirmPassword??"",
+      "code": pinCode??"",
+    };
+    try{
+      final dio = _ref!.read(dioServicesProvider);
+      Response response = await dio.dio!.post(ApiStrings.resetPassword,
+        data: body,
+      );
+      if(response.statusCode == 200){
+        return true;
+
+      }else{
+        SnackBarMessage(message: response.data);
+        return false;
+      }
+    }
+    catch(e){
+        print(e.toString());
+        return false;
+    }
+  }
 
   Future<dynamic> isSmsOrEmailVerified({required String userName}) async {
 
@@ -98,7 +124,10 @@ class AuthServices{
       );
       if(response.statusCode == 200){
         SnackBarMessage(message: response.data?.toString()??"",error: false);
-        return true;
+        if(response.data is bool){
+          return response.data;
+        }else{return true;}
+
       }else{
         SnackBarMessage(message: response.data?.toString()??"");
         return false;
@@ -106,6 +135,7 @@ class AuthServices{
     }
     catch(e){
         print(e.toString());
+        return false;
     }
   }
 

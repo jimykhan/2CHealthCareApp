@@ -13,6 +13,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:twochealthcare/common_widgets/aler_dialogue.dart';
 import 'package:twochealthcare/common_widgets/circular_image.dart';
 import 'package:twochealthcare/common_widgets/menu_text_style.dart';
+import 'package:twochealthcare/constants/strings.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
 import 'package:twochealthcare/services/firebase_service.dart';
@@ -21,6 +22,7 @@ import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/styles.dart';
 import 'package:twochealthcare/view_models/application_package_vm.dart';
 import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
+import 'package:twochealthcare/views/health_guides/health_guides.dart';
 import 'package:twochealthcare/views/home/home.dart';
 import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:twochealthcare/views/home/profile.dart';
@@ -212,8 +214,8 @@ class CustomDrawer extends HookWidget {
                                 ),
                                 InkWell(
                                   onTap: () {
-                                    Navigator.pop(context);
-                                    CustomAlertDialog(message: "Coming Soon...");
+                                    Navigator.push(context,
+                                        PageTransition(child: HealthGuides(), type: PageTransitionType.fade));
                                   },
                                   child: Container(
                                     padding: EdgeInsets.symmetric(
@@ -365,7 +367,7 @@ class CustomDrawer extends HookWidget {
                       ),
                       (loginVM.logedInUserModel?.lastLogedIn == "" || loginVM.logedInUserModel?.lastLogedIn == null)
                           ? Container() :MenuTextStyle(
-                        text: Jiffy(loginVM.logedInUserModel?.lastLogedIn ?? "").format("dd MMM yy, h:mm a") ,
+                        text: Jiffy(loginVM.logedInUserModel?.lastLogedIn ?? "").format(Strings.dateAndTimeFormat) ,
                         fontSize: ApplicationSizing.fontScale(10),
                         isPadding: false,
                         color: appColor,

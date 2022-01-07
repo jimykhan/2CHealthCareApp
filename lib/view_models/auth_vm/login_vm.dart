@@ -22,11 +22,14 @@ class LoginVM extends ChangeNotifier{
   bool loading = false;
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
   bool isEmailFieldValid = true;
   String emailErrorText = "";
   bool isPasswordFieldValid = true;
   bool obscureText = true;
   String passwordErrorText = "";
+  String confirmPasswordErrorText = "";
+  bool isConfirmPasswordFieldValid = true;
   ProviderReference? _ref;
   AuthServices? authService;
   FirebaseService? firebaseService;
@@ -51,13 +54,16 @@ class LoginVM extends ChangeNotifier{
   onChangePassword(String val){
     fieldValidation(val,fieldType: 1);
   }
+  onChangeConfirmPassword(String val){
+    fieldValidation(val,fieldType: 3);
+  }
 
   setLoading(bool isLoading){
     loading = isLoading;
     notifyListeners();
   }
 
-  Future<bool> userLogin({String? userName, String? password, String? rememberMe}) async {
+  Future<bool> userLogin({String? userName, String? password, bool? rememberMe}) async {
     setLoading(true);
     var res = await authService?.userLogin(userName: emailController.text,
         password: passwordController.text);
@@ -99,12 +105,12 @@ class LoginVM extends ChangeNotifier{
     currentUser = await authService?.getCurrentUserFromSharedPref();
   }
 
-
-
   bool fieldValidation(String val, {int fieldType = 0}){
     /// fieldType 0 for userName validator
     /// fieldType 1 for password validator
     /// fieldType 2 for both validator
+    /// fieldType 3 for confirm password validator
+    /// fieldType 4 for match password comfirm password validator
     if(fieldType == 0){
       bool emailValid = LoginValidator.validUserName(val);
       if(!emailValid){
@@ -131,8 +137,62 @@ class LoginVM extends ChangeNotifier{
       notifyListeners();
       return isPasswordFieldValid;}
     else if(fieldType == 2){return false;}
+    else if(fieldType == 3){
+      bool emailValid = LoginValidator.validPassword(val);
+      if(!emailValid){
+        confirmPasswordErrorText = "Please enter your confirm password";
+        isConfirmPasswordFieldValid = false;
+      }
+      else{
+        confirmPasswordErrorText = "";
+        isConfirmPasswordFieldValid = true;
+      }
+      notifyListeners();
+      return isConfirmPasswordFieldValid;}
+    else if(fieldType == 4){
+      String? password = passwordController.text;
+      String? confirmPassword = confirmPasswordController.text;
+      fieldValidation(password,fieldType: 1);
+      fieldValidation(confirmPassword,fieldType: 3);
+      if(password != confirmPassword){
+        confirmPasswordErrorText = "Please enter your confirm password";
+        isConfirmPasswordFieldValid = false;
+        notifyListeners();
+        return isConfirmPasswordFieldValid;
+      }
+      else{
+        if((password == "" || password == null) || (confirmPassword == "" || confirmPassword == null)){
+          confirmPasswordErrorText = "";
+          isConfirmPasswordFieldValid = false;
+          notifyListeners();
+          return isConfirmPasswordFieldValid;
+        }
+        else{
+          confirmPasswordErrorText = "";
+          isConfirmPasswordFieldValid = true;
+          notifyListeners();
+          return isConfirmPasswordFieldValid;
+        }
+      }
+
+    }
+
     else{return false;}
 
+  }
+
+  changePassword({String? userName,String? password,String? confirmPassword,String? pinCode,})async{
+    setLoading(true);
+    var res = await authService?.changePassword(userName: userName,password: passwordController.text,
+        confirmPassword:confirmPasswordController.text,
+    pinCode: pinCode);
+    if(res){
+      userLogin(userName: userName,password: password,rememberMe: true);
+      setLoading(false);
+      return true;
+    }
+    setLoading(false);
+    return false;
   }
 
 

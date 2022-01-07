@@ -10,6 +10,7 @@ import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
 import 'package:twochealthcare/views/auths/otp_verification.dart';
 import 'package:sms_autofill/sms_autofill.dart';
+import 'package:twochealthcare/views/auths/reset_password.dart';
 import 'package:twochealthcare/views/home/profile.dart';
 
 class ForgetPasswordVM extends ChangeNotifier{
@@ -92,13 +93,13 @@ class ForgetPasswordVM extends ChangeNotifier{
     var res = await authService?.verifyResetPasswordCode(userName: userName,pinCode: pinCode);
     if(res is bool){
       if(res){
+        Navigator.push(applicationContext!.currentContext!, PageTransition(child: ResetPassword(userName: userName??"",pinCode: pinCode??"",), type: PageTransitionType.fade));
         SetVerifyOtpLoadingState(false);
       }else{
         SetVerifyOtpLoadingState(false);
       }
     }
     SetVerifyOtpLoadingState(false);
-
   }
 
 

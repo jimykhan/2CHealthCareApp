@@ -179,14 +179,10 @@ class forgetPassword extends HookWidget {
                               onTap: forgetPasswordVM.verificationWithPhone || forgetPasswordVM.verificationWithEmail?
                                   () async {
                                 await forgetPasswordVM.sendVerificationCode(userName: userName ,sendBy: forgetPasswordVM.verificationWithPhone? "phone":"email");
-                                if(forgetPasswordVM.verificationWithEmail){
-                                  Navigator.pushReplacement(applicationContext!.currentContext!, PageTransition(child: Login(), type: PageTransitionType.fade));
-                                }else{
-                                  Navigator.push(applicationContext!.currentContext!, PageTransition(child: OtpVerification(
-                                    userName: userName,
-                                    sendBy: forgetPasswordVM.verificationWithPhone? "phone":"email",
-                                  ), type: PageTransitionType.fade));
-                                }
+                                Navigator.push(applicationContext!.currentContext!, PageTransition(child: OtpVerification(
+                                  userName: userName,
+                                  sendBy: forgetPasswordVM.verificationWithPhone? "phone":"email",
+                                ), type: PageTransitionType.fade));
 
                               } :(){print("none");},
                             ),

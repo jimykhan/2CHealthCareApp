@@ -24,7 +24,9 @@ import 'package:twochealthcare/view_models/profile_vm.dart';
 import 'package:twochealthcare/views/home/home.dart';
 
 class ResetPassword extends HookWidget {
-  const ResetPassword({Key? key}) : super(key: key);
+  String userName;
+  String pinCode;
+   ResetPassword({required this.userName,required this.pinCode,Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +76,7 @@ class ResetPassword extends HookWidget {
     );
   }
 
-  _loginform(BuildContext context, {LoginVM? loginVM,FirebaseService? firebaseService,
+  _loginform(BuildContext context, {required LoginVM loginVM,FirebaseService? firebaseService,
     ApplicationPackageVM? applicationPackageVM,
     SignalRServices? signalRServices,
     required ApplicationRouteService applicationRouteService,
@@ -120,43 +122,10 @@ class ResetPassword extends HookWidget {
               Container(
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
                 child: CustomTextField(
-                  onchange: loginVM!.onChangeEmail,
-                  textEditingController: loginVM.emailController,
-                  textInputType: TextInputType.emailAddress,
-                  hints: "Password",
-                  color1: loginVM.isEmailFieldValid ? disableColor : errorColor,
-                  onSubmit: (val) {
-                    loginVM.fieldValidation(val, fieldType: 0);
-                  },
-                ),
-              ),
-              loginVM.isEmailFieldValid
-                  ? Container()
-                  : ErrorText(text: loginVM.emailErrorText),
-            ],
-          ),
-          ApplicationSizing.verticalSpacer(),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                child: RichText(
-                  text: TextSpan(
-                    text: "Confirm Password",
-                    style: Styles.PoppinsBold(
-                        fontSize: ApplicationSizing.fontScale(12),
-                        color: Colors.black),
-                  ),
-                ),
-              ),
-              ApplicationSizing.verticalSpacer(n: 5),
-              Container(
-                padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
-                child: CustomTextField(
                   onchange: loginVM.onChangePassword,
                   textEditingController: loginVM.passwordController,
                   textInputType: TextInputType.text,
-                  hints: "Confirm Password",
+                  hints: "Password",
                   color1:
                   loginVM.isPasswordFieldValid ? disableColor : errorColor,
                   onSubmit: (val) {
@@ -189,6 +158,60 @@ class ResetPassword extends HookWidget {
                   : ErrorText(text: loginVM.passwordErrorText),
             ],
           ),
+          ApplicationSizing.verticalSpacer(),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                child: RichText(
+                  text: TextSpan(
+                    text: "Confirm Password",
+                    style: Styles.PoppinsBold(
+                        fontSize: ApplicationSizing.fontScale(12),
+                        color: Colors.black),
+                  ),
+                ),
+              ),
+              ApplicationSizing.verticalSpacer(n: 5),
+              Container(
+                padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
+                child: CustomTextField(
+                  onchange: loginVM.onChangeConfirmPassword,
+                  textEditingController: loginVM.confirmPasswordController,
+                  textInputType: TextInputType.text,
+                  hints: "Confirm Password",
+                  color1:
+                  loginVM.isConfirmPasswordFieldValid ? disableColor : errorColor,
+                  onSubmit: (val) {
+                    loginVM.fieldValidation(val, fieldType: 3);
+                  },
+                  // trailingIcon: ,
+                  obscureText: loginVM.obscureText,
+                  trailingIcon: InkWell(
+                    onTap: () {
+                      loginVM.obscureText = !loginVM.obscureText;
+                      loginVM.notifyListeners();
+                    },
+                    child: Container(
+                      child: !loginVM.obscureText
+                          ? Icon(
+                        IcoFontIcons.eye,
+                        color: Colors.green.shade600,
+                        // color: Colors.grey.shade500,
+                      )
+                          : Icon(
+                        IcoFontIcons.eyeBlocked,
+                        color: Colors.grey.shade500,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              loginVM.isConfirmPasswordFieldValid
+                  ? Container()
+                  : ErrorText(text: loginVM.confirmPasswordErrorText),
+            ],
+          ),
           SizedBox(
             height: ApplicationSizing.convert(12),
           ),
@@ -204,14 +227,12 @@ class ResetPassword extends HookWidget {
             onTap: () async {
               // dd();
               // loginVM.setLoading(true);
-              bool checkMail = loginVM.fieldValidation(
-                  loginVM.emailController.text,
-                  fieldType: 0);
               bool checkPassword = loginVM.fieldValidation(
-                  loginVM.passwordController.text,
-                  fieldType: 1);
-              if (checkMail && checkPassword) {
-                bool isValid = await loginVM.userLogin();
+                  loginVM.emailController.text,
+                  fieldType: 4);
+
+              if (checkPassword) {
+                bool isValid = await loginVM.changePassword(userName: userName,pinCode: pinCode);
                 if (isValid) {
                   onLaunchActivityService.syncLastApplicationUseDateAndTime();
                   applicationRouteService.addAndRemoveScreen(screenName: "Home");

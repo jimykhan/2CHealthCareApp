@@ -134,17 +134,13 @@ class OtpVerification extends HookWidget {
                                     print("Completed${v} ${forgetPasswordVM.otpTextEditingController?.text??""}");
                                     if(isForgetPassword){
                                       forgetPasswordVM.verifyResetPasswordCode(userName: userName,pinCode: v.toString());
-                                      Navigator.push(context, PageTransition(child: ResetPassword(), type: PageTransitionType.fade));
                                     }
                                     else{
                                       forgetPasswordVM.verifyVerificationCodeToPhone(userName: userName,pinCode: v.toString());
-
                                     }
-
                                   },
                                   onChanged: (value) {
                                     forgetPasswordVM.setOtpLength(value.length);
-                                    print(value);
                                   },
                                   beforeTextPaste: (text) {
                                     print("Allowing to paste $text");

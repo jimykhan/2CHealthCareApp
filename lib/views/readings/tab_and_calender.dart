@@ -5,6 +5,7 @@ import 'package:jiffy/jiffy.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:twochealthcare/common_widgets/calendar.dart';
 import 'package:twochealthcare/common_widgets/tap_bar.dart';
+import 'package:twochealthcare/constants/strings.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/application_route_service.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
@@ -70,7 +71,7 @@ class TabAndCalender extends HookWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(Jiffy(tabAndCalender.startDate).format("dd MMM yy").toString(),
+                        Text(Jiffy(tabAndCalender.startDate).format(Strings.dateFormat).toString(),
                         style: Styles.PoppinsRegular(
                           fontSize: ApplicationSizing.fontScale(12),
                           fontWeight: FontWeight.w700
@@ -82,7 +83,7 @@ class TabAndCalender extends HookWidget {
                                 fontSize: ApplicationSizing.fontScale(12),
                                 fontWeight: FontWeight.w700
                             ))),
-                        Text(Jiffy(tabAndCalender.endDate).format("dd MMM yy").toString(),style: Styles.PoppinsRegular(
+                        Text(Jiffy(tabAndCalender.endDate).format(Strings.dateFormat).toString(),style: Styles.PoppinsRegular(
                             fontSize: ApplicationSizing.fontScale(12),
                             fontWeight: FontWeight.w700
                         )),
@@ -102,7 +103,7 @@ class TabAndCalender extends HookWidget {
             child: Container(
               child: Row(
                 children: [
-                  Text(Jiffy(tabAndCalender.startDate).format("dd MMM yy").toString(),
+                  Text(Jiffy(tabAndCalender.startDate).format(Strings.dateFormat).toString(),
                     style: Styles.PoppinsRegular(
                         fontSize: ApplicationSizing.fontScale(12),
                         fontWeight: FontWeight.w700
@@ -114,7 +115,7 @@ class TabAndCalender extends HookWidget {
                           fontSize: ApplicationSizing.fontScale(12),
                           fontWeight: FontWeight.w700
                       ))),
-                  Text(Jiffy(tabAndCalender.endDate).format("dd MMM yy").toString(),style: Styles.PoppinsRegular(
+                  Text(Jiffy(tabAndCalender.endDate).format(Strings.dateFormat).toString(),style: Styles.PoppinsRegular(
                       fontSize: ApplicationSizing.fontScale(12),
                       fontWeight: FontWeight.w700
                   )),

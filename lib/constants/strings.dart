@@ -1,6 +1,8 @@
 class Strings {
   static const String noConnection = 'no_connection';
   static const String retry = 'Retry';
+  static const String dateFormat = "dd MMM yy";
+  static const String dateAndTimeFormat = "dd MMM yy, h:mm a";
   // Generic strings
   static const String ok = 'OK';
   static const String cancel = 'Cancel';

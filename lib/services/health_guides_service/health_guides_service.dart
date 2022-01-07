@@ -7,6 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:signalr_core/signalr_core.dart';
 import 'package:twochealthcare/constants/api_strings.dart';
+import 'package:twochealthcare/constants/strings.dart';
 import 'package:twochealthcare/models/chat_model/ChatMessage.dart';
 import 'package:twochealthcare/models/health_guide_models/health_guide_model.dart';
 import 'package:twochealthcare/providers/providers.dart';
@@ -40,7 +41,7 @@ class HealthGuidesService {
         healthGuides.forEach((element) {
           if(element.createdOn != null){
             convertLocalToUtc(element.createdOn!.replaceAll("Z", ""));
-            element.createdOn = Jiffy(element.createdOn).format("dd MMM yy, h:mm a");
+            element.createdOn = Jiffy(element.createdOn).format(Strings.dateAndTimeFormat);
           }
         });
     }

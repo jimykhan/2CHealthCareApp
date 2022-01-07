@@ -73,27 +73,6 @@ class BGReading extends HookWidget {
             Column(
               children: [
                 ApplicationSizing.verticalSpacer(),
-                // TapBar(
-                //   selectedIndx: bgReadingVM.timePeriodSelect,
-                //   ontap: (val) {
-                //     bgReadingVM.changeTimePeriodSelectIndex(val);
-                //   },
-                // ),
-                // CustomCalendar(
-                //   selectedDayPredict: bgReadingVM.selectDayPredict,
-                //   onDaySelect: bgReadingVM.onDaySelected,
-                //   formatChange: bgReadingVM.onFormatChanged,
-                //   onRangeSelect: bgReadingVM.selectRange,
-                //   calendarFormat: bgReadingVM.calendarFormat,
-                //   headerDisable: bgReadingVM.headerDisable,
-                //   dayHeight: bgReadingVM.dayHeight,
-                //   daysOfWeekVisible: bgReadingVM.daysOfWeekVisible,
-                //   onPageChanged: bgReadingVM.onPageChanged,
-                //   selectedDay1: bgReadingVM.selectedDay1,
-                //   focusedDay1: bgReadingVM.focusedDay1,
-                //   rangeEnd: bgReadingVM.rangeEnd,
-                //   rangeStart: bgReadingVM.rangeStart,
-                // ),
                 TabAndCalender(),
                 bgReadingVM.bPReadings.length == 0
                     ? NoData()

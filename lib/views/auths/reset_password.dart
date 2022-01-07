@@ -57,7 +57,8 @@ class ResetPassword extends HookWidget {
               Column(
                 children: [
                   Container(
-                    child: Image.asset("assets/icons/loginBg.png"),
+                    child: Image.asset("assets/icons/loginBg.png",
+                    ),
                   ),
                   _loginform
                     (context, loginVM: loginVM,firebaseService: firebaseService,applicationPackageVM: applicationPackageVM,

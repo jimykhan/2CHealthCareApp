@@ -166,27 +166,49 @@ class forgetPassword extends HookWidget {
                               ],
                             ),
                           ),
-                          Container(
-                            child: forgetPasswordVM.verifyOtpLoading
-                                ? loader()
-                                : FilledButton(
-                              // w: ApplicationSizing.convertWidth(120),
-                              // h: ApplicationSizing.convert(35),
-                              txt: "Submit".toUpperCase(),
-                              color1: forgetPasswordVM.verificationWithPhone || forgetPasswordVM.verificationWithEmail? appColor : appColor.withOpacity(0.5),
-                              borderColor: appColor,
-                              borderwidth: 0,
-                              onTap: forgetPasswordVM.verificationWithPhone || forgetPasswordVM.verificationWithEmail?
-                                  () async {
-                                await forgetPasswordVM.sendVerificationCode(userName: userName ,sendBy: forgetPasswordVM.verificationWithPhone? "phone":"email");
-                                Navigator.push(applicationContext!.currentContext!, PageTransition(child: OtpVerification(
-                                  userName: userName,
-                                  sendBy: forgetPasswordVM.verificationWithPhone? "phone":"email",
-                                ), type: PageTransitionType.fade));
+                          Row(
+                            children: [
+                              Expanded(
+                                flex: 1,
+                                child: FilledButton(
+                                  // w: ApplicationSizing.convertWidth(120),
+                                  // h: ApplicationSizing.convert(35),
+                                  txt: "go back".toUpperCase(),
+                                  color1: Colors.red,
+                                  borderColor: Colors.red,
+                                  borderwidth: 0,
+                                  onTap: (){
+                                    Navigator.pop(context);
+                                  }
+                                ),
+                              ),
+                              SizedBox(width: 10,),
+                              Expanded(
+                                flex: 1,
+                                child: Container(
+                                  child: forgetPasswordVM.verifyOtpLoading
+                                      ? loader()
+                                      : FilledButton(
+                                    // w: ApplicationSizing.convertWidth(120),
+                                    // h: ApplicationSizing.convert(35),
+                                    txt: "Submit".toUpperCase(),
+                                    color1: forgetPasswordVM.verificationWithPhone || forgetPasswordVM.verificationWithEmail? appColor : appColor.withOpacity(0.5),
+                                    borderColor: appColor,
+                                    borderwidth: 0,
+                                    onTap: forgetPasswordVM.verificationWithPhone || forgetPasswordVM.verificationWithEmail?
+                                        () async {
+                                      await forgetPasswordVM.sendVerificationCode(userName: userName ,sendBy: forgetPasswordVM.verificationWithPhone? "phone":"email");
+                                      Navigator.push(applicationContext!.currentContext!, PageTransition(child: OtpVerification(
+                                        userName: userName,
+                                        sendBy: forgetPasswordVM.verificationWithPhone? "phone":"email",
+                                      ), type: PageTransitionType.fade));
 
-                              } :(){print("none");},
-                            ),
-                          ),
+                                    } :(){print("none");},
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
                         ],
                       ),
                     ),

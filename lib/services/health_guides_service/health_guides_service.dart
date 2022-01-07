@@ -33,8 +33,9 @@ class HealthGuidesService {
 
   Future<List<HealthGuideModel>> getAllHealthGuides() async{
     List<HealthGuideModel> healthGuides = [];
-    var response = await dio!.dio!.get(ApiStrings.healthGuideLines);
-    if(response.statusCode == 200){
+    try{
+      var response = await dio!.dio!.get(ApiStrings.healthGuideLines);
+      if(response.statusCode == 200){
         response.data.forEach((element) {
           healthGuides.add(HealthGuideModel.fromJson(element));
         });
@@ -44,11 +45,12 @@ class HealthGuidesService {
             element.createdOn = Jiffy(element.createdOn).format(Strings.dateAndTimeFormat);
           }
         });
+      }
+      return healthGuides;
     }
-    else{
-
+    catch(e){
+      return healthGuides;
     }
-    return healthGuides;
   }
 
 }

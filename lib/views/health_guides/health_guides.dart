@@ -65,7 +65,7 @@ class HealthGuides extends HookWidget {
               children: [
                 ApplicationSizing.verticalSpacer(n: 20),
                 (!healthGuidesVM.loadingHealthGuides && healthGuidesVM.listOfHealthGuide.length ==0)
-                    ? NoData()
+                    ? NoData(paddingFormTop: 100,)
                     :
                 Container(
                   child: ListView.separated(

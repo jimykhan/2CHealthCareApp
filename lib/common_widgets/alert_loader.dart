@@ -27,15 +27,14 @@ class AlertLoader extends StatelessWidget {
                 color: Colors.grey.withOpacity(0.5),
               )
             ]),
-        padding: EdgeInsets.symmetric(
-            horizontal: ApplicationSizing.horizontalMargin()),
-        height: ApplicationSizing.convert(70),
+        width: 80,
+        height: 80,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CupertinoActivityIndicator(
-              radius: ApplicationSizing.convert(12),
+              radius: 12,
             ),
             ApplicationSizing.verticalSpacer(),
             Text(

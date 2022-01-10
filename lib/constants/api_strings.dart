@@ -25,7 +25,7 @@ class ApiStrings {
   static const String forgotPassword = baseUrl + "/api/Account/ForgotPassword";
   static const String verifyResetPasswordCode =
       baseUrl + "/api/Account/VerifyResetPasswordCode";
-  static const String resetPassword = baseUrl + "/api/Account/ResetPassword";
+  static const String resetPassword = baseUrl + "/Account/ResetPassword";
   static const String getBPDeviceDataByPatientId =
       baseUrl + "/api/HealthCareDevices/GetBPDeviceDataByPatientId";
   static const String getPatientById =

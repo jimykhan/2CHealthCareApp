@@ -54,7 +54,7 @@ class Home extends HookWidget {
     {
       "icon": "assets/icons/home/health-guide-icon.svg",
       "title": "Health Guides",
-      "hints": "Coming Soon...",
+      "hints": "",
       "color": Color(0XffFFA654),
       "bordercolor": Color(0Xff4eaf4840),
     },

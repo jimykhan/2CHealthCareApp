@@ -123,13 +123,20 @@ class AuthServices{
         data: resquestBody
       );
       if(response.statusCode == 200){
-        SnackBarMessage(message: response.data?.toString()??"",error: false);
+
         if(response.data is bool){
-          return response.data;
-        }else{return true;}
+          if(response.data) {
+            // SnackBarMessage(message: "Verification code sent",error: false);
+          }
+          else{
+            SnackBarMessage(message: "Invalid verification code");
+            return response.data;
+          }
+        }
+        else{return true;}
 
       }else{
-        SnackBarMessage(message: response.data?.toString()??"");
+        SnackBarMessage(message: "Invalid verification code");
         return false;
       }
     }

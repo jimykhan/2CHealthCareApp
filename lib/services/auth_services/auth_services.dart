@@ -48,7 +48,7 @@ class AuthServices{
   Future<dynamic> changePassword({String? userName, String? password, String? confirmPassword,
     String? pinCode,}) async {
     var body = {
-      "Email": userName??"",
+      "userName": userName??"",
       "password": password??"",
       "confirmPassword": confirmPassword??"",
       "code": pinCode??"",

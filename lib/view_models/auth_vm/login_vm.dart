@@ -187,9 +187,8 @@ class LoginVM extends ChangeNotifier{
         confirmPassword:confirmPasswordController.text,
     pinCode: pinCode);
     if(res){
-      userLogin(userName: userName,password: password,rememberMe: true);
       setLoading(false);
-      return true;
+      return userLogin(userName: userName,password: password,rememberMe: true);
     }
     setLoading(false);
     return false;

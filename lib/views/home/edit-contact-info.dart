@@ -170,7 +170,7 @@ class EditContactInfo extends HookWidget {
                 Container(
                   padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
                   child: CustomTextField(
-                    // inputFormatter: [MaskFormatter("000-000-0000")],
+                    inputFormatter: [MaskFormatter("000-000-0000")],
                     onchange: profileVm.onPrimaryPhoneChange,
                     textEditingController: profileVm.primaryPhoneEditController,
                     textInputType: TextInputType.phone,
@@ -258,38 +258,6 @@ class EditContactInfo extends HookWidget {
                   ),
                 ),
               ),
-            ],
-          ),
-          ApplicationSizing.verticalSpacer(),
-          Row(
-            children: [
-              Expanded(
-                  child: Container(
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        InkWell(
-                            onTap: profileVm.onClickCheckButton,
-                            child: CustomCheckButton(
-                              isChecked: profileVm.isMailingSame,
-                            )),
-                        ApplicationSizing.horizontalSpacer(n: 3),
-                        Expanded(
-                          child: Text(
-                            "Mailing address is same",
-                            style: Styles.PoppinsRegular(
-                                fontSize: ApplicationSizing.fontScale(12),
-                                color: appColor,
-                              fontWeight: FontWeight.w700
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            softWrap: false,
-                          ),
-                        )
-                      ],
-                    ),
-                  )),
             ],
           ),
           Container(
@@ -501,7 +469,38 @@ class EditContactInfo extends HookWidget {
               ),
             ],
           ),
-
+          ApplicationSizing.verticalSpacer(),
+          Row(
+            children: [
+              Expanded(
+                  child: Container(
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        InkWell(
+                            onTap: profileVm.onClickCheckButton,
+                            child: CustomCheckButton(
+                              isChecked: profileVm.isMailingSame,
+                            )),
+                        ApplicationSizing.horizontalSpacer(n: 5),
+                        Expanded(
+                          child: Text(
+                            "Mailing address is same",
+                            style: Styles.PoppinsRegular(
+                                fontSize: ApplicationSizing.fontScale(12),
+                                color: appColor,
+                                fontWeight: FontWeight.w700
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            softWrap: false,
+                          ),
+                        )
+                      ],
+                    ),
+                  )),
+            ],
+          ),
           Container(
             margin: EdgeInsets.only(top: ApplicationSizing.convert(10)),
             child: Column(

@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:hooks_riverpod/all.dart';
 import 'package:twochealthcare/constants/api_strings.dart';
@@ -32,6 +33,7 @@ class OnLaunchActivityService{
       "userName": loginVM?.currentUser?.fullName??"",
       "lastLogedIn": DateTime.now().toString()
     });
-    dio!.dio!.post(ApiStrings.setLastAppLaunchDate+"/$patientId");
+    Response res = await dio!.dio!.post(ApiStrings.setLastAppLaunchDate+"/$patientId");
+    print(res);
   }
 }

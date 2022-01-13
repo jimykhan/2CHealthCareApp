@@ -280,6 +280,7 @@ class ChatScreen extends HookWidget {
                     // constraints: BoxConstraints(),
                       // height: ApplicationSizing.convert(70),
                       child: ChatInputField(),
+                    padding: EdgeInsets.only(bottom: Platform.isIOS ? 15 : 0),
                   ),
                 ],
               ),

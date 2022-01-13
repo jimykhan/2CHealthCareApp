@@ -12,6 +12,7 @@ import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
 import 'package:twochealthcare/services/profile_service.dart';
 import 'package:twochealthcare/services/shared_pref_services.dart';
+import 'package:twochealthcare/util/conversion.dart';
 import 'package:twochealthcare/views/home/profile.dart';
 
 class ProfileVm extends ChangeNotifier{
@@ -186,8 +187,8 @@ class ProfileVm extends ChangeNotifier{
     getStateList();
   }
   setExistingValue(){
-    primaryPhoneEditController?.text = currentUserInfo?.homePhone??"";
-    secondaryPhoneEditController?.text = currentUserInfo?.personNumber??"";
+    primaryPhoneEditController?.text = phoneNumberFormatter(phoneNum: currentUserInfo?.homePhone??"");
+    secondaryPhoneEditController?.text = phoneNumberFormatter(phoneNum:currentUserInfo?.personNumber??"");
     currentAddressEditController?.text = currentUserInfo?.currentAddress??"";
     cACityEditController?.text = currentUserInfo?.city??"";
     cAStateEditController?.text = currentUserInfo?.state??"";
@@ -229,8 +230,8 @@ class ProfileVm extends ChangeNotifier{
     try{
       int userId = await _authService!.getCurrentUserId();
       Map data = {
-        "primaryPhoneNo": primaryPhoneEditController?.text??"",
-        "secondaryContactNo": secondaryPhoneEditController?.text??"",
+        "primaryPhoneNo": primaryPhoneEditController?.text.replaceAll("-", "")??"",
+        "secondaryContactNo": secondaryPhoneEditController?.text.replaceAll("-", "")??"",
         "currentAddress": currentAddressEditController?.text??"",
         "mailingAddress": mailingAddressEditController?.text??"",
         "city": mACityEditController?.text??"",
@@ -299,9 +300,9 @@ class ProfileVm extends ChangeNotifier{
     emergencyNameEditController = TextEditingController();
     emergencyPrimaryPhoneEditController = TextEditingController();
     emergencySecondaryPhoneEditController = TextEditingController();
-    emergencyNameEditController?.text = currentUserInfo?.emergencyContactName??"";
-    emergencyPrimaryPhoneEditController?.text = currentUserInfo?.emergencyContactPrimaryPhoneNo??"";
-    emergencySecondaryPhoneEditController?.text = currentUserInfo?.emergencyContactSecondaryPhoneNo??"";
+    emergencyNameEditController?.text = phoneNumberFormatter(phoneNum:currentUserInfo?.emergencyContactName??"");
+    emergencyPrimaryPhoneEditController?.text = phoneNumberFormatter(phoneNum:currentUserInfo?.emergencyContactPrimaryPhoneNo??"");
+    emergencySecondaryPhoneEditController?.text = phoneNumberFormatter(phoneNum:currentUserInfo?.emergencyContactSecondaryPhoneNo??"");
     Strings.relationshipList.forEach((element) {
       if(element == currentUserInfo?.emergencyContactRelationship){
         dropdownValue = currentUserInfo?.emergencyContactRelationship??"";
@@ -314,8 +315,8 @@ class ProfileVm extends ChangeNotifier{
     try{
       int userId = await _authService!.getCurrentUserId();
       Map data = {
-        "primaryPhoneNo": currentUserInfo?.homePhone??"",
-        "secondaryContactNo": currentUserInfo?.emergencyContactSecondaryPhoneNo??"",
+        "primaryPhoneNo": currentUserInfo?.homePhone?.replaceAll("-", "")??"",
+        "secondaryContactNo": currentUserInfo?.emergencyContactSecondaryPhoneNo?.replaceAll("-", "")??"",
         "currentAddress": currentUserInfo?.currentAddress??"",
         "mailingAddress": currentUserInfo?.mailingAddress??"",
         "city": currentUserInfo?.city??"",
@@ -323,8 +324,8 @@ class ProfileVm extends ChangeNotifier{
         "zip": currentUserInfo?.zip??"",
         "emergencyContactName": emergencyNameEditController?.text??"",
         "emergencyContactRelationship": dropdownValue,
-        "emergencyContactPrimaryPhoneNo": emergencyPrimaryPhoneEditController?.text??"",
-        "emergencyContactSecondaryPhoneNo": emergencySecondaryPhoneEditController?.text??"",
+        "emergencyContactPrimaryPhoneNo": emergencyPrimaryPhoneEditController?.text.replaceAll("-", "")??"",
+        "emergencyContactSecondaryPhoneNo": emergencySecondaryPhoneEditController?.text.replaceAll("-", "")??"",
         "patientId": userId
       };
       setLoading(true);

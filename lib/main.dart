@@ -52,8 +52,8 @@ Future<void> main() async {
     // SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.top]);
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Colors.green,
-      //statusBarBrightness: Brightness.dark,
-      //statusBarIconBrightness: Brightness.light,
+      statusBarBrightness: Brightness.dark,
+      statusBarIconBrightness: Brightness.light,
     ));
     runApp(ProviderScope(child: MyApp()));
   }

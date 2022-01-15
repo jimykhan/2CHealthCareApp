@@ -300,7 +300,7 @@ class ProfileVm extends ChangeNotifier{
     emergencyNameEditController = TextEditingController();
     emergencyPrimaryPhoneEditController = TextEditingController();
     emergencySecondaryPhoneEditController = TextEditingController();
-    emergencyNameEditController?.text = phoneNumberFormatter(phoneNum:currentUserInfo?.emergencyContactName??"");
+    emergencyNameEditController?.text = currentUserInfo?.emergencyContactName??"";
     emergencyPrimaryPhoneEditController?.text = phoneNumberFormatter(phoneNum:currentUserInfo?.emergencyContactPrimaryPhoneNo??"");
     emergencySecondaryPhoneEditController?.text = phoneNumberFormatter(phoneNum:currentUserInfo?.emergencyContactSecondaryPhoneNo??"");
     Strings.relationshipList.forEach((element) {

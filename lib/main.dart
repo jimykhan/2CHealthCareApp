@@ -53,7 +53,7 @@ Future<void> main() async {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Colors.green,
       statusBarBrightness: Brightness.dark,
-      statusBarIconBrightness: Brightness.light,
+      statusBarIconBrightness: Brightness.dark,
     ));
     runApp(ProviderScope(child: MyApp()));
   }
@@ -74,7 +74,13 @@ class MyApp extends StatelessWidget {
       title: '2C Health Care',
         navigatorObservers: [BotToastNavigatorObserver()],
       theme: ThemeData(
-          primaryColor: Colors.green.shade50, primarySwatch: Colors.green),
+          primaryColor: Colors.green.shade50, primarySwatch: Colors.green,
+    appBarTheme: AppBarTheme(
+    backgroundColor: Colors.green,
+      systemOverlayStyle: SystemUiOverlayStyle.dark
+
+    )
+    ),
       home: const Splash(),
     );
   }

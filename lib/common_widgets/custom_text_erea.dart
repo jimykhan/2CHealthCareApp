@@ -56,7 +56,7 @@ class _CustomTextAreaState extends State<CustomTextArea> {
               children: [
                 Container(
                   // height: size.convert(context, 40),
-                  height: 100,
+                  height: 80,
                   child: Focus(
                     onFocusChange: (val) {
                       if (val) {

@@ -14,15 +14,17 @@ class IsChallengeChecked extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CustomCheckButton(isChecked: true,
             ontap: pressChecked,),
           ApplicationSizing.horizontalSpacer(),
-          Text(challengeName??"Transportation",style: Styles.PoppinsRegular(
-              fontSize: ApplicationSizing.fontScale(13),
-              color: fontGrayColor
-          ),)
+          Expanded(
+            child: Text(challengeName??"Transportation",style: Styles.PoppinsRegular(
+                fontSize: ApplicationSizing.fontScale(13),
+                color: fontGrayColor
+            ),),
+          )
         ],
       ),
     );

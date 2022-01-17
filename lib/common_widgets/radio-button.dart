@@ -42,7 +42,7 @@ class RadioButton extends StatelessWidget {
             ),
             SizedBox(width: ApplicationSizing.convertWidth(10),),
             TextLineThrough(
-              text: text??"no text",
+              text: text??"",
               disableText: disableText!,
               LineHight: LineHight,
               LineWidth: LineWidth,

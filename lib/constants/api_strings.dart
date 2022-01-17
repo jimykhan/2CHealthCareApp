@@ -4,7 +4,7 @@ class ApiStrings {
   static const String test = "https://api.healthforcehub.link";
   static const String staging = "https://apistaging.healthforcehub.link";
   static const String production = "https://api.2chealthsolutions.com";
-  static const String baseUrl = production;
+  static const String baseUrl = test;
   static const String signIn = baseUrl +"/api/Account/token2";
   static const String getPatientInfoById =
       baseUrl + "/api/Patients/GetPatientById";

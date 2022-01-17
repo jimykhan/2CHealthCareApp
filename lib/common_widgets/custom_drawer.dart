@@ -22,6 +22,7 @@ import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/styles.dart';
 import 'package:twochealthcare/view_models/application_package_vm.dart';
 import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
+import 'package:twochealthcare/views/care_plan/care_plan.dart';
 import 'package:twochealthcare/views/health_guides/health_guides.dart';
 import 'package:twochealthcare/views/home/home.dart';
 import 'package:fluentui_icons/fluentui_icons.dart';
@@ -259,6 +260,33 @@ class CustomDrawer extends HookWidget {
                                         ),
                                         MenuTextStyle(
                                           text: "My Rewards",
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.push(context,
+                                        PageTransition(child: CarePlan(), type: PageTransitionType.fade));
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: ApplicationSizing
+                                            .horizontalMargin(),
+                                        vertical: ApplicationSizing.convert(6)),
+                                    // color: Colors.pinkAccent,
+                                    child: Row(
+                                      // crossAxisAlignment: CrossAxisAlignment.end,
+                                      children: [
+                                        SvgPicture.asset(
+                                          "assets/icons/home/user-icon.svg",
+                                          color: appColor,
+                                          width: ApplicationSizing.convert(18),
+                                          height: ApplicationSizing.convert(18),
+                                        ),
+                                        MenuTextStyle(
+                                          text: "Care Plan",
                                         ),
                                       ],
                                     ),

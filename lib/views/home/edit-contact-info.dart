@@ -477,11 +477,10 @@ class EditContactInfo extends HookWidget {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        InkWell(
-                            onTap: profileVm.onClickCheckButton,
-                            child: CustomCheckButton(
+                         CustomCheckButton(
+                              ontap:profileVm.onClickCheckButton,
                               isChecked: profileVm.isMailingSame,
-                            )),
+                            ),
                         ApplicationSizing.horizontalSpacer(n: 5),
                         Expanded(
                           child: Text(

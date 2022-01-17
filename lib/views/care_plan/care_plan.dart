@@ -17,6 +17,7 @@ import 'package:twochealthcare/util/styles.dart';
 import 'package:twochealthcare/view_models/profile_vm.dart';
 import 'package:twochealthcare/views/care_plan/components/isChallengeChecked.dart';
 import 'package:twochealthcare/views/home/components/widgets.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class CarePlan extends HookWidget {
   CarePlan({Key? key}) : super(key: key);
@@ -62,7 +63,7 @@ class CarePlan extends HookWidget {
         body: Stack(
           children: [
             _body(context,profileVm: profileVM),
-            profileVM.loading ? AlertLoader() : Container(),
+            false ? AlertLoader() : Container(),
           ],
         )
     );
@@ -614,6 +615,16 @@ class CarePlan extends HookWidget {
                     fontSize: ApplicationSizing.fontScale(16),
                   ),
                 ),
+              ),
+              RatingBarIndicator(
+                rating: 4.00,
+                itemBuilder: (context, index) => Icon(
+                  Icons.star,
+                  color: appColor,
+                ),
+                itemCount: 5,
+                itemSize: 35.0,
+                direction: Axis.horizontal,
               ),
               ApplicationSizing.verticalSpacer(),
               Container(

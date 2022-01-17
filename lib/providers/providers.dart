@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:twochealthcare/constants/api_strings.dart';
 import 'package:twochealthcare/services/application_route_service.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
+import 'package:twochealthcare/services/care_plan_services/care_plan_services.dart';
 import 'package:twochealthcare/services/chat_services/chat_list_service.dart';
 import 'package:twochealthcare/services/chat_services/chat_screen_service.dart';
 import 'package:twochealthcare/services/connectivity_service.dart';
@@ -21,6 +22,7 @@ import 'package:twochealthcare/view_models/app_bar_vm.dart';
 import 'package:twochealthcare/view_models/application_package_vm.dart';
 import 'package:twochealthcare/view_models/auth_vm/forget-password-vm.dart';
 import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
+import 'package:twochealthcare/view_models/care_plan_vm/care_plan_vm.dart';
 import 'package:twochealthcare/view_models/chat_vm/chat_list_vm.dart';
 import 'package:twochealthcare/view_models/chat_vm/chat_screen_vm.dart';
 import 'package:twochealthcare/view_models/health_guides_vm/health_guides_vm.dart';
@@ -46,6 +48,7 @@ final tabAndCalenderVMProvider = ChangeNotifierProvider<TabAndCalenderVM>((ref)=
 final healthGuidesVMProviders = ChangeNotifierProvider<HealthGuidesVM>((ref)=>HealthGuidesVM(ref: ref));
 final appBarVMProvider = ChangeNotifierProvider<AppBarVM>((ref)=>AppBarVM(ref: ref));
 final forgetPasswordVMProvider = ChangeNotifierProvider<ForgetPasswordVM>((ref)=>ForgetPasswordVM(ref: ref));
+final carePlanVMProvider = ChangeNotifierProvider<CarePlanVM>((ref)=>CarePlanVM(ref: ref));
 /// ChangeNotifierProvider
 
 
@@ -66,5 +69,6 @@ final applicationRouteServiceProvider = Provider<ApplicationRouteService>((ref)=
 final localNotificationServiceProvider = Provider<LocalNotificationService>((ref)=>LocalNotificationService(ref: ref));
 final onLaunchActivityServiceProvider = Provider<OnLaunchActivityService>((ref)=>OnLaunchActivityService(ref: ref));
 final healthGuidesServiceProvider = Provider<HealthGuidesService>((ref)=>HealthGuidesService(ref: ref));
+final carePlanServiceProvider = Provider<CarePlanServices>((ref)=>CarePlanServices(ref: ref));
 /// Simple Providers
 

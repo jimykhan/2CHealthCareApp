@@ -104,6 +104,7 @@ class SignalRServices{
   }
 
   subscribeSignalrMessages() {
+    unSubscribeSignalrMessages();
     connection?.on("OnChatViewed", (data) {
       print("On Chat Viewed");
       var makeJson = [

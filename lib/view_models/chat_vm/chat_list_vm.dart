@@ -19,6 +19,7 @@ class ChatListVM extends ChangeNotifier{
   ChatListVM({ProviderReference? ref}){
     _ref = ref;
     initService();
+    groupIds.add(GetGroupsModel(unreadMsgCount: 0));
   }
 
   initService(){

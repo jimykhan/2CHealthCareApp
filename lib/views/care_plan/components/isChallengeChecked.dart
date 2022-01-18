@@ -16,7 +16,7 @@ class IsChallengeChecked extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CustomCheckButton(isChecked: true,
+          CustomCheckButton(isChecked: isChecked,
             ontap: pressChecked,),
           ApplicationSizing.horizontalSpacer(),
           Expanded(

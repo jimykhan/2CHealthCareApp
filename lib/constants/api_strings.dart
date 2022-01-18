@@ -57,5 +57,6 @@ class ApiStrings {
   static const String sendPhoneNoVerificationToken = baseUrl + "/api/Account/SendPhoneNoVerificationToken";
   static const String verifyPhoneNumber = baseUrl + "/api/Account/VerifyPhoneNumber";
   static const String sendVerificationEmail = baseUrl + "/api/Account/SendVerificationEmail";
+  static const String getCarePlanMasterByPatientId = baseUrl + "/api/CarePlanMaster/GetCarePlanMasterByPatientId";
 }
 // ?Username=ffa.a@hotmail.com&Email=ffa.a@hotmail.com

@@ -13,6 +13,9 @@ import 'package:twochealthcare/services/application_route_service.dart';
 import 'package:twochealthcare/services/connectivity_service.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
+import 'package:twochealthcare/util/styles.dart';
+import 'package:twochealthcare/view_models/chat_vm/chat_list_vm.dart';
+import 'package:twochealthcare/view_models/chat_vm/chat_screen_vm.dart';
 import 'package:twochealthcare/view_models/home_vm.dart';
 import 'package:twochealthcare/views/chat/chat_list.dart';
 import 'package:twochealthcare/views/home/home.dart';
@@ -30,6 +33,7 @@ class BottomBar extends HookWidget {
     HomeVM homeVM = useProvider(homeVMProvider);
     ApplicationRouteService applicationRouteService =
         useProvider(applicationRouteServiceProvider);
+    ChatListVM chatScreenVM = useProvider(chatListVMProvider);
 
     useEffect(
       () {
@@ -171,14 +175,35 @@ class BottomBar extends HookWidget {
                     print("do something on selected index $selectedIndex}");
                   }
                 },
-                child: Container(
-                  // color: Colors.red,
-                  alignment: Alignment.center,
+                child: Stack(
+                  alignment: Alignment.topCenter,
+                  children: [
+                    Container(
+                      // color: Colors.red,
+                      alignment: Alignment.center,
 
-                  child: SvgPicture.asset(
-                    "assets/icons/bottom_navbar/message-icon.svg",
-                    height: ApplicationSizing.convert(25),
-                  ),
+                      child: SvgPicture.asset(
+                        "assets/icons/bottom_navbar/message-icon.svg",
+                        height: ApplicationSizing.convert(25),
+                      ),
+                    ),
+                   chatScreenVM.groupIds[0].unreadMsgCount! < 1 ? Container() : Positioned(
+                      top: 3,
+                      child: Container(
+                        padding: EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.red
+                        ),
+                        child: Text("${chatScreenVM.groupIds[0].unreadMsgCount}",
+                          style: Styles.PoppinsRegular(
+                            color: Colors.white,
+                            fontSize: ApplicationSizing.fontScale(12)
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
                 ),
               ),
             ),

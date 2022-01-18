@@ -14,6 +14,7 @@ import 'package:twochealthcare/services/application_route_service.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
+import 'package:twochealthcare/view_models/care_plan_vm/care_plan_vm.dart';
 import 'package:twochealthcare/view_models/profile_vm.dart';
 import 'package:twochealthcare/views/care_plan/components/isChallengeChecked.dart';
 import 'package:twochealthcare/views/home/components/widgets.dart';
@@ -26,10 +27,12 @@ class CarePlan extends HookWidget {
   Widget build(BuildContext context) {
     ApplicationRouteService applicationRouteService =
     useProvider(applicationRouteServiceProvider);
-    ProfileVm profileVM = useProvider(profileVMProvider);
+    CarePlanVM carePlanVM = useProvider(carePlanVMProvider);
     useEffect(
           () {
-        Future.microtask(() async {});
+        Future.microtask(() async {
+          carePlanVM.getCarePlanByPatientId();
+        });
 
         return () {
           // Dispose Objects here
@@ -49,27 +52,18 @@ class CarePlan extends HookWidget {
             centerWigets: AppBarTextStyle(
               text: "Care Plan",
             ),
-            // trailingIcon: InkWell(
-            //   onTap: (){
-            //   },
-            //   child: Container(
-            //     padding: EdgeInsets.all(5),
-            //     child: Icon(Icons.check,
-            //       color: appColor,),
-            //   ),
-            // ),
           ),
         ),
         body: Stack(
           children: [
-            _body(context,profileVm: profileVM),
-            false ? AlertLoader() : Container(),
+            _body(context,carePlanVM: carePlanVM),
+            carePlanVM.loadingCarePlan ? AlertLoader() : Container(),
           ],
         )
     );
   }
 
-  _body(context,{required ProfileVm profileVm}) {
+  _body(context,{required CarePlanVM carePlanVM}) {
     return Container(
       child: Stack(
         children: [
@@ -77,7 +71,7 @@ class CarePlan extends HookWidget {
             child: Column(
               children: [
                 ApplicationSizing.verticalSpacer(n: 15),
-                _carePlans(context,profileVm: profileVm),
+                _carePlans(context,carePlanVM: carePlanVM),
                 ApplicationSizing.verticalSpacer(n: 15),
               ],
             ),
@@ -87,23 +81,23 @@ class CarePlan extends HookWidget {
     );
   }
 
-  _carePlans(context,{required ProfileVm profileVm}) {
+  _carePlans(context,{required CarePlanVM carePlanVM}) {
     return Container(
       padding: EdgeInsets.symmetric(
           horizontal: ApplicationSizing.horizontalMargin()),
       child: Column(
         children: [
-          challenges(),
+          challenges(carePlanVM: carePlanVM),
           ApplicationSizing.verticalSpacer(),
-          advanceDirectives(),
+          advanceDirectives(carePlanVM: carePlanVM),
           ApplicationSizing.verticalSpacer(),
-          _goals()
+          _goals(carePlanVM: carePlanVM)
         ],
       ),
     );
   }
 
-  challenges(){
+  challenges({required CarePlanVM carePlanVM}){
     return Column(
       children: [
         Row(
@@ -159,7 +153,7 @@ class CarePlan extends HookWidget {
                   children: [
                     Expanded(
                       flex:3,
-                      child: IsChallengeChecked(isChecked: true,
+                      child: IsChallengeChecked(isChecked: carePlanVM.carePlanModel?.challengesWithTransportation??false,
                         pressChecked: () {  },
                         challengeName: "Transportion",
                       ),
@@ -167,7 +161,7 @@ class CarePlan extends HookWidget {
                     Expanded(
                       flex:2,
                       child: Container(
-                        child: IsChallengeChecked(isChecked: true,
+                        child: IsChallengeChecked(isChecked: carePlanVM.carePlanModel?.challengesWithVision??false,
                           pressChecked: () {  },
                           challengeName: "Vision",
                         ),
@@ -183,7 +177,7 @@ class CarePlan extends HookWidget {
                   children: [
                     Expanded(
                       flex:3,
-                      child: IsChallengeChecked(isChecked: true,
+                      child: IsChallengeChecked(isChecked: carePlanVM.carePlanModel?.challengesWithHearing??false,
                         pressChecked: () {  },
                         challengeName: "Hearing",
                       ),
@@ -191,7 +185,7 @@ class CarePlan extends HookWidget {
                     Expanded(
                       flex:2,
                       child: Container(
-                        child: IsChallengeChecked(isChecked: true,
+                        child: IsChallengeChecked(isChecked: carePlanVM.carePlanModel?.challengesWithMobility??false,
                           pressChecked: () {  },
                           challengeName: "Mobility",
                         ),
@@ -219,6 +213,7 @@ class CarePlan extends HookWidget {
                   onchange: (val){}, onSubmit: (val){},
                   isEnable: false,
                   hints: "Comments..",
+                  textEditingController: carePlanVM.challengesController,
                 ),
               )
             ],
@@ -235,15 +230,16 @@ class CarePlan extends HookWidget {
               )
           ),
           child: YesNoQuestion(pressNo: () {  }, pressYes: () {  },
-            isChecked: false,
+            isChecked: carePlanVM.carePlanModel?.religionImpactsOnHealthCare??false,
             question: "My Religion/Spirituality impacts my health care:",
+            textEditingController: carePlanVM.religionController,
           ),
         ),
       ],
     );
   }
 
-  advanceDirectives(){
+  advanceDirectives({required CarePlanVM carePlanVM}){
     return Column(
       children: [
         Row(
@@ -285,18 +281,21 @@ class CarePlan extends HookWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               YesNoQuestion(pressNo: () {  }, pressYes: () {  },
-                isChecked: false,
+                isChecked: carePlanVM.carePlanModel?.healthCareAdvancedDirectives??false,
               question: "Healthcare Advance Directives",
+                textEditingController: carePlanVM.healthCareAdvancedDirectivesController,
               ),
               ApplicationSizing.verticalSpacer(),
               YesNoQuestion(pressNo: () {  }, pressYes: () {  },
-                isChecked: false,
+                isChecked: carePlanVM.carePlanModel?.polst??false,
                 question: "Physician Orders for Life Sustaining Treatment (POLST)",
+                textEditingController: carePlanVM.polstController,
               ),
               ApplicationSizing.verticalSpacer(),
               YesNoQuestion(pressNo: () {  }, pressYes: () {  },
-                isChecked: false,
+                isChecked: carePlanVM.carePlanModel?.powerOfAttorney??false,
                 question: "Power of Attorney (Financial / Healthcare)",
+                textEditingController: carePlanVM.powerOfAttorneyController,
               ),
 
 
@@ -318,7 +317,10 @@ class CarePlan extends HookWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 fourOptionQuestion(onOption1: () {  }, onOption2: () {  },
-                  selectedOption: 2,
+                  selectedOption: carePlanVM.carePlanModel?.iLive?.toUpperCase().trim() == "alone".toUpperCase() ? 1
+                      : carePlanVM.carePlanModel?.iLive?.toUpperCase().trim() == "partner/spouse".toUpperCase() ? 2 :
+                  carePlanVM.carePlanModel?.iLive?.toUpperCase().trim() == "ExtendedFamily".toUpperCase() ? 3 :
+                  carePlanVM.carePlanModel?.iLive?.toUpperCase().trim() == "other".toUpperCase() ? 4 : 1,
                   question: "I live",
                   option1: "Alone",
                   option2: "Partner/Spouse",
@@ -345,12 +347,16 @@ class CarePlan extends HookWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 fourOptionQuestion(onOption1: () {  }, onOption2: () {  },
-                  selectedOption: 3,
+                  selectedOption: carePlanVM.carePlanModel?.iLearnBestBy?.toUpperCase().trim() == "reading".toUpperCase() ? 1
+                      : carePlanVM.carePlanModel?.iLearnBestBy?.toUpperCase().trim() == "Beingtalkedto".toUpperCase() ? 2 :
+                  carePlanVM.carePlanModel?.iLearnBestBy?.toUpperCase().trim() == "Beingshowhow".toUpperCase() ? 3 :
+                  carePlanVM.carePlanModel?.iLearnBestBy?.toUpperCase().trim() == "listeningtotapes".toUpperCase() ? 4 : 1,
                   question: "I learn best by",
                   option1: "Reading",
                   option2: "Being talked to",
                   option3: "Being show how",
                   option4: "Listening to tapes", onOption3: () {  }, onOption4: () {  },
+                  textEditingController: carePlanVM.iLearnBestByController,
 
                 ),
               ],
@@ -373,7 +379,7 @@ class CarePlan extends HookWidget {
               children: [
                 YesNoQuestion(
                   question: "I have access to the Internet", pressYes: () {  }, pressNo: () {  }, isChecked: false,
-                  disableComment: true,
+                  disableComment: carePlanVM.carePlanModel?.internetAccess??false,
                 ),
               ],
             ),
@@ -394,8 +400,9 @@ class CarePlan extends HookWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 YesNoQuestion(
-                  question: "I have issues with Diet", pressYes: () {  }, pressNo: () {  }, isChecked: false,
-
+                  question: "I have issues with Diet", pressYes: () {  }, pressNo: () {  },
+                  isChecked: carePlanVM.carePlanModel?.dietIssues??false,
+                  textEditingController: carePlanVM.dietIssuesController,
                 ),
               ],
             ),
@@ -415,7 +422,7 @@ class CarePlan extends HookWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                child: Text("I have challenges with:",
+                child: Text("I am concerned about:",
                   style: Styles.PoppinsRegular(
                     fontWeight: FontWeight.w500,
                     fontSize: ApplicationSizing.fontScale(16),
@@ -428,7 +435,8 @@ class CarePlan extends HookWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
-                      child: IsChallengeChecked(isChecked: true,
+                      child: IsChallengeChecked(
+                        isChecked: carePlanVM.carePlanModel?.concernedAboutManagingChronicCondition??false,
                         pressChecked: () {  },
                         challengeName: "My ability to manage my chronic condition",
                       ),
@@ -443,7 +451,8 @@ class CarePlan extends HookWidget {
                   children: [
                     Expanded(
                       flex:3,
-                      child: IsChallengeChecked(isChecked: true,
+                      child: IsChallengeChecked(
+                        isChecked: false,
                         pressChecked: () {  },
                         challengeName: "Financial issues",
                       ),
@@ -451,7 +460,8 @@ class CarePlan extends HookWidget {
                     Expanded(
                       flex:3,
                       child: Container(
-                        child: IsChallengeChecked(isChecked: true,
+                        child: IsChallengeChecked(
+                          isChecked: carePlanVM.carePlanModel?.concernedAboutEmotionalIssues??false,
                           pressChecked: () {  },
                           challengeName: "Emotional issues",
                         ),
@@ -466,7 +476,8 @@ class CarePlan extends HookWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
-                      child: IsChallengeChecked(isChecked: true,
+                      child: IsChallengeChecked(
+                        isChecked: false,
                         pressChecked: () {  },
                         challengeName: "Having access to Healthcare",
                       ),
@@ -480,7 +491,8 @@ class CarePlan extends HookWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
-                      child: IsChallengeChecked(isChecked: true,
+                      child: IsChallengeChecked(
+                        isChecked: false,
                         pressChecked: () {  },
                         challengeName: "My decrease energy level / Fatigue",
                       ),
@@ -494,7 +506,8 @@ class CarePlan extends HookWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
-                      child: IsChallengeChecked(isChecked: true,
+                      child: IsChallengeChecked(
+                        isChecked: false,
                         pressChecked: () {  },
                         challengeName: "Thinking or memory problems",
                       ),
@@ -509,14 +522,16 @@ class CarePlan extends HookWidget {
                   children: [
                     Expanded(
                       flex: 1,
-                      child: IsChallengeChecked(isChecked: true,
+                      child: IsChallengeChecked(
+                        isChecked: false,
                         pressChecked: () {  },
                         challengeName: "Spiritual issues",
                       ),
                     ),
                     Expanded(
                       flex: 1,
-                      child: IsChallengeChecked(isChecked: true,
+                      child: IsChallengeChecked(
+                        isChecked: carePlanVM.carePlanModel?.concernedAboutFamilyIssues??false,
                         pressChecked: () {  },
                         challengeName: "Family issues",
                       ),
@@ -530,7 +545,8 @@ class CarePlan extends HookWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
-                      child: IsChallengeChecked(isChecked: true,
+                      child: IsChallengeChecked(
+                        isChecked: false,
                         pressChecked: () {  },
                         challengeName: "End of life issues",
                       ),
@@ -557,6 +573,7 @@ class CarePlan extends HookWidget {
                   onchange: (val){}, onSubmit: (val){},
                   isEnable: false,
                   hints: "Comments..",
+                  textEditingController: carePlanVM.concernedAboutOtherController,
                 ),
               )
             ],
@@ -567,7 +584,7 @@ class CarePlan extends HookWidget {
     );
   }
 
-  _goals(){
+  _goals({required CarePlanVM carePlanVM}){
     return Column(
       children: [
         Row(
@@ -617,7 +634,7 @@ class CarePlan extends HookWidget {
                 ),
               ),
               RatingBarIndicator(
-                rating: 4.00,
+                rating: carePlanVM.carePlanModel?.satisfactionWithMedicalCare?.toDouble() ?? 0.0,
                 itemBuilder: (context, index) => Icon(
                   Icons.star,
                   color: appColor,
@@ -645,6 +662,7 @@ class CarePlan extends HookWidget {
                   onchange: (val){}, onSubmit: (val){},
                   isEnable: false,
                   hints: "Comments..",
+                  textEditingController: carePlanVM.satisfactionController,
                 ),
               ),
               ApplicationSizing.verticalSpacer(),
@@ -665,6 +683,7 @@ class CarePlan extends HookWidget {
                   onchange: (val){}, onSubmit: (val){},
                   isEnable: false,
                   hints: "Comments..",
+                  textEditingController: carePlanVM.wantToImproveOnController,
                 ),
               )
             ],

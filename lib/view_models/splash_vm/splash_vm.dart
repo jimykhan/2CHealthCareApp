@@ -10,12 +10,14 @@ import 'package:twochealthcare/services/onlunch_activity_service.dart';
 import 'package:twochealthcare/services/shared_pref_services.dart';
 import 'package:twochealthcare/services/signal_r_services.dart';
 import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
+import 'package:twochealthcare/view_models/chat_vm/chat_list_vm.dart';
 import 'package:twochealthcare/views/auths/login.dart';
 import 'package:twochealthcare/views/home/home.dart';
 
 class SplashVM extends ChangeNotifier{
   ProviderReference? _ref;
   FirebaseService? firebaseService;
+  ChatListVM? _chatListVM;
   SplashVM({ProviderReference? ref}){
     _ref = ref;
     splashDuration();
@@ -34,6 +36,7 @@ class SplashVM extends ChangeNotifier{
      FirebaseService firebaseService =  _ref!.read(firebaseServiceProvider);
      SignalRServices signalRServices =  _ref!.read(signalRServiceProvider);
      OnLaunchActivityService onLunchActivityService =  _ref!.read(onLaunchActivityServiceProvider);
+     _chatListVM =  _ref!.read(chatListVMProvider);
 
      var bearerToken = await sharedPrefServices.getBearerToken();
      int currenUserId = await authServices.getCurrentUserId();
@@ -46,6 +49,7 @@ class SplashVM extends ChangeNotifier{
        onLunchActivityService.syncLastApplicationUseDateAndTime();
        Navigator.pushReplacement(applicationContext!.currentContext!,
            PageTransition(child:  Home()  , type: PageTransitionType.leftToRight));
+       _chatListVM?.getGroupsIds();
        firebaseService.initNotification();
        loginVM.getCurrentUserFromSharedPref();
        signalRServices.initSignalR();

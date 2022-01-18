@@ -10,6 +10,7 @@ import 'package:twochealthcare/services/signal_r_services.dart';
 import 'package:twochealthcare/util/conversion.dart';
 
 class ChatListVM extends ChangeNotifier{
+  List<UnReadChat> unReadChats = [];
   List<GetGroupsModel> groupIds= [];
   bool loadingGroupId = true;
   ProviderReference? _ref;
@@ -19,7 +20,6 @@ class ChatListVM extends ChangeNotifier{
   ChatListVM({ProviderReference? ref}){
     _ref = ref;
     initService();
-    groupIds.add(GetGroupsModel(unreadMsgCount: 0));
   }
 
   initService(){
@@ -37,6 +37,17 @@ class ChatListVM extends ChangeNotifier{
          print("${_applicationRouteService!.currentScreen()} != ${event.chatGroupId.toString()}");
          if(_applicationRouteService!.currentScreen() != event.chatGroupId.toString()){
            element.unreadMsgCount = element.unreadMsgCount! + 1;
+           bool inList = false;
+           unReadChats.forEach((unRead) {
+             if(unRead.chatGroupId == element.id){
+               unRead.unReadMessages = element.unreadMsgCount;
+               inList = true;
+             }
+           });
+           if(!inList){
+             unReadChats.add(UnReadChat(chatGroupId: element.id,unReadMessages: element.unreadMsgCount));
+           }
+
          }
          notifyListeners();
         }
@@ -64,6 +75,12 @@ class ChatListVM extends ChangeNotifier{
 
           }
           groupIds.add(element);
+          if(element.unreadMsgCount!>0){
+            unReadChats.add(
+                UnReadChat(unReadMessages: element.unreadMsgCount,
+                  chatGroupId: element.id
+            ));
+          }
         });
 
         setLoadingGroupId(false);
@@ -86,6 +103,12 @@ class ChatListVM extends ChangeNotifier{
         }
       });
     }
+    unReadChats.removeWhere((element) => element.chatGroupId == int.parse(groupId));
   }
 
+}
+class UnReadChat{
+  int? unReadMessages;
+  int? chatGroupId;
+  UnReadChat({this.chatGroupId,this.unReadMessages});
 }

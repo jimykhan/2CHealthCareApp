@@ -28,7 +28,7 @@ class ChatScreenVM extends ChangeNotifier {
   ApplicationRouteService? _applicationRouteService;
   SignalRServices? _signalRServices;
   bool isMessageEmpty = true;
-  FocusNode? myFocusNode = FocusNode();
+  FocusNode? myFocusNode;
 
   ChatScreenVM({ProviderReference? ref}) {
     _ref = ref;
@@ -36,16 +36,17 @@ class ChatScreenVM extends ChangeNotifier {
   }
 
   dispose() {
+    myFocusNode?.dispose();
     chatMessageList.chats = [];
     chatMessageList.participients = [];
   }
+
 
   searchListener() {
     searchController = TextEditingController();
     participients = [];
     participients!.addAll(chatMessageList.participients ?? []);
     searchController?.addListener(() {
-      print(searchController!.text);
       if (searchController!.text == "") {
         participients = [];
         participients!.addAll(chatMessageList.participients ?? []);
@@ -65,6 +66,16 @@ class ChatScreenVM extends ChangeNotifier {
 
   disposeSearchController() {
     searchController?.dispose();
+  }
+  initChatScreen(){
+    myFocusNode = FocusNode();
+    myFocusNode?.addListener(() {
+      print("addListener has focus ${myFocusNode?.hasFocus}");
+      if(myFocusNode?.hasFocus??false){
+        print("addListener has focus true");
+        ChatScreen.jumpToListIndex(isDelayed: false);
+      }
+    });
   }
 
   initService() {

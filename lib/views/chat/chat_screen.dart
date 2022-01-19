@@ -31,37 +31,35 @@ import 'package:twochealthcare/views/chat/components/chat_input_field.dart';
 import 'package:twochealthcare/views/chat/components/message.dart';
 import 'package:marquee/marquee.dart';
 
-ScrollController? _scrollController;
+ScrollController? chatScrollController;
 
 class ChatScreen extends HookWidget {
   GetGroupsModel? getGroupsModel;
   ChatScreen({this.getGroupsModel});
   @override
   Widget build(BuildContext context) {
-    _scrollController = useScrollController();
+    chatScrollController = useScrollController();
     ChatScreenVM chatScreenVM = useProvider(chatScreenVMProvider);
     ApplicationRouteService applicationRouteService = useProvider(applicationRouteServiceProvider);
     useEffect(
 
       () {
-        print("this is current route = ${applicationRouteService.currentScreen()}");
+        chatScreenVM.initChatScreen();
         // chatService.initSigalR(token: deviceService?.currentUser?.bearerToken??"",appId: deviceService?.currentUser?.appUserId??"");
         Future.microtask(() async {
           chatScreenVM.chatGroupId = getGroupsModel?.id.toString();
-          jumpToListIndex(isDelayed: true);
-          chatScreenVM.loadingPageNumber = 1;
-          chatScreenVM.getAllMessages(
-              chatGroupId: getGroupsModel?.id.toString() ?? "", pageNumber: 1);
-        });
-        // _scrollController = ScrollController();
-        _scrollController?.addListener(_scrollListener);
 
-        // _scrollController.jumpTo(_scrollController.position.maxScrollExtent); i am trying
+          chatScreenVM.loadingPageNumber = 1;
+          await chatScreenVM.getAllMessages(
+              chatGroupId: getGroupsModel?.id.toString() ?? "", pageNumber: 1);
+          jumpToListIndex(isDelayed: true);
+        });
+        chatScrollController?.addListener(_scrollListener);
+
+        // chatScrollController?.jumpTo(chatScrollController?.position.maxScrollExtent??0.0);
 
         return () {
           chatScreenVM.dispose();
-          applicationRouteService.removeScreen(screenName: "${getGroupsModel?.id}");
-          print("chat bot Dispose call ");
           // Dispose Objects here
         };
       },
@@ -76,25 +74,8 @@ class ChatScreen extends HookWidget {
         child: CustomAppBar(
           color1: AppBarStartColor,
           color2: AppBarEndColor,
-          // clickOnDrawer: () {
-          //   _scaffoldkey.currentState.openDrawer();
-          // },
           leadingIcon: Row(
             children: [
-              // InkWell(
-              //   onTap: () {
-              //     Navigator.pop(context);
-              //   },
-              //   child: Container(
-              //     alignment: Alignment.centerLeft,
-              //     padding: const EdgeInsets.only(right: 20, top: 6, bottom: 6),
-              //     child: RotatedBox(
-              //       quarterTurns: 2,
-              //       child: SvgPicture.asset(
-              //           "assets/icons/home/right-arrow-icon.svg"),
-              //     ),
-              //   ),
-              // ),
               CustomBackButton(),
               SizedBox(
                 width: ApplicationSizing.convertWidth(5),
@@ -135,13 +116,7 @@ class ChatScreen extends HookWidget {
           parentContext: context,
         ),
       ),
-      // appBar: PreferredSize(
-      //   preferredSize: Size.fromHeight(size.convert(context, 50)),
-      //   child: buildAppBar(context, chatService: chatService),
-      // ),
       body:_body(context, chatScreenVM: chatScreenVM),
-      // body: _body(context,chatScreenVM: chatScreenVM),
-      // body: test(),
     );
   }
 
@@ -189,96 +164,80 @@ class ChatScreen extends HookWidget {
                       onRefresh: () => chatScreenVM.getAllMessages(
                           chatGroupId: getGroupsModel?.id.toString() ?? "",
                           pageNumber: chatScreenVM.loadingPageNumber),
-                      child: Container(
-                        // margin: EdgeInsets.symmetric(
-                        //   vertical: size.convert(context, 150)
-                        // ),
-                        // color: Colors.blueGrey,
-                        // padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
-                        child: SingleChildScrollView(
-                          controller: _scrollController,
-                          child: Column(
-                            children: [
-                              ListView.builder(
-                                // reverse: true,
-                                // itemExtent: 50.0,
-                                physics: ScrollPhysics(),
-                                shrinkWrap: true,
-                                itemCount: chatScreenVM.chatMessageList.chats?.length??0,
-                                itemBuilder: (context, index) {
-                                  if (date !=
-                                      chatScreenVM.chatMessageList.chats![index].timeStamp
-                                          ?.substring(0, 10)) {
-                                    date = chatScreenVM
-                                        .chatMessageList.chats![index].timeStamp!
-                                        .substring(0, 10);
-                                    return Container(
-                                      margin: EdgeInsets.symmetric(
-                                          horizontal:
-                                          ApplicationSizing.convertWidth(20)),
-                                      child: Column(
-                                        children: [
-                                          Container(
-                                            margin: EdgeInsets.only(
-                                                top: ApplicationSizing.convert(10)),
-                                            padding: EdgeInsets.symmetric(
-                                              horizontal:
-                                              ApplicationSizing.convertWidth(10),
-                                              vertical: ApplicationSizing.convert(5),
-                                            ),
-                                            decoration: BoxDecoration(
-                                                color: Colors.grey.shade200,
-                                                borderRadius:
-                                                BorderRadius.circular(10)),
-                                            child: Text(
-                                              Jiffy(chatScreenVM.chatMessageList.chats![index].timeStamp??"0000-00-00T00:00:00.000000").format("dd MMM yyyy"),
-                                              style: Styles.PoppinsRegular(
-                                                  color: drawerColor,
-                                                  fontSize:
-                                                  ApplicationSizing.convert(14)),
-                                            ),
-                                          ),
-                                          Message(
-                                            message:
-                                            chatScreenVM.chatMessageList.chats![index],
-                                            participients: chatScreenVM.chatMessageList.participients,
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                    // date = chatService.listOfMessage[index].timeStamp
-                                    //     .substring(0, 10);
-                                    // print(date.toString());
-                                  } else {
-                                    return Container(
-                                      margin: EdgeInsets.symmetric(
-                                          horizontal:
-                                          ApplicationSizing.convertWidth(20)),
-                                      child: Column(
-                                        children: [
-                                          Message(
-                                            message:
-                                            chatScreenVM.chatMessageList.chats![index],
-                                            participients: chatScreenVM.chatMessageList.participients,
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                  }
-                                },
+                      child: ListView.separated(
+                        controller: chatScrollController,
+                        // reverse: true,
+                        // itemExtent: 50.0,
+                        physics: ScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: chatScreenVM.chatMessageList.chats?.length??0,
+                        itemBuilder: (context, index) {
+                          if (date !=
+                              chatScreenVM.chatMessageList.chats![index].timeStamp
+                                  ?.substring(0, 10)) {
+                            date = chatScreenVM
+                                .chatMessageList.chats![index].timeStamp!
+                                .substring(0, 10);
+                            return Container(
+                              margin: EdgeInsets.symmetric(
+                                  horizontal:
+                                  ApplicationSizing.convertWidth(20)),
+                              child: Column(
+                                children: [
+                                  Container(
+                                    margin: EdgeInsets.only(
+                                        top: ApplicationSizing.convert(10)),
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal:
+                                      ApplicationSizing.convertWidth(10),
+                                      vertical: ApplicationSizing.convert(5),
+                                    ),
+                                    decoration: BoxDecoration(
+                                        color: Colors.grey.shade200,
+                                        borderRadius:
+                                        BorderRadius.circular(10)),
+                                    child: Text(
+                                      Jiffy(chatScreenVM.chatMessageList.chats![index].timeStamp??"0000-00-00T00:00:00.000000").format("dd MMM yyyy"),
+                                      style: Styles.PoppinsRegular(
+                                          color: drawerColor,
+                                          fontSize:
+                                          ApplicationSizing.convert(14)),
+                                    ),
+                                  ),
+                                  Message(
+                                    message:
+                                    chatScreenVM.chatMessageList.chats![index],
+                                    participients: chatScreenVM.chatMessageList.participients,
+                                  ),
+                                ],
                               ),
-                              SizedBox(height: 5,),
-                            ],
-                          ),
-                        ),
+                            );
+                            // date = chatService.listOfMessage[index].timeStamp
+                            //     .substring(0, 10);
+                            // print(date.toString());
+                          } else {
+                            return Container(
+                              margin: EdgeInsets.symmetric(
+                                  horizontal:
+                                  ApplicationSizing.convertWidth(20)),
+                              child: Column(
+                                children: [
+                                  Message(
+                                    message:
+                                    chatScreenVM.chatMessageList.chats![index],
+                                    participients: chatScreenVM.chatMessageList.participients,
+                                  ),
+                                ],
+                              ),
+                            );
+                          }
+                        }, separatorBuilder: (BuildContext context, int index) { return ApplicationSizing.verticalSpacer(n: 0); },
                       ),
                     ),
 
 
                   ),
                   Container(
-                    // constraints: BoxConstraints(),
-                      // height: ApplicationSizing.convert(70),
                       child: ChatInputField(),
                     padding: EdgeInsets.only(bottom: Platform.isIOS ? 15 : 0),
                   ),
@@ -290,14 +249,14 @@ class ChatScreen extends HookWidget {
   }
 
   _scrollListener() {
-    if (_scrollController!.offset >=
-            _scrollController!.position.maxScrollExtent &&
-        !_scrollController!.position.outOfRange) {
+    if (chatScrollController!.offset >=
+            chatScrollController!.position.maxScrollExtent &&
+        !chatScrollController!.position.outOfRange) {
       print("out of range");
     }
-    if (_scrollController!.offset <=
-            _scrollController!.position.minScrollExtent &&
-        !_scrollController!.position.outOfRange) {
+    if (chatScrollController!.offset <=
+            chatScrollController!.position.minScrollExtent &&
+        !chatScrollController!.position.outOfRange) {
       print("In of range");
       // chatService.loadingNewPage
       //     ? null
@@ -310,16 +269,12 @@ class ChatScreen extends HookWidget {
 
   static jumpToListIndex({bool isDelayed = false}) {
     print("this is jump function");
-    // _scrollController.;
-    // _scrollController.jumpTo()
     Future.delayed(Duration(seconds: isDelayed ? 1 : 0), () {
-      _scrollController!.animateTo(
-        // 0.0,
-        _scrollController!.position.maxScrollExtent,
+      chatScrollController!.animateTo(
+        chatScrollController!.position.maxScrollExtent,
         curve: Curves.linearToEaseOut,
         duration: const Duration(milliseconds: 300),
       );
-      // chatService.notifyListeners();
     });
   }
 

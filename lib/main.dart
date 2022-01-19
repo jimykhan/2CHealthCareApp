@@ -13,13 +13,12 @@ import 'package:twochealthcare/views/splash/splash.dart';
 
 BuildContext? homeContext;
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  // await Firebase.initializeApp();
-  // _subNotification();
-  // print('Handling a background message ${message.messageId}');
-  // print('Handling a background message ${message.data}');
+  await Firebase.initializeApp();
+  print('Handling a background message ${message.messageId}');
+  print('Handling a background message ${message.data}');
 
-  // Navigator.push(applicationContext!.currentContext!, PageTransition(
-  //     child: ModalitiesReading(), type: PageTransitionType.topToBottom));
+  Navigator.push(applicationContext!.currentContext!, PageTransition(
+      child: ModalitiesReading(), type: PageTransitionType.topToBottom));
 }
 
 void requestNotificationPermission() async {

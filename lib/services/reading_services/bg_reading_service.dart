@@ -29,9 +29,9 @@ class BGReadingService{
           bGReadings.add(BGDataModel.fromJson(element));
         });
         if (bGReadings.length > 0) {
-          bGReadings.forEach((element) {
-            element.measurementDate = convertLocalToUtc(element.measurementDate!.replaceAll("Z", ""));
-          });
+          // bGReadings.forEach((element) {
+          //   element.measurementDate = convertLocalToUtc(element.measurementDate!.replaceAll("Z", ""));
+          // });
           bGReadings.sort((a, b) {
             return double.parse(a.measurementDate!
                 .trim()

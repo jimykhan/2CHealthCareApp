@@ -28,9 +28,9 @@ class BloodPressureReadingService{
           bPReadings.add(BloodPressureReadingModel.fromJson(element));
         });
         if (bPReadings.length > 0) {
-          bPReadings.forEach((element) {
-            element.measurementDate = convertLocalToUtc(element.measurementDate!.replaceAll("Z", ""));
-          });
+          // bPReadings.forEach((element) {
+          //   element.measurementDate = convertLocalToUtc(element.measurementDate!.replaceAll("Z", ""));
+          // });
           bPReadings.sort((a, b) {
             return double.parse(a.measurementDate!
                 .trim()

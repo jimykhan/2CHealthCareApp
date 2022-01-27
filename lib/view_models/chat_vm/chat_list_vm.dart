@@ -51,6 +51,19 @@ class ChatListVM extends ChangeNotifier{
          }
          notifyListeners();
         }
+         else if(_applicationRouteService!.currentScreen() != event.chatGroupId.toString()){
+          bool inList = false;
+          unReadChats.forEach((unRead) {
+            if(unRead.chatGroupId == element.id){
+              unRead.unReadMessages = element.unreadMsgCount;
+              inList = true;
+            }
+          });
+          if(!inList){
+            unReadChats.add(UnReadChat(chatGroupId: element.id,unReadMessages: element.unreadMsgCount));
+          }
+
+        }
       });
     });
   }
@@ -72,9 +85,9 @@ class ChatListVM extends ChangeNotifier{
         response.forEach((element) {
           if(element.lastMessageTime != null){
             element.lastMessageTime = Jiffy(element.lastMessageTime).format(Strings.dateAndTimeFormat);
-
           }
           groupIds.add(element);
+          unReadChats = [];
           if(element.unreadMsgCount!>0){
             unReadChats.add(
                 UnReadChat(unReadMessages: element.unreadMsgCount,

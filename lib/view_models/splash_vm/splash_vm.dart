@@ -46,13 +46,9 @@ class SplashVM extends ChangeNotifier{
            PageTransition(child:const Login() , type: PageTransitionType.leftToRight));
      }else{
        applicationRouteService.addAndRemoveScreen(screenName: "Home");
-       onLunchActivityService.syncLastApplicationUseDateAndTime();
        Navigator.pushReplacement(applicationContext!.currentContext!,
            PageTransition(child:  Home()  , type: PageTransitionType.leftToRight));
-       _chatListVM?.getGroupsIds();
-       firebaseService.initNotification();
-       loginVM.getCurrentUserFromSharedPref();
-       signalRServices.initSignalR();
+       onLunchActivityService.syncLastApplicationUseDateAndTime();
      }
 
   }

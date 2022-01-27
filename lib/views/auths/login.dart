@@ -259,23 +259,13 @@ class Login extends HookWidget {
                     if (checkMail && checkPassword) {
                       bool isValid = await loginVM.userLogin();
                       if (isValid) {
-                        onLaunchActivityService.syncLastApplicationUseDateAndTime();
                         applicationRouteService.addAndRemoveScreen(screenName: "Home");
                         Navigator.pushReplacement(
                             context,
                             PageTransition(
                                 child: Home(),
                                 type: PageTransitionType.bottomToTop));
-                        try{
-                          await firebaseService?.initNotification();
-                          await signalRServices?.initSignalR();
-                          if(loginVM.currentUser?.userType == 1){
-                            profileVm.getUserInfo();
-                          }
-                        }catch(e){
-                          print("$e");
-                        }
-
+                        onLaunchActivityService.syncLastApplicationUseDateAndTime();
                       }
                     }
                   },

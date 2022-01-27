@@ -60,6 +60,7 @@ class ChatScreen extends HookWidget {
 
         return () {
           chatScreenVM.dispose();
+          applicationRouteService.removeScreen(screenName: "${getGroupsModel?.id}");
           // Dispose Objects here
         };
       },

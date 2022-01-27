@@ -100,7 +100,6 @@ class FirebaseService{
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((event) {
-      _onLaunchActivityService!.syncLastApplicationUseDateAndTime();
       if(event.notification?.title == "New Message Received"){
         Navigator.pushAndRemoveUntil(
           applicationContext!.currentContext!,

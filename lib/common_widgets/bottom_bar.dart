@@ -11,6 +11,7 @@ import 'package:twochealthcare/common_widgets/snackber_message.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/application_route_service.dart';
 import 'package:twochealthcare/services/connectivity_service.dart';
+import 'package:twochealthcare/services/onlunch_activity_service.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
@@ -34,6 +35,7 @@ class BottomBar extends HookWidget {
     ApplicationRouteService applicationRouteService =
         useProvider(applicationRouteServiceProvider);
     ChatListVM chatScreenVM = useProvider(chatListVMProvider);
+    OnLaunchActivityService onLaunchActivityService = useProvider(onLaunchActivityServiceProvider);
 
     useEffect(
       () {
@@ -128,11 +130,7 @@ class BottomBar extends HookWidget {
                   if (selectedIndex != 1) {
                     applicationRouteService.addAndRemoveScreen(
                         screenName: "Profile");
-                    Navigator.pushReplacement(
-                        context,
-                        PageTransition(
-                            child: Profile(),
-                            type: PageTransitionType.leftToRight));
+                    onLaunchActivityService.profileDecider();
                     print("do something on selected index $selectedIndex}");
                   }
                 },
@@ -157,10 +155,11 @@ class BottomBar extends HookWidget {
                           message:
                               "No internet connection detected, please try again.");
                     } else {
-                      bool check = await homeVM.checkChatStatus();
+                      var check = await homeVM.checkChatStatus();
                       print(
                           "this is application mode = ${Foundation.kDebugMode}");
-                      if (check) {
+                      if (check is bool) {
+                      if(check){
                         applicationRouteService.addAndRemoveScreen(
                             screenName: "ChatList");
                         Navigator.pushReplacement(
@@ -168,8 +167,11 @@ class BottomBar extends HookWidget {
                             PageTransition(
                                 child: ChatList(),
                                 type: PageTransitionType.bottomToTop));
-                      } else {
+                      }else{
                         SnackBarMessage(message: "Chat disable for this user!");
+                      }
+                      } else {
+                        SnackBarMessage(message: "Some thing went wrong!");
                       }
                     }
                     print("do something on selected index $selectedIndex}");

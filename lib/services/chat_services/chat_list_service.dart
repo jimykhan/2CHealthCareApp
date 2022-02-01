@@ -54,7 +54,7 @@ class ChatListService{
     }
     catch(e){
       print(e.toString());
-      return false;
+      return -1;
     }
   }
 

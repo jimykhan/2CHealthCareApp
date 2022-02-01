@@ -8,6 +8,7 @@ import 'package:twochealthcare/services/chat_services/chat_list_service.dart';
 import 'package:twochealthcare/services/chat_services/chat_screen_service.dart';
 import 'package:twochealthcare/services/connectivity_service.dart';
 import 'package:twochealthcare/services/dio_services/dio_services.dart';
+import 'package:twochealthcare/services/facility_user_services/home/fu_home_service.dart';
 import 'package:twochealthcare/services/firebase_service.dart';
 import 'package:twochealthcare/services/health_guides_service/health_guides_service.dart';
 import 'package:twochealthcare/services/local_notification_service.dart';
@@ -25,6 +26,7 @@ import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
 import 'package:twochealthcare/view_models/care_plan_vm/care_plan_vm.dart';
 import 'package:twochealthcare/view_models/chat_vm/chat_list_vm.dart';
 import 'package:twochealthcare/view_models/chat_vm/chat_screen_vm.dart';
+import 'package:twochealthcare/view_models/facility_user_view_model/home/fu_home_view_model.dart';
 import 'package:twochealthcare/view_models/health_guides_vm/health_guides_vm.dart';
 import 'package:twochealthcare/view_models/home_vm.dart';
 import 'package:twochealthcare/view_models/modalities_reading_vm/bg_reading_vm.dart';
@@ -74,6 +76,8 @@ final carePlanServiceProvider = Provider<CarePlanServices>((ref)=>CarePlanServic
 
 
 ///Facility User ChangeNotifier Provider
+final fuHomeVMProvider = ChangeNotifierProvider<FUHomeViewModel>((ref)=>FUHomeViewModel(ref: ref));
 ///Facility User ChangeNotifier Provider
 ///Facility User Simple Provider
+final fuHomeServiceProvider = Provider<FUHomeService>((ref)=>FUHomeService(ref: ref));
 ///Facility User Simple Provider

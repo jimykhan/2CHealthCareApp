@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:twochealthcare/main.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/application_route_service.dart';
+import 'package:twochealthcare/services/onlunch_activity_service.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/views/home/home.dart';
 
@@ -14,6 +15,7 @@ class FloatingButton extends HookWidget {
   @override
   Widget build(BuildContext context) {
     ApplicationRouteService applicationRouteService = useProvider(applicationRouteServiceProvider);
+    OnLaunchActivityService onLaunchActivityService = useProvider(onLaunchActivityServiceProvider);
     return FloatingActionButton(
       child: Container(
         width: 60,
@@ -30,13 +32,7 @@ class FloatingButton extends HookWidget {
       ),
       onPressed: () {
         applicationRouteService.removeAllAndAdd(screenName: "Home");
-        Navigator.pushAndRemoveUntil(
-          applicationContext!.currentContext!,
-          MaterialPageRoute(
-            builder: (BuildContext context) => Home(),
-          ),
-          (route) => false,
-        );
+        onLaunchActivityService.HomeDecider();
       },
     );
   }

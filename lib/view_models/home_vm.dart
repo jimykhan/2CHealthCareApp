@@ -64,19 +64,21 @@ class HomeVM extends ChangeNotifier{
     try{
      setHomeScreenLoading(true);
       int facilityId = await _sharedPrefServices!.getPatientFacilityId();
-      bool response = await chatListService!.checkChatStatus(facilityId: facilityId);
-      if(response){
-        setHomeScreenLoading(false);
-        return true;
-      }else{
-        setHomeScreenLoading(false);
-        return false;
+      var response = await chatListService!.checkChatStatus(facilityId: facilityId);
+      if(response is bool){
+        if(response){
+          setHomeScreenLoading(false);
+          return true;
+        }else{
+          setHomeScreenLoading(false);
+          return false;
+        }
       }
     }
     catch(e){
       print(e.toString());
       setHomeScreenLoading(false);
-      return false;
+      return -1;
     }
   }
 }

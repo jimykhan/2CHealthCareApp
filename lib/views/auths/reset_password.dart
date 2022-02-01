@@ -237,11 +237,7 @@ class ResetPassword extends HookWidget {
                 if (isValid) {
                   onLaunchActivityService.syncLastApplicationUseDateAndTime();
                   applicationRouteService.addAndRemoveScreen(screenName: "Home");
-                  Navigator.pushReplacement(
-                      context,
-                      PageTransition(
-                          child: Home(),
-                          type: PageTransitionType.bottomToTop));
+                  onLaunchActivityService.decideUserFlow();
                   try{
                     await firebaseService?.initNotification();
                     await signalRServices?.initSignalR();

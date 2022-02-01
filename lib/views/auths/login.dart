@@ -260,11 +260,7 @@ class Login extends HookWidget {
                       bool isValid = await loginVM.userLogin();
                       if (isValid) {
                         applicationRouteService.addAndRemoveScreen(screenName: "Home");
-                        Navigator.pushReplacement(
-                            context,
-                            PageTransition(
-                                child: Home(),
-                                type: PageTransitionType.bottomToTop));
+                        onLaunchActivityService.decideUserFlow();
                         onLaunchActivityService.syncLastApplicationUseDateAndTime();
                       }
                     }

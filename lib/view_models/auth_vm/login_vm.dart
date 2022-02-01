@@ -103,6 +103,7 @@ class LoginVM extends ChangeNotifier{
 
   getCurrentUserFromSharedPref()async{
     currentUser = await authService?.getCurrentUserFromSharedPref();
+    return currentUser;
   }
 
   bool fieldValidation(String val, {int fieldType = 0}){

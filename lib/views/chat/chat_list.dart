@@ -14,6 +14,7 @@ import 'package:twochealthcare/common_widgets/notification_widget.dart';
 import 'package:twochealthcare/models/chat_model/GetGroups.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/application_route_service.dart';
+import 'package:twochealthcare/services/onlunch_activity_service.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
@@ -28,6 +29,7 @@ class ChatList extends HookWidget {
   Widget build(BuildContext context) {
     ChatListVM chatListVM = useProvider(chatListVMProvider);
     ApplicationRouteService applicationRouteService = useProvider(applicationRouteServiceProvider);
+    OnLaunchActivityService onLaunchActivityService = useProvider(onLaunchActivityServiceProvider);
     useEffect(
           () {
         Future.microtask(() async {
@@ -77,12 +79,13 @@ class ChatList extends HookWidget {
           ),
           onPressed: () {
             applicationRouteService.removeAllAndAdd(screenName: "Home");
-            Navigator.pushReplacement(
-                context,
-                PageTransition(
-                  child: Home(),
-                  type: PageTransitionType.bottomToTop,
-                ));
+            onLaunchActivityService.HomeDecider();
+            // Navigator.pushReplacement(
+            //     context,
+            //     PageTransition(
+            //       child: Home(),
+            //       type: PageTransitionType.bottomToTop,
+            //     ));
           },
         ),
         bottomNavigationBar: BottomBar(selectedIndex: 2,),

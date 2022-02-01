@@ -60,7 +60,7 @@ class ApiStrings {
   static const String getCarePlanMasterByPatientId = baseUrl + "/api/CarePlanMaster/GetCarePlanMasterByPatientId";
 }
 
-class Patients{
+class PatientsController{
   static const String getPatientsForDashboard = baseUrl + "/api/Patients/GetPatientsForDashboard";
 }
 // ?Username=ffa.a@hotmail.com&Email=ffa.a@hotmail.com

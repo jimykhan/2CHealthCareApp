@@ -73,12 +73,25 @@ class SharedPrefServices{
 
   Future<int> getPatientFacilityId() async {
     await _initPref();
-    var p_info = _prefs?.get("patientInfo");
-    if(p_info is String){
-      CurrentUserInfo currentUserInfo = CurrentUserInfo.fromJson(jsonDecode(p_info));
-      return currentUserInfo.facilityId??-1;
-    }
-    return -1;
+    CurrentUser? currentUser = await getCurrentUser();
+    int facilityId = -1;
+    currentUser!.claims.forEach((element) {
+      if(element.claimType?.toUpperCase() == "FacilityId".toUpperCase()){
+        facilityId = int.parse("${element.claimValue?? -1}");
+      }
+    });
+    return facilityId;
+    // if(currentUser.userType == 1){
+    //   var p_info = _prefs?.get("patientInfo");
+    //   if(p_info is String){
+    //     CurrentUserInfo currentUserInfo = CurrentUserInfo.fromJson(jsonDecode(p_info));
+    //     return currentUserInfo.facilityId??-1;
+    //   }
+    //   return -1;
+    // }else{
+    //   return currentUser.id?? -1;
+    // }
+
   }
 
 }

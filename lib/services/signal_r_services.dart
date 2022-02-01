@@ -35,8 +35,7 @@ class SignalRServices{
     print("this is token to signalR = $token}");
     print("2cch this is AppId to signalR = ${appId}");
     connection = HubConnectionBuilder()
-        .withUrl(
-            ApiStrings.baseUrl + "/chatHub",
+        .withUrl(baseUrl + "/chatHub",
             HttpConnectionOptions(
                 client: IOClient(
                     HttpClient()..badCertificateCallback = (x, y, z) => true),

@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart' as Foundation;
+ const String checkInternetConnection = 'www.google.com';
+ const String test = "https://api.healthforcehub.link";
+ const String staging = "https://apistaging.healthforcehub.link";
+ const String production = "https://api.2chealthsolutions.com";
+ const String baseUrl = test;
 class ApiStrings {
-  static const String checkInternetConnection = 'www.google.com';
-  static const String test = "https://api.healthforcehub.link";
-  static const String staging = "https://apistaging.healthforcehub.link";
-  static const String production = "https://api.2chealthsolutions.com";
-  static const String baseUrl = test;
   static const String signIn = baseUrl +"/api/Account/token2";
   static const String getPatientInfoById =
       baseUrl + "/api/Patients/GetPatientById";
@@ -58,5 +58,9 @@ class ApiStrings {
   static const String verifyPhoneNumber = baseUrl + "/api/Account/VerifyPhoneNumber";
   static const String sendVerificationEmail = baseUrl + "/api/Account/SendVerificationEmail";
   static const String getCarePlanMasterByPatientId = baseUrl + "/api/CarePlanMaster/GetCarePlanMasterByPatientId";
+}
+
+class Patients{
+  static const String getPatientsForDashboard = baseUrl + "/api/Patients/GetPatientsForDashboard";
 }
 // ?Username=ffa.a@hotmail.com&Email=ffa.a@hotmail.com

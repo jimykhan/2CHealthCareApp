@@ -16,7 +16,7 @@ class DioServices{
   _initDio(){
     dio = Dio(
       BaseOptions(
-      baseUrl: ApiStrings.baseUrl,
+      baseUrl: baseUrl,
       receiveTimeout: 10000, // 10 seconds
       connectTimeout: 10000,
       sendTimeout: 1000,

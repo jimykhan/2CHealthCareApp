@@ -16,10 +16,9 @@ BuildContext? homeContext;
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
   print('Handling a background message ${message.messageId}');
-  print('Handling a background message ${message.data}');
-
-  Navigator.push(applicationContext!.currentContext!, PageTransition(
-      child: ModalitiesReading(), type: PageTransitionType.topToBottom));
+  print('Handling a background message ${message.notification?.title??""}');
+  // Navigator.push(applicationContext!.currentContext!, PageTransition(
+  //     child: ModalitiesReading(), type: PageTransitionType.topToBottom));
 }
 
 void requestNotificationPermission() async {

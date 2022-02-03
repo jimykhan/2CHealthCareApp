@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hooks_riverpod/all.dart';
@@ -21,6 +22,8 @@ class FirebaseService{
   LoginVM? _result;
   LocalNotificationService? _localNotificationService;
   OnLaunchActivityService? _onLaunchActivityService;
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+  FlutterLocalNotificationsPlugin();
   FirebaseService({ProviderReference? ref}){
     _ref = ref;
     initFirebase();
@@ -29,10 +32,10 @@ class FirebaseService{
 
   initFirebase(){
     print("try calling firebase initialzeApp");
-    Firebase.initializeApp().whenComplete(() => print("firebase completed..."));
-    Firebase.apps.forEach((element) {
+    Firebase.initializeApp().whenComplete(() {
+      print("firebase completed...");
+    } );
 
-    });
   }
 
   initNotification() async {
@@ -60,10 +63,29 @@ class FirebaseService{
       _firebaseMessaging!
           .getToken()
           .then((value) => print("this is mobile token ${value.toString()}"));
+  }
+    if (!kIsWeb) {
+      var channel = const AndroidNotificationChannel(
+        '2C_Health', // id
+        'High Importance Notifications', // title
+        description: 'This channel is used for important notifications.', // description
+        importance: Importance.max,
+        enableLights: true,
+      );
+      
+      await flutterLocalNotificationsPlugin
+          .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
+          ?.createNotificationChannel(channel);
+
+      await FirebaseMessaging.instance
+          .setForegroundNotificationPresentationOptions(
+        alert: true,
+        badge: true,
+        sound: true,
+      );
     }
     _subNotification();
-
-
   }
 
 
@@ -71,35 +93,38 @@ class FirebaseService{
 
     FirebaseMessaging.onMessage.listen((event) {
       print("this is event${event.notification?.title}");
-      // _onLaunchActivityService?.syncLastApplicationUseDateAndTime();
-      if(event.notification?.title == "New Message Received"){
-        // Navigator.pushAndRemoveUntil(
-        //   applicationContext!.currentContext!,
-        //   MaterialPageRoute(
-        //     builder: (BuildContext context) =>
-        //         Home(),
-        //   ),
-        //       (route) => false,
-        // );
-        // Navigator.push(applicationContext!.currentContext!, PageTransition(
-        //     child: ChatList(), type: PageTransitionType.fade));
-      }
-      else{
-        Navigator.pushAndRemoveUntil(
-          applicationContext!.currentContext!,
-          MaterialPageRoute(
-            builder: (BuildContext context) =>
-                Home(),
-          ),
-              (route) => false,
-        );
-        Navigator.push(applicationContext!.currentContext!, PageTransition(
-            child: ModalitiesReading(), type: PageTransitionType.fade));
-      }
+
+      // // _onLaunchActivityService?.syncLastApplicationUseDateAndTime();
+      // if(event.notification?.title == "New Message Received"){
+      //   // Navigator.pushAndRemoveUntil(
+      //   //   applicationContext!.currentContext!,
+      //   //   MaterialPageRoute(
+      //   //     builder: (BuildContext context) =>
+      //   //         Home(),
+      //   //   ),
+      //   //       (route) => false,
+      //   // );
+      //   // Navigator.push(applicationContext!.currentContext!, PageTransition(
+      //   //     child: ChatList(), type: PageTransitionType.fade));
+      // }
+      // else{
+      //   Navigator.pushAndRemoveUntil(
+      //     applicationContext!.currentContext!,
+      //     MaterialPageRoute(
+      //       builder: (BuildContext context) =>
+      //           Home(),
+      //     ),
+      //         (route) => false,
+      //   );
+      //   Navigator.push(applicationContext!.currentContext!, PageTransition(
+      //       child: ModalitiesReading(), type: PageTransitionType.fade));
+      // }
 
     });
 
+
     FirebaseMessaging.onMessageOpenedApp.listen((event) {
+      print("OnMessageOpenedApp call");
       if(event.notification?.title == "New Message Received"){
         Navigator.pushAndRemoveUntil(
           applicationContext!.currentContext!,
@@ -139,14 +164,6 @@ class FirebaseService{
     }
 
   }
-
-  // setPushNotification() async {
-  //   if (result?.currentUser != null) {
-  //     await firebaseMessaging!
-  //       .se("${result?.currentUser?.appUserId}-NewDataReceived")
-  //       .then((value) => print("${result?.currentUser?.appUserId}-NewDataReceived weather topic subscribe"));
-  // }
-  // }
 
   turnOfChatNotification() {
     var firebaseMessaging = FirebaseMessaging.instance;
@@ -189,11 +206,6 @@ class FirebaseService{
           .then((value) => null);
     }
   }
-
-
-
-
-
 
   Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     await Firebase.initializeApp();

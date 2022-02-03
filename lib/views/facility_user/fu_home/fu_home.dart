@@ -1,10 +1,18 @@
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:hooks_riverpod/all.dart';
+import 'package:twochealthcare/common_widgets/alert_loader.dart';
 import 'package:twochealthcare/common_widgets/bottom_bar.dart';
 import 'package:twochealthcare/common_widgets/custom_appbar.dart';
 import 'package:twochealthcare/common_widgets/custom_drawer.dart';
+import 'package:twochealthcare/common_widgets/no_data_inlist.dart';
+import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
+import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
+import 'package:twochealthcare/view_models/facility_user_view_model/home/fu_home_view_model.dart';
+import 'package:twochealthcare/view_models/home_vm.dart';
+import 'package:twochealthcare/views/facility_user/fu_home/components/patient_list.dart';
 
 class FUHome extends HookWidget {
   FUHome({Key? key}) : super(key: key);
@@ -12,12 +20,18 @@ class FUHome extends HookWidget {
   @override
   Widget build(BuildContext context) {
     // LoginVM loginVM = useProvider(loginVMProvider);
-    // HomeVM homeVM = useProvider(homeVMProvider);
+    HomeVM homeVM = useProvider(homeVMProvider);
+    FUHomeViewModel fuHomeViewModel = useProvider(fuHomeVMProvider);
+
     // ApplicationRouteService applicationRouteService =
     // useProvider(applicationRouteServiceProvider);
     // FirebaseService firebaseService = useProvider(firebaseServiceProvider);
     useEffect(
           () {
+            homeVM.resetHome();
+            fuHomeViewModel.loadingPatientList = true;
+            fuHomeViewModel.patientListPageNumber = 1;
+            fuHomeViewModel.getPatientsForDashboard();
         Future.microtask(() async {});
         return () {};
       },
@@ -45,13 +59,9 @@ class FUHome extends HookWidget {
           parentContext: context,
         ),
       ),
-      body: _body(),
+      body: _body(fuHomeViewModel: fuHomeViewModel,homeVM: homeVM),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
-        // isExtended: true,
-        // mini: true,
-        // backgroundColor: Colors.black,
-        // clipBehavior: Clip.hardEdge,
         enableFeedback: false,
         child: Container(
           width: 60,
@@ -79,13 +89,22 @@ class FUHome extends HookWidget {
     );
   }
 
-  _body(){
-    return Container(
-      child: Column(
-        children: const [
-          Text("Facility User")
-        ],
-      ),
+  _body({required FUHomeViewModel fuHomeViewModel,required HomeVM homeVM}){
+    return Stack(
+      children: [
+        Container(
+          child: fuHomeViewModel.patientsForDashboard?.patientsList!.length == 0 ? Column(
+            children:  [
+              NoData(),
+            ],
+          ):
+          PatientList(patientsList: fuHomeViewModel.patientsForDashboard?.patientsList??[],
+            scrollController: fuHomeViewModel.scrollController,
+            lastIndexLoading: fuHomeViewModel.newPageLoading,
+          )
+        ),
+        (fuHomeViewModel.loadingPatientList || homeVM.homeScreenLoading) ? AlertLoader() : Container(),
+      ],
     );
   }
 

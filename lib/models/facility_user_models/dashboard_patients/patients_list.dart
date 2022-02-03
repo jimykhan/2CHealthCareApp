@@ -136,8 +136,18 @@ class PatientsList {
     careFacilitatorId = json['careFacilitatorId'];
     careFacilitatorName = json['careFacilitatorName'];
     careFacilitatorNameAbbreviation = json['careFacilitatorNameAbbreviation'];
-    careProviderIds = json['careProviderIds'].cast<int>();
-    careProviderNames = json['careProviderNames'].cast<String>();
+    if(json['careProviderIds'] != null){
+      careProviderIds = <int>[];
+      json['careProviders'].forEach((v) {
+        careProviderIds!.add(v);
+      });
+    }
+    if(json['careProviderNames'] != null){
+      careProviderNames = <String>[];
+      json['careProviderNames'].forEach((v) {
+        careProviderNames!.add(v);
+      });
+    }
     if (json['careProviders'] != null) {
       careProviders = <CareProviders>[];
       json['careProviders'].forEach((v) {
@@ -150,7 +160,12 @@ class PatientsList {
         toolTip!.add(new ToolTip.fromJson(v));
       });
     }
-    chronicDiseasesIds = json['chronicDiseasesIds'].cast<int>();
+    if(json['chronicDiseasesIds'] != null){
+      chronicDiseasesIds = <int>[];
+      json['chronicDiseasesIds'].forEach((v) {
+        chronicDiseasesIds!.add(v);
+      });
+    }
     currentMonthCompletedTime = json['currentMonthCompletedTime'];
     currentMonthCompletedTimeString = json['currentMonthCompletedTimeString'];
     profileStatus = json['profileStatus'];

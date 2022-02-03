@@ -189,7 +189,7 @@ class BottomBar extends HookWidget {
                         height: ApplicationSizing.convert(25),
                       ),
                     ),
-                   chatScreenVM.unReadChats.length < 1 ? Container() : Positioned(
+                   chatScreenVM.unReadChats.length == 0 ? Container() : Positioned(
                       top: 10,
                       child: Container(
                         padding: EdgeInsets.all(6),
@@ -197,12 +197,6 @@ class BottomBar extends HookWidget {
                             shape: BoxShape.circle,
                             color: Colors.red
                         ),
-                        // child: Text("${chatScreenVM.groupIds[0].unreadMsgCount}",
-                        //   style: Styles.PoppinsRegular(
-                        //     color: Colors.white,
-                        //     fontSize: ApplicationSizing.fontScale(12)
-                        //   ),
-                        // ),
                       ),
                     )
                   ],

@@ -23,7 +23,9 @@ class ApplicationSizing {
     var f = size * textScale;
     return f;
   }
-
+  static double constSize(double size) {
+    return size;
+  }
   static double convert(double n) {
     double i = (n) / guidelineBaseHeight;
     return i * longDimension;

@@ -15,6 +15,7 @@ import 'package:twochealthcare/view_models/chat_vm/chat_list_vm.dart';
 import 'package:twochealthcare/view_models/profile_vm.dart';
 import 'package:twochealthcare/views/auths/login.dart';
 import 'package:twochealthcare/views/facility_user/fu_home/fu_home.dart';
+import 'package:twochealthcare/views/facility_user/fu_home/fu_profile.dart';
 import 'package:twochealthcare/views/home/home.dart';
 import 'package:twochealthcare/views/home/profile.dart';
 
@@ -112,7 +113,7 @@ class OnLaunchActivityService{
       Navigator.pushReplacement(
           applicationContext!.currentContext!,
           PageTransition(
-              child: FUHome(),
+              child: FUProfile(),
               type: PageTransitionType.bottomToTop));
     }else{
     }

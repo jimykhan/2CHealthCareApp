@@ -3,7 +3,7 @@ import 'package:twochealthcare/models/facility_user_models/dashboard_patients/pa
 
 class PatientsForDashboard {
   PagingData? pagingData;
-  List<PatientsList>? patientsList;
+  List<PatientsList>? patientsList = [];
 
   PatientsForDashboard({this.pagingData, this.patientsList});
 

@@ -8,20 +8,53 @@ class FUHomeViewModel extends ChangeNotifier{
   ProviderReference? _ref;
   FUHomeService? fuHomeService;
   PatientsForDashboard? patientsForDashboard;
+  bool loadingPatientList = true;
+  bool newPageLoading = false;
+  int patientListPageNumber = 1;
+  ScrollController scrollController = ScrollController();
   FUHomeViewModel({ProviderReference? ref}){
     _ref = ref;
+    initService();
   }
   initService(){
     fuHomeService = _ref!.read(fuHomeServiceProvider);
+    scrollController.addListener(() {
+      if(scrollController.position.pixels == scrollController.position.maxScrollExtent){
+       getPatientsForDashboard();
+      }
+    });
+  }
+  setLoadingPatientList(check){
+    loadingPatientList = check;
+    notifyListeners();
+  }
+  setNewPageLoading(check){
+    newPageLoading = check;
+    notifyListeners();
   }
   getPatientsForDashboard({int? facilityId,int? filterBy,int? pageNumber,String? patientStatus,
-    String? searchParam, String? payerIds,String? sortBy,int? sortOrder}){
-    var res = fuHomeService?.getPatientsForDashboard();
+    String? searchParam, String? payerIds,String? sortBy,int? sortOrder}) async{
+    if(patientListPageNumber == 1 && !(loadingPatientList)) setLoadingPatientList(true);
+    if(patientListPageNumber>1) setNewPageLoading(true);
+    var res = await fuHomeService?.getPatientsForDashboard(pageNumber: patientListPageNumber);
     if(res!=null){
-        patientsForDashboard = res as PatientsForDashboard?;
+      PatientsForDashboard newPList = res as PatientsForDashboard;
+      if(newPList != null && newPList.patientsList!.isNotEmpty){
+        if(patientListPageNumber == 1){
+          patientsForDashboard = newPList;
+          patientListPageNumber++;
+        }else{
+          patientsForDashboard!.patientsList!.addAll(newPList.patientsList??[])  ;
+          patientListPageNumber++;
+        }
 
+      }
+
+        setLoadingPatientList(false);
+      setNewPageLoading(false);
     }else{
-
+      setLoadingPatientList(false);
+      setNewPageLoading(false);
     }
   }
 }

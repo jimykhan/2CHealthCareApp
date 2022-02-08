@@ -125,7 +125,238 @@ class CustomDrawer extends HookWidget {
         ));
   }
 
+  _menu(
+    context,
+  ) {
+    Color UnSelectedColor = Color(0xff134389);
+    return Column(
+      children: [
+        Container(
+          margin: EdgeInsets.only(top: ApplicationSizing.convert(1)),
+          padding: EdgeInsets.symmetric(
+              horizontal: ApplicationSizing.horizontalMargin()),
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+            colors: [AppBarStartColor, AppBarEndColor],
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+          )),
+          // child: Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //   children: [
+          //     Container(
+          //       child: Row(
+          //         mainAxisAlignment: MainAxisAlignment.start,
+          //         crossAxisAlignment: CrossAxisAlignment.center,
+          //         children: [
+          //           Icon(
+          //             FluentSystemIcons.ic_fluent_heart_regular,
+          //             size: size.convert(context, 25),
+          //             color: Colors.white,
+          //           ),
+          //           MenuTextStyle(
+          //             text: "Hub",
+          //             color: Colors.white,
+          //           ),
+          //         ],
+          //       ),
+          //     ),
+          //     toggleButton(
+          //       value: applicatonState.isHubActive,
+          //       enableColor: AppBarStartColor,
+          //       disableColor: Colors.white,
+          //       buttonWidth: size.convertWidth(context, 50),
+          //       onChange: (value) {
+          //         print("$value");
+          //         showDialog(
+          //             context: context,
+          //             barrierColor: Colors.transparent,
+          //             builder: (context) => ConfirmationAlerts(
+          //                   deviceService: deviceService,
+          //                   value: value,
+          //                   Action: "hub",
+          //                 ));
+          //       },
+          //     ),
+          //   ],
+          // ),
+        ),
+        Container(
+          margin: EdgeInsets.only(
+            left: ApplicationSizing.convertWidth(20),
+            right: ApplicationSizing.convertWidth(20),
+            top: ApplicationSizing.convert(10),
+          ),
+          child: Column(
+            children: [
+              InkWell(
+                onTap: () {
+                  Navigator.pushReplacement(
+                      context,
+                      PageTransition(
+                          child: Home(), type: PageTransitionType.fade));
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Icon(
+                      FluentSystemIcons.ic_fluent_badge_regular,
+                      size: ApplicationSizing.convert(25),
+                      color: appColor,
+                    ),
+                    MenuTextStyle(
+                      text: "Home",
+                    ),
+                  ],
+                ),
+              ),
+              Platform.isIOS
+                  ? Container()
+                  : InkWell(
+                      onTap: () {
+                        if (Platform.isAndroid) {
+                          SystemNavigator.pop();
+                        } else if (Platform.isIOS) {
+                          Navigator.pop(context);
+                        }
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Icon(
+                            FluentSystemIcons.ic_fluent_dismiss_regular,
+                            size: ApplicationSizing.convert(25),
+                            color: appColor,
+                          ),
+                          MenuTextStyle(
+                            text: "Exit",
+                          ),
+                        ],
+                      ),
+                    ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
 
+  // facilityUserMenu(
+  //     context, DeviceService deviceService, ApplicatonState applicatonState) {
+  //   Color UnSelectedColor = Color(0xff134389);
+  //   return Column(
+  //     children: [
+  //       Container(
+  //         margin: EdgeInsets.only(
+  //           left: size.convertWidth(context, 20),
+  //           right: size.convertWidth(context, 20),
+  //           top: size.convertWidth(context, 10),
+  //         ),
+  //         child: Column(
+  //           children: [
+  //             InkWell(
+  //               onTap: () {
+  //                 applicatonState.updateSelectedTabI(0);
+  //                 Navigator.pushReplacement(
+  //                     context,
+  //                     PageTransition(
+  //                         child: ChatListScreen(),
+  //                         type: PageTransitionType.fade));
+  //               },
+  //               child: Row(
+  //                 mainAxisAlignment: MainAxisAlignment.start,
+  //                 crossAxisAlignment: CrossAxisAlignment.center,
+  //                 children: [
+  //                   Icon(
+  //                     FluentSystemIcons.ic_fluent_badge_regular,
+  //                     size: size.convert(context, 25),
+  //                     color: appColor,
+  //                   ),
+  //                   MenuTextStyle(
+  //                     text: "Home",
+  //                   ),
+  //                 ],
+  //               ),
+  //             ),
+  //             InkWell(
+  //               onTap: () {
+  //                 showDialog(
+  //                     context: context,
+  //                     barrierColor: Colors.transparent,
+  //                     builder: (context) => ConfirmationAlerts(
+  //                           Action: "logout",
+  //                         ));
+  //               },
+  //               child: Row(
+  //                 mainAxisAlignment: MainAxisAlignment.start,
+  //                 crossAxisAlignment: CrossAxisAlignment.center,
+  //                 children: [
+  //                   Icon(
+  //                     FluentSystemIcons.ic_fluent_power_regular,
+  //                     size: size.convert(context, 25),
+  //                     color: appColor,
+  //                   ),
+  //                   MenuTextStyle(
+  //                     text: "Logout",
+  //                   ),
+  //                 ],
+  //               ),
+  //             ),
+  //             Platform.isIOS ? Container(): InkWell(
+  //               onTap: () {
+  //                 if (Platform.isAndroid) {
+  //                   SystemNavigator.pop();
+  //                 } else if (Platform.isIOS) {
+  //                   Navigator.pop(context);
+  //                 }
+  //               },
+  //               child: Row(
+  //                 mainAxisAlignment: MainAxisAlignment.start,
+  //                 crossAxisAlignment: CrossAxisAlignment.center,
+  //                 children: [
+  //                   Icon(
+  //                     FluentSystemIcons.ic_fluent_dismiss_regular,
+  //                     size: size.convert(context, 25),
+  //                     color: appColor,
+  //                   ),
+  //                   MenuTextStyle(
+  //                     text: "Exit",
+  //                   ),
+  //                 ],
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
+  //
+  // lounchDexcomUrl(context, ApplicatonState applicatonState,
+  //     DeviceService deviceService) async {
+  //   print("lounchDexcom url call");
+  //   try {
+  //     applicatonState.SetStateForDexcomAuth(true);
+  //     var response = await SimpleApi().getWithContext(
+  //         url: ApiStrings.GET_DEXCOM_CODE,
+  //         context: context,
+  //         bearerToken: deviceService.currentUser.bearerToken,
+  //         patintId: deviceService.currentUser.id);
+  //     if (response is Response) {
+  //       if (response.statusCode == 200) {
+  //         print(response.data);
+  //         await launch(response.data);
+  //       }
+  //       applicatonState.SetStateForDexcomAuth(false);
+  //     } else {
+  //       applicatonState.SetStateForDexcomAuth(false);
+  //     }
+  //   } catch (e) {
+  //     applicatonState.SetStateForDexcomAuth(false);
+  //   }
+  // }
 }
 
 //  ConfirmationAlert(context, DeviceService deviceService,{String message,String event}) {

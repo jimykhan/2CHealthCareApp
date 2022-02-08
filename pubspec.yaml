@@ -5,7 +5,7 @@ description: A new Flutter project.
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 4.4.1+30
+version: 4.4.2+31
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -73,6 +73,7 @@ flutter:
     - assets/icons/side_menu/home-icon.svg
     - assets/icons/side_menu/logout-icon.svg
     - assets/icons/side_menu/setting-icon.svg
+    - assets/icons/side_menu/treatment.png
     - assets/icons/readings/blood-glucose-icon.svg
     - assets/icons/readings/heart-icon.svg
     - assets/icons/readings/weight-icon.svg

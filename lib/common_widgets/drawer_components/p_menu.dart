@@ -174,8 +174,8 @@ class PMenu extends StatelessWidget {
                       child: Row(
                         // crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          SvgPicture.asset(
-                            "assets/icons/home/user-icon.svg",
+                          Image.asset(
+                            "assets/icons/side_menu/treatment.png",
                             color: appColor,
                             width: ApplicationSizing.convert(18),
                             height: ApplicationSizing.convert(18),

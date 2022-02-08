@@ -21,11 +21,12 @@ class CustomAppBar extends HookWidget {
   Widget? centerWigets;
   double? hight;
   double? paddingBottom;
+  double? paddingLeft;
   bool? isbottomLine;
   CustomAppBar({
    @required this.parentContext,this.color1,this.color2,this.leadingIcon,
     this.trailingIcon,this.centerWigets, @required this.hight,this.paddingBottom,this.isbottomLine =false,
-    this.clickOnDrawer
+    this.clickOnDrawer,this.paddingLeft
 });
 
   @override
@@ -51,7 +52,7 @@ class CustomAppBar extends HookWidget {
           Expanded(
             child: Container(
               padding: EdgeInsets.only(
-                  left: ApplicationSizing.convertWidth(15),
+                  left: ApplicationSizing.convertWidth(paddingLeft??0),
                   right: ApplicationSizing.convertWidth(20),
                 top: ApplicationSizing.convert(30)
               ),

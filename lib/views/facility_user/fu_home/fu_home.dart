@@ -2,17 +2,22 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/all.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:twochealthcare/common_widgets/alert_loader.dart';
 import 'package:twochealthcare/common_widgets/bottom_bar.dart';
 import 'package:twochealthcare/common_widgets/custom_appbar.dart';
 import 'package:twochealthcare/common_widgets/custom_drawer.dart';
+import 'package:twochealthcare/common_widgets/custom_text_field.dart';
 import 'package:twochealthcare/common_widgets/no_data_inlist.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
 import 'package:twochealthcare/view_models/facility_user_view_model/home/fu_home_view_model.dart';
 import 'package:twochealthcare/view_models/home_vm.dart';
-import 'package:twochealthcare/views/facility_user/fu_home/components/patient_list.dart';
+import 'package:twochealthcare/views/facility_user/fu_home/patient_list/all_patient.dart';
+import 'package:twochealthcare/views/facility_user/fu_home/patient_list/components/filter_button.dart';
+
+import '../../../main.dart';
 
 class FUHome extends HookWidget {
   FUHome({Key? key}) : super(key: key);
@@ -57,6 +62,7 @@ class FUHome extends HookWidget {
           color2: Colors.white,
           hight: ApplicationSizing.convert(80),
           parentContext: context,
+          paddingLeft: 15,
         ),
       ),
       body: _body(fuHomeViewModel: fuHomeViewModel,homeVM: homeVM),
@@ -98,9 +104,23 @@ class FUHome extends HookWidget {
               NoData(),
             ],
           ):
-          PatientList(patientsList: fuHomeViewModel.patientsForDashboard?.patientsList??[],
-            scrollController: fuHomeViewModel.scrollController,
-            lastIndexLoading: fuHomeViewModel.newPageLoading,
+          Column(
+            children: [
+              Text(" Facility Home Page"),
+              GestureDetector(
+                onTap: (){
+                  Navigator.push(
+                      applicationContext!.currentContext!,
+                      PageTransition(
+                          child: AllPatient(),
+                          type: PageTransitionType.bottomToTop));
+                },
+                child: Container(
+                  width: 200,
+                  child: Center(child: Text("Patients List")),
+                ),
+              )
+            ],
           )
         ),
         (fuHomeViewModel.loadingPatientList || homeVM.homeScreenLoading) ? AlertLoader() : Container(),

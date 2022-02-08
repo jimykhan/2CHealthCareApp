@@ -97,6 +97,7 @@ class Home extends HookWidget {
           color2: Colors.white,
           hight: ApplicationSizing.convert(80),
           parentContext: context,
+          paddingLeft: 15,
         ),
       ),
       body: _body(

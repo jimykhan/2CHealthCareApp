@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:twochealthcare/models/facility_user_models/dashboard_patients/patients_list.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
-import 'package:twochealthcare/views/facility_user/fu_home/components/tile_components/center_text.dart';
-import 'package:twochealthcare/views/facility_user/fu_home/components/tile_components/profile_image.dart';
+import 'package:twochealthcare/views/facility_user/fu_home/patient_list/components/tile_components/center_text.dart';
+import 'package:twochealthcare/views/facility_user/fu_home/patient_list/components/tile_components/profile_image.dart';
 
 class PatientTile extends StatelessWidget {
   PatientsList patientsList;

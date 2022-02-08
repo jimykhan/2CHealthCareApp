@@ -85,6 +85,7 @@ flutter:
     - assets/icons/personIcon.png
     - assets/icons/Icon_Video.svg
     - assets/icons/no_result.png
+    - assets/icons/filter_icon.svg
 
   fonts:
     - family: PoppinsRegular

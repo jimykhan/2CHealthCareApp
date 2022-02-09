@@ -9,6 +9,7 @@ import 'package:hooks_riverpod/all.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:twochealthcare/main.dart';
 import 'package:twochealthcare/providers/providers.dart';
+import 'package:twochealthcare/services/application_route_service.dart';
 import 'package:twochealthcare/services/local_notification_service.dart';
 import 'package:twochealthcare/services/onlunch_activity_service.dart';
 import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
@@ -24,9 +25,11 @@ class FirebaseService{
   OnLaunchActivityService? _onLaunchActivityService;
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
   FlutterLocalNotificationsPlugin();
+  ApplicationRouteService? applicationRouteService;
   FirebaseService({ProviderReference? ref}){
     _ref = ref;
     initFirebase();
+    applicationRouteService = ref?.read(applicationRouteServiceProvider);
   }
 
 
@@ -134,6 +137,8 @@ class FirebaseService{
           ),
               (route) => false,
         );
+        applicationRouteService?.addAndRemoveScreen(
+            screenName: "ChatList");
         Navigator.push(applicationContext!.currentContext!, PageTransition(
             child: ChatList(), type: PageTransitionType.fade));
       }

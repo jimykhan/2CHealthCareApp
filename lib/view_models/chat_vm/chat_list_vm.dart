@@ -34,8 +34,7 @@ class ChatListVM extends ChangeNotifier{
          element.lastMessage = event.message;
          element.lastMessageTime = convertLocalToUtc(event.timeStamp!.replaceAll("Z", ""));
          element.lastMessageTime = Jiffy(element.lastMessageTime).format(Strings.dateAndTimeFormat);
-         print("${_applicationRouteService!.currentScreen()} != ${event.chatGroupId.toString()}");
-         if(_applicationRouteService!.currentScreen() != event.chatGroupId.toString()){
+         if(_applicationRouteService?.currentScreen() != event.chatGroupId.toString()){
            element.unreadMsgCount = element.unreadMsgCount! + 1;
            bool inList = false;
            unReadChats.forEach((unRead) {
@@ -51,7 +50,7 @@ class ChatListVM extends ChangeNotifier{
          }
          notifyListeners();
         }
-         else if(_applicationRouteService!.currentScreen() != event.chatGroupId.toString()){
+         else if(_applicationRouteService?.currentScreen() != event.chatGroupId.toString()){
           bool inList = false;
           unReadChats.forEach((unRead) {
             if(unRead.chatGroupId == element.id){

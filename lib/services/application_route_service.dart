@@ -25,6 +25,10 @@ class ApplicationRouteService{
   }
 
   String currentScreen(){
-    return _routeList.last;
+    String lastScreen = "";
+    if(_routeList.isNotEmpty){
+      lastScreen = _routeList.last;
+    }
+    return lastScreen;
   }
 }

@@ -4,6 +4,7 @@ import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:twochealthcare/common_widgets/aler_dialogue.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
@@ -51,7 +52,8 @@ class FUMenu extends StatelessWidget {
             ),
             InkWell(
               onTap: () {
-                loginVM.userLogout();
+                Navigator.pop(context);
+                logoutAlertDialog(loginVM: loginVM);
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,

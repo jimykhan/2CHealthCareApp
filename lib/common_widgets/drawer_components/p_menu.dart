@@ -215,7 +215,9 @@ class PMenu extends StatelessWidget {
                   ),
                   InkWell(
                     onTap: () {
-                      loginVM.userLogout();
+                      Navigator.pop(context);
+                      logoutAlertDialog(loginVM: loginVM);
+                      // loginVM.userLogout();
                     },
                     child: Container(
                       padding: EdgeInsets.symmetric(

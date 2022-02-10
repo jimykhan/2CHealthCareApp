@@ -14,6 +14,7 @@ class FilledButton extends StatelessWidget {
   Color? borderColor;
   double? borderwidth;
   double? fontsize;
+  double? borderRadius;
   String? fontfamily;
   Widget? leftWidget;
   Widget? rigtWidget;
@@ -30,7 +31,9 @@ class FilledButton extends StatelessWidget {
       this.fontsize,
       this.leftWidget,
       this.rigtWidget,
-      required this.onTap});
+      required this.onTap,
+        this.borderRadius
+      });
   @override
   Widget build(BuildContext context) {
     Size size1 = MediaQuery.of(context).size;
@@ -42,7 +45,7 @@ class FilledButton extends StatelessWidget {
         width: w ?? ApplicationSizing.convertWidth(360),
         decoration: BoxDecoration(
             color: color1 ?? appColor,
-            borderRadius: BorderRadius.circular(7),
+            borderRadius: BorderRadius.circular(borderRadius??7),
             border: Border.all(
               width: borderwidth ?? 0,
               color: borderColor ?? appColor,
@@ -59,7 +62,7 @@ class FilledButton extends StatelessWidget {
               txt ?? "Empty",
               style: Styles.PoppinsBold(
                   fontSize: fontsize ?? ApplicationSizing.fontScale(16),
-                  color: whiteColor),
+                  color: txtcolor??whiteColor),
             ),
             const SizedBox(
               width: 10,

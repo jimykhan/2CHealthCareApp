@@ -45,9 +45,9 @@ class ChatListService{
   Future<dynamic> checkChatStatus({int? facilityId}) async {
     try{
       final dio = _ref!.read(dioServicesProvider);
-      Response response = await dio.dio!.get(ApiStrings.checkChatStatus+"/$facilityId");
+      Response response = await dio.dio!.get(FacilityController.facilityServiceConfigByFacilityId+"/$facilityId");
       if(response.statusCode == 200){
-        return response.data;
+        return response.data['chatService'];
       }else{
         return false;
       }

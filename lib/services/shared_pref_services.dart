@@ -75,7 +75,7 @@ class SharedPrefServices{
     await _initPref();
     CurrentUser? currentUser = await getCurrentUser();
     int facilityId = -1;
-    currentUser!.claims.forEach((element) {
+    currentUser!.claims?.forEach((element) {
       if(element.claimType?.toUpperCase() == "FacilityId".toUpperCase()){
         facilityId = int.parse("${element.claimValue?? -1}");
       }

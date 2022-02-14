@@ -5,6 +5,7 @@ import 'package:twochealthcare/common_widgets/snackber_message.dart';
 import 'package:twochealthcare/main.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/dio_services/error_handlers.dart';
+import 'package:twochealthcare/services/dio_services/token_refresh_request.dart';
 import 'package:twochealthcare/services/shared_pref_services.dart';
 import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
@@ -46,19 +47,30 @@ class ApiInterceptor extends Interceptor{
     return handler.next(err);
   }
   @override
-  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
+  void onRequest(RequestOptions options, RequestInterceptorHandler handler)async{
      LoginVM loginVM =  ref!.read(loginVMProvider);
 
      if(loginVM.currentUser?.bearerToken!=null){
        String token = loginVM.currentUser?.bearerToken??"";
+       String refreshToken = loginVM.currentUser?.refreshToken??"";
        bool hasExpired = JwtDecoder.isExpired(token);
-       DateTime expirationDate = JwtDecoder.getExpirationDate(token);
-       print(expirationDate.toString());
+       // bool isRefreshTokenExpired = JwtDecoder.isExpired(refreshToken);
+       // DateTime expirationDate = JwtDecoder.getExpirationDate(token);
        print(token);
        if(hasExpired){
-         SnackBarMessage(message: "Sorry, your token expired, please login again");
-         loginVM.userLogout();
-         return;
+         var res = await refreshTokenRequest(loginVM.currentUser!.refreshToken!);
+         if(res== null){
+           SnackBarMessage(message: "Sorry, your token expired, please login again");
+           loginVM.userLogout();
+           return;
+         } else if(res is bool){
+           return;
+         }else{
+           loginVM.updateCurrentUser(res);
+           options.headers = {
+             "Authorization": "Bearer ${loginVM.currentUser?.bearerToken??""}"
+           };
+         }
        }
        else{
          options.headers = {
@@ -80,4 +92,5 @@ class ApiInterceptor extends Interceptor{
     // print()
     super.onResponse(response, handler);
   }
+
 }

@@ -62,3 +62,18 @@ class Styles {
         ]);
   }
 }
+
+class CustomShadow{
+
+  static List<BoxShadow> whiteBoxShadowWith15({int isPaired = 0,double? dy,double? dx}) {
+    return [
+      BoxShadow(
+          color: Colors.black.withOpacity(0.15),
+          blurRadius: 10,
+          spreadRadius: 0,
+          offset: Offset(dx??0,dy??15)
+      )
+    ];
+  }
+
+}

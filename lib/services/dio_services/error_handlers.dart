@@ -2,6 +2,7 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:twochealthcare/common_widgets/snackber_message.dart';
+import 'package:twochealthcare/constants/strings.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
@@ -22,8 +23,8 @@ class InternalServerErrorException extends DioError {
 
   @override
   String toString() {
-    SnackBarMessage(message: "Unknown error occurred, please try again later.");
-    return 'Unknown error occurred, please try again later.';
+    SnackBarMessage(message: Strings.unknownError);
+    return Strings.unknownError;
   }
 }
 
@@ -70,8 +71,8 @@ class NoInternetConnectionException extends DioError {
 
   @override
   String toString() {
-    SnackBarMessage(message: "No internet connection detected, please try again.");
-    return 'No internet connection detected, please try again.';
+    SnackBarMessage(message: Strings.noConnection);
+    return Strings.noConnection;
   }
 }
 

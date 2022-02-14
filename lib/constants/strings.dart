@@ -1,5 +1,6 @@
 class Strings {
-  static const String noConnection = 'no_connection';
+  static const String noConnection = 'No internet connection detected, please try again.';
+  static const String unknownError = 'Unknown error occurred, please try again later.';
   static const String retry = 'Retry';
   static const String dateFormat = "dd MMM yy";
   static const String dateAndTimeFormat = "dd MMM yy, h:mm a";

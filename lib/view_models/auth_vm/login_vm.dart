@@ -76,6 +76,11 @@ class LoginVM extends ChangeNotifier{
     return false;
   }
 
+  updateCurrentUser(var data){
+    authService?.updateCurrentUser(data);
+    currentUser = CurrentUser.fromJson(data);
+  }
+
   isSmsOrEmailVerified({String? userName})async{
     setLoading(true);
     var res = await authService?.isSmsOrEmailVerified(userName: emailController.text);

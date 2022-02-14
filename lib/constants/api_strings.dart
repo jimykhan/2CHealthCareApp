@@ -68,4 +68,8 @@ class FacilityController{
   static const String getFacilityUser = baseUrl + "/api/Facility/GetFacilityUser";
   static const String facilityServiceConfigByFacilityId = baseUrl + "/api/FacilityServiceConfig/GetByFacilityId";
 }
+
+class AccountApi{
+  static const String refreshToken = baseUrl + "/api/Account/RefreshToken";
+}
 // ?Username=ffa.a@hotmail.com&Email=ffa.a@hotmail.com

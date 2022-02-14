@@ -47,7 +47,7 @@ class CircularImage extends StatelessWidget {
       return FileImage(file!);
     }
     else if(assetImage){
-      return AssetImage(imageUrl ?? "");
+      return AssetImage(imageUrl ?? "assets/icons/personIcon.png");
     }
     else{
       return NetworkImage(imageUrl ?? "");

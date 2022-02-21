@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:twochealthcare/util/application_colors.dart';
+import 'package:twochealthcare/util/application_sizing.dart';
 
 class Styles {
   static TextStyle PoppinsBold({
@@ -25,6 +27,15 @@ class Styles {
         color: color,
         fontWeight: fontWeight);
   }
+
+  static TextStyle hintStyle() {
+    return PoppinsRegular(
+      fontWeight: FontWeight.w600,
+      color: fontGrayColor,
+      fontSize: ApplicationSizing.constSize(15),
+    );
+  }
+  // hintStyle
 
   static TextStyle RobotoMedium(
       {double fontSize = 9,

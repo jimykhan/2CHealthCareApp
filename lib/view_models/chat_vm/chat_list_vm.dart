@@ -1,13 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:jiffy/jiffy.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:twochealthcare/constants/strings.dart';
+import 'package:twochealthcare/main.dart';
 import 'package:twochealthcare/models/chat_model/GetGroups.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/application_route_service.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
 import 'package:twochealthcare/services/signal_r_services.dart';
 import 'package:twochealthcare/util/conversion.dart';
+import 'package:twochealthcare/views/chat/chat_screen.dart';
 
 class ChatListVM extends ChangeNotifier{
   List<UnReadChat> unReadChats = [];
@@ -94,8 +97,10 @@ class ChatListVM extends ChangeNotifier{
             ));
           }
         });
-
         setLoadingGroupId(false);
+        if(groupIds.length == 1){
+          Navigator.push(applicationContext!.currentContext!, PageTransition(child: ChatScreen(getGroupsModel: groupIds[0],backToHome: true,), type: PageTransitionType.fade));
+        }
       }
       else{
         setLoadingGroupId(false);

@@ -11,7 +11,7 @@ import 'package:twochealthcare/main.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/application_route_service.dart';
 import 'package:twochealthcare/services/local_notification_service.dart';
-import 'package:twochealthcare/services/onlunch_activity_service.dart';
+import 'package:twochealthcare/services/onlunch_activity_routes_service.dart';
 import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
 import 'package:twochealthcare/views/chat/chat_list.dart';
 import 'package:twochealthcare/views/home/home.dart';
@@ -22,7 +22,7 @@ class FirebaseService{
   FirebaseMessaging? _firebaseMessaging;
   LoginVM? _result;
   LocalNotificationService? _localNotificationService;
-  OnLaunchActivityService? _onLaunchActivityService;
+  OnLaunchActivityAndRoutesService? _onLaunchActivityService;
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
   FlutterLocalNotificationsPlugin();
   ApplicationRouteService? applicationRouteService;

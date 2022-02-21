@@ -6,7 +6,7 @@ import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/application_route_service.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
 import 'package:twochealthcare/services/firebase_service.dart';
-import 'package:twochealthcare/services/onlunch_activity_service.dart';
+import 'package:twochealthcare/services/onlunch_activity_routes_service.dart';
 import 'package:twochealthcare/services/shared_pref_services.dart';
 import 'package:twochealthcare/services/signal_r_services.dart';
 import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
@@ -35,7 +35,7 @@ class SplashVM extends ChangeNotifier{
      LoginVM loginVM =  _ref!.read(loginVMProvider);
      FirebaseService firebaseService =  _ref!.read(firebaseServiceProvider);
      SignalRServices signalRServices =  _ref!.read(signalRServiceProvider);
-     OnLaunchActivityService onLunchActivityService =  _ref!.read(onLaunchActivityServiceProvider);
+     OnLaunchActivityAndRoutesService onLunchActivityService =  _ref!.read(onLaunchActivityServiceProvider);
      _chatListVM =  _ref!.read(chatListVMProvider);
 
      var bearerToken = await sharedPrefServices.getBearerToken();

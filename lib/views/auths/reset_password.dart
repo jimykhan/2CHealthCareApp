@@ -6,14 +6,14 @@ import 'package:hooks_riverpod/all.dart';
 import 'package:icofont_flutter/icofont_flutter.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:twochealthcare/common_widgets/alert_loader.dart';
-import 'package:twochealthcare/common_widgets/custom_text_field.dart';
+import 'package:twochealthcare/common_widgets/input_field/custom_text_field.dart';
 import 'package:twochealthcare/common_widgets/error_text.dart';
 import 'package:twochealthcare/common_widgets/filled_button.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/application_route_service.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
 import 'package:twochealthcare/services/firebase_service.dart';
-import 'package:twochealthcare/services/onlunch_activity_service.dart';
+import 'package:twochealthcare/services/onlunch_activity_routes_service.dart';
 import 'package:twochealthcare/services/signal_r_services.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
@@ -35,7 +35,7 @@ class ResetPassword extends HookWidget {
     ApplicationPackageVM applicationPackageVM = useProvider(applicationPackageVMProvider);
     SignalRServices signalRServices = useProvider(signalRServiceProvider);
     ApplicationRouteService applicationRouteService = useProvider(applicationRouteServiceProvider);
-    OnLaunchActivityService onLaunchActivityService = useProvider(onLaunchActivityServiceProvider);
+    OnLaunchActivityAndRoutesService onLaunchActivityService = useProvider(onLaunchActivityServiceProvider);
     ProfileVm profileVm = useProvider(profileVMProvider);
 
     useEffect(
@@ -81,7 +81,7 @@ class ResetPassword extends HookWidget {
     ApplicationPackageVM? applicationPackageVM,
     SignalRServices? signalRServices,
     required ApplicationRouteService applicationRouteService,
-    required OnLaunchActivityService onLaunchActivityService,
+    required OnLaunchActivityAndRoutesService onLaunchActivityService,
     required ProfileVm profileVm
   }) {
     return Container(

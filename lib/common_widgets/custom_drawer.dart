@@ -20,6 +20,7 @@ import 'package:twochealthcare/constants/strings.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
 import 'package:twochealthcare/services/firebase_service.dart';
+import 'package:twochealthcare/services/onlunch_activity_routes_service.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/styles.dart';
@@ -37,6 +38,7 @@ class CustomDrawer extends HookWidget {
   Widget build(BuildContext context) {
     LoginVM loginVM = useProvider(loginVMProvider);
     ApplicationPackageVM applicationPackageVM = useProvider(applicationPackageVMProvider);
+    OnLaunchActivityAndRoutesService onLaunchActivityAndRoutesService = useProvider(onLaunchActivityServiceProvider);
     useEffect(
       () {
         Future.microtask(() async {});
@@ -64,7 +66,7 @@ class CustomDrawer extends HookWidget {
                   children: [
                     HeadProfile(loginVM: loginVM,),
                     ApplicationSizing.verticalSpacer(n: 10),
-                    loginVM.currentUser!.userType == 1 ? PMenu(loginVM: loginVM,) : FUMenu(loginVM: loginVM,),
+                    loginVM.currentUser!.userType == 1 ? PMenu(loginVM: loginVM,onLaunchActivityAndRoutesService: onLaunchActivityAndRoutesService,) : FUMenu(loginVM: loginVM,),
                   ],
                 ),
               ),

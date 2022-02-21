@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/all.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:twochealthcare/common_widgets/custom_text_field.dart';
+import 'package:twochealthcare/common_widgets/input_field/custom_text_field.dart';
 import 'package:twochealthcare/common_widgets/error_text.dart';
 import 'package:twochealthcare/common_widgets/filled_button.dart';
 import 'package:twochealthcare/common_widgets/loader.dart';

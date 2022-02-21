@@ -4,9 +4,10 @@ import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 
-class CustomTextArea extends StatefulWidget {
+class CustomTextField extends StatefulWidget {
   Color? color1;
   Widget? iconWidget;
+  TextStyle? textStyle;
   Function(String val) onchange;
   Function(String val) onSubmit;
   String? hints;
@@ -17,25 +18,26 @@ class CustomTextArea extends StatefulWidget {
   bool? obscureText;
   bool? isEnable;
   List<TextInputFormatter>? inputFormatter;
-  CustomTextArea(
+  CustomTextField(
       {this.isEnable = true,
-        this.obscureText,
-        this.textInputType,
-        this.borderWidth,
-        this.trailingIcon,
-        this.hints,
-        this.color1,
-        this.iconWidget,
-        this.textEditingController,
-        required this.onchange,
-        required this.onSubmit,
-        this.inputFormatter,
+      this.obscureText,
+      this.textInputType,
+      this.borderWidth,
+      this.trailingIcon,
+      this.hints,
+      this.color1,
+      this.iconWidget,
+      this.textEditingController,
+      required this.onchange,
+      required this.onSubmit,
+       this.inputFormatter,
+        this.textStyle,
       });
   @override
-  _CustomTextAreaState createState() => _CustomTextAreaState();
+  _CustomTextFieldState createState() => _CustomTextFieldState();
 }
 
-class _CustomTextAreaState extends State<CustomTextArea> {
+class _CustomTextFieldState extends State<CustomTextField> {
   Color? borderColor;
   @override
   Widget build(BuildContext context) {
@@ -56,7 +58,7 @@ class _CustomTextAreaState extends State<CustomTextArea> {
               children: [
                 Container(
                   // height: size.convert(context, 40),
-                  height: 80,
+                  height: 50,
                   child: Focus(
                     onFocusChange: (val) {
                       if (val) {
@@ -72,7 +74,6 @@ class _CustomTextAreaState extends State<CustomTextArea> {
                       print(val);
                     },
                     child: TextFormField(
-                      maxLines: 10,
                       style: Styles.PoppinsRegular(
                         fontSize: ApplicationSizing.fontScale(14),
                       ),
@@ -89,10 +90,10 @@ class _CustomTextAreaState extends State<CustomTextArea> {
                           disabledBorder: InputBorder.none,
                           border: InputBorder.none,
                           hintText: widget.hints ?? "",
-                          hintStyle: Styles.PoppinsRegular(
+                          hintStyle: widget.textStyle?? Styles.PoppinsRegular(
                               color: fontGrayColor,
                               fontSize: ApplicationSizing.fontScale(12)),
-                          labelStyle: TextStyle()
+                        labelStyle: TextStyle()
                       ),
                     ),
                   ),

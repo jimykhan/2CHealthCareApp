@@ -4,6 +4,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:twochealthcare/common_widgets/aler_dialogue.dart';
 import 'package:twochealthcare/common_widgets/circular_image.dart';
 import 'package:twochealthcare/common_widgets/menu_text_style.dart';
+import 'package:twochealthcare/services/onlunch_activity_routes_service.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
@@ -13,8 +14,9 @@ import 'package:twochealthcare/views/health_guides/health_guides.dart';
 import 'package:twochealthcare/views/home/profile.dart';
 import 'package:twochealthcare/views/readings/modalities_reading.dart';
 class PMenu extends StatelessWidget {
+  OnLaunchActivityAndRoutesService onLaunchActivityAndRoutesService;
   LoginVM loginVM;
-  PMenu({required this.loginVM,Key? key}) : super(key: key);
+  PMenu({required this.loginVM,required this.onLaunchActivityAndRoutesService,Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -189,8 +191,7 @@ class PMenu extends StatelessWidget {
                   ),
                   InkWell(
                     onTap: () {
-                      Navigator.pop(context);
-                      CustomAlertDialog(message: "Coming Soon...");
+                      onLaunchActivityAndRoutesService.settingsDecider();
                     },
                     child: Container(
                       padding: EdgeInsets.symmetric(

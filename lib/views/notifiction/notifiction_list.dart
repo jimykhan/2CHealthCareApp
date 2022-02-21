@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/all.dart';
-import 'package:twochealthcare/common_widgets/appbar_text_style.dart';
+import 'package:twochealthcare/common_widgets/app_bar_components/appbar_text_style.dart';
 import 'package:twochealthcare/common_widgets/custom_appbar.dart';
 import 'package:twochealthcare/common_widgets/notification_widget.dart';
 import 'package:twochealthcare/providers/providers.dart';

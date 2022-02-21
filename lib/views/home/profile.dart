@@ -4,7 +4,7 @@ import 'package:easy_mask/easy_mask.dart';
 import 'package:hooks_riverpod/all.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:twochealthcare/common_widgets/alert_loader.dart';
-import 'package:twochealthcare/common_widgets/appbar_text_style.dart';
+import 'package:twochealthcare/common_widgets/app_bar_components/appbar_text_style.dart';
 import 'package:twochealthcare/common_widgets/circular_image.dart';
 import 'package:twochealthcare/common_widgets/custom_appbar.dart';
 import 'package:twochealthcare/common_widgets/floating_button.dart';

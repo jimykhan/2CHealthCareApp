@@ -44,10 +44,11 @@ dependencies:
   flutter_linkify: ^5.0.2
   url_launcher: ^6.0.17
   jwt_decoder: ^2.0.1
-  percent_indicator: ^3.4.0
   pin_code_fields: ^7.3.0
   sms_autofill: ^2.2.0
   flutter_rating_bar: ^4.0.0
+  percent_indicator: ^4.0.0
+  modal_bottom_sheet: ^2.0.0
 #  flutter_webrtc: ^0.8.0
 
 dev_dependencies:
@@ -61,19 +62,23 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/icons/loginBg.png
+    - assets/icons/
+    - assets/icons/side_menu/
+    - assets/icons/Notifications/
     - assets/icons/logo.svg
+    - assets/icons/loginBg.png
     - assets/icons/home/health-guide-icon.svg
     - assets/icons/home/reading-icon.svg
     - assets/icons/home/trophy-icon.svg
     - assets/icons/home/user-icon.svg
     - assets/icons/home/side-menu-icon.svg
     - assets/icons/home/right-arrow-icon.svg
-    - assets/icons/side_menu/cross-icon.svg
-    - assets/icons/side_menu/home-icon.svg
-    - assets/icons/side_menu/logout-icon.svg
-    - assets/icons/side_menu/setting-icon.svg
-    - assets/icons/side_menu/treatment.png
+#    - assets/icons/side_menu/cross-icon.svg
+#    - assets/icons/side_menu/home-icon.svg
+#    - assets/icons/side_menu/logout-icon.svg
+#    - assets/icons/side_menu/setting-icon.svg
+#    - assets/icons/side_menu/treatment.png
+#    - assets/icons/side_menu/menu_icon.svg
     - assets/icons/readings/blood-glucose-icon.svg
     - assets/icons/readings/heart-icon.svg
     - assets/icons/readings/weight-icon.svg
@@ -86,6 +91,8 @@ flutter:
     - assets/icons/Icon_Video.svg
     - assets/icons/no_result.png
     - assets/icons/filter_icon.svg
+    - assets/icons/facility_change_icon.svg
+    - assets/icons/arrow_down.svg
 
   fonts:
     - family: PoppinsRegular

@@ -5,7 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/all.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:twochealthcare/common_widgets/alert_loader.dart';
-import 'package:twochealthcare/common_widgets/appbar_text_style.dart';
+import 'package:twochealthcare/common_widgets/app_bar_components/appbar_text_style.dart';
 import 'package:twochealthcare/common_widgets/bottom_bar.dart';
 import 'package:twochealthcare/common_widgets/circular_image.dart';
 import 'package:twochealthcare/common_widgets/custom_appbar.dart';
@@ -14,7 +14,7 @@ import 'package:twochealthcare/common_widgets/notification_widget.dart';
 import 'package:twochealthcare/models/chat_model/GetGroups.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/application_route_service.dart';
-import 'package:twochealthcare/services/onlunch_activity_service.dart';
+import 'package:twochealthcare/services/onlunch_activity_routes_service.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
@@ -29,7 +29,7 @@ class ChatList extends HookWidget {
   Widget build(BuildContext context) {
     ChatListVM chatListVM = useProvider(chatListVMProvider);
     ApplicationRouteService applicationRouteService = useProvider(applicationRouteServiceProvider);
-    OnLaunchActivityService onLaunchActivityService = useProvider(onLaunchActivityServiceProvider);
+    OnLaunchActivityAndRoutesService onLaunchActivityService = useProvider(onLaunchActivityServiceProvider);
     useEffect(
           () {
         Future.microtask(() async {

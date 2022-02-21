@@ -7,9 +7,11 @@ class RadioButton extends StatelessWidget {
   String? text;
   bool? disableText = true;
   bool buttonSelected = false;
+  bool noText;
   double? LineWidth;
   double? LineHight;
-  RadioButton({required this.onchange,this.text,this.disableText,required this.buttonSelected,this.LineHight,this.LineWidth});
+  RadioButton({required this.onchange,this.text,this.disableText,
+    required this.buttonSelected,this.LineHight,this.LineWidth,this.noText = false});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -40,8 +42,8 @@ class RadioButton extends StatelessWidget {
                 ) : Container(width: 0.1,height: 0.1,),
               ),
             ),
-            SizedBox(width: ApplicationSizing.convertWidth(10),),
-            TextLineThrough(
+            noText ? Container() : SizedBox(width: ApplicationSizing.convertWidth(10),),
+            noText ? Container() : TextLineThrough(
               text: text??"",
               disableText: disableText!,
               LineHight: LineHight,

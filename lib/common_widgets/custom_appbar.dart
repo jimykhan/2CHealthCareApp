@@ -2,6 +2,7 @@
 
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/all.dart';
+import 'package:twochealthcare/common_widgets/app_bar_components/notification_button.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/signal_r_services.dart';
 import 'package:twochealthcare/util/application_colors.dart';
@@ -23,10 +24,12 @@ class CustomAppBar extends HookWidget {
   double? paddingBottom;
   double? paddingLeft;
   bool? isbottomLine;
+  bool addLeftMargin;
+  bool notifcationIcon;
   CustomAppBar({
    @required this.parentContext,this.color1,this.color2,this.leadingIcon,
     this.trailingIcon,this.centerWigets, @required this.hight,this.paddingBottom,this.isbottomLine =false,
-    this.clickOnDrawer,this.paddingLeft
+    this.clickOnDrawer,this.paddingLeft,this.notifcationIcon = false,this.addLeftMargin = false
 });
 
   @override
@@ -52,7 +55,7 @@ class CustomAppBar extends HookWidget {
           Expanded(
             child: Container(
               padding: EdgeInsets.only(
-                  left: ApplicationSizing.convertWidth(paddingLeft??0),
+                  left: addLeftMargin ? ApplicationSizing.convertWidth(10)  :ApplicationSizing.convertWidth(paddingLeft?? 0),
                   right: ApplicationSizing.convertWidth(20),
                 top: ApplicationSizing.convert(30)
               ),
@@ -83,7 +86,9 @@ class CustomAppBar extends HookWidget {
                       ) ,
                     ),
                     centerWigets ??  Container(),
-                    trailingIcon ?? Container(),
+                    trailingIcon ?? Container(
+                      child: notifcationIcon ? NotificationButton()  : Container(),
+                    ),
                   ],
                 ),
             ),

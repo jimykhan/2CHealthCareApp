@@ -7,11 +7,12 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:twochealthcare/common_widgets/red_dot.dart';
 import 'package:twochealthcare/common_widgets/snackber_message.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/application_route_service.dart';
 import 'package:twochealthcare/services/connectivity_service.dart';
-import 'package:twochealthcare/services/onlunch_activity_service.dart';
+import 'package:twochealthcare/services/onlunch_activity_routes_service.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
@@ -35,7 +36,7 @@ class BottomBar extends HookWidget {
     ApplicationRouteService applicationRouteService =
         useProvider(applicationRouteServiceProvider);
     ChatListVM chatScreenVM = useProvider(chatListVMProvider);
-    OnLaunchActivityService onLaunchActivityService = useProvider(onLaunchActivityServiceProvider);
+    OnLaunchActivityAndRoutesService onLaunchActivityService = useProvider(onLaunchActivityServiceProvider);
 
     useEffect(
       () {
@@ -191,13 +192,7 @@ class BottomBar extends HookWidget {
                     ),
                    chatScreenVM.unReadChats.length == 0 ? Container() : Positioned(
                       top: 10,
-                      child: Container(
-                        padding: EdgeInsets.all(6),
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.red
-                        ),
-                      ),
+                      child: RedDot(),
                     )
                   ],
                 ),

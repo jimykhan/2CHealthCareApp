@@ -4,9 +4,9 @@ import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:twochealthcare/common_widgets/Back_Button.dart';
 import 'package:twochealthcare/common_widgets/alert_loader.dart';
-import 'package:twochealthcare/common_widgets/appbar_text_style.dart';
+import 'package:twochealthcare/common_widgets/app_bar_components/appbar_text_style.dart';
+import 'package:twochealthcare/common_widgets/app_bar_components/back_button.dart';
 import 'package:twochealthcare/common_widgets/circular_image.dart';
 import 'package:twochealthcare/common_widgets/circular_svg_icon.dart';
 import 'package:twochealthcare/common_widgets/custom_appbar.dart';
@@ -22,6 +22,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:twochealthcare/services/application_route_service.dart';
+import 'package:twochealthcare/services/onlunch_activity_routes_service.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
@@ -35,12 +36,14 @@ ScrollController? chatScrollController;
 
 class ChatScreen extends HookWidget {
   GetGroupsModel? getGroupsModel;
-  ChatScreen({this.getGroupsModel});
+  bool backToHome;
+  ChatScreen({this.getGroupsModel,this.backToHome = false});
   @override
   Widget build(BuildContext context) {
     chatScrollController = useScrollController();
     ChatScreenVM chatScreenVM = useProvider(chatScreenVMProvider);
     ApplicationRouteService applicationRouteService = useProvider(applicationRouteServiceProvider);
+    OnLaunchActivityAndRoutesService onLaunchActivityService = useProvider(onLaunchActivityServiceProvider);
     useEffect(
 
       () {
@@ -77,7 +80,12 @@ class ChatScreen extends HookWidget {
           color2: AppBarEndColor,
           leadingIcon: Row(
             children: [
-              CustomBackButton(),
+              CustomBackButton(
+                onclik: backToHome ? (){
+                  applicationRouteService.removeAllAndAdd(screenName: "Home");
+                  onLaunchActivityService.HomeDecider();
+                } : null,
+              ),
               SizedBox(
                 width: ApplicationSizing.convertWidth(5),
               ),

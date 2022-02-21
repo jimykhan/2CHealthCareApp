@@ -13,11 +13,13 @@ import 'package:twochealthcare/services/facility_user_services/home/fu_profile_s
 import 'package:twochealthcare/services/firebase_service.dart';
 import 'package:twochealthcare/services/health_guides_service/health_guides_service.dart';
 import 'package:twochealthcare/services/local_notification_service.dart';
-import 'package:twochealthcare/services/onlunch_activity_service.dart';
+import 'package:twochealthcare/services/onlunch_activity_routes_service.dart';
 import 'package:twochealthcare/services/profile_service.dart';
 import 'package:twochealthcare/services/reading_services/bg_reading_service.dart';
 import 'package:twochealthcare/services/reading_services/blood_pressure_reading_service.dart';
 import 'package:twochealthcare/services/reading_services/modalities_reading_service.dart';
+import 'package:twochealthcare/services/settings_services/fu_settings_services/fu_settings_service.dart';
+import 'package:twochealthcare/services/settings_services/p_settings_services/p_settings_service.dart';
 import 'package:twochealthcare/services/shared_pref_services.dart';
 import 'package:twochealthcare/services/signal_r_services.dart';
 import 'package:twochealthcare/view_models/app_bar_vm.dart';
@@ -37,6 +39,8 @@ import 'package:twochealthcare/view_models/modalities_reading_vm/blood_pressure_
 import 'package:twochealthcare/view_models/modalities_reading_vm/modalities_reading_vm.dart';
 import 'package:twochealthcare/view_models/modalities_reading_vm/tab_and_calender_vm.dart';
 import 'package:twochealthcare/view_models/profile_vm.dart';
+import 'package:twochealthcare/view_models/settings_view_models/fu_settings_view_model/fu_settings_view_models.dart';
+import 'package:twochealthcare/view_models/settings_view_models/p_settings_view_models/p_settings_view_model.dart';
 import 'package:twochealthcare/view_models/splash_vm/splash_vm.dart';
 /// ChangeNotifierProvider
 final splachVMProvider =  ChangeNotifierProvider<SplashVM>((ref)=>SplashVM(ref: ref));
@@ -54,6 +58,7 @@ final healthGuidesVMProviders = ChangeNotifierProvider<HealthGuidesVM>((ref)=>He
 final appBarVMProvider = ChangeNotifierProvider<AppBarVM>((ref)=>AppBarVM(ref: ref));
 final forgetPasswordVMProvider = ChangeNotifierProvider<ForgetPasswordVM>((ref)=>ForgetPasswordVM(ref: ref));
 final carePlanVMProvider = ChangeNotifierProvider<CarePlanVM>((ref)=>CarePlanVM(ref: ref));
+final pSettigsVMProvider = ChangeNotifierProvider<PSettingsViewModel>((ref)=>PSettingsViewModel(ref: ref));
 /// ChangeNotifierProvider
 
 
@@ -72,9 +77,10 @@ final chatListServiceProvider = Provider<ChatListService>((ref)=>ChatListService
 final connectivityServiceProvider = Provider<ConnectivityService>((ref)=>ConnectivityService(ref: ref));
 final applicationRouteServiceProvider = Provider<ApplicationRouteService>((ref)=>ApplicationRouteService());
 final localNotificationServiceProvider = Provider<LocalNotificationService>((ref)=>LocalNotificationService(ref: ref));
-final onLaunchActivityServiceProvider = Provider<OnLaunchActivityService>((ref)=>OnLaunchActivityService(ref: ref));
+final onLaunchActivityServiceProvider = Provider<OnLaunchActivityAndRoutesService>((ref)=>OnLaunchActivityAndRoutesService(ref: ref));
 final healthGuidesServiceProvider = Provider<HealthGuidesService>((ref)=>HealthGuidesService(ref: ref));
 final carePlanServiceProvider = Provider<CarePlanServices>((ref)=>CarePlanServices(ref: ref));
+final pSettingsServiceProvider = Provider<PSettingsService>((ref)=>PSettingsService(ref: ref));
 /// Simple Providers
 
 
@@ -82,8 +88,10 @@ final carePlanServiceProvider = Provider<CarePlanServices>((ref)=>CarePlanServic
 final fuHomeVMProvider = ChangeNotifierProvider<FUHomeViewModel>((ref)=>FUHomeViewModel(ref: ref));
 final fuProfileVMProvider = ChangeNotifierProvider<FUProfileVM>((ref)=>FUProfileVM(ref: ref));
 final fUPatientSummaryVMProvider = ChangeNotifierProvider<FUPatientSummaryVM>((ref)=>FUPatientSummaryVM(ref: ref));
+final fuSettingsVMProvider = ChangeNotifierProvider<FuSettingsViewModel>((ref)=>FuSettingsViewModel(ref: ref));
 ///Facility User ChangeNotifier Provider
 ///Facility User Simple Provider
 final fuHomeServiceProvider = Provider<FUHomeService>((ref)=>FUHomeService(ref: ref));
 final fuProfileServiceProvider = Provider<FUProfileService>((ref)=>FUProfileService(ref: ref));
+final fuSettingsServiceProvider = Provider<FuSettingsService>((ref)=>FuSettingsService(ref: ref));
 ///Facility User Simple Provider

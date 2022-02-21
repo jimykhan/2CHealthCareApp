@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:twochealthcare/common_widgets/custom_text_erea.dart';
+import 'package:twochealthcare/common_widgets/input_field/custom_text_erea.dart';
 import 'package:twochealthcare/common_widgets/radio-button.dart';
 import 'package:twochealthcare/common_widgets/toggle_button.dart';
 import 'package:twochealthcare/util/application_colors.dart';

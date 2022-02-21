@@ -18,10 +18,12 @@ import 'package:twochealthcare/views/facility_user/fu_home/fu_home.dart';
 import 'package:twochealthcare/views/facility_user/fu_home/fu_profile.dart';
 import 'package:twochealthcare/views/home/home.dart';
 import 'package:twochealthcare/views/home/profile.dart';
+import 'package:twochealthcare/views/settings/fu_settings/fu_settings.dart';
+import 'package:twochealthcare/views/settings/p_settings/p_settings.dart';
 
 import '../main.dart';
 
-class OnLaunchActivityService{
+class OnLaunchActivityAndRoutesService{
   ProviderReference? _ref;
   DioServices? dio;
   AuthServices? _authService;
@@ -31,7 +33,7 @@ class OnLaunchActivityService{
   SignalRServices? signalRServices;
   ProfileVm? profileVm;
 
-  OnLaunchActivityService({ProviderReference? ref}){
+  OnLaunchActivityAndRoutesService({ProviderReference? ref}){
     _ref = ref;
     _initServices();
   }
@@ -118,6 +120,26 @@ class OnLaunchActivityService{
     }else{
     }
   }
+  settingsDecider()async{
+    CurrentUser currentUser = await loginVM?.getCurrentUserFromSharedPref();
+    Navigator.pop(applicationContext!.currentContext!);
+    if(currentUser.userType == 1){
+      Navigator.push(
+          applicationContext!.currentContext!,
+          PageTransition(
+              child: PSettings(),
+              type: PageTransitionType.bottomToTop));
+    }
+    if(currentUser.userType == 5){
+      Navigator.push(
+          applicationContext!.currentContext!,
+          PageTransition(
+              child: FUSettings(),
+              type: PageTransitionType.bottomToTop));
+    }else{
+    }
+  }
+
   HomeDecider()async{
     CurrentUser currentUser = await loginVM?.getCurrentUserFromSharedPref();
     if(currentUser.userType == 1){

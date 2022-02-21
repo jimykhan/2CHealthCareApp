@@ -72,4 +72,8 @@ class FacilityController{
 class AccountApi{
   static const String refreshToken = baseUrl + "/api/Account/RefreshToken";
 }
+class BlueButton{
+  static const String checkBlueButton = baseUrl + "/api/BlueButton/IsConnected";
+  static const String blueButtonOAuthredirect = baseUrl + "/api/BlueButton/oauthredirect";
+}
 // ?Username=ffa.a@hotmail.com&Email=ffa.a@hotmail.com

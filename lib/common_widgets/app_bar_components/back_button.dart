@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 class CustomBackButton extends StatelessWidget {
-  const CustomBackButton({Key? key}) : super(key: key);
+  Function()? onclik;
+   CustomBackButton({Key? key,this.onclik}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: ()=>Navigator.pop(context),
+      onTap: onclik??()=>Navigator.pop(context),
       child: Container(
         height: 32,
         width: 32,

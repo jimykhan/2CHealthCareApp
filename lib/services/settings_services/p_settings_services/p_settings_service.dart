@@ -18,13 +18,15 @@ class PSettingsService{
     _dioServices = _ref!.read(dioServicesProvider);
   }
 
+
+
  Future<bool> checkIsBlueBottonConnected()async{
     bool isConnect = false;
    String appUserId = await _authServices!.getCurrentAppUserId();
     try{
       Response? response  = await _dioServices?.dio?.get(BlueButton.checkBlueButton+"/${appUserId}");
       if(response?.statusCode == 200){
-        isConnect = true;
+        isConnect = response?.data??false;
       }else{
         isConnect = false;
       }
@@ -37,7 +39,7 @@ class PSettingsService{
    //  bool isConnect = false;
    // String appUserId = await _authServices!.getCurrentAppUserId();
    try{
-     Response? response  = await _dioServices?.dio?.get(BlueButton.blueButtonOAuthredirect);
+     Response? response  = await _dioServices?.dio?.get(BlueButton.getBlueButtonUrl);
      if(response?.statusCode == 200){
        return response;
      }else{

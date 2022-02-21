@@ -4,7 +4,8 @@ import 'package:twochealthcare/util/application_sizing.dart';
 
 class loader extends StatefulWidget {
   double? radius;
-  loader({this.radius});
+  double? width;
+  loader({this.radius,this.width});
   @override
   _loaderState createState() => _loaderState();
 }
@@ -13,7 +14,7 @@ class _loaderState extends State<loader> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width,
+      width: widget.width ?? MediaQuery.of(context).size.width,
       child: Center(
         child: CupertinoActivityIndicator(
           radius: ApplicationSizing.convert(widget.radius??10),

@@ -33,7 +33,7 @@ class ChatList extends HookWidget {
     useEffect(
           () {
         Future.microtask(() async {
-          chatListVM.getGroupsIds();
+          chatListVM.getGroupsIds(onlounch: false);
         });
 
         return () {

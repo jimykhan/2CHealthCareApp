@@ -5,6 +5,7 @@ import 'package:twochealthcare/services/profile_service.dart';
 import 'package:twochealthcare/services/settings_services/p_settings_services/p_settings_service.dart';
 
 class PSettingsViewModel extends ChangeNotifier{
+  bool getBlueButtonUrlLoading = false;
   bool isBlueButtonConnected = false;
   ProviderReference? _ref;
   PSettingsService? _pSettingsService;
@@ -14,6 +15,10 @@ class PSettingsViewModel extends ChangeNotifier{
   }
   initService(){
     _pSettingsService = _ref?.read(pSettingsServiceProvider);
+  }
+  setGetBlueButtonUrlLoading(check){
+    getBlueButtonUrlLoading = check;
+    notifyListeners();
   }
   checkIsBlueBottonConnected()async{
     isBlueButtonConnected = false;
@@ -29,11 +34,13 @@ class PSettingsViewModel extends ChangeNotifier{
     isBlueButtonConnected = false;
   }
   blueButtonAutherizations()async{
+    setGetBlueButtonUrlLoading(true);
     var response  = await _pSettingsService?.blueButtonAutherizations();
     if(response != null){
       // launchURL("");
+      setGetBlueButtonUrlLoading(false);
     }else{
-
+      setGetBlueButtonUrlLoading(false);
     }
   }
 }

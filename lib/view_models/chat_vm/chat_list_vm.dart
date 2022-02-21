@@ -74,7 +74,7 @@ class ChatListVM extends ChangeNotifier{
     notifyListeners();
   }
 
-  Future<dynamic> getGroupsIds() async {
+  Future<dynamic> getGroupsIds({bool onlounch = true}) async {
     try {
       setLoadingGroupId(true);
       final chatListService = _ref!.read(chatListServiceProvider);
@@ -98,7 +98,7 @@ class ChatListVM extends ChangeNotifier{
           }
         });
         setLoadingGroupId(false);
-        if(groupIds.length == 1){
+        if(groupIds.length == 1 && !onlounch){
           Navigator.push(applicationContext!.currentContext!, PageTransition(child: ChatScreen(getGroupsModel: groupIds[0],backToHome: true,), type: PageTransitionType.fade));
         }
       }

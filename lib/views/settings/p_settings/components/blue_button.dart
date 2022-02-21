@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:twochealthcare/common_widgets/filled_button.dart';
+import 'package:twochealthcare/common_widgets/loader.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/styles.dart';
 import 'package:twochealthcare/view_models/settings_view_models/p_settings_view_models/p_settings_view_model.dart';
@@ -19,7 +20,7 @@ class BlueButton extends StatelessWidget {
             fontSize: 18,
             fontWeight: FontWeight.w500
           ),),
-          FilledButton(
+         pSettingsViewModel.getBlueButtonUrlLoading ? loader(width: 150,) : FilledButton(
             w: 150,
               h: 35,
               onTap: (){

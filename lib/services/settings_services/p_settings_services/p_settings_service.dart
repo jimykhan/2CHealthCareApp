@@ -37,9 +37,9 @@ class PSettingsService{
   }
   blueButtonAutherizations()async{
    //  bool isConnect = false;
-   // String appUserId = await _authServices!.getCurrentAppUserId();
+   int UserId = await _authServices!.getCurrentUserId();
    try{
-     Response? response  = await _dioServices?.dio?.get(BlueButton.getBlueButtonUrl);
+     Response? response  = await _dioServices?.dio?.get(BlueButton.getBlueButtonUrl+"/${UserId}");
      if(response?.statusCode == 200){
        return response;
      }else{

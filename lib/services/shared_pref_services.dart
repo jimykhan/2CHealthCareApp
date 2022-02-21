@@ -94,4 +94,29 @@ class SharedPrefServices{
 
   }
 
+  Future<int> getCurrentUserType() async {
+    await _initPref();
+    CurrentUser? currentUser = await getCurrentUser();
+    int currentUserType = -1;
+    currentUserType = currentUser?.userType??1;
+    return currentUserType;
+
+  }
+
+  setShortToken(String token)async{
+    await _initPref();
+    _prefs?.setString("shortToken", token);
+  }
+
+  Future<String?> getShortToken()async{
+    String? token;
+    await _initPref();
+    try{
+      token = await _prefs?.getString("shortToken");
+      return token;
+    }catch(e){
+      return token;
+    }
+  }
+
 }

@@ -7,6 +7,8 @@ import 'package:twochealthcare/services/facility_user_services/home/fu_home_serv
 class FUHomeViewModel extends ChangeNotifier{
   ProviderReference? _ref;
   FUHomeService? fuHomeService;
+  int dashboardSummaryMonth = DateTime.now().month;
+  int dashboardSummaryYear = DateTime.now().year;
   PatientsForDashboard? patientsForDashboard;
   bool loadingPatientList = true;
   bool newPageLoading = false;
@@ -56,5 +58,31 @@ class FUHomeViewModel extends ChangeNotifier{
       setLoadingPatientList(false);
       setNewPageLoading(false);
     }
+  }
+
+  patientServicesummary({int? facilityId,int? month,int? year}) async{
+    var res = await fuHomeService?.patientServicesummary(month: dashboardSummaryMonth,year: dashboardSummaryYear);
+    if(res!=null){
+      PatientsForDashboard newPList = res as PatientsForDashboard;
+      if(newPList != null && newPList.patientsList!.isNotEmpty){
+        if(patientListPageNumber == 1){
+          patientsForDashboard = newPList;
+          patientListPageNumber++;
+        }else{
+          patientsForDashboard!.patientsList!.addAll(newPList.patientsList??[])  ;
+          patientListPageNumber++;
+        }
+
+      }
+
+      setLoadingPatientList(false);
+      setNewPageLoading(false);
+    }else{
+      setLoadingPatientList(false);
+      setNewPageLoading(false);
+    }
+  }
+  Hangfire() async {
+    var res = await fuHomeService?.getHangfireToken();
   }
 }

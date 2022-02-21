@@ -40,4 +40,28 @@ class FUHomeService{
 
     }
 
+    Future<dynamic>patientServicesummary({int? month, int? year,}) async{
+      try{
+        int facilityId = await _sharedPrefServices!.getPatientFacilityId();
+        Response? res = await dio?.dio?.get(PatientsController.patientServiceSummary+"/?facilityUserId=$facilityId&Month=$month&Year=$year");
+        if(res?.statusCode == 200){
+          return res?.data;
+        }else{
+          return null;
+        }
+      }catch(e){
+        return null;
+      }
+    }
+
+  getHangfireToken()async{
+      String? token = await _sharedPrefServices!.getShortToken();
+      if(token == null){
+        Response? res = await dio?.dio?.post(AccountApi.hangfireToken,data: {});
+        if(res?.statusCode == 200){
+          _sharedPrefServices!.setShortToken(res?.data["bearerToken"]??null);
+        }
+      }
+    }
+
 }

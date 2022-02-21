@@ -204,9 +204,15 @@ class AuthServices{
     return  currentUser;
   }
 
-  dynamic getBearerToken(){
+  Future<String> getBearerToken()async{
     initServices();
-    var token = _sharePrf?.getBearerToken();
+    String token = "";
+    int userType = await _sharePrf?.getCurrentUserType()??1;
+    if(userType == 1){
+      token = await _sharePrf?.getBearerToken();
+    }else{
+
+    }
     return token;
   }
 

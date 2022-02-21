@@ -52,6 +52,9 @@ class FUHome extends HookWidget {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(ApplicationSizing.convert(80)),
         child: CustomAppBar(
+          clickOnNotification: (){
+            fuHomeViewModel.Hangfire();
+          },
           notifcationIcon: true,
           leadingIcon: InkWell(
             onTap: () {

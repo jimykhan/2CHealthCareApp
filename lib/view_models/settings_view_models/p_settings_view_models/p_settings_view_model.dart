@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/profile_service.dart';
 import 'package:twochealthcare/services/settings_services/p_settings_services/p_settings_service.dart';
+import 'package:twochealthcare/util/conversion.dart';
 
 class PSettingsViewModel extends ChangeNotifier{
   bool getBlueButtonUrlLoading = false;
@@ -32,13 +33,14 @@ class PSettingsViewModel extends ChangeNotifier{
   }
   initState(){
     isBlueButtonConnected = false;
+    getBlueButtonUrlLoading = false;
   }
   blueButtonAutherizations()async{
     setGetBlueButtonUrlLoading(true);
     var response  = await _pSettingsService?.blueButtonAutherizations();
     if(response != null){
-      // launchURL("");
       setGetBlueButtonUrlLoading(false);
+       launchURL(url: response.data);
     }else{
       setGetBlueButtonUrlLoading(false);
     }

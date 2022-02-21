@@ -74,6 +74,6 @@ class AccountApi{
 }
 class BlueButton{
   static const String checkBlueButton = baseUrl + "/api/BlueButton/IsConnected";
-  static const String getBlueButtonUrl = baseUrl + "/api/BlueButton";
+  static const String getBlueButtonUrl = baseUrl + "/api/BlueButton/GetCode";
 }
 // ?Username=ffa.a@hotmail.com&Email=ffa.a@hotmail.com

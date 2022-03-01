@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/all.dart';
 import 'package:twochealthcare/constants/api_strings.dart';
 import 'package:twochealthcare/models/facility_user_models/dashboard_patients/dashboard_patient_summary.dart';
 import 'package:twochealthcare/models/facility_user_models/dashboard_patients/patients_for_dashboard.dart';
+import 'package:twochealthcare/models/facility_user_models/facilityModel/facility_model.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/dio_services/dio_services.dart';
 import 'package:twochealthcare/services/shared_pref_services.dart';
@@ -41,7 +42,7 @@ class FUHomeService{
 
     }
 
-    Future<dynamic>patientServicesummary({int? month, int? year,}) async{
+    Future<dynamic> patientServicesummary({int? month, int? year,}) async{
       try{
         int facilityId = await _sharedPrefServices!.getFacilityId();
         int currentUserId = await _sharedPrefServices!.getCurrentUserId();
@@ -55,6 +56,25 @@ class FUHomeService{
         return null;
       }
     }
+
+    Future<dynamic> getFacilitiesByUserId() async{
+      try{
+        int currentUserId = await _sharedPrefServices!.getCurrentUserId();
+        Response? res = await dio?.dio?.get(FacilityController.getFacilitiesByFacilityUserId+"/$currentUserId");
+        if(res?.statusCode == 200){
+          List<FacilityModel> facilities = [];
+          res?.data.forEach((element) {
+            facilities.add(FacilityModel.fromJson(element));
+          });
+          return facilities;
+        }else{
+          return null;
+        }
+      }catch(e){
+        return null;
+      }
+    }
+
 
   getHangfireToken()async{
       String? token = await _sharedPrefServices!.getShortToken();

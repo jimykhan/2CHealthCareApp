@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:twochealthcare/common_widgets/radio-button.dart';
 import 'package:twochealthcare/main.dart';
+import 'package:twochealthcare/models/facility_user_models/facilityModel/facility_model.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 class AllFacility extends StatelessWidget {
-  AllFacility ({Key? key}) : super(key: key);
+  List<FacilityModel> facilities = [];
+  AllFacility ({Key? key, required this.facilities}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +52,7 @@ class AllFacility extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text("Demo Facility",
+                            Text(facilities[index].facilityName?? "",
                             style: Styles.PoppinsRegular(
                               fontWeight: FontWeight.w400,
                               fontSize: ApplicationSizing.constSize(17),
@@ -71,7 +73,7 @@ class AllFacility extends StatelessWidget {
                         color: fontGrayColor,
                       );
                     },
-                    itemCount: 5),
+                    itemCount: facilities.length),
               ),
             ),
 

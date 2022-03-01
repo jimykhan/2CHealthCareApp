@@ -2,11 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/all.dart';
 import 'package:twochealthcare/models/facility_user_models/dashboard_patients/dashboard_patient_summary.dart';
 import 'package:twochealthcare/models/facility_user_models/dashboard_patients/patients_for_dashboard.dart';
+import 'package:twochealthcare/models/facility_user_models/facilityModel/facility_model.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/facility_user_services/home/fu_home_service.dart';
 
 class FUHomeViewModel extends ChangeNotifier{
   DashboardPatientSummary? dashboardPatientSummary;
+  List<FacilityModel> facilities = [];
   ProviderReference? _ref;
   FUHomeService? fuHomeService;
   int dashboardSummaryMonth = DateTime.now().month;
@@ -73,7 +75,15 @@ class FUHomeViewModel extends ChangeNotifier{
     }
   }
 
-  // Hangfire() async {
-  //   var res = await fuHomeService?.getHangfireToken();
-  // }
+  getFacilitiesByUserId() async{
+    var res = await fuHomeService?.getFacilitiesByUserId();
+    if(res!=null){
+      facilities = [];
+      res.forEach((element) {
+        facilities.add(element);
+      });
+    }else{
+    }
+  }
+
 }

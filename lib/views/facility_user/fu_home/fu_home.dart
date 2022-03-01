@@ -111,7 +111,10 @@ class FUHome extends HookWidget {
           Column(
             children: [
               ChangeFacilityTile(onClick: () {
-                openBottomModal(child: AllFacility());
+                openBottomModal(
+                    child: AllFacility(facilities: fuHomeViewModel.facilities,
+                    )
+                );
               },),
               SizedBox(height: 10,),
 

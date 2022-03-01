@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/all.dart';
+import 'package:twochealthcare/main.dart';
 import 'package:twochealthcare/models/facility_user_models/dashboard_patients/dashboard_patient_summary.dart';
 import 'package:twochealthcare/models/facility_user_models/dashboard_patients/patients_for_dashboard.dart';
 import 'package:twochealthcare/models/facility_user_models/facilityModel/facility_model.dart';
@@ -91,6 +92,14 @@ class FUHomeViewModel extends ChangeNotifier{
       });
     }else{
     }
+  }
+
+  switchFacility(facilityId)async{
+    Navigator.pop(applicationContext!.currentContext!);
+    print("facility Id ${facilityId}");
+    setLoading(true);
+    var res = await fuHomeService?.switchFacility(facilityId : facilityId);
+    patientServicesummary();
   }
 
 }

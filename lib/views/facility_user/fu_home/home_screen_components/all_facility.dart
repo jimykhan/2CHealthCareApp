@@ -12,8 +12,9 @@ import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
 import '../../../../services/auth_services/auth_services.dart';
 class AllFacility extends StatelessWidget {
   List<FacilityModel> facilities = [];
+  Function changeFacility;
   int selectedFacilityId;
-  AllFacility ({Key? key, required this.facilities,required this.selectedFacilityId}) : super(key: key);
+  AllFacility ({Key? key, required this.facilities,required this.selectedFacilityId,required this.changeFacility}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -52,29 +53,36 @@ class AllFacility extends StatelessWidget {
                   shrinkWrap: true,
                     physics: ScrollPhysics(),
                     itemBuilder: (context,index){
-                      return Container(
-                        margin: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin()),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(facilities[index].facilityName?? "",
-                            style: Styles.PoppinsRegular(
-                              fontWeight: FontWeight.w400,
-                              fontSize: ApplicationSizing.constSize(17),
-                              color: Colors.black
-                            ),),
-                            RadioButton(
-                              buttonSelected: selectedFacilityId == facilities[index].id,
-                              onchange: (){},
-                              noText: true,),
+                      return InkWell(
+                        onTap: (){
+                          selectedFacilityId == facilities[index].id ? null : changeFacility(facilities[index].id);
+                        } ,
+                        child: Container(
+                          padding: EdgeInsets.symmetric(vertical: 11),
+                          // color: Colors.red,
+                          margin: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin()),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(facilities[index].facilityName?? "",
+                              style: Styles.PoppinsRegular(
+                                fontWeight: FontWeight.w400,
+                                fontSize: ApplicationSizing.constSize(17),
+                                color: Colors.black
+                              ),),
+                              RadioButton(
+                                buttonSelected: selectedFacilityId == facilities[index].id,
+                                onchange: (){},
+                                noText: true,),
 
-                          ],
+                            ],
+                          ),
                         ),
                       );
                     },
                     separatorBuilder: (context,index){
                       return Container(
-                        margin: EdgeInsets.symmetric(horizontal: 5,vertical: 11),
+                        // margin: EdgeInsets.symmetric(horizontal: 5,vertical: 11),
                         width: MediaQuery.of(context).size.width,
                         height: 1,
                         color: fontGrayColor,

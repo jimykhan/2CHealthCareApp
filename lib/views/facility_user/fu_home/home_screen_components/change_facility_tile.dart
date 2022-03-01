@@ -7,11 +7,17 @@ import 'package:twochealthcare/util/styles.dart';
 import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
 class ChangeFacilityTile extends StatelessWidget {
   Function() onClick;
-  LoginVM? loginVM;
-   ChangeFacilityTile({required this.onClick,Key? key,this.loginVM}) : super(key: key);
+  LoginVM loginVM;
+   ChangeFacilityTile({required this.onClick,Key? key,required this.loginVM}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    String faciilityName ="";
+    loginVM.currentUser?.claims?.forEach((clam) {
+      if(clam.claimType == "FacilityName"){
+        faciilityName = clam.claimValue??"";
+      }
+    });
     return InkWell(
       onTap: onClick,
       child: Container(
@@ -38,7 +44,7 @@ class ChangeFacilityTile extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text("Demo Facilty",style: Styles.PoppinsRegular(
+                    Text(loginVM.currentUser?.fullName?? "Demo Facilty",style: Styles.PoppinsRegular(
                       fontWeight: FontWeight.w600,
                       fontSize: ApplicationSizing.constSize(16),
                       color: Colors.black
@@ -50,7 +56,7 @@ class ChangeFacilityTile extends StatelessWidget {
                             fontSize: ApplicationSizing.constSize(12),
                             color: fontGrayColor
                         ),),
-                        Text("Demo Facility1",style: Styles.PoppinsRegular(
+                        Text(faciilityName,style: Styles.PoppinsRegular(
                             fontWeight: FontWeight.w600,
                             fontSize: ApplicationSizing.constSize(12),
                             color: appColor

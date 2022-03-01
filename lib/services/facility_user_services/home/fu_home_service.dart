@@ -7,17 +7,20 @@ import 'package:twochealthcare/models/facility_user_models/facilityModel/facilit
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/dio_services/dio_services.dart';
 import 'package:twochealthcare/services/shared_pref_services.dart';
+import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
 
 class FUHomeService{
   ProviderReference? _ref;
   DioServices? dio;
   SharedPrefServices? _sharedPrefServices;
+  LoginVM? _loginVM;
   FUHomeService({ProviderReference? ref}){
     _ref = ref;
     initService();
   }
   initService(){
     dio = _ref!.read(dioServicesProvider);
+    _loginVM = _ref!.read(loginVMProvider);
     _sharedPrefServices = _ref!.read(sharedPrefServiceProvider);
   }
 
@@ -71,6 +74,27 @@ class FUHomeService{
         }
       }catch(e){
         return null;
+      }
+    }
+
+    Future<bool> switchFacility({required int facilityId}) async{
+      try{
+        int currentUserId = await _sharedPrefServices!.getCurrentUserId();
+        var body ={
+          "facilityUserId": currentUserId,
+          "facilityId": facilityId
+      };
+
+        Response? res = await dio?.dio?.post(FacilityController.switchFacility,
+        data: body);
+        if(res?.statusCode == 200){
+          _loginVM?.updateCurrentUser(res?.data);
+          return true;
+        }else{
+          return false;
+        }
+      }catch(e){
+        return false;
       }
     }
 

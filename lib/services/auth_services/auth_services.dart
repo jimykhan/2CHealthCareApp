@@ -196,6 +196,7 @@ class AuthServices{
   updateCurrentUser(var data){
     initServices();
     _sharePrf!.setCurrentUser(data);
+    // getCurrentUserFromSharedPref();
   }
 
   Future<CurrentUser?> getCurrentUserFromSharedPref()async{

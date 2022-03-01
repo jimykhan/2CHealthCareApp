@@ -67,6 +67,7 @@ class FacilityController{
   static const String getFacilityUser = baseUrl + "/api/Facility/GetFacilityUser";
   static const String facilityServiceConfigByFacilityId = baseUrl + "/api/FacilityServiceConfig/GetByFacilityId";
   static const String getFacilitiesByFacilityUserId = baseUrl + "/api/Facility/GetFacilitiesByFacilityUserId";
+  static const String switchFacility = baseUrl + "/api/Facility/SwitchFacility";
 }
 class AccountApi{
   static const String refreshToken = baseUrl + "/api/Account/RefreshToken";

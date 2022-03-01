@@ -20,7 +20,9 @@
 
         android:label="2C Health Care"
         android:allowBackup="false"
+        android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher">
+
 
         <activity
 

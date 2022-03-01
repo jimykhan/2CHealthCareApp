@@ -30,7 +30,7 @@ class FUHome extends HookWidget {
   GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
-    // LoginVM loginVM = useProvider(loginVMProvider);
+    LoginVM loginVM = useProvider(loginVMProvider);
     HomeVM homeVM = useProvider(homeVMProvider);
     FUHomeViewModel fuHomeViewModel = useProvider(fuHomeVMProvider);
     // SharedPrefServices sharedPrefServices = useProvider(sharedPrefServiceProvider);
@@ -71,7 +71,7 @@ class FUHome extends HookWidget {
           paddingLeft: 15,
         ),
       ),
-      body: _body(fuHomeViewModel: fuHomeViewModel,homeVM: homeVM),
+      body: _body(fuHomeViewModel: fuHomeViewModel,homeVM: homeVM,loginVM: loginVM),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         enableFeedback: false,
@@ -101,7 +101,7 @@ class FUHome extends HookWidget {
     );
   }
 
-  _body({required FUHomeViewModel fuHomeViewModel,required HomeVM homeVM}){
+  _body({required FUHomeViewModel fuHomeViewModel,required HomeVM homeVM,required LoginVM loginVM}){
     return Stack(
       children: [
         Container(
@@ -117,9 +117,12 @@ class FUHome extends HookWidget {
                 openBottomModal(
                     child: AllFacility(facilities: fuHomeViewModel.facilities,
                       selectedFacilityId: fuHomeViewModel.currentFacilityId,
+                      changeFacility: fuHomeViewModel.switchFacility,
                     )
                 );
-              },),
+              },
+                loginVM: loginVM,
+              ),
               SizedBox(height: 10,),
 
               ServiceTile(

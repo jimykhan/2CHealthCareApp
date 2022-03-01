@@ -15,8 +15,9 @@ class FacilityModel {
   String? city;
   String? stateName;
   int? emrId;
-  int? monthlyCharge;
+  double? monthlyCharge;
   int? organizationId;
+
 
   FacilityModel(
       {this.id,

@@ -59,17 +59,15 @@ class ApiStrings {
   static const String sendVerificationEmail = baseUrl + "/api/Account/SendVerificationEmail";
   static const String getCarePlanMasterByPatientId = baseUrl + "/api/CarePlanMaster/GetCarePlanMasterByPatientId";
 }
-
 class PatientsController{
   static const String getPatientsForDashboard = baseUrl + "/api/Patients/GetPatientsForDashboard";
   static const String patientServiceSummary = baseUrl + "/api/Patients/PatientServicesSummary";
 }
 class FacilityController{
-
   static const String getFacilityUser = baseUrl + "/api/Facility/GetFacilityUser";
   static const String facilityServiceConfigByFacilityId = baseUrl + "/api/FacilityServiceConfig/GetByFacilityId";
+  static const String getFacilitiesByFacilityUserId = baseUrl + "/api/Facility/GetFacilitiesByFacilityUserId";
 }
-
 class AccountApi{
   static const String refreshToken = baseUrl + "/api/Account/RefreshToken";
   static const String hangfireToken = baseUrl + "/api/Account/hangfireToken";
@@ -78,4 +76,3 @@ class BlueButton{
   static const String checkBlueButton = baseUrl + "/api/BlueButton/IsConnected";
   static const String getBlueButtonUrl = baseUrl + "/api/BlueButton/GetCode";
 }
-// ?Username=ffa.a@hotmail.com&Email=ffa.a@hotmail.com

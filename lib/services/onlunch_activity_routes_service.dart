@@ -13,6 +13,7 @@ import 'package:twochealthcare/services/firebase_service.dart';
 import 'package:twochealthcare/services/signal_r_services.dart';
 import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
 import 'package:twochealthcare/view_models/chat_vm/chat_list_vm.dart';
+import 'package:twochealthcare/view_models/facility_user_view_model/home/fu_home_view_model.dart';
 import 'package:twochealthcare/view_models/profile_vm.dart';
 import 'package:twochealthcare/views/auths/login.dart';
 import 'package:twochealthcare/views/facility_user/fu_home/fu_home.dart';
@@ -34,6 +35,7 @@ class OnLaunchActivityAndRoutesService{
   SignalRServices? signalRServices;
   ProfileVm? profileVm;
   FUHomeService? _fuHomeService;
+  FUHomeViewModel? _fuHomeViewModel;
 
   OnLaunchActivityAndRoutesService({ProviderReference? ref}){
     _ref = ref;
@@ -49,6 +51,7 @@ class OnLaunchActivityAndRoutesService{
     _authService = _ref!.read(authServiceProvider);
     loginVM = _ref!.read(loginVMProvider);
     _fuHomeService = _ref!.read(fuHomeServiceProvider);
+    _fuHomeViewModel = _ref!.read(fuHomeVMProvider);
   }
 
   syncLastApplicationUseDateAndTime() async {
@@ -91,6 +94,7 @@ class OnLaunchActivityAndRoutesService{
     });
     _chatListVM?.getGroupsIds();
     firebaseService?.initNotification();
+    _fuHomeViewModel?.getFacilitiesByUserId();
     loginVM?.getCurrentUserFromSharedPref();
     await _fuHomeService?.getHangfireToken();
     signalRServices?.initSignalR();

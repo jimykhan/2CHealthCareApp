@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:twochealthcare/common_widgets/radio-button.dart';
 import 'package:twochealthcare/main.dart';
+import 'package:twochealthcare/models/facility_user_models/facilityModel/facility_model.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class AllFacility extends StatelessWidget {
-  AllFacility({Key? key}) : super(key: key);
+  List<FacilityModel> facilities = [];
+  AllFacility({Key? key, required this.facilities}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -50,11 +52,11 @@ class AllFacility extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "Demo Facility",
+                            facilities[index].facilityName ?? "",
                             style: Styles.PoppinsRegular(
                                 fontWeight: FontWeight.w400,
-                                fontSize: ApplicationSizing.constSize(16),
-                                color: Colors.black87),
+                                fontSize: ApplicationSizing.constSize(17),
+                                color: Colors.black),
                           ),
                           RadioButton(
                             buttonSelected: true,
@@ -67,13 +69,13 @@ class AllFacility extends StatelessWidget {
                   },
                   separatorBuilder: (context, index) {
                     return Container(
-                      margin: EdgeInsets.symmetric(horizontal: 0, vertical: 12),
+                      margin: EdgeInsets.symmetric(horizontal: 5, vertical: 11),
                       width: MediaQuery.of(context).size.width,
                       height: 1,
-                      color: Colors.black12,
+                      color: fontGrayColor,
                     );
                   },
-                  itemCount: 5),
+                  itemCount: facilities.length),
             ),
           ),
         ],

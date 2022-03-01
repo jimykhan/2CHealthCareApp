@@ -40,7 +40,6 @@ class FUHome extends HookWidget {
             homeVM.resetHome();
             fuHomeViewModel.isloading = true;
             fuHomeViewModel.patientListPageNumber = 1;
-            // fuHomeViewModel.getPatientsForDashboard();
             fuHomeViewModel.patientServicesummary();
         Future.microtask(() async {});
         return () {};
@@ -111,7 +110,10 @@ class FUHome extends HookWidget {
           Column(
             children: [
               ChangeFacilityTile(onClick: () {
-                openBottomModal(child: AllFacility());
+                openBottomModal(
+                    child: AllFacility(facilities: fuHomeViewModel.facilities,
+                    )
+                );
               },),
               SizedBox(height: 10,),
 

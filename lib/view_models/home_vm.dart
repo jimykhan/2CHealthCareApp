@@ -54,8 +54,6 @@ class HomeVM extends ChangeNotifier{
       dialogText:
       "Your version is ${status.localVersion} availabe version ${status.storeVersion}",
       updateButtonText: "Update",
-      // dismissButtonText: 'Custom dismiss button text',
-      // dismissAction: () => Navigator.pop(context),
     );
     }
   }

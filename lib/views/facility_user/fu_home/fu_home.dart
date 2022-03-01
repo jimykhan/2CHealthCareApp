@@ -11,6 +11,8 @@ import 'package:twochealthcare/common_widgets/input_field/custom_text_field.dart
 import 'package:twochealthcare/common_widgets/app_bar_components/drawer_menu_button.dart';
 import 'package:twochealthcare/common_widgets/no_data_inlist.dart';
 import 'package:twochealthcare/providers/providers.dart';
+import 'package:twochealthcare/services/auth_services/auth_services.dart';
+import 'package:twochealthcare/services/shared_pref_services.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
 import 'package:twochealthcare/view_models/facility_user_view_model/home/fu_home_view_model.dart';
@@ -31,6 +33,7 @@ class FUHome extends HookWidget {
     // LoginVM loginVM = useProvider(loginVMProvider);
     HomeVM homeVM = useProvider(homeVMProvider);
     FUHomeViewModel fuHomeViewModel = useProvider(fuHomeVMProvider);
+    // SharedPrefServices sharedPrefServices = useProvider(sharedPrefServiceProvider);
 
     // ApplicationRouteService applicationRouteService =
     // useProvider(applicationRouteServiceProvider);
@@ -109,9 +112,11 @@ class FUHome extends HookWidget {
           ):
           Column(
             children: [
-              ChangeFacilityTile(onClick: () {
+              ChangeFacilityTile(
+                onClick: () {
                 openBottomModal(
                     child: AllFacility(facilities: fuHomeViewModel.facilities,
+                      selectedFacilityId: fuHomeViewModel.currentFacilityId,
                     )
                 );
               },),

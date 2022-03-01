@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:twochealthcare/services/auth_services/auth_services.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
+import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
 class ChangeFacilityTile extends StatelessWidget {
   Function() onClick;
-   ChangeFacilityTile({required this.onClick,Key? key}) : super(key: key);
+  LoginVM? loginVM;
+   ChangeFacilityTile({required this.onClick,Key? key,this.loginVM}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

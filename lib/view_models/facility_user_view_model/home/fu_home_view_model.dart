@@ -3,10 +3,13 @@ import 'package:hooks_riverpod/all.dart';
 import 'package:twochealthcare/models/facility_user_models/dashboard_patients/dashboard_patient_summary.dart';
 import 'package:twochealthcare/models/facility_user_models/dashboard_patients/patients_for_dashboard.dart';
 import 'package:twochealthcare/models/facility_user_models/facilityModel/facility_model.dart';
+import 'package:twochealthcare/models/user/current_user.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/facility_user_services/home/fu_home_service.dart';
+import 'package:twochealthcare/services/shared_pref_services.dart';
 
 class FUHomeViewModel extends ChangeNotifier{
+  int currentFacilityId = 0;
   DashboardPatientSummary? dashboardPatientSummary;
   List<FacilityModel> facilities = [];
   ProviderReference? _ref;
@@ -18,12 +21,14 @@ class FUHomeViewModel extends ChangeNotifier{
   bool newPageLoading = false;
   int patientListPageNumber = 1;
   ScrollController scrollController = ScrollController();
+  SharedPrefServices? _sharedPrefServices ;
   FUHomeViewModel({ProviderReference? ref}){
     _ref = ref;
     initService();
   }
   initService(){
     fuHomeService = _ref!.read(fuHomeServiceProvider);
+    _sharedPrefServices = _ref!.read(sharedPrefServiceProvider);
     scrollController.addListener(() {
       if(scrollController.position.pixels == scrollController.position.maxScrollExtent){
        getPatientsForDashboard();
@@ -65,8 +70,10 @@ class FUHomeViewModel extends ChangeNotifier{
     }
   }
 
-  patientServicesummary({int? facilityId,int? month,int? year}) async{
-    var res = await fuHomeService?.patientServicesummary(month: dashboardSummaryMonth,year: dashboardSummaryYear);
+  patientServicesummary({int? month,int? year}) async{
+    int facilityId = await _sharedPrefServices!.getFacilityId();
+    currentFacilityId = facilityId;
+    var res = await fuHomeService?.patientServicesummary(facilityId : facilityId, month: dashboardSummaryMonth,year: dashboardSummaryYear);
     if(res!=null && res is DashboardPatientSummary){
       dashboardPatientSummary = res;
       setLoading(false);

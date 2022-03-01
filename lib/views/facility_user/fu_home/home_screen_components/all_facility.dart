@@ -2,13 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:twochealthcare/common_widgets/radio-button.dart';
 import 'package:twochealthcare/main.dart';
 import 'package:twochealthcare/models/facility_user_models/facilityModel/facility_model.dart';
+import 'package:twochealthcare/services/shared_pref_services.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
+
+import '../../../../services/auth_services/auth_services.dart';
 class AllFacility extends StatelessWidget {
   List<FacilityModel> facilities = [];
-  AllFacility ({Key? key, required this.facilities}) : super(key: key);
+  int selectedFacilityId;
+  AllFacility ({Key? key, required this.facilities,required this.selectedFacilityId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -58,9 +63,11 @@ class AllFacility extends StatelessWidget {
                               fontSize: ApplicationSizing.constSize(17),
                               color: Colors.black
                             ),),
-                            RadioButton(buttonSelected: true,
-                            onchange: (){},
-                            noText: true,),
+                            RadioButton(
+                              buttonSelected: selectedFacilityId == facilities[index].id,
+                              onchange: (){},
+                              noText: true,),
+
                           ],
                         ),
                       );

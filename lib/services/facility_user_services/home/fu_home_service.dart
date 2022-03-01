@@ -42,9 +42,8 @@ class FUHomeService{
 
     }
 
-    Future<dynamic> patientServicesummary({int? month, int? year,}) async{
+    Future<dynamic> patientServicesummary({required int facilityId, int? month, int? year,}) async{
       try{
-        int facilityId = await _sharedPrefServices!.getFacilityId();
         int currentUserId = await _sharedPrefServices!.getCurrentUserId();
         Response? res = await dio?.dio?.get(PatientsController.patientServiceSummary+"/?facilityUserId=$facilityId&facilityUserId=$currentUserId&Month=$month&Year=$year");
         if(res?.statusCode == 200){

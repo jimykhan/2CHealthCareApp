@@ -71,7 +71,7 @@ class SharedPrefServices{
       return null;
   }
 
-  Future<int> getPatientFacilityId() async {
+  Future<int> getFacilityId() async {
     await _initPref();
     CurrentUser? currentUser = await getCurrentUser();
     int facilityId = -1;
@@ -81,17 +81,17 @@ class SharedPrefServices{
       }
     });
     return facilityId;
-    // if(currentUser.userType == 1){
-    //   var p_info = _prefs?.get("patientInfo");
-    //   if(p_info is String){
-    //     CurrentUserInfo currentUserInfo = CurrentUserInfo.fromJson(jsonDecode(p_info));
-    //     return currentUserInfo.facilityId??-1;
-    //   }
-    //   return -1;
-    // }else{
-    //   return currentUser.id?? -1;
-    // }
-
+  }
+  Future<int> getCurrentUserId() async {
+    await _initPref();
+    CurrentUser? currentUser = await getCurrentUser();
+    int currentUserId = -1;
+    currentUser!.claims?.forEach((element) {
+      if(element.claimType?.toUpperCase() == "Id".toUpperCase()){
+        currentUserId = int.parse("${element.claimValue?? -1}");
+      }
+    });
+    return currentUserId;
   }
 
   Future<int> getCurrentUserType() async {
@@ -108,7 +108,7 @@ class SharedPrefServices{
     _prefs?.setString("shortToken", token);
   }
 
-  Future<String?> getShortToken()async{
+  dynamic getShortToken()async{
     String? token;
     await _initPref();
     try{

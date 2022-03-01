@@ -4,11 +4,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/all.dart';
-import 'package:page_transition/page_transition.dart';
-import 'package:twochealthcare/util/application_colors.dart';
-import 'package:twochealthcare/util/application_sizing.dart';
-import 'package:twochealthcare/views/home/home.dart';
-import 'package:twochealthcare/views/readings/modalities_reading.dart';
 import 'package:twochealthcare/views/splash/splash.dart';
 
 BuildContext? homeContext;

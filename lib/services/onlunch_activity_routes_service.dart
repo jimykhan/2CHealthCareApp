@@ -53,32 +53,15 @@ class OnLaunchActivityAndRoutesService{
 
   syncLastApplicationUseDateAndTime() async {
     try{
-      int userType = await _authService!.getCurrentUserId();
+      int userType = await _authService!.getCurrentUserType();
       if(userType == 1){
         patientOnStartApplicationData();
-        // int patientId = await _authService!.getCurrentUserId();
-        // Response res = await dio!.dio!.post(ApiStrings.setLastAppLaunchDate+"/$patientId");
-        // print(res);
-        // if(loginVM?.currentUser?.userType == 1){
-        //   profileVm?.getUserInfo();
-        // }
       }
-      else if(userType == 2){
-
+      else if(userType == 5){
+        facilityUserOnStartApplicationData();
       }else{
 
       }
-
-      loginVM?.checkLastLoggedInUser(body: {
-        "id":loginVM?.currentUser?.id?.toString()??"",
-        "userName": loginVM?.currentUser?.fullName??"",
-        "lastLogedIn": DateTime.now().toString()
-      });
-      _chatListVM?.getGroupsIds();
-      firebaseService?.initNotification();
-      loginVM?.getCurrentUserFromSharedPref();
-      signalRServices?.initSignalR();
-
     }catch(e){
       rethrow;
     }

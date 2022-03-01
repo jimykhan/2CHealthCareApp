@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:hooks_riverpod/all.dart';
 import 'package:twochealthcare/constants/api_strings.dart';
+import 'package:twochealthcare/models/facility_user_models/dashboard_patients/dashboard_patient_summary.dart';
 import 'package:twochealthcare/models/facility_user_models/dashboard_patients/patients_for_dashboard.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/dio_services/dio_services.dart';
@@ -24,7 +25,7 @@ class FUHomeService{
 
     PatientsForDashboard? patientsForDashboard;
     try{
-      int facilityId = await _sharedPrefServices!.getPatientFacilityId();
+      int facilityId = await _sharedPrefServices!.getFacilityId();
       String querisParam = "?PageNumber=${pageNumber}&PageSize=${10}&FacilityId=$facilityId&SortBy=$sortBy&SortOrder=$sortOrder&"
           "SearchParam=${searchParam??''}&PayerIds=${payerIds??''}&FilterBy=$filterBy&PatientStatus=${patientStatus??''}";
       Response? res = await dio?.dio?.get(PatientsController.getPatientsForDashboard+querisParam);
@@ -42,10 +43,11 @@ class FUHomeService{
 
     Future<dynamic>patientServicesummary({int? month, int? year,}) async{
       try{
-        int facilityId = await _sharedPrefServices!.getPatientFacilityId();
-        Response? res = await dio?.dio?.get(PatientsController.patientServiceSummary+"/?facilityUserId=$facilityId&Month=$month&Year=$year");
+        int facilityId = await _sharedPrefServices!.getFacilityId();
+        int currentUserId = await _sharedPrefServices!.getCurrentUserId();
+        Response? res = await dio?.dio?.get(PatientsController.patientServiceSummary+"/?facilityUserId=$facilityId&facilityUserId=$currentUserId&Month=$month&Year=$year");
         if(res?.statusCode == 200){
-          return res?.data;
+          return DashboardPatientSummary.fromJson(res?.data);
         }else{
           return null;
         }

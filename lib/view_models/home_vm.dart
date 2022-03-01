@@ -63,7 +63,7 @@ class HomeVM extends ChangeNotifier{
   Future<dynamic> checkChatStatus() async {
     try{
      setHomeScreenLoading(true);
-      int facilityId = await _sharedPrefServices!.getPatientFacilityId();
+      int facilityId = await _sharedPrefServices!.getFacilityId();
       var response = await chatListService!.checkChatStatus(facilityId: facilityId);
       if(response is bool){
         if(response){

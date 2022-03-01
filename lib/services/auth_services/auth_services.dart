@@ -211,7 +211,7 @@ class AuthServices{
     if(userType == 1){
       token = await _sharePrf?.getBearerToken();
     }else{
-
+      token = await _sharePrf?.getShortToken();
     }
     return token;
   }

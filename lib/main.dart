@@ -11,7 +11,7 @@ BuildContext? homeContext;
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
   print('Handling a background message ${message.messageId}');
-  print('Handling a background message ${message.notification?.title??""}');
+  print('Handling a background message ${message.notification?.title ?? ""}');
   // Navigator.push(applicationContext!.currentContext!, PageTransition(
   //     child: ModalitiesReading(), type: PageTransitionType.topToBottom));
 }
@@ -19,18 +19,17 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 void requestNotificationPermission() async {
   NotificationSettings settings = await FirebaseMessaging.instance
       .requestPermission(
-      alert: true,
-      announcement: true,
-      badge: true,
-      carPlay: false,
-      criticalAlert: true,
-      provisional: true,
-      sound: true);
+          alert: true,
+          announcement: true,
+          badge: true,
+          carPlay: false,
+          criticalAlert: true,
+          provisional: true,
+          sound: true);
 
   if (settings.authorizationStatus == AuthorizationStatus.authorized) {
     print("user granted permission");
-  } else if (settings.authorizationStatus ==
-      AuthorizationStatus.provisional) {
+  } else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
     print('user granted provisional permission');
   } else {
     print('user declined or has not accepted permission');
@@ -39,7 +38,7 @@ void requestNotificationPermission() async {
 
 GlobalKey<NavigatorState>? applicationContext = GlobalKey();
 Future<void> main() async {
-  try{
+  try {
     WidgetsFlutterBinding.ensureInitialized();
     await Firebase.initializeApp();
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
@@ -50,8 +49,7 @@ Future<void> main() async {
       statusBarIconBrightness: Brightness.dark,
     ));
     runApp(ProviderScope(child: MyApp()));
-  }
-  catch(e){
+  } catch (e) {
     runApp(ProviderScope(child: MyApp()));
   }
 }
@@ -66,15 +64,13 @@ class MyApp extends StatelessWidget {
       navigatorKey: applicationContext,
       debugShowCheckedModeBanner: false,
       title: '2C Health Care',
-        navigatorObservers: [BotToastNavigatorObserver()],
+      navigatorObservers: [BotToastNavigatorObserver()],
       theme: ThemeData(
-          primaryColor: Colors.green.shade50, primarySwatch: Colors.green,
-    appBarTheme: AppBarTheme(
-    backgroundColor: Colors.green,
-      systemOverlayStyle: SystemUiOverlayStyle.dark
-
-    )
-    ),
+          primaryColor: Colors.green.shade50,
+          primarySwatch: Colors.green,
+          appBarTheme: AppBarTheme(
+              backgroundColor: Colors.green,
+              systemOverlayStyle: SystemUiOverlayStyle.dark)),
       home: const Splash(),
     );
   }

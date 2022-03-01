@@ -22,16 +22,19 @@ import 'package:twochealthcare/view_models/chat_vm/chat_list_vm.dart';
 import 'package:twochealthcare/views/chat/chat_screen.dart';
 import 'package:twochealthcare/views/home/home.dart';
 import 'package:twochealthcare/views/home/profile.dart';
+
 class ChatList extends HookWidget {
   const ChatList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     ChatListVM chatListVM = useProvider(chatListVMProvider);
-    ApplicationRouteService applicationRouteService = useProvider(applicationRouteServiceProvider);
-    OnLaunchActivityAndRoutesService onLaunchActivityService = useProvider(onLaunchActivityServiceProvider);
+    ApplicationRouteService applicationRouteService =
+        useProvider(applicationRouteServiceProvider);
+    OnLaunchActivityAndRoutesService onLaunchActivityService =
+        useProvider(onLaunchActivityServiceProvider);
     useEffect(
-          () {
+      () {
         Future.microtask(() async {
           chatListVM.getGroupsIds(onlounch: false);
         });
@@ -88,10 +91,15 @@ class ChatList extends HookWidget {
             //     ));
           },
         ),
-        bottomNavigationBar: BottomBar(selectedIndex: 2,),
-        body: _body(chatListVM: chatListVM,applicationRouteService: applicationRouteService));
+        bottomNavigationBar: BottomBar(
+          selectedIndex: 2,
+        ),
+        body: _body(
+            chatListVM: chatListVM,
+            applicationRouteService: applicationRouteService));
   }
-  _emptyChat(){
+
+  _emptyChat() {
     return Container(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -99,48 +107,63 @@ class ChatList extends HookWidget {
         children: [
           Container(
             alignment: Alignment.center,
-            child: Text("Coming Soon...11",
+            child: Text(
+              "Coming Soon...11",
               style: Styles.PoppinsRegular(
                 fontWeight: FontWeight.w500,
                 color: appColor,
                 fontSize: ApplicationSizing.fontScale(15),
-              ),),
+              ),
+            ),
           ),
         ],
       ),
     );
   }
 
-  _body({ChatListVM? chatListVM,required ApplicationRouteService applicationRouteService}){
-    return (chatListVM?.groupIds.length == 0 && !chatListVM!.loadingGroupId) ? NoData() :   Container(
-      child: Stack(
-        children: [
-          ListView.separated(
-              shrinkWrap: true,
-              physics: ScrollPhysics(),
-              itemBuilder: (BuildContext context,int index){
-                return  GestureDetector(
-                    onTap: (){
-                      applicationRouteService.addScreen(screenName: "${chatListVM?.groupIds[index].id}");
-                      Navigator.push(context, PageTransition(child: ChatScreen(getGroupsModel: chatListVM?.groupIds[index],), type: PageTransitionType.fade));
+  _body(
+      {ChatListVM? chatListVM,
+      required ApplicationRouteService applicationRouteService}) {
+    return (chatListVM?.groupIds.length == 0 && !chatListVM!.loadingGroupId)
+        ? NoData()
+        : Container(
+            child: Stack(
+              children: [
+                ListView.separated(
+                    shrinkWrap: true,
+                    physics: ScrollPhysics(),
+                    itemBuilder: (BuildContext context, int index) {
+                      return GestureDetector(
+                        onTap: () {
+                          applicationRouteService.addScreen(
+                              screenName: "${chatListVM?.groupIds[index].id}");
+                          Navigator.push(
+                              context,
+                              PageTransition(
+                                  child: ChatScreen(
+                                    getGroupsModel: chatListVM?.groupIds[index],
+                                  ),
+                                  type: PageTransitionType.fade));
+                        },
+                        child: chatTile(
+                            getGroupsModel: chatListVM?.groupIds[index]),
+                      );
                     },
-                  child: chatTile(getGroupsModel: chatListVM?.groupIds[index]),
-                );
-              },
-              separatorBuilder:  (BuildContext context,int index){
-                return ApplicationSizing.verticalSpacer();
-              },
-              itemCount: chatListVM?.groupIds.length??0),
-          chatListVM!.loadingGroupId ? AlertLoader() : Container(),
-        ],
-      ),
-    );
+                    separatorBuilder: (BuildContext context, int index) {
+                      return ApplicationSizing.verticalSpacer();
+                    },
+                    itemCount: chatListVM?.groupIds.length ?? 0),
+                chatListVM!.loadingGroupId ? AlertLoader() : Container(),
+              ],
+            ),
+          );
   }
 
-  chatTile({GetGroupsModel? getGroupsModel}){
+  chatTile({GetGroupsModel? getGroupsModel}) {
     return Container(
       // color: Colors.brown,
-      padding: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin()),
+      padding: EdgeInsets.symmetric(
+          horizontal: ApplicationSizing.horizontalMargin()),
 
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -154,7 +177,7 @@ class ChatList extends HookWidget {
           ApplicationSizing.horizontalSpacer(),
           Expanded(
             child: Container(
-              padding: EdgeInsets.symmetric(vertical: 5),
+              padding: EdgeInsets.symmetric(vertical: 6),
               // alignment: Alignment.topLeft,
               // color: Colors.green,
               child: Column(
@@ -162,73 +185,72 @@ class ChatList extends HookWidget {
                 children: [
                   Row(
                     // crossAxisAlignment: CrossAxisAlignment.start,
-                    children:  [
+                    children: [
                       Expanded(
                         flex: 5,
                         child: Container(
-                          // color: Colors.red,
-                            child: Text(getGroupsModel?.title??"",
-                              style: Styles.PoppinsRegular(
-                                fontWeight: FontWeight.w400,
-                                fontSize: ApplicationSizing.fontScale(14)
-                              ),
-                              maxLines: 1,
-                            )),
+                            // color: Colors.red,
+                            child: Text(
+                          getGroupsModel?.title ?? "",
+                          style: Styles.PoppinsRegular(
+                              fontWeight: FontWeight.w400,
+                              fontSize: ApplicationSizing.fontScale(14)),
+                          maxLines: 1,
+                        )),
                       ),
                       Expanded(
                         flex: 3,
                         child: Container(
-                          // color: Colors.brown,
+                            // color: Colors.brown,
                             alignment: Alignment.centerRight,
                             // color: Colors.pink,
-                            child: Text(getGroupsModel?.lastMessageTime??"",
+                            child: Text(
+                              getGroupsModel?.lastMessageTime ?? "",
                               style: Styles.PoppinsRegular(
                                   fontWeight: FontWeight.w400,
                                   fontSize: ApplicationSizing.fontScale(11),
-                                  color: appColor
-                              ),
+                                  color: appColor),
                               maxLines: 1,
                             )),
                       ),
-
                     ],
                   ),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children:  [
+                    children: [
                       Expanded(
-                        flex: 4,
+                        flex: 3,
                         child: Container(
                           // color: Colors.red,
-                            child: Text(getGroupsModel?.lastMessage??"",
-                              style: Styles.PoppinsRegular(
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: ApplicationSizing.fontScale(12),
-                                color: fontGrayColor
-                              ),
-                              maxLines: 1,
-                            )),
+                          child: Text(
+                            getGroupsModel?.lastMessage ?? "",
+                            style: Styles.PoppinsRegular(
+                              fontWeight: FontWeight.w400,
+                              fontSize: ApplicationSizing.fontScale(12),
+                              color: fontGrayColor,
+                            ),
+                            maxLines: 1,
+                          ),
+                        ),
                       ),
-                      getGroupsModel?.unreadMsgCount == 0 ? Container() : Expanded(
-                        flex: 1,
-                          child: Container(
-                              alignment: Alignment.center,
-                              padding: EdgeInsets.all(5),
-                              child: Text("${getGroupsModel?.unreadMsgCount ?? ""}",
-                                style: Styles.PoppinsRegular(
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: ApplicationSizing.fontScale(12),
-                                  color: Colors.white
+                      getGroupsModel?.unreadMsgCount == 0
+                          ? Container()
+                          : Expanded(
+                              flex: 0,
+                              child: Container(
+                                alignment: Alignment.center,
+                                padding: EdgeInsets.all(5),
+                                child: Text(
+                                  "${getGroupsModel?.unreadMsgCount ?? ""}",
+                                  style: Styles.PoppinsRegular(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: ApplicationSizing.fontScale(10),
+                                      color: Colors.white),
+                                  maxLines: 1,
                                 ),
-                                maxLines: 1,
-                              ),
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: appColor
-                              ),
-                            )
-                      ),
-
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle, color: appColor),
+                              )),
                     ],
                   ),
                 ],
@@ -239,6 +261,4 @@ class ChatList extends HookWidget {
       ),
     );
   }
-
 }
-

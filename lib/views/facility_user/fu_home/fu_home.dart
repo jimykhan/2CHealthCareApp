@@ -38,9 +38,10 @@ class FUHome extends HookWidget {
     useEffect(
           () {
             homeVM.resetHome();
-            fuHomeViewModel.loadingPatientList = true;
+            fuHomeViewModel.isloading = true;
             fuHomeViewModel.patientListPageNumber = 1;
-            fuHomeViewModel.getPatientsForDashboard();
+            // fuHomeViewModel.getPatientsForDashboard();
+            fuHomeViewModel.patientServicesummary();
         Future.microtask(() async {});
         return () {};
       },
@@ -52,6 +53,8 @@ class FUHome extends HookWidget {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(ApplicationSizing.convert(80)),
         child: CustomAppBar(
+          clickOnNotification: (){
+          },
           notifcationIcon: true,
           leadingIcon: InkWell(
             onTap: () {
@@ -100,7 +103,7 @@ class FUHome extends HookWidget {
     return Stack(
       children: [
         Container(
-          child: fuHomeViewModel.patientsForDashboard?.patientsList!.length == 0 ? Column(
+          child: fuHomeViewModel.dashboardPatientSummary == null ? Column(
             children:  [
               NoData(),
             ],
@@ -111,20 +114,38 @@ class FUHome extends HookWidget {
                 openBottomModal(child: AllFacility());
               },),
               SizedBox(height: 10,),
-              GestureDetector(
-                onTap: (){
-                  Navigator.push(
-                      applicationContext!.currentContext!,
-                      PageTransition(
-                          child: AllPatient(),
-                          type: PageTransitionType.bottomToTop));
-                },
-                child:ServiceTile(),
-              )
+
+              ServiceTile(
+                  onclick: (){
+                    Navigator.push(
+                        applicationContext!.currentContext!,
+                        PageTransition(
+                            child: AllPatient(),
+                            type: PageTransitionType.bottomToTop));
+                  },
+                serviceName: "CCM",
+                total: fuHomeViewModel.dashboardPatientSummary?.ccmActivePatientsCount??0,
+                completed: fuHomeViewModel.dashboardPatientSummary?.ccmTimeCompletedPatientsCount??0,
+                ),
+              SizedBox(height: 10,),
+              ServiceTile(
+                  onclick: (){
+                    Navigator.push(
+                        applicationContext!.currentContext!,
+                        PageTransition(
+                            child: AllPatient(),
+                            type: PageTransitionType.bottomToTop));
+                  },
+                serviceName: "RPM",
+                total: fuHomeViewModel.dashboardPatientSummary?.rpmActivePatientsCount??0,
+                completed: fuHomeViewModel.dashboardPatientSummary?.rpmTimeCompletedPatientsCount??0,
+                Tcompleted: fuHomeViewModel.dashboardPatientSummary?.rpmTransmissionCompletedPatientsCount??0,
+                isRpm : true,
+                ),
             ],
           )
         ),
-        (fuHomeViewModel.loadingPatientList || homeVM.homeScreenLoading) ? AlertLoader() : Container(),
+        (fuHomeViewModel.isloading) ? AlertLoader() : Container(),
       ],
     );
   }

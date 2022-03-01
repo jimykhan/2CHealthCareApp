@@ -62,6 +62,7 @@ class ApiStrings {
 
 class PatientsController{
   static const String getPatientsForDashboard = baseUrl + "/api/Patients/GetPatientsForDashboard";
+  static const String patientServiceSummary = baseUrl + "/api/Patients/PatientServicesSummary";
 }
 class FacilityController{
 
@@ -71,6 +72,7 @@ class FacilityController{
 
 class AccountApi{
   static const String refreshToken = baseUrl + "/api/Account/RefreshToken";
+  static const String hangfireToken = baseUrl + "/api/Account/hangfireToken";
 }
 class BlueButton{
   static const String checkBlueButton = baseUrl + "/api/BlueButton/IsConnected";

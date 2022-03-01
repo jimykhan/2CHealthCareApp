@@ -34,7 +34,7 @@ class AllPatient extends HookWidget {
     useEffect(
           () {
         homeVM.resetHome();
-        fuHomeViewModel.loadingPatientList = true;
+        fuHomeViewModel.isloading = true;
         fuHomeViewModel.patientListPageNumber = 1;
         fuHomeViewModel.getPatientsForDashboard();
         Future.microtask(() async {});
@@ -100,7 +100,7 @@ class AllPatient extends HookWidget {
             )
             )
         ),
-        (fuHomeViewModel.loadingPatientList || homeVM.homeScreenLoading) ? AlertLoader() : Container(),
+        (fuHomeViewModel.isloading || homeVM.homeScreenLoading) ? AlertLoader() : Container(),
       ],
     );
   }

@@ -15,6 +15,7 @@ import 'package:twochealthcare/view_models/app_bar_vm.dart';
 class CustomAppBar extends HookWidget {
   BuildContext? parentContext;
   Function()? clickOnDrawer;
+  Function()? clickOnNotification;
   Color? color1;
   Color? color2;
   Widget? leadingIcon;
@@ -29,7 +30,8 @@ class CustomAppBar extends HookWidget {
   CustomAppBar({
    @required this.parentContext,this.color1,this.color2,this.leadingIcon,
     this.trailingIcon,this.centerWigets, @required this.hight,this.paddingBottom,this.isbottomLine =false,
-    this.clickOnDrawer,this.paddingLeft,this.notifcationIcon = false,this.addLeftMargin = false
+    this.clickOnDrawer,this.paddingLeft,this.notifcationIcon = false,this.addLeftMargin = false,
+    this.clickOnNotification
 });
 
   @override
@@ -87,51 +89,13 @@ class CustomAppBar extends HookWidget {
                     ),
                     centerWigets ??  Container(),
                     trailingIcon ?? Container(
-                      child: notifcationIcon ? NotificationButton()  : Container(),
+                      child: notifcationIcon ? NotificationButton(onclick: clickOnNotification,)  : Container(),
                     ),
                   ],
                 ),
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  _message(context,{bool notification = true}){
-    return Container(
-      padding: EdgeInsets.only(
-        top: ApplicationSizing.convert(30),
-      ),
-      child: InkWell(
-        onTap: () async {
-          // await FlutterBlue.instance.stopScan();
-          // Navigator.pushReplacement(context,
-          //     PageTransition(
-          //         child: DeviceState(),
-          //         type: PageTransitionType.fade
-          //     ));
-        },
-        child: Column(
-          children: [
-            Container(
-              // child: Icon(FontAwesomeIcons.angleDoubleDown)
-            ),
-            Container(
-              padding: EdgeInsets.only(
-                  top: ApplicationSizing.convert(5),
-                  right: ApplicationSizing.convertWidth(10)
-              ),
-              child: Text(
-                "Add device",
-                style: Styles.PoppinsRegular(
-                  color: Colors.black,
-                  fontSize: ApplicationSizing.fontScale(12),
-                ),
-              ),
-            )
-          ],
-        ),
       ),
     );
   }

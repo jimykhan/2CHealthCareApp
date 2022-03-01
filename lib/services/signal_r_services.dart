@@ -31,7 +31,7 @@ class SignalRServices{
   initSignalR() async{
     // _startConnection();
     String appId  = await _authServices!.getCurrentAppUserId();
-    String token  = await _authServices?.getBearerToken();
+    String token  = await _authServices!.getBearerToken();
     print("this is token to signalR = $token}");
     print("2cch this is AppId to signalR = ${appId}");
     connection = HubConnectionBuilder()

@@ -8,6 +8,7 @@ import 'package:twochealthcare/models/user/current_user.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
 import 'package:twochealthcare/services/dio_services/dio_services.dart';
+import 'package:twochealthcare/services/facility_user_services/home/fu_home_service.dart';
 import 'package:twochealthcare/services/firebase_service.dart';
 import 'package:twochealthcare/services/signal_r_services.dart';
 import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
@@ -32,6 +33,7 @@ class OnLaunchActivityAndRoutesService{
   ChatListVM? _chatListVM;
   SignalRServices? signalRServices;
   ProfileVm? profileVm;
+  FUHomeService? _fuHomeService;
 
   OnLaunchActivityAndRoutesService({ProviderReference? ref}){
     _ref = ref;
@@ -46,33 +48,52 @@ class OnLaunchActivityAndRoutesService{
     dio = _ref!.read(dioServicesProvider);
     _authService = _ref!.read(authServiceProvider);
     loginVM = _ref!.read(loginVMProvider);
+    _fuHomeService = _ref!.read(fuHomeServiceProvider);
   }
 
   syncLastApplicationUseDateAndTime() async {
     try{
-      int userType = await _authService!.getCurrentUserId();
+      int userType = await _authService!.getCurrentUserType();
       if(userType == 1){
-        int patientId = await _authService!.getCurrentUserId();
-        Response res = await dio!.dio!.post(ApiStrings.setLastAppLaunchDate+"/$patientId");
-        print(res);
-        if(loginVM?.currentUser?.userType == 1){
-          profileVm?.getUserInfo();
-        }
+        patientOnStartApplicationData();
       }
+      else if(userType == 5){
+        facilityUserOnStartApplicationData();
+      }else{
 
-      loginVM?.checkLastLoggedInUser(body: {
-        "id":loginVM?.currentUser?.id?.toString()??"",
-        "userName": loginVM?.currentUser?.fullName??"",
-        "lastLogedIn": DateTime.now().toString()
-      });
-      _chatListVM?.getGroupsIds();
-      firebaseService?.initNotification();
-      loginVM?.getCurrentUserFromSharedPref();
-      signalRServices?.initSignalR();
-
+      }
     }catch(e){
       rethrow;
     }
+  }
+
+
+  patientOnStartApplicationData()async{
+    int patientId = await _authService!.getCurrentUserId();
+    Response res = await dio!.dio!.post(ApiStrings.setLastAppLaunchDate+"/$patientId");
+    profileVm?.getUserInfo();
+    loginVM?.checkLastLoggedInUser(body: {
+      "id":loginVM?.currentUser?.id?.toString()??"",
+      "userName": loginVM?.currentUser?.fullName??"",
+      "lastLogedIn": DateTime.now().toString()
+    });
+    _chatListVM?.getGroupsIds();
+    firebaseService?.initNotification();
+    loginVM?.getCurrentUserFromSharedPref();
+    signalRServices?.initSignalR();
+
+  }
+  facilityUserOnStartApplicationData()async{
+    loginVM?.checkLastLoggedInUser(body: {
+      "id":loginVM?.currentUser?.id?.toString()??"",
+      "userName": loginVM?.currentUser?.fullName??"",
+      "lastLogedIn": DateTime.now().toString()
+    });
+    _chatListVM?.getGroupsIds();
+    firebaseService?.initNotification();
+    loginVM?.getCurrentUserFromSharedPref();
+    await _fuHomeService?.getHangfireToken();
+    signalRServices?.initSignalR();
   }
 
   decideUserFlow()async{
@@ -102,6 +123,8 @@ class OnLaunchActivityAndRoutesService{
       return;
     }
   }
+
+
   profileDecider()async{
     CurrentUser currentUser = await loginVM?.getCurrentUserFromSharedPref();
     if(currentUser.userType == 1){

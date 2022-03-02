@@ -25,7 +25,7 @@ class BlueButton extends StatelessWidget {
                   width: 150,
                 )
               : FilledButton(
-                  w: 160,
+                  w: 150,
                   h: 35,
                   onTap: () {
                     if (!(pSettingsViewModel.isBlueButtonConnected))

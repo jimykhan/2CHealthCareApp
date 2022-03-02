@@ -7,7 +7,7 @@ import 'package:twochealthcare/view_models/settings_view_models/p_settings_view_
 
 class BlueButton extends StatelessWidget {
   PSettingsViewModel pSettingsViewModel;
-  BlueButton({Key? key,required this.pSettingsViewModel}) : super(key: key);
+  BlueButton({Key? key, required this.pSettingsViewModel}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,21 +15,32 @@ class BlueButton extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text("Blue Button",
-          style: Styles.PoppinsRegular(
-            fontSize: 18,
-            fontWeight: FontWeight.w500
-          ),),
-         pSettingsViewModel.getBlueButtonUrlLoading ? loader(width: 150,) : FilledButton(
-            w: 150,
-              h: 35,
-              onTap: (){
-              if(!(pSettingsViewModel.isBlueButtonConnected)) pSettingsViewModel.blueButtonAutherizations();
-              },
-            txt: pSettingsViewModel.isBlueButtonConnected ? "Connected" : "Not Connect",
-            color1: pSettingsViewModel.isBlueButtonConnected ? appColor : Colors.red,
-            borderColor: pSettingsViewModel.isBlueButtonConnected ? appColor : Colors.red,
+          Text(
+            "Blue Button",
+            style: Styles.PoppinsRegular(
+                fontSize: 18, fontWeight: FontWeight.w500),
           ),
+          pSettingsViewModel.getBlueButtonUrlLoading
+              ? loader(
+                  width: 150,
+                )
+              : FilledButton(
+                  w: 150,
+                  h: 35,
+                  onTap: () {
+                    if (!(pSettingsViewModel.isBlueButtonConnected))
+                      pSettingsViewModel.blueButtonAutherizations();
+                  },
+                  txt: pSettingsViewModel.isBlueButtonConnected
+                      ? "Connected"
+                      : "Not Connect",
+                  color1: pSettingsViewModel.isBlueButtonConnected
+                      ? appColor
+                      : Colors.red,
+                  borderColor: pSettingsViewModel.isBlueButtonConnected
+                      ? appColor
+                      : Colors.red,
+                ),
         ],
       ),
     );

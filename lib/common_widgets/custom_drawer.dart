@@ -37,8 +37,10 @@ class CustomDrawer extends HookWidget {
   @override
   Widget build(BuildContext context) {
     LoginVM loginVM = useProvider(loginVMProvider);
-    ApplicationPackageVM applicationPackageVM = useProvider(applicationPackageVMProvider);
-    OnLaunchActivityAndRoutesService onLaunchActivityAndRoutesService = useProvider(onLaunchActivityServiceProvider);
+    ApplicationPackageVM applicationPackageVM =
+        useProvider(applicationPackageVMProvider);
+    OnLaunchActivityAndRoutesService onLaunchActivityAndRoutesService =
+        useProvider(onLaunchActivityServiceProvider);
     useEffect(
       () {
         Future.microtask(() async {});
@@ -64,9 +66,19 @@ class CustomDrawer extends HookWidget {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    HeadProfile(loginVM: loginVM,),
+                    HeadProfile(
+                      loginVM: loginVM,
+                    ),
                     ApplicationSizing.verticalSpacer(n: 10),
-                    loginVM.currentUser!.userType == 1 ? PMenu(loginVM: loginVM,onLaunchActivityAndRoutesService: onLaunchActivityAndRoutesService,) : FUMenu(loginVM: loginVM,),
+                    loginVM.currentUser!.userType == 1
+                        ? PMenu(
+                            loginVM: loginVM,
+                            onLaunchActivityAndRoutesService:
+                                onLaunchActivityAndRoutesService,
+                          )
+                        : FUMenu(
+                            loginVM: loginVM,
+                          ),
                   ],
                 ),
               ),
@@ -111,13 +123,18 @@ class CustomDrawer extends HookWidget {
                         fontSize: ApplicationSizing.fontScale(10),
                         isPadding: false,
                       ),
-                      (loginVM.logedInUserModel?.lastLogedIn == "" || loginVM.logedInUserModel?.lastLogedIn == null)
-                          ? Container() :MenuTextStyle(
-                        text: Jiffy(loginVM.logedInUserModel?.lastLogedIn ?? "").format(Strings.dateAndTimeFormat) ,
-                        fontSize: ApplicationSizing.fontScale(10),
-                        isPadding: false,
-                        color: appColor,
-                      ),
+                      (loginVM.logedInUserModel?.lastLogedIn == "" ||
+                              loginVM.logedInUserModel?.lastLogedIn == null)
+                          ? Container()
+                          : MenuTextStyle(
+                              text: Jiffy(
+                                      loginVM.logedInUserModel?.lastLogedIn ??
+                                          "")
+                                  .format(Strings.dateAndTimeFormat),
+                              fontSize: ApplicationSizing.fontScale(10),
+                              isPadding: false,
+                              color: appColor,
+                            ),
                     ],
                   ),
                 ),

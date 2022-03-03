@@ -105,53 +105,56 @@ class FUHome extends HookWidget {
     return Stack(
       children: [
         Container(
-          child: fuHomeViewModel.dashboardPatientSummary == null ? Column(
-            children:  [
-              NoData(),
-            ],
-          ):
-          Column(
+          child: Column(
             children: [
               ChangeFacilityTile(
                 onClick: () {
-                openBottomModal(
-                    child: AllFacility(facilities: fuHomeViewModel.facilities,
-                      selectedFacilityId: fuHomeViewModel.currentFacilityId,
-                      changeFacility: fuHomeViewModel.switchFacility,
-                    )
-                );
-              },
+                  openBottomModal(
+                      child: AllFacility(facilities: fuHomeViewModel.facilities,
+                        selectedFacilityId: fuHomeViewModel.currentFacilityId,
+                        changeFacility: fuHomeViewModel.switchFacility,
+                      )
+                  );
+                },
                 loginVM: loginVM,
               ),
               SizedBox(height: 10,),
-
-              ServiceTile(
-                  onclick: (){
-                    Navigator.push(
-                        applicationContext!.currentContext!,
-                        PageTransition(
-                            child: AllPatient(),
-                            type: PageTransitionType.bottomToTop));
-                  },
-                serviceName: "CCM",
-                total: fuHomeViewModel.dashboardPatientSummary?.ccmActivePatientsCount??0,
-                completed: fuHomeViewModel.dashboardPatientSummary?.ccmTimeCompletedPatientsCount??0,
-                ),
-              SizedBox(height: 10,),
-              ServiceTile(
-                  onclick: (){
-                    Navigator.push(
-                        applicationContext!.currentContext!,
-                        PageTransition(
-                            child: AllPatient(),
-                            type: PageTransitionType.bottomToTop));
-                  },
-                serviceName: "RPM",
-                total: fuHomeViewModel.dashboardPatientSummary?.rpmActivePatientsCount??0,
-                completed: fuHomeViewModel.dashboardPatientSummary?.rpmTimeCompletedPatientsCount??0,
-                Tcompleted: fuHomeViewModel.dashboardPatientSummary?.rpmTransmissionCompletedPatientsCount??0,
-                isRpm : true,
-                ),
+              fuHomeViewModel.dashboardPatientSummary == null ? Column(
+                children:  [
+                  NoData(),
+                ],
+              ):
+              Column(
+                children: [
+                  ServiceTile(
+                      onclick: (){
+                        Navigator.push(
+                            applicationContext!.currentContext!,
+                            PageTransition(
+                                child: AllPatient(),
+                                type: PageTransitionType.bottomToTop));
+                      },
+                    serviceName: "CCM",
+                    total: fuHomeViewModel.dashboardPatientSummary?.ccmActivePatientsCount??0,
+                    completed: fuHomeViewModel.dashboardPatientSummary?.ccmTimeCompletedPatientsCount??0,
+                    ),
+                  SizedBox(height: 10,),
+                  ServiceTile(
+                      onclick: (){
+                        Navigator.push(
+                            applicationContext!.currentContext!,
+                            PageTransition(
+                                child: AllPatient(),
+                                type: PageTransitionType.bottomToTop));
+                      },
+                    serviceName: "RPM",
+                    total: fuHomeViewModel.dashboardPatientSummary?.rpmActivePatientsCount??0,
+                    completed: fuHomeViewModel.dashboardPatientSummary?.rpmTimeCompletedPatientsCount??0,
+                    Tcompleted: fuHomeViewModel.dashboardPatientSummary?.rpmTransmissionCompletedPatientsCount??0,
+                    isRpm : true,
+                    ),
+                ],
+              ),
             ],
           )
         ),

@@ -162,9 +162,17 @@ class ChatList extends HookWidget {
   chatTile({GetGroupsModel? getGroupsModel}) {
     return Container(
       // color: Colors.brown,
-      padding: EdgeInsets.symmetric(
-          horizontal: ApplicationSizing.horizontalMargin()),
-
+      // padding: EdgeInsets.symmetric(
+      //   horizontal: ApplicationSizing.horizontalMargin(),
+      //   vertical: 10.0,
+      // ),
+      padding: EdgeInsets.only(left: 15, right: 15, bottom: 10),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(width: 1.0, color: Colors.black12),
+        ),
+        color: Colors.white,
+      ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -177,7 +185,7 @@ class ChatList extends HookWidget {
           ApplicationSizing.horizontalSpacer(),
           Expanded(
             child: Container(
-              padding: EdgeInsets.symmetric(vertical: 6),
+              padding: EdgeInsets.symmetric(vertical: 0),
               // alignment: Alignment.topLeft,
               // color: Colors.green,
               child: Column(

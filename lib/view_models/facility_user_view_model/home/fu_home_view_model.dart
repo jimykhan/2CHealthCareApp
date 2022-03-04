@@ -17,11 +17,7 @@ class FUHomeViewModel extends ChangeNotifier{
   FUHomeService? fuHomeService;
   int dashboardSummaryMonth = DateTime.now().month;
   int dashboardSummaryYear = DateTime.now().year;
-  PatientsForDashboard? patientsForDashboard;
   bool isloading = true;
-  bool newPageLoading = false;
-  int patientListPageNumber = 1;
-  ScrollController scrollController = ScrollController();
   SharedPrefServices? _sharedPrefServices ;
   FUHomeViewModel({ProviderReference? ref}){
     _ref = ref;
@@ -30,45 +26,10 @@ class FUHomeViewModel extends ChangeNotifier{
   initService(){
     fuHomeService = _ref!.read(fuHomeServiceProvider);
     _sharedPrefServices = _ref!.read(sharedPrefServiceProvider);
-    scrollController.addListener(() {
-      if(scrollController.position.pixels == scrollController.position.maxScrollExtent){
-       getPatientsForDashboard();
-      }
-    });
   }
   setLoading(check){
     isloading = check;
     notifyListeners();
-  }
-  setNewPageLoading(check){
-    newPageLoading = check;
-    notifyListeners();
-  }
-
-  getPatientsForDashboard({int? facilityId,int? filterBy,int? pageNumber,String? patientStatus,
-    String? searchParam, String? payerIds,String? sortBy,int? sortOrder}) async{
-    if(patientListPageNumber == 1 && !(isloading)) setLoading(true);
-    if(patientListPageNumber>1) setNewPageLoading(true);
-    var res = await fuHomeService?.getPatientsForDashboard(pageNumber: patientListPageNumber);
-    if(res!=null){
-      PatientsForDashboard newPList = res as PatientsForDashboard;
-      if(newPList != null && newPList.patientsList!.isNotEmpty){
-        if(patientListPageNumber == 1){
-          patientsForDashboard = newPList;
-          patientListPageNumber++;
-        }else{
-          patientsForDashboard!.patientsList!.addAll(newPList.patientsList??[])  ;
-          patientListPageNumber++;
-        }
-
-      }
-
-        setLoading(false);
-      setNewPageLoading(false);
-    }else{
-      setLoading(false);
-      setNewPageLoading(false);
-    }
   }
 
   patientServicesummary({int? month,int? year}) async{

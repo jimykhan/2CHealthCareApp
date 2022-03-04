@@ -50,7 +50,8 @@ class ChatScreenVM extends ChangeNotifier {
       if (searchController!.text == "") {
         participients = [];
         participients!.addAll(chatMessageList.participients ?? []);
-      } else {
+      }
+      else {
         participients = [];
         chatMessageList.participients!.forEach((element) {
           if (element.fullName!

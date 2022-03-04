@@ -14,6 +14,7 @@ import 'package:twochealthcare/common_widgets/page_with_floating_button.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
+import 'package:twochealthcare/view_models/facility_user_view_model/all_patient_view_model.dart';
 import 'package:twochealthcare/view_models/facility_user_view_model/home/fu_home_view_model.dart';
 import 'package:twochealthcare/view_models/home_vm.dart';
 import 'package:twochealthcare/views/facility_user/fu_home/patient_list/components/patient_list.dart';
@@ -26,7 +27,8 @@ class AllPatient extends HookWidget {
   Widget build(BuildContext context) {
     // LoginVM loginVM = useProvider(loginVMProvider);
     HomeVM homeVM = useProvider(homeVMProvider);
-    FUHomeViewModel fuHomeViewModel = useProvider(fuHomeVMProvider);
+    // FUHomeViewModel fuHomeViewModel = useProvider(fuHomeVMProvider);
+    AllPatientVM allPatientVM = useProvider(fuAllPatientVM);
 
     // ApplicationRouteService applicationRouteService =
     // useProvider(applicationRouteServiceProvider);
@@ -34,9 +36,10 @@ class AllPatient extends HookWidget {
     useEffect(
           () {
         homeVM.resetHome();
-        fuHomeViewModel.isloading = true;
-        fuHomeViewModel.patientListPageNumber = 1;
-        fuHomeViewModel.getPatientsForDashboard();
+        allPatientVM.isloading = true;
+        allPatientVM.patientListPageNumber = 1;
+        allPatientVM.patientsForDashboard = null;
+        allPatientVM.getPatientsForDashboard();
         Future.microtask(() async {});
         return () {};
       },
@@ -56,51 +59,50 @@ class AllPatient extends HookWidget {
           parentContext: context,
         ),
       ),
-      body: _body(fuHomeViewModel: fuHomeViewModel,homeVM: homeVM),
+      body: _body(allPatientVM: allPatientVM,homeVM: homeVM),
     );
   }
 
-  _body({required FUHomeViewModel fuHomeViewModel,required HomeVM homeVM}){
+  _body({required AllPatientVM allPatientVM,required HomeVM homeVM}){
     return Stack(
       children: [
-        Container(
-            child: fuHomeViewModel.patientsForDashboard?.patientsList!.length == 0 ? Column(
-              children:  [
-                NoData(),
-              ],
-            ):
-            PageWithFloatingButton(container:
-            Column(
-              children: [
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 25),
-                  padding: EdgeInsets.only(bottom: 24),
-                  // height: 80,
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: CustomTextField(
-                          onchange: (val){
+        Column(
+          children: [
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 25),
+              padding: EdgeInsets.only(bottom: 24),
+              // height: 80,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: CustomTextField(
+                      onchange: allPatientVM.onSearch,
+                      onSubmit: (val){
 
-                          },
-                          onSubmit: (val){
-
-                          },
-                        ),
-                      ),
-                      SizedBox(width: 5,),
-                      SqureIconButton(onClick: () {  }),
-                    ],
+                      },
+                    ),
                   ),
-                ),
-                Expanded(
-                  child: PatientList(scrollController: fuHomeViewModel.scrollController, lastIndexLoading: fuHomeViewModel.newPageLoading, patientsList: fuHomeViewModel.patientsForDashboard?.patientsList??[],),
-                ),
-              ],
-            )
-            )
+                  SizedBox(width: 5,),
+                  SqureIconButton(onClick: () {  }),
+                ],
+              ),
+            ),
+            Expanded(
+              child: PageWithFloatingButton(container:
+              Column(
+                children: [
+                  Expanded(
+                    child: (allPatientVM.patientsForDashboard?.patientsList!.length == 0 || allPatientVM.patientsForDashboard == null)
+                        ? NoData()
+                        : PatientList(scrollController: allPatientVM.scrollController, lastIndexLoading: allPatientVM.newPageLoading, patientsList: allPatientVM.patientsForDashboard?.patientsList??[],),
+                  ),
+                ],
+              )
+              ),
+            ),
+          ],
         ),
-        (fuHomeViewModel.isloading || homeVM.homeScreenLoading) ? AlertLoader() : Container(),
+        (allPatientVM.isloading || homeVM.homeScreenLoading) ? AlertLoader() : Container(),
       ],
     );
   }

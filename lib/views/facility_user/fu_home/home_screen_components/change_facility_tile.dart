@@ -12,7 +12,7 @@ class ChangeFacilityTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String faciilityName ="";
+    String faciilityName = "";
     loginVM.currentUser?.claims?.forEach((clam) {
       if(clam.claimType == "FacilityName"){
         faciilityName = clam.claimValue??"";

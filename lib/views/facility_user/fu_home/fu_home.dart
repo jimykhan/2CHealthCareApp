@@ -42,7 +42,6 @@ class FUHome extends HookWidget {
           () {
             homeVM.resetHome();
             fuHomeViewModel.isloading = true;
-            fuHomeViewModel.patientListPageNumber = 1;
             fuHomeViewModel.patientServicesummary();
         Future.microtask(() async {});
         return () {};

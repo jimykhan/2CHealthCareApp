@@ -162,17 +162,16 @@ class ChatList extends HookWidget {
   chatTile({GetGroupsModel? getGroupsModel}) {
     return Container(
       // color: Colors.brown,
-      // padding: EdgeInsets.symmetric(
-      //   horizontal: ApplicationSizing.horizontalMargin(),
-      //   vertical: 10.0,
-      // ),
-      padding: EdgeInsets.only(left: 15, right: 15, bottom: 10),
-      decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(width: 1.0, color: Colors.black12),
-        ),
-        color: Colors.white,
+      padding: EdgeInsets.symmetric(
+        horizontal: ApplicationSizing.horizontalMargin(),
       ),
+      // padding: EdgeInsets.only(left: 15, right: 15, bottom: 0),
+      // decoration: BoxDecoration(
+      //   border: Border(
+      //     bottom: BorderSide(width: 1.0, color: Colors.black12),
+      //   ),
+      //   color: Colors.white,
+      // ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -210,6 +209,7 @@ class ChatList extends HookWidget {
                         flex: 3,
                         child: Container(
                             // color: Colors.brown,
+
                             alignment: Alignment.centerRight,
                             // color: Colors.pink,
                             child: Text(
@@ -230,6 +230,14 @@ class ChatList extends HookWidget {
                         flex: 3,
                         child: Container(
                           // color: Colors.red,
+                          padding: EdgeInsets.only(bottom: 10),
+                          decoration: BoxDecoration(
+                            border: Border(
+                              bottom:
+                                  BorderSide(width: 1.0, color: Colors.black12),
+                            ),
+                            color: Colors.white,
+                          ),
                           child: Text(
                             getGroupsModel?.lastMessage ?? "",
                             style: Styles.PoppinsRegular(

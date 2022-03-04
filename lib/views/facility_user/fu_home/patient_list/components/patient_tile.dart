@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:twochealthcare/models/facility_user_models/dashboard_patients/patients_list.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
@@ -25,7 +26,12 @@ class PatientTile extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ProfileImage(),
-          CenterText(patientsList: patientsList,),
+          Expanded(
+            flex: 9,
+              child: CenterText(patientsList: patientsList,)),
+          Expanded(
+            flex: 5,
+              child: SvgPicture.asset(patientsList.isActve! ? "assets/icons/fu_icons/enablePhone.svg" : "assets/icons/fu_icons/disablePhone.svg"))
         ],
       ),
     );

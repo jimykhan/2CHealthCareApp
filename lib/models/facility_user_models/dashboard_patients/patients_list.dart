@@ -56,6 +56,9 @@ class PatientsList {
   bool? ccmFlagged;
   String? lastAppLaunchDate;
 
+  /// not in model
+  bool? isActve;
+
   PatientsList(
       {this.id,
         this.userId,
@@ -112,7 +115,9 @@ class PatientsList {
         this.isCCMRevoked,
         this.isRPMRevoked,
         this.ccmFlagged,
-        this.lastAppLaunchDate});
+        this.lastAppLaunchDate,
+        this.isActve = false
+      });
 
   PatientsList.fromJson(Map<String, dynamic> json) {
     id = json['id'];

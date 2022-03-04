@@ -22,54 +22,55 @@ class CenterText extends StatelessWidget {
             color: Colors.black
           ),),
           Container(
-            child:Row(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Container(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Text("EMR ID : ",
-                              style: Styles.PoppinsRegular(
-                                  fontSize: ApplicationSizing.constSize(11),
-                                  fontWeight: FontWeight.w700,
-                                  color: fontGrayColor
-                              ),),
-                            Text(patientsList.patientEmrId??"",
-                              style: Styles.PoppinsRegular(
-                                  fontSize: ApplicationSizing.constSize(11),
-                                  fontWeight: FontWeight.w400,
-                                  color: appColor
-                              ),),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Text("Phone : ",
-                              style: Styles.PoppinsRegular(
-                                  fontSize: ApplicationSizing.constSize(11),
-                                  fontWeight: FontWeight.w700,
-                                  color: fontGrayColor
-                              ),),
-                            Text(patientsList.primaryPhoneNumber??"No contact",
-                              style: Styles.PoppinsRegular(
-                                  fontSize: ApplicationSizing.constSize(11),
-                                  fontWeight: FontWeight.w400,
-                                  color: appColor
-                              ),),
-                          ],
-                        ),
+                      Text("EMR ID : ",
+                        style: Styles.PoppinsRegular(
+                            fontSize: ApplicationSizing.constSize(11),
+                            fontWeight: FontWeight.w700,
+                            color: fontGrayColor
+                        ),),
+
+                      Expanded(
+                        child: Text(patientsList.patientEmrId??"",
+                          maxLines: 1,
+                          style: Styles.PoppinsRegular(
+                              fontSize: ApplicationSizing.constSize(11),
+                              fontWeight: FontWeight.w400,
+                              color: appColor
+                          ),),
                       ),
                     ],
                   ),
                 ),
-                
+                Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text("Phone : ",
+                        style: Styles.PoppinsRegular(
+                            fontSize: ApplicationSizing.constSize(11),
+                            fontWeight: FontWeight.w700,
+                            color: fontGrayColor
+                        ),),
+                      Expanded(
+                        child: Text(patientsList.primaryPhoneNumber??"No contact",
+                          maxLines: 1,
+                          overflow: TextOverflow.fade,
+                          style: Styles.PoppinsRegular(
+                              fontSize: ApplicationSizing.constSize(11),
+                              fontWeight: FontWeight.w400,
+                              color: appColor
+                          ),),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           )

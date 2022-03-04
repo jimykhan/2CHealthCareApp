@@ -35,6 +35,19 @@ class FUHomeService{
       Response? res = await dio?.dio?.get(PatientsController.getPatientsForDashboard+querisParam);
       if(res?.statusCode == 200){
         patientsForDashboard = PatientsForDashboard.fromJson(res!.data);
+        patientsForDashboard.patientsList?.forEach((element) {
+          if(element.lastAppLaunchDate !=null){
+            DateTime currentDate = DateTime.now();
+            final lastLoginDate = DateTime.parse(element.lastAppLaunchDate!);
+            int difference = currentDate.difference(lastLoginDate).inDays;
+            if(difference<30){
+              element.isActve = true;
+            }
+          }else{
+            element.isActve = false;
+          }
+
+        });
         return patientsForDashboard;
       }else{
         return null;

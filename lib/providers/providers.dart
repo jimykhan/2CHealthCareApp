@@ -29,6 +29,7 @@ import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
 import 'package:twochealthcare/view_models/care_plan_vm/care_plan_vm.dart';
 import 'package:twochealthcare/view_models/chat_vm/chat_list_vm.dart';
 import 'package:twochealthcare/view_models/chat_vm/chat_screen_vm.dart';
+import 'package:twochealthcare/view_models/facility_user_view_model/all_patient_view_model.dart';
 import 'package:twochealthcare/view_models/facility_user_view_model/fu_patient_summary_veiw_models/fu_patient_summary_view_model.dart';
 import 'package:twochealthcare/view_models/facility_user_view_model/home/fu_home_view_model.dart';
 import 'package:twochealthcare/view_models/facility_user_view_model/home/fu_profile_view_model.dart';
@@ -89,6 +90,7 @@ final fuHomeVMProvider = ChangeNotifierProvider<FUHomeViewModel>((ref)=>FUHomeVi
 final fuProfileVMProvider = ChangeNotifierProvider<FUProfileVM>((ref)=>FUProfileVM(ref: ref));
 final fUPatientSummaryVMProvider = ChangeNotifierProvider<FUPatientSummaryVM>((ref)=>FUPatientSummaryVM(ref: ref));
 final fuSettingsVMProvider = ChangeNotifierProvider<FuSettingsViewModel>((ref)=>FuSettingsViewModel(ref: ref));
+final fuAllPatientVM = ChangeNotifierProvider<AllPatientVM>((ref)=>AllPatientVM(ref: ref));
 ///Facility User ChangeNotifier Provider
 ///Facility User Simple Provider
 final fuHomeServiceProvider = Provider<FUHomeService>((ref)=>FUHomeService(ref: ref));

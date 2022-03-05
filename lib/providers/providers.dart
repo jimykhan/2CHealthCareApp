@@ -10,6 +10,7 @@ import 'package:twochealthcare/services/connectivity_service.dart';
 import 'package:twochealthcare/services/dio_services/dio_services.dart';
 import 'package:twochealthcare/services/facility_user_services/home/fu_home_service.dart';
 import 'package:twochealthcare/services/facility_user_services/home/fu_profile_service.dart';
+import 'package:twochealthcare/services/facility_user_services/patient_summary_service.dart';
 import 'package:twochealthcare/services/firebase_service.dart';
 import 'package:twochealthcare/services/health_guides_service/health_guides_service.dart';
 import 'package:twochealthcare/services/local_notification_service.dart';
@@ -96,4 +97,5 @@ final fuAllPatientVM = ChangeNotifierProvider<AllPatientVM>((ref)=>AllPatientVM(
 final fuHomeServiceProvider = Provider<FUHomeService>((ref)=>FUHomeService(ref: ref));
 final fuProfileServiceProvider = Provider<FUProfileService>((ref)=>FUProfileService(ref: ref));
 final fuSettingsServiceProvider = Provider<FuSettingsService>((ref)=>FuSettingsService(ref: ref));
+final patientSummaryServiceProvider = Provider<PatientSummaryService>((ref)=>PatientSummaryService(ref: ref));
 ///Facility User Simple Provider

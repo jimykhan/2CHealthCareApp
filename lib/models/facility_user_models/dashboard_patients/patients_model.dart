@@ -1,4 +1,4 @@
-class PatientsList {
+class PatientsModel {
   int? id;
   String? userId;
   String? patientEmrId;
@@ -59,7 +59,7 @@ class PatientsList {
   /// not in model
   bool? isActve;
 
-  PatientsList(
+  PatientsModel(
       {this.id,
         this.userId,
         this.patientEmrId,
@@ -119,7 +119,7 @@ class PatientsList {
         this.isActve = false
       });
 
-  PatientsList.fromJson(Map<String, dynamic> json) {
+  PatientsModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     userId = json['userId'];
     patientEmrId = json['patientEmrId'];

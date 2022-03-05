@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/all.dart';
 import 'package:twochealthcare/common_widgets/app_bar_components/appbar_text_style.dart';
 import 'package:twochealthcare/common_widgets/app_bar_components/back_button.dart';
 import 'package:twochealthcare/common_widgets/custom_appbar.dart';
+import 'package:twochealthcare/models/facility_user_models/dashboard_patients/patients_model.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
@@ -17,19 +18,16 @@ import 'package:twochealthcare/views/open_bottom_modal.dart';
 
 
 class PatientSummary extends HookWidget {
-  PatientSummary({Key? key}) : super(key: key);
+  PatientsModel patientsModel;
+  PatientSummary({required this.patientsModel,Key? key}) : super(key: key);
   GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
-    // LoginVM loginVM = useProvider(loginVMProvider);
-    // HomeVM homeVM = useProvider(homeVMProvider);
     FUPatientSummaryVM fuPatientSummaryVM = useProvider(fUPatientSummaryVMProvider);
-
-    // ApplicationRouteService applicationRouteService =
-    // useProvider(applicationRouteServiceProvider);
-    // FirebaseService firebaseService = useProvider(firebaseServiceProvider);
+    fuPatientSummaryVM.summaryPatientsModel = patientsModel;
     useEffect(
           () {
+            fuPatientSummaryVM.isLoading = false;
         Future.microtask(() async {});
         return () {};
       },

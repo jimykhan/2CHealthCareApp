@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:hooks_riverpod/all.dart';
+import 'package:twochealthcare/common_widgets/alert_loader.dart';
+import 'package:twochealthcare/common_widgets/no_data_inlist.dart';
+import 'package:twochealthcare/models/patient_summary/allergy_model.dart';
+import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
+import 'package:twochealthcare/view_models/facility_user_view_model/fu_patient_summary_veiw_models/fu_patient_summary_view_model.dart';
 import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_summary/components/common_container.dart';
 import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_summary/components/headline_text_style.dart';
 
@@ -12,10 +18,14 @@ class AllergiesBody extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    FUPatientSummaryVM _fuPatientSummaryVM = useProvider(fUPatientSummaryVMProvider);
     useEffect(
+
       () {
         print("init call of allegies");
-        Future.microtask(() async {});
+        Future.microtask(() async {
+          await _fuPatientSummaryVM.getAllergyByPatientId();
+        });
         return () {};
       },
       const [],
@@ -31,28 +41,30 @@ class AllergiesBody extends HookWidget {
           HeadLineTextStyle(
             text: "Allergies",
           ),
-          SizedBox(
-            height: 10,
+          Stack(
+            children: [
+              _fuPatientSummaryVM.isLoading
+                  ? AlertLoader()
+                  : _fuPatientSummaryVM.medicationList.length == 0 ? NoData()
+                  : ListView.separated(
+                  shrinkWrap: true,
+                  physics: ScrollPhysics(),
+
+                  itemBuilder: (context,index){
+                    return allergeTile(allergyModel: _fuPatientSummaryVM.allergyList[index]);
+                  },
+                  separatorBuilder: (context,index){
+                    return SizedBox(height: 10,);
+                  },
+                  itemCount: _fuPatientSummaryVM.allergyList.length)
+            ],
           ),
-          allergeTile(),
-          SizedBox(
-            height: 10,
-          ),
-          allergeTile(),
-          SizedBox(
-            height: 10,
-          ),
-          allergeTile(),
-          SizedBox(
-            height: 10,
-          ),
-          allergeTile(),
         ],
       ),
     );
   }
 
-  allergeTile() {
+  allergeTile({required AllergyModel allergyModel}) {
     return CommonContainer(
       horizontalPadding: 8,
       child: Row(
@@ -66,7 +78,7 @@ class AllergiesBody extends HookWidget {
                     Row(
                       children: [
                         Text(
-                          "Allergies ",
+                          allergyModel.agent?? "",
                           style: Styles.PoppinsRegular(
                               fontWeight: FontWeight.w500,
                               fontSize: ApplicationSizing.constSize(18),
@@ -81,9 +93,14 @@ class AllergiesBody extends HookWidget {
                     Container(
                       alignment: Alignment.centerLeft,
                       child: Wrap(
-                        children: ["Allergy", "Allergy", "Allergy"]
-                            .map((e) => createRandomBox(e))
-                            .toList(),
+                        children: [
+                          createRandomBox(allergyModel.reaction??"",Color(0xffFF3E39)),
+                          createRandomBox("category",Color(0xffEF831F)),
+                          createRandomBox("type",Color(0xff18A9C9))
+                        ],
+                        // children: ["Allergy", "Allergy", "Allergy"]
+                        //     .map((e) => createRandomBox(e))
+                        //     .toList(),
                       ),
                     ),
                   ],
@@ -96,7 +113,7 @@ class AllergiesBody extends HookWidget {
                   child: Column(
                 children: [
                   Text(
-                    "Dec 20 2020",
+                    allergyModel.createdOn??"",
                     style: Styles.PoppinsRegular(
                         fontWeight: FontWeight.w500,
                         fontSize: ApplicationSizing.constSize(10),
@@ -111,7 +128,7 @@ class AllergiesBody extends HookWidget {
                         borderRadius: BorderRadius.circular(12),
                         color: appColorSecondary),
                     child: Text(
-                      "Active",
+                      allergyModel.isActiveState?? false ? "InActive" :"Active",
                       style: Styles.PoppinsRegular(
                           fontWeight: FontWeight.w500,
                           fontSize: ApplicationSizing.constSize(8),
@@ -125,8 +142,9 @@ class AllergiesBody extends HookWidget {
     );
   }
 
-  Widget createRandomBox(String text) {
-    Color ramdomColor = randomColorPick();
+  Widget createRandomBox(String text,Color color) {
+    // Color ramdomColor = randomColorPick();
+    Color ramdomColor = color;
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 2, vertical: 2),
       padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),

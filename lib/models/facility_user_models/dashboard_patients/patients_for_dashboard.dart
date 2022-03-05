@@ -1,9 +1,9 @@
 import 'package:twochealthcare/models/facility_user_models/dashboard_patients/paging_data.dart';
-import 'package:twochealthcare/models/facility_user_models/dashboard_patients/patients_list.dart';
+import 'package:twochealthcare/models/facility_user_models/dashboard_patients/patients_model.dart';
 
 class PatientsForDashboard {
   PagingData? pagingData;
-  List<PatientsList>? patientsList = [];
+  List<PatientsModel>? patientsList = [];
 
   PatientsForDashboard({this.pagingData, this.patientsList});
 
@@ -12,9 +12,9 @@ class PatientsForDashboard {
         ? new PagingData.fromJson(json['pagingData'])
         : null;
     if (json['patientsList'] != null) {
-      patientsList = <PatientsList>[];
+      patientsList = <PatientsModel>[];
       json['patientsList'].forEach((v) {
-        patientsList!.add(new PatientsList.fromJson(v));
+        patientsList!.add(new PatientsModel.fromJson(v));
       });
     }
   }

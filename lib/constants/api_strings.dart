@@ -77,3 +77,12 @@ class BlueButton{
   static const String checkBlueButton = baseUrl + "/api/BlueButton/IsConnected";
   static const String getBlueButtonUrl = baseUrl + "/api/BlueButton/GetCode";
 }
+
+class MedicationsController{
+  static const String getMedicationsByPatientId = baseUrl + "/api/Medications/GetMedicationsByPatientId";
+  static const String getBlueButtonUrl = baseUrl + "/api/BlueButton/GetCode";
+}
+class AllergyController{
+  static const String getPatientAllergy = baseUrl + "/api/allergy/GetPatientAllergy";
+
+}

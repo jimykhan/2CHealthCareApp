@@ -1,22 +1,32 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:hooks_riverpod/all.dart';
+import 'package:twochealthcare/common_widgets/alert_loader.dart';
+import 'package:twochealthcare/common_widgets/no_data_inlist.dart';
+import 'package:twochealthcare/models/patient_summary/madication_model.dart';
+import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
+import 'package:twochealthcare/view_models/facility_user_view_model/fu_patient_summary_veiw_models/fu_patient_summary_view_model.dart';
 import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_summary/components/common_container.dart';
 import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_summary/components/headline_text_style.dart';
 import 'package:twochealthcare/views/home/components/widgets.dart';
 
 class MedicationsBody extends HookWidget {
-  const MedicationsBody({Key? key}) : super(key: key);
+  MedicationsBody({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    FUPatientSummaryVM _fuPatientSummaryVM = useProvider(fUPatientSummaryVMProvider);
     useEffect(
       () {
         print("init call of medications");
-        Future.microtask(() async {});
+        Future.microtask(() async {
+          await _fuPatientSummaryVM.getMedicationByPatientId();
+        });
         return () {};
       },
       const [],
@@ -32,34 +42,34 @@ class MedicationsBody extends HookWidget {
           HeadLineTextStyle(
             text: "Medication Records",
           ),
-          SizedBox(
-            height: 10,
-          ),
-          medicineTile(),
-          SizedBox(
-            height: 10,
-          ),
-          medicineTile(),
-          SizedBox(
-            height: 10,
-          ),
-          medicineTile(),
-          SizedBox(
-            height: 10,
-          ),
-          medicineTile(),
-          SizedBox(
-            height: 10,
+          Stack(
+            children: [
+              _fuPatientSummaryVM.isLoading
+                  ? AlertLoader()
+                  : _fuPatientSummaryVM.medicationList.length == 0 ? NoData()
+                  : ListView.separated(
+                  shrinkWrap: true,
+                  physics: ScrollPhysics(),
+
+                  itemBuilder: (context,index){
+                    return medicineTile(medicationModel: _fuPatientSummaryVM.medicationList[index]);
+                  },
+                  separatorBuilder: (context,index){
+                    return SizedBox(height: 10,);
+                  },
+                  itemCount: _fuPatientSummaryVM.medicationList.length)
+            ],
           ),
         ],
       ),
     );
   }
 
-  medicineTile() {
+  medicineTile({required MedicationModel medicationModel}) {
     return CommonContainer(
       horizontalPadding: 8,
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
               flex: 4,
@@ -68,13 +78,16 @@ class MedicationsBody extends HookWidget {
                 child: Column(
                   children: [
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          "Medicine name",
-                          style: Styles.PoppinsRegular(
-                              fontWeight: FontWeight.w500,
-                              fontSize: ApplicationSizing.constSize(18),
-                              color: Colors.black),
+                        Expanded(
+                          child: Text(
+                            medicationModel.medicationName?? "",
+                            style: Styles.PoppinsRegular(
+                                fontWeight: FontWeight.w500,
+                                fontSize: ApplicationSizing.constSize(14),
+                                color: Colors.black),
+                          ),
                         ),
                         Container(
                             padding: EdgeInsets.symmetric(horizontal: 10),
@@ -104,7 +117,7 @@ class MedicationsBody extends HookWidget {
                                     ),
                                   ),
                                   Text(
-                                    "Dec 12 2020",
+                                    medicationModel.startDate??"Dec 12 2020",
                                     style: Styles.PoppinsRegular(
                                       fontSize: ApplicationSizing.constSize(10),
                                       fontWeight: FontWeight.w500,
@@ -132,7 +145,7 @@ class MedicationsBody extends HookWidget {
                                     ),
                                   ),
                                   Text(
-                                    "Dec 12 2021",
+                                    medicationModel.stopDate??"Dec 12 2021",
                                     style: Styles.PoppinsRegular(
                                       fontSize: ApplicationSizing.constSize(10),
                                       fontWeight: FontWeight.w500,
@@ -156,10 +169,11 @@ class MedicationsBody extends HookWidget {
                   child: Column(
                 children: [
                   Text(
-                    "5",
+                    medicationModel.dose??"5",
                     style: Styles.PoppinsRegular(
                         fontWeight: FontWeight.w500,
-                        fontSize: ApplicationSizing.constSize(20)),
+                        fontSize: ApplicationSizing.constSize(12)),
+                    textAlign: TextAlign.center,
                   ),
                   Text(
                     "Dose",
@@ -168,13 +182,13 @@ class MedicationsBody extends HookWidget {
                         fontSize: ApplicationSizing.constSize(14),
                         color: appColor),
                   ),
-                  Container(
+                  medicationModel.status == null || medicationModel.status == ""  ? Container() : Container(
                     padding: EdgeInsets.symmetric(vertical: 2, horizontal: 4),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
                         color: appColor),
                     child: Text(
-                      "Started",
+                      medicationModel.status??"",
                       style: Styles.PoppinsRegular(
                           fontWeight: FontWeight.w500,
                           fontSize: ApplicationSizing.constSize(7),

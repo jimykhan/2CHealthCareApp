@@ -3,6 +3,7 @@ class Strings {
   static const String unknownError = 'Unknown error occurred, please try again later.';
   static const String retry = 'Retry';
   static const String dateFormat = "dd MMM yy";
+  static const String dateFormatFullYear = "dd MMM yyyy";
   static const String dateAndTimeFormat = "dd MMM yy, h:mm a";
   // Generic strings
   static const String ok = 'OK';

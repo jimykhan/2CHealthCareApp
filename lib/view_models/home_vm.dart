@@ -71,7 +71,10 @@ class HomeVM extends ChangeNotifier{
           setHomeScreenLoading(false);
           return false;
         }
-      }
+      }else{
+        setHomeScreenLoading(false);
+        return false;
+     }
     }
     catch(e){
       print(e.toString());

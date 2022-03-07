@@ -20,6 +20,7 @@ import 'package:twochealthcare/view_models/chat_vm/chat_list_vm.dart';
 import 'package:twochealthcare/view_models/chat_vm/chat_screen_vm.dart';
 import 'package:twochealthcare/view_models/home_vm.dart';
 import 'package:twochealthcare/views/chat/chat_list.dart';
+import 'package:twochealthcare/views/chat/chat_screen.dart';
 import 'package:twochealthcare/views/home/home.dart';
 import 'package:twochealthcare/views/home/profile.dart';
 import 'package:flutter/foundation.dart' as Foundation;
@@ -37,6 +38,7 @@ class BottomBar extends HookWidget {
         useProvider(applicationRouteServiceProvider);
     ChatListVM chatScreenVM = useProvider(chatListVMProvider);
     OnLaunchActivityAndRoutesService onLaunchActivityService = useProvider(onLaunchActivityServiceProvider);
+    ChatListVM chatListVM = useProvider(chatListVMProvider);
 
     useEffect(
       () {
@@ -47,67 +49,6 @@ class BottomBar extends HookWidget {
       },
       const [],
     );
-    // return CustomPaint(
-    //   size: Size(MediaQuery.of(context).size.width,70),
-    //   painter: BottomBarPaint(),
-    //   child: Container(
-    //     margin: EdgeInsets.symmetric(
-    //         horizontal: ApplicationSizing.horizontalMargin()),
-    //     height: ApplicationSizing.convert(60),
-    //     color: Colors.transparent,
-    //     child: Row(
-    //       children: <Widget>[
-    //         Expanded(
-    //           flex: 1,
-    //           child: InkWell(
-    //             onTap: () {
-    //               if (selectedIndex != 1) {
-    //                 Navigator.pushReplacement(
-    //                     context,
-    //                     PageTransition(
-    //                         child: Profile(),
-    //                         type: PageTransitionType.topToBottom));
-    //                 print("do something on selected index $selectedIndex}");
-    //               }
-    //             },
-    //             child: Container(
-    //               alignment: Alignment.center,
-    //               child: SvgPicture.asset(
-    //                 "assets/icons/bottom_navbar/user-icon.svg",
-    //                 height: ApplicationSizing.convert(25),
-    //               ),
-    //             ),
-    //           ),
-    //         ),
-    //         ApplicationSizing.horizontalSpacer(n: 180),
-    //         Expanded(
-    //           flex: 1,
-    //           child: InkWell(
-    //             onTap: () {
-    //               if (selectedIndex != 2) {
-    //                 Navigator.pushReplacement(
-    //                     context,
-    //                     PageTransition(
-    //                         child: ChatList(),
-    //                         type: PageTransitionType.bottomToTop));
-    //                 print("do something on selected index $selectedIndex}");
-    //               }
-    //             },
-    //             child: Container(
-    //               // color: Colors.red,
-    //               alignment: Alignment.center,
-    //
-    //               child: SvgPicture.asset(
-    //                 "assets/icons/bottom_navbar/message-icon.svg",
-    //                 height: ApplicationSizing.convert(25),
-    //               ),
-    //             ),
-    //           ),
-    //         ),
-    //       ],
-    //     ),
-    //   ),
-    // );
     return BottomAppBar(
       color: appColor,
       shape: const CircularNotchedRectangle(),
@@ -161,13 +102,25 @@ class BottomBar extends HookWidget {
                           "this is application mode = ${Foundation.kDebugMode}");
                       if (check is bool) {
                       if(check){
-                        applicationRouteService.addAndRemoveScreen(
-                            screenName: "ChatList");
-                        Navigator.pushReplacement(
-                            context,
-                            PageTransition(
-                                child: ChatList(),
-                                type: PageTransitionType.bottomToTop));
+                        if(chatListVM.groupIds.length == 1){
+                          applicationRouteService.addScreen(
+                              screenName: "${chatListVM.groupIds[0].id}");
+                          Navigator.pushReplacement(
+                              context,
+                              PageTransition(
+                                  child: ChatScreen(getGroupsModel: chatScreenVM.groupIds[0],backToHome: true,),
+                                  type: PageTransitionType.bottomToTop));
+                        }else{
+                          applicationRouteService.addAndRemoveScreen(
+                              screenName: "ChatList");
+
+                          Navigator.pushReplacement(
+                              context,
+                              PageTransition(
+                                  child: ChatList(),
+                                  type: PageTransitionType.bottomToTop));
+                        }
+
                       }else{
                         SnackBarMessage(message: "Chat disable for this user!");
                       }

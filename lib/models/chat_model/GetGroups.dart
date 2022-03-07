@@ -9,6 +9,9 @@ class GetGroupsModel {
   bool? isNewGroup;
   List<Participants?>? participants;
 
+  /// not in model
+  String? timeStamp;
+
   GetGroupsModel(
       {this.id,
         this.title,
@@ -18,7 +21,9 @@ class GetGroupsModel {
         this.lastMessageTime,
         this.unreadMsgCount,
         this.isNewGroup,
-        this.participants});
+        this.participants,
+        this.timeStamp
+      });
 
   GetGroupsModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];

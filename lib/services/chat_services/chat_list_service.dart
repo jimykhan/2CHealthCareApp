@@ -25,9 +25,8 @@ class ChatListService{
           groupIds.forEach((element) {
             if(element.lastMessageTime !=null){
               element.lastMessageTime = convertLocalToUtc(element.lastMessageTime!.replaceAll("Z", ""));
-            }
+            }});
 
-          });
           if (groupIds.length == 0) {
 
           }

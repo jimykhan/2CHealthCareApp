@@ -99,7 +99,9 @@ class ChatListVM extends ChangeNotifier{
         });
         setLoadingGroupId(false);
         if(groupIds.length == 1 && !onlounch){
-          Navigator.push(applicationContext!.currentContext!, PageTransition(child: ChatScreen(getGroupsModel: groupIds[0],backToHome: true,), type: PageTransitionType.fade));
+          Navigator.push(applicationContext!.currentContext!,
+              PageTransition(child: ChatScreen(getGroupsModel: groupIds[0],backToHome: true,),
+                  type: PageTransitionType.fade));
         }
       }
       else{

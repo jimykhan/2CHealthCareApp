@@ -136,7 +136,7 @@ class ChatScreen extends HookWidget {
               Column(
                 children: [
                   Container(
-                    height: 24,
+                    height: ApplicationSizing.constSize(24),
                     alignment: Alignment.centerLeft,
                     decoration: BoxDecoration(
                       // color: Colors.red.withOpacity(0.3),
@@ -146,7 +146,7 @@ class ChatScreen extends HookWidget {
                       child: Marquee(
                         text: 'This chat can not be used for emergency purposes. You may not get a response for extended period of time. Use 911 in case of emergency.',
                         style: Styles.PoppinsRegular(
-                          fontSize: ApplicationSizing.fontScale(15),
+                          fontSize: ApplicationSizing.constSize(15),
                           fontWeight: FontWeight.w400,
                           color: Colors.white
                         ),

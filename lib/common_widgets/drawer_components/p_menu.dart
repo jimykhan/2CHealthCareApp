@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:twochealthcare/common_widgets/aler_dialogue.dart';
 import 'package:twochealthcare/common_widgets/circular_image.dart';
+import 'package:twochealthcare/common_widgets/drawer_components/menu_spacing.dart';
 import 'package:twochealthcare/common_widgets/menu_text_style.dart';
 import 'package:twochealthcare/services/onlunch_activity_routes_service.dart';
 import 'package:twochealthcare/util/application_colors.dart';
@@ -30,42 +31,13 @@ class PMenu extends StatelessWidget {
                   top: ApplicationSizing.convert(20)),
               child: Column(
                 children: [
-                  // InkWell(
-                  //   onTap: () {
-                  //     Navigator.pushReplacement(context,
-                  //         PageTransition(child: Home(), type: PageTransitionType.fade));
-                  //   },
-                  //   child: Container(
-                  //     padding: EdgeInsets.symmetric(
-                  //         horizontal: ApplicationSizing
-                  //             .horizontalMargin(),
-                  //         vertical: ApplicationSizing.convert(6)),
-                  //     child: Row(
-                  //       // crossAxisAlignment: CrossAxisAlignment.end,
-                  //       children: [
-                  //         SvgPicture.asset(
-                  //           "assets/icons/side_menu/home-icon.svg",
-                  //           color: appColor,
-                  //           width: ApplicationSizing.convert(18),
-                  //           height: ApplicationSizing.convert(18),
-                  //         ),
-                  //         MenuTextStyle(
-                  //           text: "Home",
-                  //         ),
-                  //       ],
-                  //     ),
-                  //   ),
-                  // ),
                   InkWell(
                     onTap: () {
                       Navigator.push(context,
                           PageTransition(child: Profile(), type: PageTransitionType.fade));
                     },
                     child: Container(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: ApplicationSizing
-                              .horizontalMargin(),
-                          vertical: ApplicationSizing.convert(6)),
+                      padding: MenuPadding(),
                       // color: Colors.pinkAccent,
                       child: Row(
                         // crossAxisAlignment: CrossAxisAlignment.end,
@@ -89,10 +61,7 @@ class PMenu extends StatelessWidget {
                           PageTransition(child: ModalitiesReading(), type: PageTransitionType.fade));
                     },
                     child: Container(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: ApplicationSizing
-                              .horizontalMargin(),
-                          vertical: ApplicationSizing.convert(6)),
+                      padding: MenuPadding(),
                       // color: Colors.pinkAccent,
                       child: Row(
                         // crossAxisAlignment: CrossAxisAlignment.end,
@@ -116,10 +85,7 @@ class PMenu extends StatelessWidget {
                           PageTransition(child: HealthGuides(), type: PageTransitionType.fade));
                     },
                     child: Container(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: ApplicationSizing
-                              .horizontalMargin(),
-                          vertical: ApplicationSizing.convert(6)),
+                      padding: MenuPadding(),
                       child: Row(
                         // crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
@@ -142,10 +108,7 @@ class PMenu extends StatelessWidget {
                       CustomAlertDialog(message: "Coming Soon...");
                     },
                     child: Container(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: ApplicationSizing
-                              .horizontalMargin(),
-                          vertical: ApplicationSizing.convert(6)),
+                      padding: MenuPadding(),
                       child: Row(
                         // crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
@@ -168,10 +131,7 @@ class PMenu extends StatelessWidget {
                           PageTransition(child: CarePlan(), type: PageTransitionType.fade));
                     },
                     child: Container(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: ApplicationSizing
-                              .horizontalMargin(),
-                          vertical: ApplicationSizing.convert(6)),
+                      padding: MenuPadding(),
                       // color: Colors.pinkAccent,
                       child: Row(
                         // crossAxisAlignment: CrossAxisAlignment.end,
@@ -194,10 +154,7 @@ class PMenu extends StatelessWidget {
                       onLaunchActivityAndRoutesService.settingsDecider();
                     },
                     child: Container(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: ApplicationSizing
-                              .horizontalMargin(),
-                          vertical: ApplicationSizing.convert(6)),
+                      padding: MenuPadding(),
                       child: Row(
                         // crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
@@ -221,10 +178,7 @@ class PMenu extends StatelessWidget {
                       // loginVM.userLogout();
                     },
                     child: Container(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: ApplicationSizing
-                              .horizontalMargin(),
-                          vertical: ApplicationSizing.convert(6)),
+                      padding: MenuPadding(),
                       child: Row(
                         // crossAxisAlignment: CrossAxisAlignment.end,
                         children: [

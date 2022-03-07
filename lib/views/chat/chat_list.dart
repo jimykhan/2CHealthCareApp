@@ -213,7 +213,7 @@ class ChatList extends HookWidget {
                             alignment: Alignment.centerRight,
                             // color: Colors.pink,
                             child: Text(
-                              getGroupsModel?.lastMessageTime ?? "",
+                              getGroupsModel?.timeStamp ?? "",
                               style: Styles.PoppinsRegular(
                                   fontWeight: FontWeight.w400,
                                   fontSize: ApplicationSizing.fontScale(11),
@@ -236,7 +236,7 @@ class ChatList extends HookWidget {
                               bottom:
                                   BorderSide(width: 1.0, color: Colors.black12),
                             ),
-                            color: Colors.white,
+                            // color: Colors.white,
                           ),
                           child: Text(
                             getGroupsModel?.lastMessage ?? "",

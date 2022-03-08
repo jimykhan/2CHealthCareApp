@@ -6,9 +6,11 @@ import 'package:flutter/services.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:twochealthcare/common_widgets/aler_dialogue.dart';
 import 'package:twochealthcare/common_widgets/drawer_components/menu_spacing.dart';
+import 'package:twochealthcare/main.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
+import 'package:twochealthcare/views/facility_user/fu_home/patient_list/all_patient.dart';
 
 import '../menu_text_style.dart';
 
@@ -51,7 +53,11 @@ class FUMenu extends StatelessWidget {
             InkWell(
               onTap: () {
                 Navigator.pop(context);
-                logoutAlertDialog(loginVM: loginVM);
+                Navigator.push(
+                    applicationContext!.currentContext!,
+                    PageTransition(
+                        child: AllPatient(),
+                        type: PageTransitionType.bottomToTop));
               },
               child: Container(
                 padding: MenuPadding(),

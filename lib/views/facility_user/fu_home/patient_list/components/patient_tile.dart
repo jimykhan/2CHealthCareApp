@@ -40,7 +40,7 @@ class PatientTile extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      SvgPicture.asset(patientsList.isActve! ? "assets/icons/fu_icons/enablePhone.svg" : "assets/icons/fu_icons/disablePhone.svg"),
+                     patientsList.lastAppLaunchDate == null ? Container() :  SvgPicture.asset(patientsList.isActve?? false ? "assets/icons/fu_icons/enablePhone.svg" : "assets/icons/fu_icons/disablePhone.svg"),
                     ],
                   ))
             ],

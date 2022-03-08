@@ -59,6 +59,7 @@ class PatientsModel {
   /// not in model
   bool? isActve;
 
+
   PatientsModel(
       {this.id,
         this.userId,

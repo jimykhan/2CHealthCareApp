@@ -52,7 +52,7 @@ class PatientSummary extends HookWidget {
       body: Container(
         child:  Column(
             children: [
-              UserInfoTile(),
+              UserInfoTile(patientsModel: patientsModel,),
               Container(
                 margin: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin(),vertical: 10),
                 child: Row(

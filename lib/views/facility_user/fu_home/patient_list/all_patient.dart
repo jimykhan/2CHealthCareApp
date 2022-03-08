@@ -82,6 +82,7 @@ class AllPatient extends HookWidget {
                       onSubmit: (val){
 
                       },
+                      hints: "Search Patients",
                     ),
                   ),
                   SizedBox(width: 5,),

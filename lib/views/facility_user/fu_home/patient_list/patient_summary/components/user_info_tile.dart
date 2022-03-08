@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:twochealthcare/common_widgets/circular_image.dart';
+import 'package:twochealthcare/models/facility_user_models/dashboard_patients/patients_model.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
 class UserInfoTile extends StatelessWidget {
-  const UserInfoTile({Key? key}) : super(key: key);
+  PatientsModel patientsModel;
+  UserInfoTile({required this.patientsModel,Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -33,12 +35,12 @@ class UserInfoTile extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("User Name",style: Styles.PoppinsRegular(
+                  Text(patientsModel.fullName??"",style: Styles.PoppinsRegular(
                     fontSize: ApplicationSizing.constSize(20),
                     color: Colors.white,
                     fontWeight: FontWeight.w600,
                   ),),
-                  Text("666555224899",style: Styles.PoppinsRegular(
+                  Text(patientsModel.primaryPhoneNumber??"No Contact",style: Styles.PoppinsRegular(
                     fontSize: ApplicationSizing.constSize(12),
                     color: Colors.white,
                     fontWeight: FontWeight.w400,

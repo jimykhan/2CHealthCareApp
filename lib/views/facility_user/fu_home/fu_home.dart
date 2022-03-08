@@ -127,11 +127,6 @@ class FUHome extends HookWidget {
                 children: [
                   ServiceTile(
                       onclick: (){
-                        Navigator.push(
-                            applicationContext!.currentContext!,
-                            PageTransition(
-                                child: AllPatient(),
-                                type: PageTransitionType.bottomToTop));
                       },
                     serviceName: "CCM",
                     total: fuHomeViewModel.dashboardPatientSummary?.ccmActivePatientsCount??0,
@@ -140,11 +135,6 @@ class FUHome extends HookWidget {
                   SizedBox(height: 10,),
                   ServiceTile(
                       onclick: (){
-                        Navigator.push(
-                            applicationContext!.currentContext!,
-                            PageTransition(
-                                child: AllPatient(),
-                                type: PageTransitionType.bottomToTop));
                       },
                     serviceName: "RPM",
                     total: fuHomeViewModel.dashboardPatientSummary?.rpmActivePatientsCount??0,

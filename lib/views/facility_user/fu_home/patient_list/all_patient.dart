@@ -17,8 +17,10 @@ import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
 import 'package:twochealthcare/view_models/facility_user_view_model/all_patient_view_model.dart';
 import 'package:twochealthcare/view_models/facility_user_view_model/home/fu_home_view_model.dart';
 import 'package:twochealthcare/view_models/home_vm.dart';
+import 'package:twochealthcare/views/facility_user/fu_home/patient_list/components/patient_filter.dart';
 import 'package:twochealthcare/views/facility_user/fu_home/patient_list/components/patient_list.dart';
 import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_summary/components/custom_icon_button.dart';
+import 'package:twochealthcare/views/open_bottom_modal.dart';
 
 class AllPatient extends HookWidget {
   AllPatient({Key? key}) : super(key: key);
@@ -83,7 +85,11 @@ class AllPatient extends HookWidget {
                     ),
                   ),
                   SizedBox(width: 5,),
-                  SqureIconButton(onClick: () {  }),
+                  SqureIconButton(onClick: () {
+                    openBottomModal(
+                        child: PatientsFilter()
+                    );
+                  }),
                 ],
               ),
             ),

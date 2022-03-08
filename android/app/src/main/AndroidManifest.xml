@@ -6,8 +6,6 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.BLUETOOTH" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -17,16 +15,13 @@
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
 
    <application
-
         android:label="2C Health Care"
         android:allowBackup="false"
         android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher">
-
-
         <activity
-
             android:name=".MainActivity"
+            android:exported="true"
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
@@ -81,7 +76,7 @@
             android:value="2" />
        <service
            android:name="com.dexterous.flutterlocalnotifications.ForegroundService"
-           android:exported="false"
+           android:exported="true"
            android:stopWithTask="false"/>
     </application>
     <queries>

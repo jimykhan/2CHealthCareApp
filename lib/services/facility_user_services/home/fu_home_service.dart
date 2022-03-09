@@ -73,7 +73,7 @@ class FUHomeService{
       int facilityUserId = await _sharedPrefServices!.getCurrentUserId();
       String querisParam = "?PageNumber=$pageNumber&PageSize=$pageSize&PatientStatus=$patientStatus"
           "&Assigned=$assigned&RpmStatus=$rpmStatus"
-          "&CcmStatus=${ccmStatus??""}&CcmMonthlyStatus=${ccmMonthlyStatus??""}&SearchParam=$searchParam&FilterBy=$filterBy"
+          "&CcmStatus=${ccmStatus??""}&CcmMonthlyStatus=${ccmMonthlyStatus??""}&SearchParam=${searchParam??''}&FilterBy=$filterBy"
           "&CareProviderId=$careProviderId"
           "&BillingProviderId=$billingProviderId&CareFacilitatorId=$careFacilitatorId&FacilityUserId=$facilityUserId&FacilityId=$facilityId"
           "&ServiceMonth=$serviceMonth&ServiceYear=$serviceYear&ConsentDate=$consentDate"

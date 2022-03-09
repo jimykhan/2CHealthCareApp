@@ -8,6 +8,7 @@ import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/dio_services/dio_services.dart';
 import 'package:twochealthcare/services/shared_pref_services.dart';
 import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
+import 'dart:core';
 
 class FUHomeService{
   ProviderReference? _ref;
@@ -57,6 +58,53 @@ class FUHomeService{
     }
 
     }
+
+  Future<dynamic>getPatients2({int filterBy = 1,required int pageNumber,int patientStatus = 1,
+    int assigned = 0,int rpmStatus = -1,String? ccmStatus,String? ccmMonthlyStatus,int careProviderId = 0,
+    int billingProviderId = 0,int careFacilitatorId = 0, String? searchParam,
+    required int serviceMonth, required int serviceYear,int consentDate = 0,
+    int modefiedDate =0,String? diseaseIds,int customeListId = 0,
+    String? dateAssignedFrom,String? dateAssignedTo,String? sortBy,int sortOrder=0,String? ccmTimeRange ="0"})async{
+
+    PatientsForDashboard? patientsForDashboard;
+    try{
+      int pageSize = 10;
+      int facilityId = await _sharedPrefServices!.getFacilityId();
+      int facilityUserId = await _sharedPrefServices!.getCurrentUserId();
+      String querisParam = "?PageNumber=$pageNumber&PageSize=$pageSize&PatientStatus=$patientStatus"
+          "&Assigned=$assigned&RpmStatus=$rpmStatus"
+          "&CcmStatus=${ccmStatus??""}&CcmMonthlyStatus=${ccmMonthlyStatus??""}&SearchParam=$searchParam&FilterBy=$filterBy"
+          "&CareProviderId=$careProviderId"
+          "&BillingProviderId=$billingProviderId&CareFacilitatorId=$careFacilitatorId&FacilityUserId=$facilityUserId&FacilityId=$facilityId"
+          "&ServiceMonth=$serviceMonth&ServiceYear=$serviceYear&ConsentDate=$consentDate"
+          "&ModifiedDate=$modefiedDate&DiseaseIds=${diseaseIds??""}&CustomListId=$customeListId"
+          "&DateAssignedFrom=${dateAssignedFrom??""}&DateAssignedTo=${dateAssignedTo??""}&"
+          "SortBy=${sortBy??""}&SortOrder=$sortOrder&ccmTimeRange=$ccmTimeRange";
+      Response? res = await dio?.dio?.get(PatientsController.getPatients2+querisParam);
+      if(res?.statusCode == 200){
+        patientsForDashboard = PatientsForDashboard.fromJson(res!.data);
+        patientsForDashboard.patientsList?.forEach((element) {
+          if(element.lastAppLaunchDate !=null){
+            DateTime currentDate = DateTime.now();
+            final lastLoginDate = DateTime.parse(element.lastAppLaunchDate!);
+            int difference = currentDate.difference(lastLoginDate).inDays;
+            if(difference<30){
+              element.isActve = true;
+            }
+          }else{
+            element.isActve = false;
+          }
+
+        });
+        return patientsForDashboard;
+      }else{
+        return null;
+      }
+    }catch(e){
+      return null;
+    }
+
+  }
 
     Future<dynamic> patientServicesummary({required int facilityId, int? month, int? year,}) async{
       try{

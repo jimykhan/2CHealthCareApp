@@ -15,6 +15,7 @@ import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
 import 'package:twochealthcare/view_models/facility_user_view_model/all_patient_view_model.dart';
+import 'package:twochealthcare/view_models/facility_user_view_model/chronic_care_view_model.dart';
 import 'package:twochealthcare/view_models/facility_user_view_model/home/fu_home_view_model.dart';
 import 'package:twochealthcare/view_models/home_vm.dart';
 import 'package:twochealthcare/views/facility_user/fu_home/patient_list/components/patient_filter.dart';
@@ -22,26 +23,26 @@ import 'package:twochealthcare/views/facility_user/fu_home/patient_list/componen
 import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_summary/components/custom_icon_button.dart';
 import 'package:twochealthcare/views/open_bottom_modal.dart';
 
-class AllPatient extends HookWidget {
-  AllPatient({Key? key}) : super(key: key);
+class ChronicCare extends HookWidget {
+  /// 0 for ccm
+  /// 1 for rpm
+  int serviceType;
+  ChronicCare({required this.serviceType,Key? key}) : super(key: key);
   GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
-    // LoginVM loginVM = useProvider(loginVMProvider);
     HomeVM homeVM = useProvider(homeVMProvider);
-    // FUHomeViewModel fuHomeViewModel = useProvider(fuHomeVMProvider);
-    AllPatientVM allPatientVM = useProvider(fuAllPatientVM);
-
+    ChronicCareVM chronicCareVM = useProvider(fuChronicCareVMProvider);
     // ApplicationRouteService applicationRouteService =
     // useProvider(applicationRouteServiceProvider);
     // FirebaseService firebaseService = useProvider(firebaseServiceProvider);
     useEffect(
           () {
         homeVM.resetHome();
-        allPatientVM.isloading = true;
-        allPatientVM.patientListPageNumber = 1;
-        allPatientVM.patientsForDashboard = null;
-        allPatientVM.getPatientsForDashboard();
+        chronicCareVM.isloading = true;
+        chronicCareVM.patientListPageNumber = 1;
+        chronicCareVM.chronicCarePatients = null;
+        chronicCareVM.getPatients2();
         Future.microtask(() async {});
         return () {};
       },
@@ -61,11 +62,11 @@ class AllPatient extends HookWidget {
           parentContext: context,
         ),
       ),
-      body: _body(allPatientVM: allPatientVM,homeVM: homeVM),
+      body: _body(chronicCareVM: chronicCareVM,homeVM: homeVM),
     );
   }
 
-  _body({required AllPatientVM allPatientVM,required HomeVM homeVM}){
+  _body({required ChronicCareVM chronicCareVM,required HomeVM homeVM}){
     return Stack(
       children: [
         Column(
@@ -78,19 +79,19 @@ class AllPatient extends HookWidget {
                 children: [
                   Expanded(
                     child: CustomTextField(
-                      onchange: allPatientVM.onSearch,
+                      onchange: chronicCareVM.onSearch,
                       onSubmit: (val){
 
                       },
                       hints: "Search Patients",
                     ),
                   ),
-                  // SizedBox(width: 5,),
-                  // SqureIconButton(onClick: () {
-                  //   openBottomModal(
-                  //       child: PatientsFilter()
-                  //   );
-                  // }),
+                  SizedBox(width: 5,),
+                  SqureIconButton(onClick: () {
+                    openBottomModal(
+                        child: PatientsFilter()
+                    );
+                  }),
                 ],
               ),
             ),
@@ -99,9 +100,9 @@ class AllPatient extends HookWidget {
               Column(
                 children: [
                   Expanded(
-                    child: (allPatientVM.patientsForDashboard?.patientsList!.length == 0 || allPatientVM.patientsForDashboard == null)
+                    child: (chronicCareVM.chronicCarePatients?.patientsList!.length == 0 || chronicCareVM.chronicCarePatients == null)
                         ? NoData()
-                        : PatientList(scrollController: allPatientVM.scrollController, lastIndexLoading: allPatientVM.newPageLoading, patientsList: allPatientVM.patientsForDashboard?.patientsList??[],),
+                        : PatientList(scrollController: chronicCareVM.scrollController, lastIndexLoading: chronicCareVM.newPageLoading, patientsList: chronicCareVM.chronicCarePatients?.patientsList??[],),
                   ),
                 ],
               )
@@ -109,9 +110,13 @@ class AllPatient extends HookWidget {
             ),
           ],
         ),
-        (allPatientVM.isloading || homeVM.homeScreenLoading) ? AlertLoader() : Container(),
+        (chronicCareVM.isloading || homeVM.homeScreenLoading) ? AlertLoader() : Container(),
       ],
     );
   }
 
 }
+
+
+
+

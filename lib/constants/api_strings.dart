@@ -62,6 +62,7 @@ class ApiStrings {
 class PatientsController{
   static const String getPatientsForDashboard = baseUrl + "/api/Patients/GetPatientsForDashboard";
   static const String patientServiceSummary = baseUrl + "/api/Patients/PatientServicesSummary";
+  static const String getPatients2 = baseUrl + "/api/Patients/GetPatients2";
 }
 class FacilityController{
   static const String getFacilityUser = baseUrl + "/api/Facility/GetFacilityUser";

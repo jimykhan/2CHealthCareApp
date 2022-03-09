@@ -21,6 +21,7 @@ import 'package:twochealthcare/views/facility_user/fu_home/home_screen_component
 import 'package:twochealthcare/views/facility_user/fu_home/home_screen_components/change_facility_tile.dart';
 import 'package:twochealthcare/views/facility_user/fu_home/home_screen_components/service_tile.dart';
 import 'package:twochealthcare/views/facility_user/fu_home/patient_list/all_patient.dart';
+import 'package:twochealthcare/views/facility_user/fu_home/patient_list/chronic_care.dart';
 import 'package:twochealthcare/views/open_bottom_modal.dart';
 
 import '../../../main.dart';
@@ -70,7 +71,7 @@ class FUHome extends HookWidget {
           paddingLeft: 15,
         ),
       ),
-      body: _body(fuHomeViewModel: fuHomeViewModel,homeVM: homeVM,loginVM: loginVM),
+      body: _body(context,fuHomeViewModel: fuHomeViewModel,homeVM: homeVM,loginVM: loginVM),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         enableFeedback: false,
@@ -100,7 +101,7 @@ class FUHome extends HookWidget {
     );
   }
 
-  _body({required FUHomeViewModel fuHomeViewModel,required HomeVM homeVM,required LoginVM loginVM}){
+  _body(context,{required FUHomeViewModel fuHomeViewModel,required HomeVM homeVM,required LoginVM loginVM}){
     return Stack(
       children: [
         Container(
@@ -127,6 +128,7 @@ class FUHome extends HookWidget {
                 children: [
                   ServiceTile(
                       onclick: (){
+                        Navigator.push(context, PageTransition(child: ChronicCare(serviceType: 0,), type: PageTransitionType.bottomToTop));
                       },
                     serviceName: "CCM",
                     total: fuHomeViewModel.dashboardPatientSummary?.ccmActivePatientsCount??0,
@@ -135,6 +137,7 @@ class FUHome extends HookWidget {
                   SizedBox(height: 10,),
                   ServiceTile(
                       onclick: (){
+                        Navigator.push(context, PageTransition(child: ChronicCare(serviceType: 1,), type: PageTransitionType.bottomToTop));
                       },
                     serviceName: "RPM",
                     total: fuHomeViewModel.dashboardPatientSummary?.rpmActivePatientsCount??0,

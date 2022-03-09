@@ -122,30 +122,30 @@ class PatientsModel {
 
   PatientsModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    userId = json['userId'];
-    patientEmrId = json['patientEmrId'];
-    fullName = json['fullName'];
-    firstName = json['firstName'];
-    lastName = json['lastName'];
-    email = json['email'];
-    city = json['city'];
-    serviceName = json['serviceName'];
-    dateOfBirth = json['dateOfBirth'];
-    primaryPhoneNumber = json['primaryPhoneNumber'];
-    state = json['state'];
-    country = json['country'];
-    isConsentTaken = json['isConsentTaken'];
-    modifiedDate = json['modifiedDate'];
-    billingProviderId = json['billingProviderId'];
-    billingProviderName = json['billingProviderName'];
-    billingProviderNameAbbreviation = json['billingProviderNameAbbreviation'];
-    careFacilitatorId = json['careFacilitatorId'];
-    careFacilitatorName = json['careFacilitatorName'];
-    careFacilitatorNameAbbreviation = json['careFacilitatorNameAbbreviation'];
+    userId = json['userId']??"";
+    patientEmrId = json['patientEmrId']??"";
+    fullName = json['fullName']??"";
+    firstName = json['firstName']??"";
+    lastName = json['lastName']??"";
+    email = json['email']??"";
+    city = json['city']??"";
+    serviceName = json['serviceName']??"";
+    dateOfBirth = json['dateOfBirth']??"";
+    primaryPhoneNumber = json['primaryPhoneNumber']??"";
+    state = json['state']??"";
+    country = json['country']??"";
+    isConsentTaken = json['isConsentTaken']??false;
+    modifiedDate = json['modifiedDate']??"";
+    billingProviderId = json['billingProviderId']??1;
+    billingProviderName = json['billingProviderName']??"";
+    billingProviderNameAbbreviation = json['billingProviderNameAbbreviation']??"";
+    careFacilitatorId = json['careFacilitatorId']??1;
+    careFacilitatorName = json['careFacilitatorName']??"";
+    careFacilitatorNameAbbreviation = json['careFacilitatorNameAbbreviation']??"";
     if(json['careProviderIds'] != null){
       careProviderIds = <int>[];
-      json['careProviders'].forEach((v) {
-        careProviderIds!.add(v);
+      json['careProviderIds'].forEach((v) {
+        careProviderIds?.add(v);
       });
     }
     if(json['careProviderNames'] != null){
@@ -275,6 +275,7 @@ class PatientsModel {
     return data;
   }
 }
+
 
 class CareProviders {
   int? careProviderId;

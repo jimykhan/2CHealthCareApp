@@ -30,3 +30,4 @@ class PatientsForDashboard {
     return data;
   }
 }
+

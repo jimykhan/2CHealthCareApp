@@ -37,6 +37,7 @@ class ChronicCareVM extends ChangeNotifier{
     if(Id != careProviderId){
       Navigator.pop(applicationContext!.currentContext!);
       careProviderId = Id;
+      patientListPageNumber = 1;
       getPatients2();
     }
 

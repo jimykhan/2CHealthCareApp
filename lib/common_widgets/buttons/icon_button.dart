@@ -5,8 +5,8 @@ import 'package:twochealthcare/util/application_sizing.dart';
 class SqureIconButton extends StatelessWidget {
   String? svgPictureUrl;
   Color? bgColor;
-  Function()? onClick;
-  SqureIconButton({this.svgPictureUrl,this.bgColor,this.onClick,Key? key}) : super(key: key);
+  Function() onClick;
+  SqureIconButton({this.svgPictureUrl,this.bgColor,required this.onClick,Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

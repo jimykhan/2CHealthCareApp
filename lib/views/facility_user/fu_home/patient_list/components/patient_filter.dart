@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:twochealthcare/common_widgets/radio-button.dart';
+import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
-class PatientsFilter extends StatelessWidget {
-  const PatientsFilter({Key? key}) : super(key: key);
+import 'package:twochealthcare/view_models/facility_user_view_model/chronic_care_view_model.dart';
+class PatientsFilter extends HookWidget {
+
+  PatientsFilter({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    ChronicCareVM chronicCareVM = useProvider(fuChronicCareVMProvider);
     return Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.only(
@@ -42,8 +48,8 @@ class PatientsFilter extends StatelessWidget {
                 children: [
                   InkWell(
                     onTap: (){
-
-                    } ,
+                      chronicCareVM.setCareProviderFilter(1);
+                    },
                     child: Container(
                       padding: EdgeInsets.symmetric(vertical: 11),
                       // color: Colors.red,
@@ -58,7 +64,7 @@ class PatientsFilter extends StatelessWidget {
                                 color: Colors.black
                             ),),
                           RadioButton(
-                            buttonSelected: true,
+                            buttonSelected: chronicCareVM.careProviderId == 0 ? false : true,
                             onchange: (){},
                             noText: true,),
 
@@ -67,9 +73,9 @@ class PatientsFilter extends StatelessWidget {
                     ),
                   ),
                   InkWell(
-                    onTap: (){
-
-                    } ,
+                    onTap:  (){
+                        chronicCareVM.setCareProviderFilter(0);
+                        },
                     child: Container(
                       padding: EdgeInsets.symmetric(vertical: 11),
                       // color: Colors.red,
@@ -84,7 +90,7 @@ class PatientsFilter extends StatelessWidget {
                                 color: Colors.black
                             ),),
                           RadioButton(
-                            buttonSelected: true,
+                            buttonSelected: chronicCareVM.careProviderId == 0 ? true : false,
                             onchange: (){},
                             noText: true,),
 

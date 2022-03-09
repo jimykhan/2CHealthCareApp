@@ -71,10 +71,11 @@ class FUHomeService{
       int pageSize = 10;
       int facilityId = await _sharedPrefServices!.getFacilityId();
       int facilityUserId = await _sharedPrefServices!.getCurrentUserId();
+      int _careProviderId = careProviderId == 0 ? careProviderId : facilityUserId;
       String querisParam = "?PageNumber=$pageNumber&PageSize=$pageSize&PatientStatus=$patientStatus"
           "&Assigned=$assigned&RpmStatus=$rpmStatus"
           "&CcmStatus=${ccmStatus??""}&CcmMonthlyStatus=${ccmMonthlyStatus??""}&SearchParam=${searchParam??''}&FilterBy=$filterBy"
-          "&CareProviderId=$careProviderId"
+          "&CareProviderId=$_careProviderId"
           "&BillingProviderId=$billingProviderId&CareFacilitatorId=$careFacilitatorId&FacilityUserId=$facilityUserId&FacilityId=$facilityId"
           "&ServiceMonth=$serviceMonth&ServiceYear=$serviceYear&ConsentDate=$consentDate"
           "&ModifiedDate=$modefiedDate&DiseaseIds=${diseaseIds??""}&CustomListId=$customeListId"

@@ -10,17 +10,17 @@ import 'package:twochealthcare/models/profile_models/paitent_care_providers_mode
 import 'package:twochealthcare/models/profile_models/state_model.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
-import 'package:twochealthcare/services/profile_service.dart';
+import 'package:twochealthcare/services/patient_profile_service.dart';
 import 'package:twochealthcare/services/shared_pref_services.dart';
 import 'package:twochealthcare/util/conversion.dart';
 import 'package:twochealthcare/views/home/profile.dart';
 
 class ProfileVm extends ChangeNotifier{
   bool loading = true;
-  CurrentUserInfo? currentUserInfo;
+  PatientInfo? patientInfo;
   List<PatientCareProvider> patientCareProvider = [];
   AuthServices? _authService;
-  ProfileService? _profileService;
+  PatientProfileService? _PatientProfileService;
   SharedPrefServices? _sharedPrefServices;
   ProviderReference? _ref;
 
@@ -62,7 +62,7 @@ class ProfileVm extends ChangeNotifier{
   }
   initService(){
     _authService = _ref!.read(authServiceProvider);
-    _profileService = _ref!.read(profileServiceProvider);
+    _PatientProfileService = _ref!.read(PatientProfileServiceProvider);
     _sharedPrefServices = _ref!.read(sharedPrefServiceProvider);
 
   }
@@ -75,8 +75,8 @@ class ProfileVm extends ChangeNotifier{
     try{
       int userId = await _authService!.getCurrentUserId();
       setLoading(true);
-      var res = await _profileService!.getUserInfo(currentUserId: userId);
-      var res1 = await _profileService!.getCareProvider(currentUserId: userId);
+      var res = await _PatientProfileService!.getUserInfo(currentUserId: userId);
+      var res1 = await _PatientProfileService!.getCareProvider(currentUserId: userId);
       if(res1 is List<PatientCareProvider>){
         patientCareProvider = [];
         res1.forEach((element) {
@@ -86,8 +86,8 @@ class ProfileVm extends ChangeNotifier{
       if(res1 == null){
         patientCareProvider = [];
       }
-      if(res is CurrentUserInfo){
-        currentUserInfo = res;
+      if(res is PatientInfo){
+        patientInfo = res;
         _sharedPrefServices!.setPatientInfo(res);
         setLoading(false);
       }else{
@@ -187,16 +187,16 @@ class ProfileVm extends ChangeNotifier{
     getStateList();
   }
   setExistingValue(){
-    primaryPhoneEditController?.text = phoneNumberFormatter(phoneNum: currentUserInfo?.homePhone??"");
-    secondaryPhoneEditController?.text = phoneNumberFormatter(phoneNum:currentUserInfo?.personNumber??"");
-    currentAddressEditController?.text = currentUserInfo?.currentAddress??"";
-    cACityEditController?.text = currentUserInfo?.city??"";
-    cAStateEditController?.text = currentUserInfo?.state??"";
-    cAZipCodeEditController?.text = currentUserInfo?.zip??"";
-    mailingAddressEditController?.text = currentUserInfo?.mailingAddress??"";
-    mACityEditController?.text = currentUserInfo?.maillingAddressCity??"";
-    mAStateEditController?.text = currentUserInfo?.maillingAddressState??"";
-    mAZipCodeEditController?.text = currentUserInfo?.maillingAddressZipCode??"";
+    primaryPhoneEditController?.text = phoneNumberFormatter(phoneNum: patientInfo?.homePhone??"");
+    secondaryPhoneEditController?.text = phoneNumberFormatter(phoneNum:patientInfo?.personNumber??"");
+    currentAddressEditController?.text = patientInfo?.currentAddress??"";
+    cACityEditController?.text = patientInfo?.city??"";
+    cAStateEditController?.text = patientInfo?.state??"";
+    cAZipCodeEditController?.text = patientInfo?.zip??"";
+    mailingAddressEditController?.text = patientInfo?.mailingAddress??"";
+    mACityEditController?.text = patientInfo?.maillingAddressCity??"";
+    mAStateEditController?.text = patientInfo?.maillingAddressState??"";
+    mAZipCodeEditController?.text = patientInfo?.maillingAddressZipCode??"";
 
     cAStateEditController?.addListener(() {
       if (cAStateEditController!.text == "") {
@@ -234,17 +234,17 @@ class ProfileVm extends ChangeNotifier{
         "secondaryContactNo": secondaryPhoneEditController?.text.replaceAll("-", "")??"",
         "currentAddress": currentAddressEditController?.text??"",
         "mailingAddress": mailingAddressEditController?.text??"",
-        "city": mACityEditController?.text??"",
-        "state": mAStateEditController?.text??"",
-        "zip": mAZipCodeEditController?.text??"",
-        "emergencyContactName": currentUserInfo?.emergencyContactName??"",
-        "emergencyContactRelationship": currentUserInfo?.emergencyContactRelationship??"",
-        "emergencyContactPrimaryPhoneNo": currentUserInfo?.emergencyContactPrimaryPhoneNo??"",
-        "emergencyContactSecondaryPhoneNo": currentUserInfo?.emergencyContactSecondaryPhoneNo??"",
+        "city": cACityEditController?.text??"",
+        "state": cAStateEditController?.text??"",
+        "zip": cAZipCodeEditController?.text??"",
+        "emergencyContactName": patientInfo?.emergencyContactName??"",
+        "emergencyContactRelationship": patientInfo?.emergencyContactRelationship??"",
+        "emergencyContactPrimaryPhoneNo": patientInfo?.emergencyContactPrimaryPhoneNo??"",
+        "emergencyContactSecondaryPhoneNo": patientInfo?.emergencyContactSecondaryPhoneNo??"",
         "patientId": userId
       };
       setLoading(true);
-      var res = await _profileService!.editPatientContactInfo(data: data);
+      var res = await _PatientProfileService!.editPatientContactInfo(data: data);
       if(res){
         Navigator.pushReplacement(applicationContext!.currentContext!, PageTransition(child: Profile(), type: PageTransitionType.fade));
         setLoading(false);
@@ -275,7 +275,7 @@ class ProfileVm extends ChangeNotifier{
   }
   Future<dynamic> getStateList() async {
     try{
-      var res = await _profileService!.getStatesList();
+      var res = await _PatientProfileService!.getStatesList();
       if(res is List<StateModel>){
         stateList = [];
         res.forEach((element) {
@@ -300,28 +300,28 @@ class ProfileVm extends ChangeNotifier{
     emergencyNameEditController = TextEditingController();
     emergencyPrimaryPhoneEditController = TextEditingController();
     emergencySecondaryPhoneEditController = TextEditingController();
-    emergencyNameEditController?.text = currentUserInfo?.emergencyContactName??"";
-    emergencyPrimaryPhoneEditController?.text = phoneNumberFormatter(phoneNum:currentUserInfo?.emergencyContactPrimaryPhoneNo??"");
-    emergencySecondaryPhoneEditController?.text = phoneNumberFormatter(phoneNum:currentUserInfo?.emergencyContactSecondaryPhoneNo??"");
+    emergencyNameEditController?.text = patientInfo?.emergencyContactName??"";
+    emergencyPrimaryPhoneEditController?.text = phoneNumberFormatter(phoneNum:patientInfo?.emergencyContactPrimaryPhoneNo??"");
+    emergencySecondaryPhoneEditController?.text = phoneNumberFormatter(phoneNum:patientInfo?.emergencyContactSecondaryPhoneNo??"");
     Strings.relationshipList.forEach((element) {
-      if(element == currentUserInfo?.emergencyContactRelationship){
-        dropdownValue = currentUserInfo?.emergencyContactRelationship??"";
+      if(element == patientInfo?.emergencyContactRelationship){
+        dropdownValue = patientInfo?.emergencyContactRelationship??"";
       }
     });
-    // dropdownValue = currentUserInfo?.emergencyContactRelationship??"Other";
+    // dropdownValue = patientInfo?.emergencyContactRelationship??"Other";
   }
 
   editEmergencyContactInfo()async{
     try{
       int userId = await _authService!.getCurrentUserId();
       Map data = {
-        "primaryPhoneNo": currentUserInfo?.homePhone?.replaceAll("-", "")??"",
-        "secondaryContactNo": currentUserInfo?.emergencyContactSecondaryPhoneNo?.replaceAll("-", "")??"",
-        "currentAddress": currentUserInfo?.currentAddress??"",
-        "mailingAddress": currentUserInfo?.mailingAddress??"",
-        "city": currentUserInfo?.city??"",
-        "state": currentUserInfo?.state??"",
-        "zip": currentUserInfo?.zip??"",
+        "primaryPhoneNo": patientInfo?.homePhone?.replaceAll("-", "")??"",
+        "secondaryContactNo": patientInfo?.emergencyContactSecondaryPhoneNo?.replaceAll("-", "")??"",
+        "currentAddress": patientInfo?.currentAddress??"",
+        "mailingAddress": patientInfo?.mailingAddress??"",
+        "city": patientInfo?.city??"",
+        "state": patientInfo?.state??"",
+        "zip": patientInfo?.zip??"",
         "emergencyContactName": emergencyNameEditController?.text??"",
         "emergencyContactRelationship": dropdownValue,
         "emergencyContactPrimaryPhoneNo": emergencyPrimaryPhoneEditController?.text.replaceAll("-", "")??"",
@@ -329,7 +329,7 @@ class ProfileVm extends ChangeNotifier{
         "patientId": userId
       };
       setLoading(true);
-      var res = await _profileService!.editPatientContactInfo(data: data);
+      var res = await _PatientProfileService!.editPatientContactInfo(data: data);
       if(res){
         Navigator.pushReplacement(applicationContext!.currentContext!, PageTransition(child: Profile(), type: PageTransitionType.fade));
         setLoading(false);

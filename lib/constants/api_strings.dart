@@ -87,3 +87,18 @@ class AllergyController{
   static const String getPatientAllergy = baseUrl + "/api/allergy/GetPatientAllergy";
 
 }
+
+class DiagnoseController{
+  static const String getDiagnosesByPatientId = baseUrl + "/api/Diagnosis/GetDiagnosesByPatientId";
+
+}
+
+class ImmunizationsController{
+  static const String getImmunizationsOfPatient = baseUrl + "/api/Immunizations/GetImmunizationsOfPatient";
+
+}
+
+class FamilyHistoryController{
+  static const String getFamilyHistory = baseUrl + "/api/FamilyHistory/GetFamilyHistory";
+
+}

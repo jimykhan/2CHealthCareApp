@@ -1,15 +1,17 @@
 import 'package:dio/dio.dart';
 import 'package:hooks_riverpod/all.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:twochealthcare/common_widgets/snackber_message.dart';
 import 'package:twochealthcare/constants/api_strings.dart';
+import 'package:twochealthcare/constants/strings.dart';
 import 'package:twochealthcare/models/profile_models/current_user_info_model.dart';
 import 'package:twochealthcare/models/profile_models/paitent_care_providers_model.dart';
 import 'package:twochealthcare/models/profile_models/state_model.dart';
 import 'package:twochealthcare/providers/providers.dart';
 
-class ProfileService{
+class PatientProfileService{
   ProviderReference? _ref;
-  ProfileService({ProviderReference? ref}){
+  PatientProfileService({ProviderReference? ref}){
     _ref = ref;
   }
 
@@ -22,8 +24,11 @@ class ProfileService{
       );
       if(response.statusCode == 200){
         // sharePrf.setCurrentUser(response.data);
-        CurrentUserInfo currentUserInfo = CurrentUserInfo.fromJson(response.data);
-        return currentUserInfo;
+        PatientInfo patientInfo = PatientInfo.fromJson(response.data);
+        if(patientInfo.dateOfBirth != null){
+          patientInfo.dateOfBirth = Jiffy(patientInfo.dateOfBirth).format(Strings.dateFormatFullYear);
+        }
+        return patientInfo;
 
       }else{
         return null;

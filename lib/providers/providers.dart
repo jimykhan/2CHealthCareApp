@@ -15,7 +15,7 @@ import 'package:twochealthcare/services/firebase_service.dart';
 import 'package:twochealthcare/services/health_guides_service/health_guides_service.dart';
 import 'package:twochealthcare/services/local_notification_service.dart';
 import 'package:twochealthcare/services/onlunch_activity_routes_service.dart';
-import 'package:twochealthcare/services/profile_service.dart';
+import 'package:twochealthcare/services/patient_profile_service.dart';
 import 'package:twochealthcare/services/reading_services/bg_reading_service.dart';
 import 'package:twochealthcare/services/reading_services/blood_pressure_reading_service.dart';
 import 'package:twochealthcare/services/reading_services/modalities_reading_service.dart';
@@ -72,7 +72,7 @@ final sharedPrefServiceProvider = Provider<SharedPrefServices>((ref)=>SharedPref
 final modalitiesReadingServiceProvider = Provider<ModalitiesReadingService>((ref)=>ModalitiesReadingService(ref: ref));
 final bloodPressureServiceProvider = Provider<BloodPressureReadingService>((ref)=>BloodPressureReadingService(ref: ref));
 final bGReadingServiceProvider = Provider<BGReadingService>((ref)=>BGReadingService(ref: ref));
-final profileServiceProvider = Provider<ProfileService>((ref)=>ProfileService(ref: ref));
+final PatientProfileServiceProvider = Provider<PatientProfileService>((ref)=>PatientProfileService(ref: ref));
 final firebaseServiceProvider = Provider<FirebaseService>((ref)=>FirebaseService(ref: ref));
 final signalRServiceProvider = Provider<SignalRServices>((ref)=>SignalRServices(ref: ref));
 final chatScreenServiceProvider = Provider<ChatScreenService>((ref)=>ChatScreenService(ref: ref));

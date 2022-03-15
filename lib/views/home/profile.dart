@@ -163,7 +163,7 @@ class Profile extends HookWidget {
                                 alignment: Alignment.centerLeft,
                                 child: tile(
                                     key: "Name",
-                                    value: profileVm.currentUserInfo?.fullName??""
+                                    value: profileVm.patientInfo?.fullName??""
                                 ),
                               )
                             ),
@@ -174,7 +174,7 @@ class Profile extends HookWidget {
                                 alignment: Alignment.centerRight,
                                 child: tile(
                                     key: "EmrId",
-                                    value: profileVm.currentUserInfo?.patientEmrId??""
+                                    value: profileVm.patientInfo?.patientEmrId??""
                                 ),
                               )
                             ),
@@ -190,7 +190,7 @@ class Profile extends HookWidget {
                                   alignment: Alignment.centerLeft,
                                   child: tile(
                                       key: "Sex",
-                                      value: profileVm.currentUserInfo?.sex??""
+                                      value: profileVm.patientInfo?.sex??""
                                   ),
                                 )
                             ),
@@ -201,7 +201,7 @@ class Profile extends HookWidget {
                                   alignment: Alignment.centerRight,
                                   child: tile(
                                       key: "Date of Birth",
-                                      value: profileVm.currentUserInfo?.dateOfBirth?.substring(0, 10) ?? ""
+                                      value: profileVm.patientInfo?.dateOfBirth?? ""
                                   ),
                                 )
                             ),
@@ -253,25 +253,25 @@ class Profile extends HookWidget {
                                       alignment: Alignment.centerLeft,
                                       child: tile(
                                           key: "Primary Phone No.",
-                                          value: mask.getMaskedString(profileVm.currentUserInfo?.homePhone??"",)
+                                          value: mask.getMaskedString(profileVm.patientInfo?.homePhone??"",)
                                       ),
                                     ),
 
-                                    profileVm.currentUserInfo == null ? Container() :InkWell(
-                                      onTap: profileVm.currentUserInfo?.phoneNumberConfirmed?? false ?  null : (){
+                                    profileVm.patientInfo == null ? Container() :InkWell(
+                                      onTap: profileVm.patientInfo?.phoneNumberConfirmed?? false ?  null : (){
                                         Navigator.push(context,
-                                          PageTransition(child: OtpVerification(userName: profileVm.currentUserInfo?.userName??"", phone: profileVm.currentUserInfo?.homePhone,
+                                          PageTransition(child: OtpVerification(userName: profileVm.patientInfo?.userName??"", phone: profileVm.patientInfo?.homePhone,
                                               isForgetPassword: false
                                           ), type: PageTransitionType.leftToRight)
                                         );
-                                        forgetPasswordVM?.sendVerificationCodeToPhone(userName: profileVm.currentUserInfo?.userName??"",phoneNumber: profileVm.currentUserInfo?.homePhone??"");
+                                        forgetPasswordVM?.sendVerificationCodeToPhone(userName: profileVm.patientInfo?.userName??"",phoneNumber: profileVm.patientInfo?.homePhone??"");
 
                                       },
                                       child: Container(
                                         margin: EdgeInsets.only(top: 10),
                                         padding: EdgeInsets.symmetric(
                                             horizontal: ApplicationSizing.horizontalMargin()),
-                                        child: isContactVerified(isVerified: profileVm.currentUserInfo?.phoneNumberConfirmed?? false),
+                                        child: isContactVerified(isVerified: profileVm.patientInfo?.phoneNumberConfirmed?? false),
                                       ),
                                     ),
 
@@ -285,7 +285,7 @@ class Profile extends HookWidget {
                                   alignment: Alignment.centerRight,
                                   child: tile(
                                       key: "Secondary Contact No.",
-                                      value: mask.getMaskedString(profileVm.currentUserInfo?.personNumber??"")
+                                      value: mask.getMaskedString(profileVm.patientInfo?.personNumber??"")
                                   ),
                                 )
                             ),
@@ -313,7 +313,7 @@ class Profile extends HookWidget {
                                   alignment: Alignment.centerLeft,
                                   child: tile(
                                       key: "Current Address",
-                                      value: profileVm.currentUserInfo?.currentAddress??""
+                                      value: profileVm.patientInfo?.currentAddress??""
                                   ),
                                 )
                             ),
@@ -324,7 +324,7 @@ class Profile extends HookWidget {
                                   alignment: Alignment.centerRight,
                                   child: tile(
                                       key: "City",
-                                      value: profileVm.currentUserInfo?.city??""
+                                      value: profileVm.patientInfo?.city??""
                                   ),
                                 )
                             ),
@@ -340,7 +340,7 @@ class Profile extends HookWidget {
                                   alignment: Alignment.centerLeft,
                                   child: tile(
                                       key: "State",
-                                      value: profileVm.currentUserInfo?.state??""
+                                      value: profileVm.patientInfo?.state??""
                                   ),
                                 )
                             ),
@@ -351,7 +351,7 @@ class Profile extends HookWidget {
                                   alignment: Alignment.centerRight,
                                   child: tile(
                                       key: "Zip Code",
-                                      value: profileVm.currentUserInfo?.zip??""
+                                      value: profileVm.patientInfo?.zip??""
                                   ),
                                 )
                             ),
@@ -378,7 +378,7 @@ class Profile extends HookWidget {
                                   alignment: Alignment.centerLeft,
                                   child: tile(
                                       key: "Mailing Address",
-                                      value: profileVm.currentUserInfo?.mailingAddress??""
+                                      value: profileVm.patientInfo?.mailingAddress??""
                                   ),
                                 )
                             ),
@@ -389,7 +389,7 @@ class Profile extends HookWidget {
                                   alignment: Alignment.centerRight,
                                   child: tile(
                                       key: "City",
-                                      value: profileVm.currentUserInfo?.maillingAddressCity??""
+                                      value: profileVm.patientInfo?.maillingAddressCity??""
                                   ),
                                 )
                             ),
@@ -405,7 +405,7 @@ class Profile extends HookWidget {
                                   alignment: Alignment.centerLeft,
                                   child: tile(
                                       key: "State",
-                                      value: profileVm.currentUserInfo?.maillingAddressState??""
+                                      value: profileVm.patientInfo?.maillingAddressState??""
                                   ),
                                 )
                             ),
@@ -416,7 +416,7 @@ class Profile extends HookWidget {
                                   alignment: Alignment.centerRight,
                                   child: tile(
                                       key: "Zip Code",
-                                      value: profileVm.currentUserInfo?.maillingAddressZipCode??""
+                                      value: profileVm.patientInfo?.maillingAddressZipCode??""
                                   ),
                                 )
                             ),
@@ -443,7 +443,7 @@ class Profile extends HookWidget {
                                   alignment: Alignment.centerLeft,
                                   child: tile(
                                       key: "Best time to call",
-                                      value: profileVm.currentUserInfo?.bestTimeToCall??""
+                                      value: profileVm.patientInfo?.bestTimeToCall??""
                                   ),
                                 )
                             ),
@@ -454,7 +454,7 @@ class Profile extends HookWidget {
                                   alignment: Alignment.centerRight,
                                   child: tile(
                                       key: "Preferred Language",
-                                      value: profileVm.currentUserInfo?.preferredLanguage??""
+                                      value: profileVm.patientInfo?.preferredLanguage??""
                                   ),
                                 )
                             ),
@@ -506,7 +506,7 @@ class Profile extends HookWidget {
                                   alignment: Alignment.centerLeft,
                                   child: tile(
                                       key: "Name",
-                                      value: profileVm.currentUserInfo?.emergencyContactName??""
+                                      value: profileVm.patientInfo?.emergencyContactName??""
                                   ),
                                 )
                             ),
@@ -517,7 +517,7 @@ class Profile extends HookWidget {
                                   alignment: Alignment.centerRight,
                                   child: tile(
                                       key: "Relationship",
-                                      value: profileVm.currentUserInfo?.emergencyContactRelationship??""
+                                      value: profileVm.patientInfo?.emergencyContactRelationship??""
                                   ),
                                 )
                             ),
@@ -533,7 +533,7 @@ class Profile extends HookWidget {
                                   alignment: Alignment.centerLeft,
                                   child: tile(
                                       key: "Primary Phone",
-                                      value: profileVm.currentUserInfo?.emergencyContactPrimaryPhoneNo??""
+                                      value: profileVm.patientInfo?.emergencyContactPrimaryPhoneNo??""
                                   ),
                                 )
                             ),
@@ -544,7 +544,7 @@ class Profile extends HookWidget {
                                   alignment: Alignment.centerRight,
                                   child: tile(
                                       key: "Secondary Phone",
-                                      value: profileVm.currentUserInfo?.emergencyContactSecondaryPhoneNo??""
+                                      value: profileVm.patientInfo?.emergencyContactSecondaryPhoneNo??""
                                   ),
                                 )
                             ),

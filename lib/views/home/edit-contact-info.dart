@@ -13,6 +13,7 @@ import 'package:twochealthcare/common_widgets/filled_button.dart';
 import 'package:twochealthcare/common_widgets/loader.dart';
 import 'package:twochealthcare/common_widgets/mask_formatter.dart';
 import 'package:twochealthcare/common_widgets/notification_widget.dart';
+import 'package:twochealthcare/common_widgets/verification_mark.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/application_route_service.dart';
 import 'package:twochealthcare/util/application_colors.dart';
@@ -163,7 +164,7 @@ class EditContactInfo extends HookWidget {
                               color: Colors.black),
                         ),
                       ),
-                      isContactVerified(isVerified: profileVm.currentUserInfo?.phoneNumberConfirmed??false),
+                      isContactVerified(isVerified: profileVm.patientInfo?.phoneNumberConfirmed??false),
                     ],
                   ),
                 ),
@@ -644,16 +645,7 @@ isContactVerified({required bool isVerified}){
   return Row(
     crossAxisAlignment: CrossAxisAlignment.end,
     children: [
-      Container(
-        padding: EdgeInsets.all(1),
-        decoration: BoxDecoration(
-            color: isVerified ? appColor : Colors.red,
-            shape: BoxShape.circle
-        ),
-        child: isVerified
-            ? Icon(Icons.check,size: 15, color: Colors.white,)
-            : Icon(Icons.close,size: 15,color: Colors.white,),
-      ),
+      VerificationMark(isVerified: isVerified,),
       ApplicationSizing.horizontalSpacer(n: 5),
       Container(
         child: Text(

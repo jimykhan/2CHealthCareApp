@@ -5,7 +5,7 @@ import 'package:twochealthcare/models/profile_models/medications_model.dart';
 import 'package:twochealthcare/models/profile_models/patient_consents_model.dart';
 import 'package:twochealthcare/models/profile_models/specialists_model.dart';
 
-class CurrentUserInfo {
+class PatientInfo {
   int? id;
   String? patientEmrId;
   String? nextGenId;
@@ -89,7 +89,7 @@ class CurrentUserInfo {
   List<CarePlanApproval>? carePlanApproval;
   List<PatientConsents>? patientConsents;
 
-  CurrentUserInfo(
+  PatientInfo(
       {this.id,
         this.patientEmrId,
         this.nextGenId,
@@ -173,7 +173,7 @@ class CurrentUserInfo {
         this.carePlanApproval,
         this.patientConsents});
 
-  CurrentUserInfo.fromJson(Map<String, dynamic> json) {
+  PatientInfo.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     patientEmrId = json['patientEmrId'];
     nextGenId = json['nextGenId'];

@@ -17,11 +17,13 @@ import 'package:twochealthcare/util/styles.dart';
 import 'package:twochealthcare/view_models/care_plan_vm/care_plan_vm.dart';
 import 'package:twochealthcare/view_models/profile_vm.dart';
 import 'package:twochealthcare/views/care_plan/components/isChallengeChecked.dart';
+import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_summary/components/headline_text_style.dart';
 import 'package:twochealthcare/views/home/components/widgets.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class CarePlan extends HookWidget {
-  CarePlan({Key? key}) : super(key: key);
+  bool isPatientSummary;
+  CarePlan({this.isPatientSummary = false,Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +42,7 @@ class CarePlan extends HookWidget {
       },
       const [],
     );
-    return Scaffold(
+    return isPatientSummary ? withOutScaffold(context, carePlanVM: carePlanVM) :Scaffold(
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(ApplicationSizing.convert(80)),
           child: CustomAppBar(
@@ -60,6 +62,27 @@ class CarePlan extends HookWidget {
             carePlanVM.loadingCarePlan ? AlertLoader() : Container(),
           ],
         )
+    );
+  }
+
+  withOutScaffold(context,{required CarePlanVM carePlanVM}){
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          padding: EdgeInsets.symmetric(
+              horizontal: ApplicationSizing.horizontalMargin()),
+          child: HeadLineTextStyle(
+            text: "Care Plan",
+          ),
+        ),
+        Stack(
+          children: [
+            _body(context,carePlanVM: carePlanVM),
+            carePlanVM.loadingCarePlan ? AlertLoader() : Container(),
+          ],
+        ),
+      ],
     );
   }
 

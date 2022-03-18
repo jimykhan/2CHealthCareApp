@@ -102,3 +102,9 @@ class FamilyHistoryController{
   static const String getFamilyHistory = baseUrl + "/api/FamilyHistory/GetFamilyHistory";
 
 }
+
+class SurgicalController{
+  static const String getSurgicalHistoriesByPatientId = baseUrl + "/api/SurgicalHistories/GetSurgicalHistoriesByPatientId";
+
+}
+

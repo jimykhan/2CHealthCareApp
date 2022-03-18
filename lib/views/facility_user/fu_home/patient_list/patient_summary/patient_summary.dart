@@ -27,6 +27,7 @@ class PatientSummary extends HookWidget {
     fuPatientSummaryVM.summaryPatientsModel = patientsModel;
     useEffect(
           () {
+            fuPatientSummaryVM.onMenuChange(0);
             fuPatientSummaryVM.isLoading = false;
         Future.microtask(() async {});
         return () {};

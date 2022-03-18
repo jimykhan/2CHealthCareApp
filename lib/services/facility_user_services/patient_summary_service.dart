@@ -11,6 +11,7 @@ import 'package:twochealthcare/models/patient_summary/diagnose_model.dart';
 import 'package:twochealthcare/models/patient_summary/family_history_model.dart';
 import 'package:twochealthcare/models/patient_summary/immunization_model.dart';
 import 'package:twochealthcare/models/patient_summary/madication_model.dart';
+import 'package:twochealthcare/models/patient_summary/surgical_history_model.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
 import 'package:twochealthcare/services/dio_services/dio_services.dart';
@@ -125,6 +126,27 @@ class PatientSummaryService{
           element.updatedOn = Jiffy(element.updatedOn).format(Strings.dateFormatFullYear);
         });
         return familyHistoryList;
+      }else{
+        return null;
+      }
+    }catch(e){
+      return null;
+    }
+  }
+
+  Future<dynamic>getSurgicalHistoryByPatientId({required int Id})async{
+    List<SurgicalHistoryModel> surgicalHistoryList = [];
+    try{
+      Response? res = await dio?.dio?.get(SurgicalController.getSurgicalHistoriesByPatientId+"/$Id");
+      if(res?.statusCode == 200){
+        res?.data?.forEach((element) {
+          surgicalHistoryList.add(SurgicalHistoryModel.fromJson(element));
+        });
+        surgicalHistoryList.forEach((element) {
+
+          element.createdOn = Jiffy(element.createdOn).format(Strings.dateFormatFullYear);
+        });
+        return surgicalHistoryList;
       }else{
         return null;
       }

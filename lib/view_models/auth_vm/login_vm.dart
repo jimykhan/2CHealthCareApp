@@ -78,7 +78,12 @@ class LoginVM extends ChangeNotifier{
 
   updateCurrentUser(var data){
     authService?.updateCurrentUser(data);
-    currentUser = CurrentUser.fromJson(data);
+    if(data == null){
+      currentUser = null;
+    }else{
+      currentUser = CurrentUser.fromJson(data);
+    }
+
   }
 
   isSmsOrEmailVerified({String? userName})async{
@@ -206,7 +211,7 @@ class LoginVM extends ChangeNotifier{
   userLogout(){
     firebaseService!.turnOfChatNotification();
     firebaseService!.turnOfReadingNotification();
-    authService?.updateCurrentUser(null);
+    updateCurrentUser(null);
     signalRServices?.disConnectSignalR();
     currentUser = null;
     Navigator.pushAndRemoveUntil(

@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/all.dart';
+import 'package:jiffy/jiffy.dart';
+import 'package:twochealthcare/constants/strings.dart';
 import 'package:twochealthcare/models/facility_user_models/dashboard_patients/patients_for_dashboard.dart';
 import 'package:twochealthcare/models/facility_user_models/dashboard_patients/patients_model.dart';
 import 'package:twochealthcare/models/patient_summary/allergy_model.dart';
@@ -7,7 +9,9 @@ import 'package:twochealthcare/models/patient_summary/diagnose_model.dart';
 import 'package:twochealthcare/models/patient_summary/family_history_model.dart';
 import 'package:twochealthcare/models/patient_summary/immunization_model.dart';
 import 'package:twochealthcare/models/patient_summary/madication_model.dart';
+import 'package:twochealthcare/models/patient_summary/surgical_history_model.dart';
 import 'package:twochealthcare/models/profile_models/current_user_info_model.dart';
+import 'package:twochealthcare/models/profile_models/specialists_model.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/facility_user_services/home/fu_home_service.dart';
 import 'package:twochealthcare/services/facility_user_services/patient_summary_service.dart';
@@ -18,7 +22,9 @@ import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_
 import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_summary/components/family_history_body.dart';
 import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_summary/components/immunization_body.dart';
 import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_summary/components/medications_body.dart';
+import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_summary/components/provider_body.dart';
 import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_summary/components/summary_body.dart';
+import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_summary/components/surgical_history_body.dart';
 
 class FUPatientSummaryVM extends ChangeNotifier{
   PatientsModel? summaryPatientsModel;
@@ -32,6 +38,8 @@ class FUPatientSummaryVM extends ChangeNotifier{
   List<AllergyModel> allergyList = [];
   List<ImmunizationModel> immunizationList = [];
   List<FamilyHistoryModel> familyHistoryList = [];
+  List<SurgicalHistoryModel> surgicalHistoryList = [];
+  List<Specialists> providerList = [];
   List<PatientSummaryMenu> patientSummaryMenuList =  [
     PatientSummaryMenu(isSelected: true,menuText: "Summary", body: SummaryBody()),
     PatientSummaryMenu(isSelected: false,menuText: "Diagnosis",body: DiagnosisBody()),
@@ -39,9 +47,9 @@ class FUPatientSummaryVM extends ChangeNotifier{
     PatientSummaryMenu(isSelected: false,menuText: "Allergies",body: AllergiesBody()),
     PatientSummaryMenu(isSelected: false,menuText: "Immunization",body: ImmunizationBody()),
     PatientSummaryMenu(isSelected: false,menuText: "Care Plan",body: CarePlan(isPatientSummary: true,)),
-    PatientSummaryMenu(isSelected: false,menuText: "Providers",body: Container()),
+    PatientSummaryMenu(isSelected: false,menuText: "Providers",body: ProviderBody()),
     PatientSummaryMenu(isSelected: false,menuText: "Family History",body: FamilyHistoryBody()),
-    PatientSummaryMenu(isSelected: false,menuText: "Surgical History",body: Container()),
+    PatientSummaryMenu(isSelected: false,menuText: "Surgical History",body: SurgicalHistoryBody()),
   ];
   ProviderReference? _ref;
   FUPatientSummaryVM({ProviderReference? ref}){
@@ -111,6 +119,7 @@ class FUPatientSummaryVM extends ChangeNotifier{
       if(res !=null && res is List<AllergyModel>){
         allergyList = [];
         allergyList.addAll(res);
+
         setIsLoading(false);
       }else{
         setIsLoading(false);
@@ -155,6 +164,23 @@ class FUPatientSummaryVM extends ChangeNotifier{
     }
   }
 
+  getSurgicalHistoryByPatientId()async{
+    try{
+      setIsLoading(true);
+      var res = await _patientSummaryService?.getSurgicalHistoryByPatientId(Id: summaryPatientsModel?.id??-1);
+      if(res !=null && res is List<SurgicalHistoryModel>){
+        surgicalHistoryList = [];
+        surgicalHistoryList.addAll(res);
+        setIsLoading(false);
+      }else{
+        setIsLoading(false);
+      }
+    }catch(e){
+      setIsLoading(false);
+      return null;
+    }
+  }
+
   getPatientInfoById()async{
     try{
       setIsLoading(true);
@@ -170,6 +196,16 @@ class FUPatientSummaryVM extends ChangeNotifier{
       return null;
     }
 
+  }
+
+  getProviderByPatientId(){
+    providerList = [];
+    patientInfo?.specialists?.forEach((element) {
+        element.prevAppointment = Jiffy(element.prevAppointment).format(Strings.dateFormatFullYear);
+        element.nextAppointment = Jiffy(element.nextAppointment).format(Strings.dateFormatFullYear);
+      providerList.add(element);
+    });
+    setIsLoading(false);
   }
 
 

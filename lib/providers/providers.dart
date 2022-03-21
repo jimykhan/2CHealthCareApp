@@ -1,6 +1,4 @@
-import 'package:dio/dio.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:twochealthcare/constants/api_strings.dart';
 import 'package:twochealthcare/services/application_route_service.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
 import 'package:twochealthcare/services/care_plan_services/care_plan_services.dart';
@@ -16,9 +14,10 @@ import 'package:twochealthcare/services/health_guides_service/health_guides_serv
 import 'package:twochealthcare/services/local_notification_service.dart';
 import 'package:twochealthcare/services/onlunch_activity_routes_service.dart';
 import 'package:twochealthcare/services/patient_profile_service.dart';
-import 'package:twochealthcare/services/reading_services/bg_reading_service.dart';
-import 'package:twochealthcare/services/reading_services/blood_pressure_reading_service.dart';
-import 'package:twochealthcare/services/reading_services/modalities_reading_service.dart';
+// import 'package:twochealthcare/services/rpm_services/bg_reading_service.dart';
+// import 'package:twochealthcare/services/rpm_services/blood_pressure_reading_service.dart';
+// import 'package:twochealthcare/services/rpm_services/modalities_reading_service.dart';
+import 'package:twochealthcare/services/rpm_services/rpm_service.dart';
 import 'package:twochealthcare/services/settings_services/fu_settings_services/fu_settings_service.dart';
 import 'package:twochealthcare/services/settings_services/p_settings_services/p_settings_service.dart';
 import 'package:twochealthcare/services/shared_pref_services.dart';
@@ -37,10 +36,10 @@ import 'package:twochealthcare/view_models/facility_user_view_model/home/fu_home
 import 'package:twochealthcare/view_models/facility_user_view_model/home/fu_profile_view_model.dart';
 import 'package:twochealthcare/view_models/health_guides_vm/health_guides_vm.dart';
 import 'package:twochealthcare/view_models/home_vm.dart';
-import 'package:twochealthcare/view_models/modalities_reading_vm/bg_reading_vm.dart';
-import 'package:twochealthcare/view_models/modalities_reading_vm/blood_pressure_reading_vm.dart';
-import 'package:twochealthcare/view_models/modalities_reading_vm/modalities_reading_vm.dart';
-import 'package:twochealthcare/view_models/modalities_reading_vm/tab_and_calender_vm.dart';
+import 'package:twochealthcare/view_models/rpm_vm/bg_reading_vm.dart';
+import 'package:twochealthcare/view_models/rpm_vm/blood_pressure_reading_vm.dart';
+import 'package:twochealthcare/view_models/rpm_vm/modalities_reading_vm.dart';
+import 'package:twochealthcare/view_models/rpm_vm/tab_and_calender_vm.dart';
 import 'package:twochealthcare/view_models/profile_vm.dart';
 import 'package:twochealthcare/view_models/settings_view_models/fu_settings_view_model/fu_settings_view_models.dart';
 import 'package:twochealthcare/view_models/settings_view_models/p_settings_view_models/p_settings_view_model.dart';
@@ -69,9 +68,9 @@ final pSettigsVMProvider = ChangeNotifierProvider<PSettingsViewModel>((ref)=>PSe
 final dioServicesProvider = Provider<DioServices>((ref)=>DioServices(ref: ref));
 final authServiceProvider = Provider<AuthServices>((ref)=>AuthServices(ref: ref));
 final sharedPrefServiceProvider = Provider<SharedPrefServices>((ref)=>SharedPrefServices(ref: ref));
-final modalitiesReadingServiceProvider = Provider<ModalitiesReadingService>((ref)=>ModalitiesReadingService(ref: ref));
-final bloodPressureServiceProvider = Provider<BloodPressureReadingService>((ref)=>BloodPressureReadingService(ref: ref));
-final bGReadingServiceProvider = Provider<BGReadingService>((ref)=>BGReadingService(ref: ref));
+// final modalitiesReadingServiceProvider = Provider<ModalitiesReadingService>((ref)=>ModalitiesReadingService(ref: ref));
+// final bloodPressureServiceProvider = Provider<BloodPressureReadingService>((ref)=>BloodPressureReadingService(ref: ref));
+// final bGReadingServiceProvider = Provider<BGReadingService>((ref)=>BGReadingService(ref: ref));
 final PatientProfileServiceProvider = Provider<PatientProfileService>((ref)=>PatientProfileService(ref: ref));
 final firebaseServiceProvider = Provider<FirebaseService>((ref)=>FirebaseService(ref: ref));
 final signalRServiceProvider = Provider<SignalRServices>((ref)=>SignalRServices(ref: ref));
@@ -100,4 +99,5 @@ final fuHomeServiceProvider = Provider<FUHomeService>((ref)=>FUHomeService(ref: 
 final fuProfileServiceProvider = Provider<FUProfileService>((ref)=>FUProfileService(ref: ref));
 final fuSettingsServiceProvider = Provider<FuSettingsService>((ref)=>FuSettingsService(ref: ref));
 final patientSummaryServiceProvider = Provider<PatientSummaryService>((ref)=>PatientSummaryService(ref: ref));
+final rpmServiceProvider = Provider<RpmService>((ref)=>RpmService(ref: ref));
 ///Facility User Simple Provider

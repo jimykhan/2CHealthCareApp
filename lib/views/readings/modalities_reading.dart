@@ -17,7 +17,7 @@ import 'package:twochealthcare/services/shared_pref_services.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
-import 'package:twochealthcare/view_models/modalities_reading_vm/modalities_reading_vm.dart';
+import 'package:twochealthcare/view_models/rpm_vm/modalities_reading_vm.dart';
 import 'package:twochealthcare/views/readings/bg_reading.dart';
 import 'package:twochealthcare/views/readings/blood_pressure_reading.dart';
 

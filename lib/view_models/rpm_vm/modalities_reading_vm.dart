@@ -3,7 +3,8 @@ import 'package:hooks_riverpod/all.dart';
 import 'package:twochealthcare/models/modalities_models/modalities_model.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
-import 'package:twochealthcare/services/reading_services/modalities_reading_service.dart';
+import 'package:twochealthcare/services/rpm_services/modalities_reading_service.dart';
+import 'package:twochealthcare/services/rpm_services/rpm_service.dart';
 
 class ModalitiesReadingVM extends ChangeNotifier{
   int bPLastReadingMonth = DateTime.now().month;
@@ -15,7 +16,8 @@ class ModalitiesReadingVM extends ChangeNotifier{
   bool isActiveModality = false;
   List<ModalitiesModel> modalitiesList = [];
   AuthServices? _authService;
-  ModalitiesReadingService? _modalitiesReadingService;
+  // ModalitiesReadingService? _modalitiesReadingService;
+  RpmService? _rpmService;
   ModalitiesReadingVM({ProviderReference? ref}){
     _ref = ref;
     initService();
@@ -23,7 +25,7 @@ class ModalitiesReadingVM extends ChangeNotifier{
   }
   initService(){
     _authService = _ref!.read(authServiceProvider);
-    _modalitiesReadingService = _ref!.read(modalitiesReadingServiceProvider);
+    _rpmService = _ref!.read(rpmServiceProvider);
 
   }
 
@@ -35,16 +37,16 @@ class ModalitiesReadingVM extends ChangeNotifier{
   getModalitiesByUserId()async{
     // setModalitiesLoading(true);
     int id  = await _authService!.getCurrentUserId();
-    var res = await _modalitiesReadingService?.getModalitiesByUserId(currentUserId: id);
+    var res = await _rpmService?.getModalitiesByUserId(currentUserId: id);
     if(res is List){
       modalitiesList = [];
       res.forEach((element){
         modalitiesList.add(element);
       });
-       bPLastReadingMonth = _modalitiesReadingService!.bPLastReadingMonth;
-       bPLastReadingYear = _modalitiesReadingService!.bPLastReadingYear;
-       bGLastReadingMonth = _modalitiesReadingService!.bGLastReadingMonth;
-       bGLastReadingYear = _modalitiesReadingService!.bGLastReadingYear;
+       bPLastReadingMonth = _rpmService!.bPLastReadingMonth;
+       bPLastReadingYear = _rpmService!.bPLastReadingYear;
+       bGLastReadingMonth = _rpmService!.bGLastReadingMonth;
+       bGLastReadingYear = _rpmService!.bGLastReadingYear;
       modalitiesList.forEach((element) {
         if(element.id != 0 || element.lastReading != null) isActiveModality = true;
         // if(element.id != 0) isActiveModality = true;

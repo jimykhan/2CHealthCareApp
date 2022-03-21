@@ -20,7 +20,7 @@ import 'package:twochealthcare/common_widgets/tap_bar.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
-import 'package:twochealthcare/view_models/modalities_reading_vm/blood_pressure_reading_vm.dart';
+import 'package:twochealthcare/view_models/rpm_vm/blood_pressure_reading_vm.dart';
 import 'package:twochealthcare/views/readings/tab_and_calender.dart';
 
 class BloodPressureReading extends HookWidget {

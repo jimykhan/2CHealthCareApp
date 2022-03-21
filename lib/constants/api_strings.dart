@@ -108,3 +108,7 @@ class SurgicalController{
 
 }
 
+class RPMController{
+  static const String addRPMEncounter = baseUrl + "/api/Rpm/AddRPMEncounter";
+}
+

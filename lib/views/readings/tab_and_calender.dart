@@ -10,8 +10,8 @@ import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/application_route_service.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
-import 'package:twochealthcare/view_models/modalities_reading_vm/bg_reading_vm.dart';
-import 'package:twochealthcare/view_models/modalities_reading_vm/tab_and_calender_vm.dart';
+import 'package:twochealthcare/view_models/rpm_vm/bg_reading_vm.dart';
+import 'package:twochealthcare/view_models/rpm_vm/tab_and_calender_vm.dart';
 
 class TabAndCalender extends HookWidget {
   TabAndCalender({Key? key}) : super(key: key);

@@ -17,7 +17,7 @@ import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
 import 'package:twochealthcare/view_models/auth_vm/forget-password-vm.dart';
 import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
-import 'package:twochealthcare/view_models/modalities_reading_vm/modalities_reading_vm.dart';
+import 'package:twochealthcare/view_models/rpm_vm/modalities_reading_vm.dart';
 import 'package:twochealthcare/view_models/profile_vm.dart';
 import 'package:twochealthcare/views/auths/otp_verification.dart';
 import 'package:twochealthcare/views/home/components/widgets.dart';

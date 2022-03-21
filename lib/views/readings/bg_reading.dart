@@ -15,14 +15,14 @@ import 'package:twochealthcare/common_widgets/no_data_inlist.dart';
 import 'package:twochealthcare/models/modalities_models/gb_reading_model.dart';
 import 'package:twochealthcare/services/application_route_service.dart';
 import 'package:twochealthcare/util/styles.dart';
-import 'package:twochealthcare/view_models/modalities_reading_vm/bg_reading_vm.dart';
+import 'package:twochealthcare/view_models/rpm_vm/bg_reading_vm.dart';
 import 'package:twochealthcare/views/readings/bg_reading_in_table.dart';
 import 'package:twochealthcare/views/readings/pb_reading_in_table.dart';
 import 'package:twochealthcare/common_widgets/tap_bar.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
-import 'package:twochealthcare/view_models/modalities_reading_vm/blood_pressure_reading_vm.dart';
+import 'package:twochealthcare/view_models/rpm_vm/blood_pressure_reading_vm.dart';
 import 'package:twochealthcare/views/readings/tab_and_calender.dart';
 
 class BGReading extends HookWidget {

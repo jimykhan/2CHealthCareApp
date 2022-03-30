@@ -11,9 +11,12 @@ import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
 import 'package:twochealthcare/view_models/facility_user_view_model/fu_patient_summary_veiw_models/fu_patient_summary_view_model.dart';
+import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_summary/components/add_rpm_encounter.dart';
 import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_summary/components/common_container.dart';
 import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_summary/components/headline_text_style.dart';
+import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_summary/components/matline_plus.dart';
 import 'package:twochealthcare/views/home/components/widgets.dart';
+import 'package:twochealthcare/views/open_bottom_modal.dart';
 
 class MedicationsBody extends HookWidget {
   MedicationsBody({Key? key}) : super(key: key);
@@ -89,10 +92,15 @@ class MedicationsBody extends HookWidget {
                                 color: Colors.black),
                           ),
                         ),
-                        Container(
-                            padding: EdgeInsets.symmetric(horizontal: 10),
-                            child: SvgPicture.asset(
-                                "assets/icons/medicine_info_icon.svg"))
+                        InkWell(
+                          onTap: (){
+                            openBottomModal(child: MadLinePlus());
+                          },
+                          child: Container(
+                              padding: EdgeInsets.symmetric(horizontal: 10),
+                              child: SvgPicture.asset(
+                                  "assets/icons/medicine_info_icon.svg")),
+                        )
                       ],
                     ),
                     SizedBox(

@@ -1,6 +1,7 @@
 class MedicationModel {
   int? id;
   String? medicationName;
+  String? rxCui;
   String? dose;
   String? startDate;
   String? stopDate;
@@ -11,6 +12,7 @@ class MedicationModel {
   MedicationModel(
       {this.id,
         this.medicationName,
+        this.rxCui,
         this.dose,
         this.startDate,
         this.stopDate,
@@ -21,6 +23,7 @@ class MedicationModel {
   MedicationModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     medicationName = json['medicationName'];
+    rxCui = json['rxCui'];
     dose = json['dose'];
     startDate = json['startDate'];
     stopDate = json['stopDate'];
@@ -33,6 +36,7 @@ class MedicationModel {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['medicationName'] = this.medicationName;
+    data['rxCui'] = this.rxCui;
     data['dose'] = this.dose;
     data['startDate'] = this.startDate;
     data['stopDate'] = this.stopDate;

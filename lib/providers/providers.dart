@@ -39,6 +39,7 @@ import 'package:twochealthcare/view_models/home_vm.dart';
 import 'package:twochealthcare/view_models/rpm_vm/bg_reading_vm.dart';
 import 'package:twochealthcare/view_models/rpm_vm/blood_pressure_reading_vm.dart';
 import 'package:twochealthcare/view_models/rpm_vm/modalities_reading_vm.dart';
+import 'package:twochealthcare/view_models/rpm_vm/rpm_encounter_vm.dart';
 import 'package:twochealthcare/view_models/rpm_vm/tab_and_calender_vm.dart';
 import 'package:twochealthcare/view_models/profile_vm.dart';
 import 'package:twochealthcare/view_models/settings_view_models/fu_settings_view_model/fu_settings_view_models.dart';
@@ -93,6 +94,7 @@ final fUPatientSummaryVMProvider = ChangeNotifierProvider<FUPatientSummaryVM>((r
 final fuSettingsVMProvider = ChangeNotifierProvider<FuSettingsViewModel>((ref)=>FuSettingsViewModel(ref: ref));
 final fuAllPatientVM = ChangeNotifierProvider<AllPatientVM>((ref)=>AllPatientVM(ref: ref));
 final fuChronicCareVMProvider = ChangeNotifierProvider<ChronicCareVM>((ref)=>ChronicCareVM(ref: ref));
+final rpmEncounterVMProvider = ChangeNotifierProvider<RpmEncounterVM>((ref)=>RpmEncounterVM(ref: ref));
 ///Facility User ChangeNotifier Provider
 ///Facility User Simple Provider
 final fuHomeServiceProvider = Provider<FUHomeService>((ref)=>FUHomeService(ref: ref));

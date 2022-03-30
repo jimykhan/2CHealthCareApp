@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/all.dart';
 import 'package:twochealthcare/common_widgets/app_bar_components/appbar_text_style.dart';
 import 'package:twochealthcare/common_widgets/app_bar_components/cross_icon_button.dart';
 import 'package:twochealthcare/common_widgets/app_bar_components/tick_icon_button.dart';
@@ -9,15 +10,27 @@ import 'package:twochealthcare/common_widgets/drop_down/drop_down_button.dart';
 import 'package:twochealthcare/common_widgets/input_field/custom_text_erea.dart';
 import 'package:twochealthcare/common_widgets/input_field/custom_text_field.dart';
 import 'package:twochealthcare/common_widgets/heading_text/text_field_title.dart';
+import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
+import 'package:twochealthcare/view_models/rpm_vm/rpm_encounter_vm.dart';
 
 class AddRPMEncounter extends HookWidget {
    AddRPMEncounter({Key? key}) : super(key: key);
   String dropDownValue = '1';
   @override
   Widget build(BuildContext context) {
+    RpmEncounterVM _rmpEncounterVM = useProvider(rpmEncounterVMProvider);
+    useEffect(
+          () {
+        Future.microtask(() async {
+          _rmpEncounterVM.initialState();
+        });
+        return () {};
+      },
+      const [],
+    );
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(ApplicationSizing.convert(80)),
@@ -65,11 +78,10 @@ class AddRPMEncounter extends HookWidget {
                                 onchange: (val){},
                                 onSubmit: (val){},
                               hints: 'Date',
+                              isEnable: false,
                               textStyle: Styles.hintStyle(),
                             ),
                           ),
-                            SizedBox(width: 10,),
-                            SqureIconButton(onClick: () {  }),
                           ],
                         ),
                       ),

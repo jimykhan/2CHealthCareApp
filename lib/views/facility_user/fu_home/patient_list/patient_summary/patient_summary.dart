@@ -62,7 +62,7 @@ class PatientSummary extends HookWidget {
                     SizedBox(width: 10,),
                     CustomIconButton(
                       onClick: (){
-                        openBottomModal(child: AddRPMEncounter());
+                        openBottomModal(child: AddRPMEncounter(patientId: fuPatientSummaryVM.patientInfo?.id??0,));
                       },
                       text: "RPM",bgColor: appColorSecondary,fontColor: whiteColor,),
                   ],

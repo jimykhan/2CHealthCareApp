@@ -13,7 +13,7 @@ class MadLinePlus extends HookWidget {
   Widget build(BuildContext context) {
     // ChronicCareVM chronicCareVM = useProvider(fuChronicCareVMProvider);
     return Container(
-      height: MediaQuery.of(context).size.height/2,
+      height: MediaQuery.of(context).size.height/1.8,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.only(
               topRight: Radius.circular(30),

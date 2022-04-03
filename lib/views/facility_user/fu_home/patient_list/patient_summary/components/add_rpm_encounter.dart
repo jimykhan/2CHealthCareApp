@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/all.dart';
+import 'package:twochealthcare/common_widgets/alert_loader.dart';
 import 'package:twochealthcare/common_widgets/app_bar_components/appbar_text_style.dart';
 import 'package:twochealthcare/common_widgets/app_bar_components/cross_icon_button.dart';
 import 'package:twochealthcare/common_widgets/app_bar_components/tick_icon_button.dart';
@@ -17,15 +18,17 @@ import 'package:twochealthcare/util/styles.dart';
 import 'package:twochealthcare/view_models/rpm_vm/rpm_encounter_vm.dart';
 
 class AddRPMEncounter extends HookWidget {
-   AddRPMEncounter({Key? key}) : super(key: key);
-  String dropDownValue = '1';
+  int patientId;
+   AddRPMEncounter({Key? key,required this.patientId}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     RpmEncounterVM _rmpEncounterVM = useProvider(rpmEncounterVMProvider);
     useEffect(
           () {
+            _rmpEncounterVM.initialState();
         Future.microtask(() async {
-          _rmpEncounterVM.initialState();
+
         });
         return () {};
       },
@@ -47,7 +50,13 @@ class AddRPMEncounter extends HookWidget {
           color2: Colors.white,
           hight: ApplicationSizing.convert(80),
           parentContext: context,
-          trailingIcon: TickIconButton(),
+          trailingIcon: _rmpEncounterVM.addEncounterLoader ? SimpleLoader() : TickIconButton(
+            color: _rmpEncounterVM.isFormValid? appColor : fontGrayColor,
+            onClick: _rmpEncounterVM.isFormValid ? ()  {
+              _rmpEncounterVM.addRpmEncounter(patientId: patientId);
+
+            } : null,
+          ),
           addLeftMargin: true,
         ),
       ),
@@ -74,12 +83,18 @@ class AddRPMEncounter extends HookWidget {
                         child: Row(
                           children: [
                           Expanded(
-                            child: CustomTextField(
-                                onchange: (val){},
-                                onSubmit: (val){},
-                              hints: 'Date',
-                              isEnable: false,
-                              textStyle: Styles.hintStyle(),
+                            child: InkWell(
+                              onTap: (){
+                                _rmpEncounterVM.pickDateTime(context);
+                              },
+                              child: CustomTextField(
+                                  onchange: _rmpEncounterVM.formValidation,
+                                  onSubmit: _rmpEncounterVM.formValidation,
+                                hints: 'Date',
+                                isEnable: false,
+                                textStyle: Styles.hintStyle(),
+                                textEditingController: _rmpEncounterVM.dateController,
+                              ),
                             ),
                           ),
                           ],
@@ -96,9 +111,11 @@ class AddRPMEncounter extends HookWidget {
                     TextFieldTitle(title: 'Duration',),
                     Container(margin: EdgeInsets.only(top: 1),
                       child: CustomTextField(
-                        onchange: (val){},
-                        onSubmit: (val){},
-                        hints: '00:00:11',
+                        textEditingController: _rmpEncounterVM.durationController,
+                        textInputType: TextInputType.number,
+                        onchange: _rmpEncounterVM.formValidation,
+                        onSubmit: _rmpEncounterVM.formValidation,
+                        hints: 'Duration In Minutes',
                         textStyle: Styles.hintStyle(),
                       ),
                     ),
@@ -112,11 +129,12 @@ class AddRPMEncounter extends HookWidget {
                   children: [
                     TextFieldTitle(title: 'Service Type',),
                     Container(margin: EdgeInsets.only(top: 1),
-                      child: DropDownButton(dropDownValue: dropDownValue, onChange: (String? value) {
+                      child: DropDownButton(dropDownValue: _rmpEncounterVM.selecteServiceType, onChange: (String? value) {
                         print("${value}");
-                        dropDownValue = value??"";
+                        _rmpEncounterVM.selecteServiceType = value??"";
+                        _rmpEncounterVM.notifyListeners();
 
-                      }, menuList: ["","1","2","3"],),
+                      }, menuList: _rmpEncounterVM.serviceType,),
                     ),
                   ],
                 ),
@@ -129,8 +147,9 @@ class AddRPMEncounter extends HookWidget {
                     TextFieldTitle(title: 'Notes',),
                     Container(margin: EdgeInsets.only(top: 1),
                       child: CustomTextArea(
-                        onchange: (val){},
-                        onSubmit: (val){},
+                        textEditingController: _rmpEncounterVM.notesController,
+                        onchange: _rmpEncounterVM.formValidation,
+                        onSubmit: _rmpEncounterVM.formValidation,
                         hints: '',
                         textStyle: Styles.hintStyle(),
                         maxLine: 20,

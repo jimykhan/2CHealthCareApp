@@ -50,3 +50,17 @@ class AlertLoader extends StatelessWidget {
     );
   }
 }
+
+class SimpleLoader extends StatelessWidget {
+  const SimpleLoader({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: CupertinoActivityIndicator(
+        radius: 12,
+      ),
+    );
+  }
+}
+

@@ -4,7 +4,8 @@ import 'package:twochealthcare/util/application_colors.dart';
 
 class TickIconButton extends StatelessWidget {
   Function()? onClick;
-  TickIconButton({this.onClick,Key? key}) : super(key: key);
+  Color? color;
+  TickIconButton({this.onClick,Key? key,this.color}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +23,7 @@ class TickIconButton extends StatelessWidget {
           ),
           // padding: EdgeInsets.only(right: 20),
           child:Icon(Icons.check,
-            color: appColor,)
+            color: color??appColor,)
       ),
     );
   }

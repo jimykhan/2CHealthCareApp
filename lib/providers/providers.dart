@@ -6,8 +6,7 @@ import 'package:twochealthcare/services/chat_services/chat_list_service.dart';
 import 'package:twochealthcare/services/chat_services/chat_screen_service.dart';
 import 'package:twochealthcare/services/connectivity_service.dart';
 import 'package:twochealthcare/services/dio_services/dio_services.dart';
-import 'package:twochealthcare/services/facility_user_services/home/fu_home_service.dart';
-import 'package:twochealthcare/services/facility_user_services/home/fu_profile_service.dart';
+import 'package:twochealthcare/services/facility_user_services/facility_service.dart';
 import 'package:twochealthcare/services/facility_user_services/patient_summary_service.dart';
 import 'package:twochealthcare/services/firebase_service.dart';
 import 'package:twochealthcare/services/health_guides_service/health_guides_service.dart';
@@ -97,8 +96,7 @@ final fuChronicCareVMProvider = ChangeNotifierProvider<ChronicCareVM>((ref)=>Chr
 final rpmEncounterVMProvider = ChangeNotifierProvider<RpmEncounterVM>((ref)=>RpmEncounterVM(ref: ref));
 ///Facility User ChangeNotifier Provider
 ///Facility User Simple Provider
-final fuHomeServiceProvider = Provider<FUHomeService>((ref)=>FUHomeService(ref: ref));
-final fuProfileServiceProvider = Provider<FUProfileService>((ref)=>FUProfileService(ref: ref));
+final facilityServiceProvider = Provider<FacilityService>((ref)=>FacilityService(ref: ref));
 final fuSettingsServiceProvider = Provider<FuSettingsService>((ref)=>FuSettingsService(ref: ref));
 final patientSummaryServiceProvider = Provider<PatientSummaryService>((ref)=>PatientSummaryService(ref: ref));
 final rpmServiceProvider = Provider<RpmService>((ref)=>RpmService(ref: ref));

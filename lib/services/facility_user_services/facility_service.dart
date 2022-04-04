@@ -1,21 +1,26 @@
 import 'package:dio/dio.dart';
 import 'package:hooks_riverpod/all.dart';
 import 'package:twochealthcare/constants/api_strings.dart';
+import 'package:twochealthcare/models/facility_user_models/FacilityUserListModel.dart';
 import 'package:twochealthcare/models/facility_user_models/dashboard_patients/dashboard_patient_summary.dart';
 import 'package:twochealthcare/models/facility_user_models/dashboard_patients/patients_for_dashboard.dart';
 import 'package:twochealthcare/models/facility_user_models/facilityModel/facility_model.dart';
 import 'package:twochealthcare/providers/providers.dart';
+import 'package:twochealthcare/services/auth_services/auth_services.dart';
 import 'package:twochealthcare/services/dio_services/dio_services.dart';
 import 'package:twochealthcare/services/shared_pref_services.dart';
 import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
 import 'dart:core';
 
-class FUHomeService{
+import '../../models/facility_user_models/fu_profile_models/fu_profile_model.dart';
+
+class FacilityService{
   ProviderReference? _ref;
   DioServices? dio;
   SharedPrefServices? _sharedPrefServices;
   LoginVM? _loginVM;
-  FUHomeService({ProviderReference? ref}){
+  AuthServices? _authServices;
+  FacilityService({ProviderReference? ref}){
     _ref = ref;
     initService();
   }
@@ -23,6 +28,25 @@ class FUHomeService{
     dio = _ref!.read(dioServicesProvider);
     _loginVM = _ref!.read(loginVMProvider);
     _sharedPrefServices = _ref!.read(sharedPrefServiceProvider);
+    _authServices = _ref!.read(authServiceProvider);
+  }
+
+  Future<dynamic>getFuProfileInfo()async{
+
+    FUProfileModel? fuProfileModel;
+    try{
+      int facilityId = await _authServices!.getCurrentUserId();
+      Response? res = await dio?.dio?.get(FacilityController.getFacilityUser+"/$facilityId");
+      if(res?.statusCode == 200){
+        fuProfileModel = FUProfileModel.fromJson(res!.data);
+        return fuProfileModel;
+      }else{
+        return null;
+      }
+    }catch(e){
+      return null;
+    }
+
   }
 
     Future<dynamic>getPatientsForDashboard({int filterBy = 1,required int pageNumber,String? patientStatus,String? searchParam,
@@ -168,6 +192,24 @@ class FUHomeService{
         if(res?.statusCode == 200){
           _sharedPrefServices!.setShortToken(res?.data["bearerToken"]??null);
         }
+      }
+    }
+
+    Future<dynamic> getBillingProvidersByFacilityId()async{
+      try{
+        int currentUserId = await _sharedPrefServices!.getCurrentUserId();
+        Response? res = await dio?.dio?.get(FacilityController.switchFacility+"/$currentUserId");
+        if(res?.statusCode == 200){
+          List<FacilityUserListModel> facilityUserListModel = [];
+          res?.data?.forEach((element) {
+            facilityUserListModel.add(FacilityUserListModel.fromJson(element));
+          });
+          return facilityUserListModel;
+        }else{
+          return false;
+        }
+      }catch(e){
+        return false;
       }
     }
 

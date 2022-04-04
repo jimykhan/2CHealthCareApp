@@ -55,7 +55,9 @@ class MedicationsBody extends HookWidget {
                   physics: ScrollPhysics(),
 
                   itemBuilder: (context,index){
-                    return medicineTile(medicationModel: _fuPatientSummaryVM.medicationList[index]);
+                    return medicineTile(medicationModel: _fuPatientSummaryVM.medicationList[index],
+                      fuPatientSummaryVM: _fuPatientSummaryVM
+                    );
                   },
                   separatorBuilder: (context,index){
                     return SizedBox(height: 10,);
@@ -68,7 +70,7 @@ class MedicationsBody extends HookWidget {
     );
   }
 
-  medicineTile({required MedicationModel medicationModel}) {
+  medicineTile({required MedicationModel medicationModel,FUPatientSummaryVM? fuPatientSummaryVM}) {
     return CommonContainer(
       horizontalPadding: 8,
       child: Row(
@@ -94,7 +96,7 @@ class MedicationsBody extends HookWidget {
                         ),
                         InkWell(
                           onTap: (){
-                            openBottomModal(child: MadLinePlus());
+                            openBottomModalDisableDrag(child: MadLinePlus(url: fuPatientSummaryVM?.setMedicationUrl(rxCui: medicationModel.rxCui??"")??"",));
                           },
                           child: Container(
                               padding: EdgeInsets.symmetric(horizontal: 10),

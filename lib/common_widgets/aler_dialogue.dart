@@ -168,4 +168,23 @@ logoutAlertDialog({required LoginVM loginVM}) {
     },
   );
 }
+GenerateAlert({required Widget child}) {
+  showDialog(
+    context: applicationContext!.currentContext!,
+    builder: (BuildContext context) {
+      // return object of type Dialog
+      return Scaffold(
+        // color: Colors.transparent,
+        backgroundColor: Colors.transparent,
+        body: Container(
+          // height: MediaQuery.of(context).size.height,
+          alignment: Alignment.center,
+          margin: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin(n: 25)),
+          child: child,
+        ),
+      );
+
+    },
+  );
+}
 

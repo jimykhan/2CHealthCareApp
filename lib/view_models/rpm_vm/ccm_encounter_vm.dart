@@ -9,17 +9,18 @@ import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
 import 'package:twochealthcare/services/rpm_services/rpm_service.dart';
 
-class RpmEncounterVM extends ChangeNotifier{
+class CcmEncounterVM extends ChangeNotifier{
   AuthServices? _authService;
   RpmService? _rpmService;
   ProviderReference? _ref;
   TextEditingController? dateController;
   TextEditingController? durationController;
   TextEditingController? notesController;
+  TextEditingController? endTimeController;
+  TextEditingController? startTimeController;
   DateTime? dateTime;
   bool isFormValid = false;
   bool addEncounterLoader = false;
-  bool isProviderRpm = false;
   String selecteServiceType = 'Call';
   List<String> serviceType = ["Call","Interactive Communication"];
   FacilityUserListModel? selectedBillingProvider;
@@ -27,7 +28,7 @@ class RpmEncounterVM extends ChangeNotifier{
   CurrentUser? currentUser;
 
 
-  RpmEncounterVM({ProviderReference? ref}){
+  CcmEncounterVM({ProviderReference? ref}){
     _ref = ref;
     initService();
   }
@@ -40,6 +41,8 @@ class RpmEncounterVM extends ChangeNotifier{
     dateController = TextEditingController();
     durationController = TextEditingController();
     notesController = TextEditingController();
+    endTimeController = TextEditingController();
+    startTimeController = TextEditingController();
     resetField();
     getCurrentUser();
   }
@@ -47,13 +50,15 @@ class RpmEncounterVM extends ChangeNotifier{
     dateController?.text = "";
     durationController?.text = "";
     notesController?.text = "";
+    endTimeController?.text = "";
+    startTimeController?.text = "";
     selecteServiceType = "Call";
     isFormValid = false;
   }
   getCurrentUser()async{
     currentUser = await _authService?.getCurrentUserFromSharedPref();
     selectedBillingProvider = FacilityUserListModel(id: currentUser?.id??0,fullName: currentUser?.fullName??"",
-      facilityId: currentUser?.id??0
+        facilityId: currentUser?.id??0
     );
     // currentUser?.claims?.forEach((element) {
     //   if(element.claimType?.toUpperCase() == "FacilityId".toUpperCase()){
@@ -63,10 +68,8 @@ class RpmEncounterVM extends ChangeNotifier{
 
     notifyListeners();
   }
-  setIsProviderRpm(){
-    isProviderRpm = !isProviderRpm;
-    notifyListeners();
-  }
+
+
 
   formValidation(String value){
     if(dateController!.text.isNotEmpty && durationController!.text.isNotEmpty && notesController!.text.isNotEmpty){
@@ -110,16 +113,15 @@ class RpmEncounterVM extends ChangeNotifier{
 
     var data = {
       "id": 0,
-      "startTime": "${dateTime?.hour.toString().padLeft(2,'0')}:${dateTime?.minute.toString().padLeft(2,'0')}",
-      "endTime": "${endTimeHour.toString().padLeft(2,'0')}:${endTimeMints.toString().padLeft(2,'0')}",
-      "duration": "${durationHour.toString().padLeft(2,'0')}:${durationMints.toString().padLeft(2,'0')}",
-      "encounterDate": dateController?.text??"",
-      "note": notesController?.text??"",
-      "patientId": patientId,
-      "facilityUserId": selectedBillingProvider?.facilityId,
-      "billingProviderId": selectedBillingProvider?.id??0,
-      "rpmServiceType": serviceType[0] == selecteServiceType ? 0 : 2,
-      "isProviderRpm": isProviderRpm
+      "startTime": "string",
+      "endTime": "string",
+      "encounterDate": "2022-04-04T11:51:55.018Z",
+      "note": "string",
+      "ccmServiceTypeId": 0,
+      "patientId": 0,
+      "careProviderId": 0,
+      "ccmMonthlyStatus": 0,
+      "isMonthlyStatusValid": true
     };
     print(data);
 
@@ -127,11 +129,11 @@ class RpmEncounterVM extends ChangeNotifier{
     var response =  await _rpmService?.addRpmEncounter(data);
 
     if(response is Response){
-        if(response.statusCode == 200){
-          resetField();
-        }else{
+      if(response.statusCode == 200){
+        resetField();
+      }else{
 
-        }
+      }
     }
     else{
 
@@ -145,15 +147,15 @@ class RpmEncounterVM extends ChangeNotifier{
 
     final time = await pickTime(context);
     if (time == null) return;
-      dateTime = DateTime(
-        date.year,
-        date.month,
-        date.day,
-        time.timeOfDay.hour,
-        time.timeOfDay.minute,
-      );
-      dateController?.text = dateTime.toString().split(".")[0]+ time.dayperiod;
-      notifyListeners();
+    dateTime = DateTime(
+      date.year,
+      date.month,
+      date.day,
+      time.timeOfDay.hour,
+      time.timeOfDay.minute,
+    );
+    dateController?.text = dateTime.toString().split(".")[0]+ time.dayperiod;
+    notifyListeners();
   }
 
   Future<dynamic> pickDate(BuildContext context) async {

@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:jiffy/jiffy.dart';
+import 'package:twochealthcare/common_widgets/snackber_message.dart';
 import 'package:twochealthcare/constants/api_strings.dart';
 import 'package:twochealthcare/constants/strings.dart';
 import 'package:twochealthcare/models/modalities_models/blood_pressure_reading_model.dart';
@@ -201,9 +202,12 @@ class RpmService{
       return response;
 
     }catch(e){
+      SnackBarMessage(message: e.toString(),error: true);
       return null;
     }
 
   }
+
+
 
 }

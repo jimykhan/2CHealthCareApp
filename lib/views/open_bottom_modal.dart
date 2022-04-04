@@ -11,3 +11,15 @@ openBottomModal({required Widget child}){
       }
   );
 }
+
+openBottomModalDisableDrag({required Widget child}){
+  return showMaterialModalBottomSheet(
+      isDismissible: false,
+      enableDrag: false,
+      backgroundColor: Colors.transparent,
+      context: applicationContext!.currentContext!,
+      builder: (context) {
+        return child;
+      }
+  );
+}

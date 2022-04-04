@@ -11,6 +11,7 @@ class FilledButton extends StatelessWidget {
   String? txt;
   double? h;
   double? w;
+  double paddingLeftRight;
   Color? borderColor;
   double? borderwidth;
   double? fontsize;
@@ -32,7 +33,8 @@ class FilledButton extends StatelessWidget {
       this.leftWidget,
       this.rigtWidget,
       required this.onTap,
-        this.borderRadius
+        this.borderRadius,
+        this.paddingLeftRight = 10,
       });
   @override
   Widget build(BuildContext context) {
@@ -40,7 +42,7 @@ class FilledButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: EdgeInsets.only(right: 10, left: 10),
+        padding: EdgeInsets.only(right: paddingLeftRight, left: paddingLeftRight),
         height: h ?? ApplicationSizing.convert(50),
         width: w ?? ApplicationSizing.convertWidth(360),
         decoration: BoxDecoration(
@@ -55,8 +57,8 @@ class FilledButton extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             leftWidget ?? Container(),
-            const SizedBox(
-              width: 10,
+             SizedBox(
+              width: paddingLeftRight,
             ),
             Text(
               txt ?? "Empty",
@@ -64,8 +66,8 @@ class FilledButton extends StatelessWidget {
                   fontSize: fontsize ?? ApplicationSizing.fontScale(16),
                   color: txtcolor??whiteColor),
             ),
-            const SizedBox(
-              width: 10,
+             SizedBox(
+              width: paddingLeftRight,
             ),
             rigtWidget ?? Container(),
           ],

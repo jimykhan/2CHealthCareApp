@@ -6,7 +6,7 @@ import 'package:twochealthcare/models/facility_user_models/dashboard_patients/pa
 import 'package:twochealthcare/models/facility_user_models/facilityModel/facility_model.dart';
 import 'package:twochealthcare/models/user/current_user.dart';
 import 'package:twochealthcare/providers/providers.dart';
-import 'package:twochealthcare/services/facility_user_services/home/fu_home_service.dart';
+import 'package:twochealthcare/services/facility_user_services/facility_service.dart';
 import 'package:twochealthcare/services/shared_pref_services.dart';
 
 class FUHomeViewModel extends ChangeNotifier{
@@ -14,7 +14,7 @@ class FUHomeViewModel extends ChangeNotifier{
   DashboardPatientSummary? dashboardPatientSummary;
   List<FacilityModel> facilities = [];
   ProviderReference? _ref;
-  FUHomeService? fuHomeService;
+  FacilityService? facilityService;
   int dashboardSummaryMonth = DateTime.now().month;
   int dashboardSummaryYear = DateTime.now().year;
   bool isloading = true;
@@ -24,7 +24,7 @@ class FUHomeViewModel extends ChangeNotifier{
     initService();
   }
   initService(){
-    fuHomeService = _ref!.read(fuHomeServiceProvider);
+    facilityService = _ref!.read(facilityServiceProvider);
     _sharedPrefServices = _ref!.read(sharedPrefServiceProvider);
   }
   setLoading(check){
@@ -35,7 +35,7 @@ class FUHomeViewModel extends ChangeNotifier{
   patientServicesummary({int? month,int? year}) async{
     int facilityId = await _sharedPrefServices!.getFacilityId();
     currentFacilityId = facilityId;
-    var res = await fuHomeService?.patientServicesummary(facilityId : facilityId, month: dashboardSummaryMonth,year: dashboardSummaryYear);
+    var res = await facilityService?.patientServicesummary(facilityId : facilityId, month: dashboardSummaryMonth,year: dashboardSummaryYear);
     if(res!=null && res is DashboardPatientSummary){
       dashboardPatientSummary = res;
       setLoading(false);
@@ -45,7 +45,7 @@ class FUHomeViewModel extends ChangeNotifier{
   }
 
   getFacilitiesByUserId() async{
-    var res = await fuHomeService?.getFacilitiesByUserId();
+    var res = await facilityService?.getFacilitiesByUserId();
     if(res!=null){
       facilities = [];
       res.forEach((element) {
@@ -59,7 +59,7 @@ class FUHomeViewModel extends ChangeNotifier{
     Navigator.pop(applicationContext!.currentContext!);
     print("facility Id ${facilityId}");
     setLoading(true);
-    var res = await fuHomeService?.switchFacility(facilityId : facilityId);
+    var res = await facilityService?.switchFacility(facilityId : facilityId);
     patientServicesummary();
   }
 

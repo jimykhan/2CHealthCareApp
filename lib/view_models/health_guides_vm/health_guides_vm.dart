@@ -48,6 +48,7 @@ class HealthGuidesVM extends ChangeNotifier{
       },
     );
   }
+
   navigationControl() {
     return FutureBuilder<WebViewController>(
       future: controller.future,

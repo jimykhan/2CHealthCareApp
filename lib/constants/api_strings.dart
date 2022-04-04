@@ -69,10 +69,12 @@ class FacilityController{
   static const String facilityServiceConfigByFacilityId = baseUrl + "/api/FacilityServiceConfig/GetByFacilityId";
   static const String getFacilitiesByFacilityUserId = baseUrl + "/api/Facility/GetFacilitiesByFacilityUserId";
   static const String switchFacility = baseUrl + "/api/Facility/SwitchFacility";
+  static const String getBillingProvidersByFacilityId = baseUrl + "/api/Facility/GetBillingProvidersByFacilityId";
 }
 class AccountApi{
   static const String refreshToken = baseUrl + "/api/Account/RefreshToken";
   static const String hangfireToken = baseUrl + "/api/Account/hangfireToken";
+  static const String validateUser = baseUrl + "/api/Account/ValidateUser";
 }
 class BlueButton{
   static const String checkBlueButton = baseUrl + "/api/BlueButton/IsConnected";
@@ -111,4 +113,3 @@ class SurgicalController{
 class RPMController{
   static const String addRPMEncounter = baseUrl + "/api/Rpm/AddRPMEncounter";
 }
-

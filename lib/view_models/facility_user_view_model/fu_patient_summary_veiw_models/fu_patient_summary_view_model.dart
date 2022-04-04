@@ -13,7 +13,7 @@ import 'package:twochealthcare/models/patient_summary/surgical_history_model.dar
 import 'package:twochealthcare/models/profile_models/current_user_info_model.dart';
 import 'package:twochealthcare/models/profile_models/specialists_model.dart';
 import 'package:twochealthcare/providers/providers.dart';
-import 'package:twochealthcare/services/facility_user_services/home/fu_home_service.dart';
+import 'package:twochealthcare/services/facility_user_services/facility_service.dart';
 import 'package:twochealthcare/services/facility_user_services/patient_summary_service.dart';
 import 'package:twochealthcare/services/patient_profile_service.dart';
 import 'package:twochealthcare/views/care_plan/care_plan.dart';
@@ -59,6 +59,10 @@ class FUPatientSummaryVM extends ChangeNotifier{
   initService(){
      _patientSummaryService = _ref!.read(patientSummaryServiceProvider);
      _patientProfileService = _ref!.read(PatientProfileServiceProvider);
+  }
+  String setMedicationUrl({required String rxCui}){
+    String madlinePlusMedicationUrl = "https://connect.medlineplus.gov/application?mainSearchCriteria.v.c=${rxCui}&mainSearchCriteria.v.cs=2.16.840.1.113883.6.88&mainSearchCriteria.v.dn=&informationRecipient.languageCode.c=en";
+    return madlinePlusMedicationUrl;
   }
 
   setIsLoading(check){

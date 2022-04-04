@@ -5,13 +5,13 @@ import 'package:hooks_riverpod/all.dart';
 import 'package:twochealthcare/main.dart';
 import 'package:twochealthcare/models/facility_user_models/dashboard_patients/patients_for_dashboard.dart';
 import 'package:twochealthcare/providers/providers.dart';
-import 'package:twochealthcare/services/facility_user_services/home/fu_home_service.dart';
+import 'package:twochealthcare/services/facility_user_services/facility_service.dart';
 
 class ChronicCareVM extends ChangeNotifier{
   /// all patient of all care providers
   int careProviderId = 0;
   ProviderReference? _ref;
-  FUHomeService? fuHomeService;
+  FacilityService? facilityService;
   int serviceMonth = DateTime.now().month;
   int serviceYear = DateTime.now().year;
   bool isloading = true;
@@ -25,7 +25,7 @@ class ChronicCareVM extends ChangeNotifier{
     initService();
   }
   initService(){
-    fuHomeService = _ref!.read(fuHomeServiceProvider);
+    facilityService = _ref!.read(facilityServiceProvider);
     scrollController.addListener(() {
       if(scrollController.position.pixels == scrollController.position.maxScrollExtent){
         getPatients2();
@@ -68,7 +68,7 @@ class ChronicCareVM extends ChangeNotifier{
     if(patientListPageNumber == 1 && !(isloading)) setLoading(true);
     if(patientListPageNumber>1) setNewPageLoading(true);
 
-    var res = await fuHomeService?.getPatients2(pageNumber: patientListPageNumber,
+    var res = await facilityService?.getPatients2(pageNumber: patientListPageNumber,
         searchParam: searchParam, serviceMonth: serviceMonth, serviceYear: serviceYear,
     careProviderId: careProviderId);
     if(res!=null){

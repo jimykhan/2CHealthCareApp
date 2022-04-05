@@ -113,3 +113,6 @@ class SurgicalController{
 class RPMController{
   static const String addRPMEncounter = baseUrl + "/api/Rpm/AddRPMEncounter";
 }
+class CcmController{
+  static const String addCCMEncounter = baseUrl + "/api/CcmServices/AddCcmEncounter";
+}

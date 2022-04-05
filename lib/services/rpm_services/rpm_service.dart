@@ -207,6 +207,19 @@ class RpmService{
     }
 
   }
+  Future<dynamic> addCcmEncounter(var body) async {
+
+    try{
+      final dio = _ref!.read(dioServicesProvider);
+      Response response = await dio.dio!.post(RPMController.addRPMEncounter,data: body);
+      return response;
+
+    }catch(e){
+      SnackBarMessage(message: e.toString(),error: true);
+      return null;
+    }
+
+  }
 
 
 

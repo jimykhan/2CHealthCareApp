@@ -6,6 +6,7 @@ import 'package:twochealthcare/util/application_colors.dart';
 
 class CustomTextField extends StatefulWidget {
   Color? color1;
+  Color? bgColor;
   Widget? iconWidget;
   TextStyle? textStyle;
   Function(String val) onchange;
@@ -32,6 +33,7 @@ class CustomTextField extends StatefulWidget {
       required this.onSubmit,
        this.inputFormatter,
         this.textStyle,
+        this.bgColor
       });
   @override
   _CustomTextFieldState createState() => _CustomTextFieldState();
@@ -49,7 +51,10 @@ class _CustomTextFieldState extends State<CustomTextField> {
             color: borderColor ?? widget.color1 ?? disableColor,
             width: widget.borderWidth ?? 1.2,
           ),
-          borderRadius: BorderRadius.circular(7)),
+          borderRadius: BorderRadius.circular(7),
+        color: widget.bgColor??  Colors.white,
+      ),
+
       child: Row(
         children: <Widget>[
           widget.iconWidget ?? Container(),
@@ -85,6 +90,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                       obscureText: widget.obscureText ?? false,
                       keyboardType: widget.textInputType ?? TextInputType.text,
                       controller: widget.textEditingController,
+
                       decoration: InputDecoration(
                           contentPadding: EdgeInsets.zero,
                           disabledBorder: InputBorder.none,

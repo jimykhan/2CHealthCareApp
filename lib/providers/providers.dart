@@ -2,6 +2,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:twochealthcare/services/application_route_service.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
 import 'package:twochealthcare/services/care_plan_services/care_plan_services.dart';
+import 'package:twochealthcare/services/ccm_services/ccm_services.dart';
 import 'package:twochealthcare/services/chat_services/chat_list_service.dart';
 import 'package:twochealthcare/services/chat_services/chat_screen_service.dart';
 import 'package:twochealthcare/services/connectivity_service.dart';
@@ -44,6 +45,8 @@ import 'package:twochealthcare/view_models/profile_vm.dart';
 import 'package:twochealthcare/view_models/settings_view_models/fu_settings_view_model/fu_settings_view_models.dart';
 import 'package:twochealthcare/view_models/settings_view_models/p_settings_view_models/p_settings_view_model.dart';
 import 'package:twochealthcare/view_models/splash_vm/splash_vm.dart';
+
+import '../view_models/rpm_vm/ccm_encounter_vm.dart';
 /// ChangeNotifierProvider
 final splachVMProvider =  ChangeNotifierProvider<SplashVM>((ref)=>SplashVM(ref: ref));
 final loginVMProvider =  ChangeNotifierProvider<LoginVM>((ref)=>LoginVM(ref: ref));
@@ -61,6 +64,14 @@ final appBarVMProvider = ChangeNotifierProvider<AppBarVM>((ref)=>AppBarVM(ref: r
 final forgetPasswordVMProvider = ChangeNotifierProvider<ForgetPasswordVM>((ref)=>ForgetPasswordVM(ref: ref));
 final carePlanVMProvider = ChangeNotifierProvider<CarePlanVM>((ref)=>CarePlanVM(ref: ref));
 final pSettigsVMProvider = ChangeNotifierProvider<PSettingsViewModel>((ref)=>PSettingsViewModel(ref: ref));
+final fuHomeVMProvider = ChangeNotifierProvider<FUHomeViewModel>((ref)=>FUHomeViewModel(ref: ref));
+final fuProfileVMProvider = ChangeNotifierProvider<FUProfileVM>((ref)=>FUProfileVM(ref: ref));
+final fUPatientSummaryVMProvider = ChangeNotifierProvider<FUPatientSummaryVM>((ref)=>FUPatientSummaryVM(ref: ref));
+final fuSettingsVMProvider = ChangeNotifierProvider<FuSettingsViewModel>((ref)=>FuSettingsViewModel(ref: ref));
+final fuAllPatientVM = ChangeNotifierProvider<AllPatientVM>((ref)=>AllPatientVM(ref: ref));
+final fuChronicCareVMProvider = ChangeNotifierProvider<ChronicCareVM>((ref)=>ChronicCareVM(ref: ref));
+final rpmEncounterVMProvider = ChangeNotifierProvider<RpmEncounterVM>((ref)=>RpmEncounterVM(ref: ref));
+final ccmEncounterVMProvider = ChangeNotifierProvider<CcmEncounterVM>((ref)=>CcmEncounterVM(ref: ref));
 /// ChangeNotifierProvider
 
 
@@ -83,21 +94,9 @@ final onLaunchActivityServiceProvider = Provider<OnLaunchActivityAndRoutesServic
 final healthGuidesServiceProvider = Provider<HealthGuidesService>((ref)=>HealthGuidesService(ref: ref));
 final carePlanServiceProvider = Provider<CarePlanServices>((ref)=>CarePlanServices(ref: ref));
 final pSettingsServiceProvider = Provider<PSettingsService>((ref)=>PSettingsService(ref: ref));
-/// Simple Providers
-
-
-///Facility User ChangeNotifier Provider
-final fuHomeVMProvider = ChangeNotifierProvider<FUHomeViewModel>((ref)=>FUHomeViewModel(ref: ref));
-final fuProfileVMProvider = ChangeNotifierProvider<FUProfileVM>((ref)=>FUProfileVM(ref: ref));
-final fUPatientSummaryVMProvider = ChangeNotifierProvider<FUPatientSummaryVM>((ref)=>FUPatientSummaryVM(ref: ref));
-final fuSettingsVMProvider = ChangeNotifierProvider<FuSettingsViewModel>((ref)=>FuSettingsViewModel(ref: ref));
-final fuAllPatientVM = ChangeNotifierProvider<AllPatientVM>((ref)=>AllPatientVM(ref: ref));
-final fuChronicCareVMProvider = ChangeNotifierProvider<ChronicCareVM>((ref)=>ChronicCareVM(ref: ref));
-final rpmEncounterVMProvider = ChangeNotifierProvider<RpmEncounterVM>((ref)=>RpmEncounterVM(ref: ref));
-///Facility User ChangeNotifier Provider
-///Facility User Simple Provider
 final facilityServiceProvider = Provider<FacilityService>((ref)=>FacilityService(ref: ref));
 final fuSettingsServiceProvider = Provider<FuSettingsService>((ref)=>FuSettingsService(ref: ref));
 final patientSummaryServiceProvider = Provider<PatientSummaryService>((ref)=>PatientSummaryService(ref: ref));
 final rpmServiceProvider = Provider<RpmService>((ref)=>RpmService(ref: ref));
-///Facility User Simple Provider
+final ccmServiceProvider = Provider<CcmService>((ref)=>CcmService(ref: ref));
+/// Simple Providers

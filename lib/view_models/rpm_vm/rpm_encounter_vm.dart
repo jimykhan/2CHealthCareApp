@@ -55,12 +55,6 @@ class RpmEncounterVM extends ChangeNotifier{
     selectedBillingProvider = FacilityUserListModel(id: currentUser?.id??0,fullName: currentUser?.fullName??"",
       facilityId: currentUser?.id??0
     );
-    // currentUser?.claims?.forEach((element) {
-    //   if(element.claimType?.toUpperCase() == "FacilityId".toUpperCase()){
-    //     selectedBillingProvider?.facilityId = int.parse("${element.claimValue?? 0}");
-    //   }
-    // });
-
     notifyListeners();
   }
   setIsProviderRpm(){

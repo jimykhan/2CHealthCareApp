@@ -13,22 +13,32 @@ class CcmEncounterVM extends ChangeNotifier{
   AuthServices? _authService;
   RpmService? _rpmService;
   ProviderReference? _ref;
-  TextEditingController? dateController;
   TextEditingController? durationController;
   TextEditingController? notesController;
   TextEditingController? endTimeController;
   TextEditingController? startTimeController;
+  CurrentUser? currentUser;
+  FacilityUserListModel? selectedBillingProvider;
+  //
   DateTime? dateTime;
   bool isFormValid = false;
   bool addEncounterLoader = false;
-  String selecteServiceType = 'Call';
-  List<String> serviceType = ["Call","Interactive Communication"];
-  FacilityUserListModel? selectedBillingProvider;
-  List<FacilityUserListModel> billingProviders = [];
-  CurrentUser? currentUser;
+  String selecteServiceName = 'Other';
+  String selecteMonthlyStatus = 'Not Started';
+  List<String> monthlyStatuses = ["Not Started","Call not answered","Completed","Partially Completed"];
+  List<String> serviceName = ["Discussion with Provider/Patient/Family",
+    "e Prescribe","Lab test result discussed with patients",
+    "Lab Radiology Orders","Pre Authorization","Referrals","Other"];
+
+  TimeOfDay startTimeOfDay = TimeOfDay.now();
+  TimeOfDay endTimeOfDay = TimeOfDay.now();
+
+
+
 
 
   CcmEncounterVM({ProviderReference? ref}){
+
     _ref = ref;
     initService();
   }
@@ -38,45 +48,55 @@ class CcmEncounterVM extends ChangeNotifier{
 
   }
   initialState(){
-    dateController = TextEditingController();
     durationController = TextEditingController();
     notesController = TextEditingController();
     endTimeController = TextEditingController();
     startTimeController = TextEditingController();
-    resetField();
     getCurrentUser();
+    resetField();
   }
   resetField(){
-    dateController?.text = "";
-    durationController?.text = "";
+    dateTime = DateTime.now();
+    durationController?.text = "0";
     notesController?.text = "";
-    endTimeController?.text = "";
-    startTimeController?.text = "";
-    selecteServiceType = "Call";
+    TimeFormat12 starttime12Format = TimeFormat12(timeOfDay: startTimeOfDay, period: startTimeOfDay.period);
+    TimeFormat12 endtime12Format = TimeFormat12(timeOfDay: endTimeOfDay, period: endTimeOfDay.period);
+
+    startTimeController?.text = starttime12Format.timeOfDay.hour.toString().padLeft(2,'0')+":"+starttime12Format.timeOfDay.minute.toString().padLeft(2,'0') +
+        " ${starttime12Format.dayperiod}";
+
+    endTimeController?.text = endtime12Format.timeOfDay.hour.toString().padLeft(2,'0')+":"+endtime12Format.timeOfDay.minute.toString().padLeft(2,'0')+
+        " ${endtime12Format.dayperiod}";
+    selecteServiceName = "Other";
     isFormValid = false;
   }
+
+  onMonthlyStatusChange(String? val){
+    print("${val}");
+    selecteMonthlyStatus = val??"Not Started";
+    formValidation("");
+    // notifyListeners();
+  }
+  onServiceNameChange(String? val){
+    print("${val}");
+    selecteServiceName = val??"Other";
+    notifyListeners();
+  }
+
   getCurrentUser()async{
     currentUser = await _authService?.getCurrentUserFromSharedPref();
     selectedBillingProvider = FacilityUserListModel(id: currentUser?.id??0,fullName: currentUser?.fullName??"",
         facilityId: currentUser?.id??0
     );
-    // currentUser?.claims?.forEach((element) {
-    //   if(element.claimType?.toUpperCase() == "FacilityId".toUpperCase()){
-    //     selectedBillingProvider?.facilityId = int.parse("${element.claimValue?? 0}");
-    //   }
-    // });
-
     notifyListeners();
   }
-
-
-
   formValidation(String value){
-    if(dateController!.text.isNotEmpty && durationController!.text.isNotEmpty && notesController!.text.isNotEmpty){
+    if(durationController!.text.isNotEmpty && selecteMonthlyStatus != "Not Started"){
       isFormValid = true;
     }else{
       isFormValid = false;
     }
+    notifyListeners();
 
   }
 
@@ -87,91 +107,46 @@ class CcmEncounterVM extends ChangeNotifier{
 
 
 
-  addRpmEncounter({required int patientId})async{
+  addCcmEncounter({required int patientId})async{
     setLoading(true);
-    int endTimeMints = 0;
-    int endTimeHour = 0;
-    int durationMints = 0;
-    int durationHour = 0;
-    int duration = int.parse(durationController?.text??"0");
-    String endTime = "";
-    if(duration > 60){
-      durationHour = (duration / 60).toInt();
-      durationMints = duration % 60;
-      endTimeMints = durationMints + dateTime!.minute;
-      endTimeHour = durationHour + dateTime!.hour;
-    }else{
-      durationMints = duration;
-      endTimeMints = durationMints + dateTime!.minute;
-      endTimeHour = durationHour + dateTime!.hour;
-    }
-    if(endTimeMints > 60){
-      endTimeHour = endTimeHour + (endTimeMints / 60).toInt();
-      endTimeMints = endTimeMints + (endTimeMints % 60);
-    }
 
 
     var data = {
       "id": 0,
-      "startTime": "string",
-      "endTime": "string",
-      "encounterDate": "2022-04-04T11:51:55.018Z",
-      "note": "string",
+      "startTime": startTimeController?.text??"",
+      "endTime": endTimeController?.text??"",
+      "encounterDate": dateTime.toString(),
+      "note": notesController?.text??"",
       "ccmServiceTypeId": 0,
-      "patientId": 0,
-      "careProviderId": 0,
+      "patientId": patientId,
+      "careProviderId": selectedBillingProvider?.id??0,
       "ccmMonthlyStatus": 0,
       "isMonthlyStatusValid": true
     };
     print(data);
 
     // validateUser
-    var response =  await _rpmService?.addRpmEncounter(data);
+    // var response =  await _rpmService?.addRpmEncounter(data);
 
-    if(response is Response){
-      if(response.statusCode == 200){
-        resetField();
-      }else{
-
-      }
-    }
-    else{
-
-    }
+    // if(response is Response){
+    //   if(response.statusCode == 200){
+    //     resetField();
+    //   }else{
+    //
+    //   }
+    // }
+    // else{
+    //
+    // }
     setLoading(false);
   }
 
-  Future pickDateTime(BuildContext context) async {
-    final date = await pickDate(context);
-    if (date == null) return;
 
-    final time = await pickTime(context);
-    if (time == null) return;
-    dateTime = DateTime(
-      date.year,
-      date.month,
-      date.day,
-      time.timeOfDay.hour,
-      time.timeOfDay.minute,
-    );
-    dateController?.text = dateTime.toString().split(".")[0]+ time.dayperiod;
-    notifyListeners();
-  }
 
-  Future<dynamic> pickDate(BuildContext context) async {
-    final initialDate = DateTime.now();
-    final newDate = await showDatePicker(
-      context: context,
-      initialDate: dateTime ?? initialDate,
-      firstDate: DateTime(DateTime.now().year - 5),
-      lastDate: DateTime(DateTime.now().year + 5),
-    );
-    if (newDate == null) return null;
-    return newDate;
-  }
 
   Future<dynamic> pickTime(BuildContext context) async {
     final initialTime = TimeOfDay(hour: 9, minute: 0);
+
     final newTime = await showTimePicker(
       context: context,
       initialTime: dateTime != null
@@ -180,9 +155,51 @@ class CcmEncounterVM extends ChangeNotifier{
       initialEntryMode: TimePickerEntryMode.input,
     );
     if (newTime == null) return null;
-    return TimeFormat12(timeOfDay: newTime,period: newTime.period);
+    startTimeOfDay = newTime;
+    dateTime = DateTime(
+      DateTime.now().year,
+      DateTime.now().month,
+      DateTime.now().day,
+      newTime.hour,
+      newTime.minute,
+    );
+    TimeFormat12 starttime12format = TimeFormat12(timeOfDay: newTime,period: newTime.period);
+    startTimeController?.text = starttime12format.timeOfDay.hour.toString().padLeft(2,'0')+":"+starttime12format.timeOfDay.minute.toString().padLeft(2,'0')+ "${starttime12format.dayperiod}";
+    int duration = int.parse((durationController?.text == "" || durationController?.text == null) ? '0' : durationController!.text);
+    setEndTime(duration: duration,startHour: newTime.hour,startMint: newTime.minute);
+
+    notifyListeners();
+    return null;
+  }
+
+  setEndTime({required int duration, required int startHour,required int startMint}){
+    int endTimeMints = startMint;
+    int endTimeHour = startHour;
+    if(duration !=0){
+      endTimeMints = endTimeMints + duration;
+      if(endTimeMints > 60){
+        endTimeHour = endTimeHour + (endTimeMints / 60).toInt();
+        endTimeMints = (endTimeMints % 60);
+      }
+    }
+
+    TimeOfDay endTime = TimeOfDay.fromDateTime(DateTime(dateTime!.year,dateTime!.month,dateTime!.day,endTimeHour,endTimeMints));
+    TimeFormat12 endtime12format = TimeFormat12(timeOfDay: endTime,period: endTime.period);
+    endTimeController?.text = endtime12format.timeOfDay.hour.toString().padLeft(2,'0')+":"+endtime12format.timeOfDay.minute.toString().padLeft(2,'0')+ " ${endtime12format.dayperiod}";
+  }
+
+  onDurationChange(String value){
+    if(value == null || value == ""){
+      value = "0";
+    }
+    int duration = int.parse(value);
+    setEndTime(duration: duration, startHour: startTimeOfDay.hour, startMint: startTimeOfDay.minute);
+    formValidation(value);
+    notifyListeners();
+
   }
 }
+
 
 class TimeFormat12{
   TimeOfDay timeOfDay;

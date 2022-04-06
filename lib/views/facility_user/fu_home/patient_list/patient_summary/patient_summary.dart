@@ -61,6 +61,7 @@ class PatientSummary extends HookWidget {
                   children: [
                     CustomIconButton(onClick: (){
                       openBottomModal(child: AddCCMEncounter(patientId: fuPatientSummaryVM.patientInfo?.id??0,
+                        ccmmonthlyStatus: fuPatientSummaryVM.patientInfo?.ccmMonthlyStatus??0,
                       ));
                     },),
                     SizedBox(width: 10,),

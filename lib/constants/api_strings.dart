@@ -115,4 +115,5 @@ class RPMController{
 }
 class CcmController{
   static const String addCCMEncounter = baseUrl + "/api/CcmServices/AddCcmEncounter";
+  static const String getCcmServiceTypes = baseUrl + "/api/CcmServices/GetCcmServiceTypes";
 }

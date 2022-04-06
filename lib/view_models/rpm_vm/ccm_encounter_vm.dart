@@ -3,16 +3,19 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:twochealthcare/common_widgets/snackber_message.dart';
+import 'package:twochealthcare/models/ccm_model/ccm_service_type.dart';
 import 'package:twochealthcare/models/facility_user_models/FacilityUserListModel.dart';
 import 'package:twochealthcare/models/user/current_user.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
+import 'package:twochealthcare/services/ccm_services/ccm_services.dart';
 import 'package:twochealthcare/services/rpm_services/rpm_service.dart';
 
 class CcmEncounterVM extends ChangeNotifier{
   AuthServices? _authService;
-  RpmService? _rpmService;
+  CcmService? _ccmService;
   ProviderReference? _ref;
+  TextEditingController? dateController;
   TextEditingController? durationController;
   TextEditingController? notesController;
   TextEditingController? endTimeController;
@@ -25,10 +28,10 @@ class CcmEncounterVM extends ChangeNotifier{
   bool addEncounterLoader = false;
   String selecteServiceName = 'Other';
   String selecteMonthlyStatus = 'Not Started';
+  int ccmmonthlyStatus = 0;
   List<String> monthlyStatuses = ["Not Started","Call not answered","Completed","Partially Completed"];
-  List<String> serviceName = ["Discussion with Provider/Patient/Family",
-    "e Prescribe","Lab test result discussed with patients",
-    "Lab Radiology Orders","Pre Authorization","Referrals","Other"];
+  List<String> ccmserviceName = ['Other'];
+  List<CcmServiceType> ccmServiceType = [];
 
   TimeOfDay startTimeOfDay = TimeOfDay.now();
   TimeOfDay endTimeOfDay = TimeOfDay.now();
@@ -44,17 +47,21 @@ class CcmEncounterVM extends ChangeNotifier{
   }
   initService(){
     _authService = _ref!.read(authServiceProvider);
-    _rpmService = _ref!.read(rpmServiceProvider);
+    _ccmService = _ref!.read(ccmServiceProvider);
 
   }
   initialState(){
+    getCcmServiceType();
+    dateController = TextEditingController();
     durationController = TextEditingController();
     notesController = TextEditingController();
     endTimeController = TextEditingController();
     startTimeController = TextEditingController();
     getCurrentUser();
     resetField();
+    selecteMonthlyStatus = monthlyStatuses[ccmmonthlyStatus];
   }
+
   resetField(){
     dateTime = DateTime.now();
     durationController?.text = "0";
@@ -74,9 +81,22 @@ class CcmEncounterVM extends ChangeNotifier{
   onMonthlyStatusChange(String? val){
     print("${val}");
     selecteMonthlyStatus = val??"Not Started";
+    if(val == monthlyStatuses[0]){
+      ccmmonthlyStatus = 0;
+    }
+    if(val == monthlyStatuses[1]){
+      ccmmonthlyStatus = 1;
+    }
+    if(val == monthlyStatuses[2]){
+      ccmmonthlyStatus = 2;
+    }
+    if(val == monthlyStatuses[3]){
+      ccmmonthlyStatus = 3;
+    }
     formValidation("");
     // notifyListeners();
   }
+
   onServiceNameChange(String? val){
     print("${val}");
     selecteServiceName = val??"Other";
@@ -90,6 +110,7 @@ class CcmEncounterVM extends ChangeNotifier{
     );
     notifyListeners();
   }
+
   formValidation(String value){
     if(durationController!.text.isNotEmpty && selecteMonthlyStatus != "Not Started"){
       isFormValid = true;
@@ -109,7 +130,12 @@ class CcmEncounterVM extends ChangeNotifier{
 
   addCcmEncounter({required int patientId})async{
     setLoading(true);
-
+    int ccmServiceTypeId = 0;
+    ccmServiceType.forEach((element) {
+      if(element.name! == selecteServiceName){
+        ccmServiceTypeId = element.id!;
+      }
+    });
 
     var data = {
       "id": 0,
@@ -117,31 +143,72 @@ class CcmEncounterVM extends ChangeNotifier{
       "endTime": endTimeController?.text??"",
       "encounterDate": dateTime.toString(),
       "note": notesController?.text??"",
-      "ccmServiceTypeId": 0,
+      "ccmServiceTypeId": ccmServiceTypeId,
       "patientId": patientId,
       "careProviderId": selectedBillingProvider?.id??0,
-      "ccmMonthlyStatus": 0,
+      "ccmMonthlyStatus": ccmmonthlyStatus,
       "isMonthlyStatusValid": true
     };
     print(data);
 
     // validateUser
-    // var response =  await _rpmService?.addRpmEncounter(data);
+    var response =  await _ccmService?.addCcmEncounter(data);
 
-    // if(response is Response){
-    //   if(response.statusCode == 200){
-    //     resetField();
-    //   }else{
-    //
-    //   }
-    // }
-    // else{
-    //
-    // }
+    if(response is Response){
+      if(response.statusCode == 200){
+        resetField();
+      }else{
+
+      }
+    }
+    else{
+
+    }
     setLoading(false);
   }
 
+  getCcmServiceType()async{
+    ccmServiceType = [];
+    var response =  await _ccmService?.getCcmServiceName(isFav: false);
+    if(response != null && response is List<CcmServiceType>){
+      ccmserviceName = [];
+      selecteServiceName = response[0].name??"Other";
+      response.forEach((element) {
+        ccmServiceType.add(element);
+        if(element.name != null && element.name != ""){
+          ccmserviceName.add(element.name!);
+          print(element.name);
+        }
+      });
+      notifyListeners();
+    }
+  }
 
+
+
+  Future pickDateTime(BuildContext context) async {
+    final date = await pickDate(context);
+    if (date == null) return;
+
+    dateTime = DateTime(
+      date.year,
+      date.month,
+      date.day,
+    );
+    dateController?.text = dateTime.toString().split(" ")[0];
+    notifyListeners();
+  }
+  Future<dynamic> pickDate(BuildContext context) async {
+    final initialDate = DateTime.now();
+    final newDate = await showDatePicker(
+      context: context,
+      initialDate: dateTime ?? initialDate,
+      firstDate: DateTime(DateTime.now().year - 5),
+      lastDate: DateTime(DateTime.now().year + 5),
+    );
+    if (newDate == null) return null;
+    return newDate;
+  }
 
 
   Future<dynamic> pickTime(BuildContext context) async {
@@ -169,7 +236,7 @@ class CcmEncounterVM extends ChangeNotifier{
     setEndTime(duration: duration,startHour: newTime.hour,startMint: newTime.minute);
 
     notifyListeners();
-    return null;
+
   }
 
   setEndTime({required int duration, required int startHour,required int startMint}){

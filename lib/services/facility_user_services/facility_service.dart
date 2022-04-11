@@ -197,19 +197,20 @@ class FacilityService{
 
     Future<dynamic> getBillingProvidersByFacilityId()async{
       try{
-        int currentUserId = await _sharedPrefServices!.getCurrentUserId();
-        Response? res = await dio?.dio?.get(FacilityController.switchFacility+"/$currentUserId");
+        int facilityId = await _sharedPrefServices!.getFacilityId();
+        Response? res = await dio?.dio?.get(FacilityController.getBillingProvidersByFacilityId+"/$facilityId");
         if(res?.statusCode == 200){
           List<FacilityUserListModel> facilityUserListModel = [];
           res?.data?.forEach((element) {
             facilityUserListModel.add(FacilityUserListModel.fromJson(element));
           });
           return facilityUserListModel;
-        }else{
-          return false;
+        }
+        else{
+          return null;
         }
       }catch(e){
-        return false;
+        return null;
       }
     }
 

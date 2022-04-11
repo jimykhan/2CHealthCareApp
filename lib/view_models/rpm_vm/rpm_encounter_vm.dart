@@ -7,10 +7,12 @@ import 'package:twochealthcare/models/facility_user_models/FacilityUserListModel
 import 'package:twochealthcare/models/user/current_user.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
+import 'package:twochealthcare/services/facility_user_services/facility_service.dart';
 import 'package:twochealthcare/services/rpm_services/rpm_service.dart';
 
 class RpmEncounterVM extends ChangeNotifier{
   AuthServices? _authService;
+  FacilityService? _facilityService;
   RpmService? _rpmService;
   ProviderReference? _ref;
   TextEditingController? dateController;
@@ -24,6 +26,8 @@ class RpmEncounterVM extends ChangeNotifier{
   List<String> serviceType = ["Call","Interactive Communication"];
   FacilityUserListModel? selectedBillingProvider;
   List<FacilityUserListModel> billingProviders = [];
+  String selectedProviderName = "";
+  List<String> billingProvidersName = [];
   CurrentUser? currentUser;
 
 
@@ -34,6 +38,10 @@ class RpmEncounterVM extends ChangeNotifier{
   initService(){
     _authService = _ref!.read(authServiceProvider);
     _rpmService = _ref!.read(rpmServiceProvider);
+    _facilityService = _ref!.read(facilityServiceProvider);
+
+  }
+  onChangeBillingProvider(dynamic val){
 
   }
   initialState(){
@@ -55,8 +63,24 @@ class RpmEncounterVM extends ChangeNotifier{
     selectedBillingProvider = FacilityUserListModel(id: currentUser?.id??0,fullName: currentUser?.fullName??"",
       facilityId: currentUser?.id??0
     );
+
+    var billingProvidersByFacilityId = await _facilityService?.getBillingProvidersByFacilityId();
+    if(billingProvidersByFacilityId != null){
+      billingProviders = billingProvidersByFacilityId;
+      billingProvidersName = [];
+      billingProviders.forEach((provider) {
+        billingProvidersName.add("${provider.firstName} ${provider.lastName}");
+        // print("${provider.firstName} ${provider.lastName}");
+      });
+
+    }
+    selectedProviderName = currentUser?.fullName??"";
     notifyListeners();
   }
+
+
+
+
   setIsProviderRpm(){
     isProviderRpm = !isProviderRpm;
     notifyListeners();

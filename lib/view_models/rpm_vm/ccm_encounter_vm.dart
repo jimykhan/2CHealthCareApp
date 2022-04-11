@@ -157,12 +157,7 @@ class CcmEncounterVM extends ChangeNotifier{
     if(response is Response){
       if(response.statusCode == 200){
         resetField();
-      }else{
-
       }
-    }
-    else{
-
     }
     setLoading(false);
   }

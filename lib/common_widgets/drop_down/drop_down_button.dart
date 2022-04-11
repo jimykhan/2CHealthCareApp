@@ -22,7 +22,6 @@ class DropDownButton extends StatelessWidget {
       children: [
         Expanded(
           child: Container(
-
             padding: EdgeInsets.only(right: 8, left: 8),
             decoration: BoxDecoration(
                 border: Border.all(
@@ -48,7 +47,7 @@ class DropDownButton extends StatelessWidget {
                   .map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
-                  child:  Row(
+                  child: value =="" || value == null ? Container() : Row(
                     children: [
                       Expanded(
                         child: Container(
@@ -75,3 +74,5 @@ class DropDownButton extends StatelessWidget {
     );
   }
 }
+
+

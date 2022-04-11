@@ -110,6 +110,7 @@ class OnLaunchActivityAndRoutesService{
               type: PageTransitionType.bottomToTop));
       return;
     }
+
     if(currentUser.userType == 5){
       Navigator.pushReplacement(
           applicationContext!.currentContext!,
@@ -118,6 +119,7 @@ class OnLaunchActivityAndRoutesService{
               type: PageTransitionType.bottomToTop));
       return;
     }
+
     else{
       Navigator.pushReplacement(
           applicationContext!.currentContext!,

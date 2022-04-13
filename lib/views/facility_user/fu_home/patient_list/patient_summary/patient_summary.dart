@@ -58,13 +58,14 @@ class PatientSummary extends HookWidget {
               Container(
                 margin: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin(),vertical: 10),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     CustomIconButton(onClick: (){
                       openBottomModal(child: AddCCMEncounter(patientId: fuPatientSummaryVM.patientInfo?.id??0,
                         ccmmonthlyStatus: fuPatientSummaryVM.patientInfo?.ccmMonthlyStatus??0,
                       ));
                     },),
-                    SizedBox(width: 10,),
+
                     CustomIconButton(
                       onClick: (){
                         openBottomModal(child: AddRPMEncounter(patientId: fuPatientSummaryVM.patientInfo?.id??0,

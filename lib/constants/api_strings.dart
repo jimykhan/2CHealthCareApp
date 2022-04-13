@@ -72,7 +72,7 @@ class FacilityController{
   static const String getBillingProvidersByFacilityId = baseUrl + "/api/Facility/GetBillingProvidersByFacilityId";
 }
 class Account{
-  static const String loginWith2fa = baseUrl + "/Account/LoginWith2fa";
+  static const String loginWith2fa = baseUrl + "/api/Account/LoginWith2fa";
 }
 class AccountApi{
   static const String refreshToken = baseUrl + "/api/Account/RefreshToken";

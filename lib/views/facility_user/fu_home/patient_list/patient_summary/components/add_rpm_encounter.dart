@@ -179,7 +179,7 @@ class AddRPMEncounter extends HookWidget {
                                  fontWeight: FontWeight.w700,
                                ),),
                                SizedBox(width: 5,),
-                               Text("${_rmpEncounterVM.currentUser?.fullName}"
+                               Text("${_rmpEncounterVM.selectedBillingProvider?.fullName}"
                                  ,style: Styles.PoppinsRegular(
                                      fontSize: ApplicationSizing.constSize(12),
                                      fontWeight: FontWeight.w700,

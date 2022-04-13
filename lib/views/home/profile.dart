@@ -260,8 +260,10 @@ class Profile extends HookWidget {
                                     profileVm.patientInfo == null ? Container() :InkWell(
                                       onTap: profileVm.patientInfo?.phoneNumberConfirmed?? false ?  null : (){
                                         Navigator.push(context,
-                                          PageTransition(child: OtpVerification(userName: profileVm.patientInfo?.userName??"", phone: profileVm.patientInfo?.homePhone,
-                                              isForgetPassword: false
+                                          PageTransition(child: OtpVerification(userName: profileVm.patientInfo?.userName??"",
+                                              phone: profileVm.patientInfo?.homePhone,
+                                              isForgetPassword: false,
+                                            userId: profileVm.patientInfo?.userId??"",
                                           ), type: PageTransitionType.leftToRight)
                                         );
                                         forgetPasswordVM?.sendVerificationCodeToPhone(userName: profileVm.patientInfo?.userName??"",phoneNumber: profileVm.patientInfo?.homePhone??"");

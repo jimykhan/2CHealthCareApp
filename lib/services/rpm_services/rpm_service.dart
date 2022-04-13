@@ -207,6 +207,24 @@ class RpmService{
     }
 
   }
+  Future<bool> isValidUser(var body) async {
+
+    try{
+      final dio = _ref!.read(dioServicesProvider);
+      Response response = await dio.dio!.post(AccountApi.validateUser,data: body);
+      if(response.statusCode == 200){
+        return true;
+      }
+      else{
+        return false;
+      }
+
+    }catch(e){
+      // SnackBarMessage(message: e.toString(),error: true);
+      return false;
+    }
+
+  }
 
 
 

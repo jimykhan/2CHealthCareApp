@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:twochealthcare/common_widgets/snackber_message.dart';
+import 'package:twochealthcare/main.dart';
 import 'package:twochealthcare/models/facility_user_models/FacilityUserListModel.dart';
 import 'package:twochealthcare/models/user/current_user.dart';
 import 'package:twochealthcare/providers/providers.dart';
@@ -18,9 +19,13 @@ class RpmEncounterVM extends ChangeNotifier{
   TextEditingController? dateController;
   TextEditingController? durationController;
   TextEditingController? notesController;
+  TextEditingController? passwordController;
   DateTime? dateTime;
   bool isFormValid = false;
   bool addEncounterLoader = false;
+  bool checkProviderLoading = false;
+  bool isPasswordFieldValid = true;
+  bool obscureText = true;
   bool isProviderRpm = false;
   String selecteServiceType = 'Call';
   List<String> serviceType = ["Call","Interactive Communication"];
@@ -28,7 +33,7 @@ class RpmEncounterVM extends ChangeNotifier{
   List<FacilityUserListModel> billingProviders = [];
   String selectedProviderName = "";
   List<String> billingProvidersName = [];
-  CurrentUser? currentUser;
+
 
 
   RpmEncounterVM({ProviderReference? ref}){
@@ -42,14 +47,29 @@ class RpmEncounterVM extends ChangeNotifier{
 
   }
   onChangeBillingProvider(dynamic val){
-
+    print("${val}");
+    selectedProviderName = val??"";
+    notifyListeners();
   }
   initialState(){
     dateController = TextEditingController();
     durationController = TextEditingController();
     notesController = TextEditingController();
+    passwordController = TextEditingController();
     resetField();
     getCurrentUser();
+  }
+
+  onChangePassword(String val){
+    if(val.length>1){
+      isPasswordFieldValid = true;
+    }else{
+      isPasswordFieldValid = false;
+    }
+    notifyListeners();
+  }
+  fieldValidation(String val){
+
   }
   resetField(){
     dateController?.text = "";
@@ -58,8 +78,11 @@ class RpmEncounterVM extends ChangeNotifier{
     selecteServiceType = "Call";
     isFormValid = false;
   }
+  onProviderChange(String? val){
+
+  }
   getCurrentUser()async{
-    currentUser = await _authService?.getCurrentUserFromSharedPref();
+    CurrentUser? currentUser = await _authService?.getCurrentUserFromSharedPref();
     selectedBillingProvider = FacilityUserListModel(id: currentUser?.id??0,fullName: currentUser?.fullName??"",
       facilityId: currentUser?.id??0
     );
@@ -99,6 +122,31 @@ class RpmEncounterVM extends ChangeNotifier{
     addEncounterLoader = check;
     notifyListeners();
   }
+  setCheckProviderLoading(check){
+    checkProviderLoading = check;
+    notifyListeners();
+  }
+
+  isValidUser()async{
+    setCheckProviderLoading(true);
+    FacilityUserListModel? checkBillingProvider;
+    billingProviders.forEach((provider) {
+      if(provider.lastName == selectedProviderName.split(" ")[1] && provider.lastName == selectedProviderName.split(" ")[1]){
+        checkBillingProvider = provider;
+      }
+    });
+    var data = {"appUserId": checkBillingProvider?.userId??"", "password": passwordController?.text??""};
+    print(data);
+    bool response =  await _rpmService?.isValidUser(data)??false;
+    if(response){
+      selectedBillingProvider = checkBillingProvider;
+      selectedBillingProvider?.fullName = "${selectedBillingProvider?.firstName} ${selectedBillingProvider?.lastName}";
+      Navigator.pop(applicationContext!.currentContext!);
+    }
+    setCheckProviderLoading(false);
+  }
+
+
 
 
 

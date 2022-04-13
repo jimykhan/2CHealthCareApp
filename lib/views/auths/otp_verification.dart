@@ -19,16 +19,22 @@ import 'package:twochealthcare/views/auths/reset_password.dart';
 
 class OtpVerification extends HookWidget {
   String userName;
+  String userId;
   String? phone;
+  String? bearerToken;
   bool isForgetPassword;
+  bool from2FA;
   String sendBy;
-  OtpVerification({required this.userName,this.phone, this.isForgetPassword = true,this.sendBy = "phone"});
+  OtpVerification({required this.userName,this.phone, this.isForgetPassword = true,
+    this.sendBy = "phone",this.from2FA = false,required this.userId,this.bearerToken});
 
   @override
   Widget build(BuildContext context) {
     final ForgetPasswordVM forgetPasswordVM = useProvider(forgetPasswordVMProvider);
     useEffect(() {
+
       forgetPasswordVM.initOtpVerificationScreen();
+
       return () {
         forgetPasswordVM.errorController?.close();
         // forgetPasswordVM.otpTextEditingController?.dispose();
@@ -135,6 +141,9 @@ class OtpVerification extends HookWidget {
                                     if(isForgetPassword){
                                       forgetPasswordVM.verifyResetPasswordCode(userName: userName,pinCode: v.toString());
                                     }
+                                    else if(from2FA){
+                                      forgetPasswordVM.verify2FA(otp: v.toString(), bearerToken: bearerToken??"");
+                                    }
                                     else{
                                       forgetPasswordVM.verifyVerificationCodeToPhone(userName: userName,pinCode: v.toString());
                                     }
@@ -167,7 +176,10 @@ class OtpVerification extends HookWidget {
                                           ..onTap = () {
                                               if(isForgetPassword){
                                                 forgetPasswordVM.sendVerificationCode(userName: userName,sendBy: sendBy);
-                                              }else{
+                                              }else if(from2FA){
+                                                forgetPasswordVM.send2FACode(userId: userId,method: 0, bearerToken: bearerToken??"");
+                                              }
+                                              else{
                                                 forgetPasswordVM.sendVerificationCodeToPhone(userName: userName,phoneNumber: phone);
                                               }
                                           },

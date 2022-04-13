@@ -71,10 +71,14 @@ class FacilityController{
   static const String switchFacility = baseUrl + "/api/Facility/SwitchFacility";
   static const String getBillingProvidersByFacilityId = baseUrl + "/api/Facility/GetBillingProvidersByFacilityId";
 }
+class Account{
+  static const String loginWith2fa = baseUrl + "/Account/LoginWith2fa";
+}
 class AccountApi{
   static const String refreshToken = baseUrl + "/api/Account/RefreshToken";
   static const String hangfireToken = baseUrl + "/api/Account/hangfireToken";
   static const String validateUser = baseUrl + "/api/Account/ValidateUser";
+  static const String send2FToken = baseUrl + "/api/Account/Send2FToken";
 }
 class BlueButton{
   static const String checkBlueButton = baseUrl + "/api/BlueButton/IsConnected";

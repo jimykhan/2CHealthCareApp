@@ -230,6 +230,7 @@ class ProfileVm extends ChangeNotifier{
     try{
       int userId = await _authService!.getCurrentUserId();
       Map data = {
+        // "primaryPhoneNo": "923005653984",
         "primaryPhoneNo": primaryPhoneEditController?.text.replaceAll("-", "")??"",
         "secondaryContactNo": secondaryPhoneEditController?.text.replaceAll("-", "")??"",
         "currentAddress": currentAddressEditController?.text??"",

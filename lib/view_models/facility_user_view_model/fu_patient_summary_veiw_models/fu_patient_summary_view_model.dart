@@ -13,7 +13,6 @@ import 'package:twochealthcare/models/patient_summary/surgical_history_model.dar
 import 'package:twochealthcare/models/profile_models/current_user_info_model.dart';
 import 'package:twochealthcare/models/profile_models/specialists_model.dart';
 import 'package:twochealthcare/providers/providers.dart';
-import 'package:twochealthcare/services/facility_user_services/facility_service.dart';
 import 'package:twochealthcare/services/facility_user_services/patient_summary_service.dart';
 import 'package:twochealthcare/services/patient_profile_service.dart';
 import 'package:twochealthcare/views/care_plan/care_plan.dart';
@@ -25,12 +24,14 @@ import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_
 import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_summary/components/provider_body.dart';
 import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_summary/components/summary_body.dart';
 import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_summary/components/surgical_history_body.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class FUPatientSummaryVM extends ChangeNotifier{
   PatientsModel? summaryPatientsModel;
   bool isLoading = false;
   PatientSummaryService? _patientSummaryService;
   PatientProfileService? _patientProfileService;
+  ItemScrollController? categoryScrollController;
 
   PatientInfo? patientInfo;
   List<DiagnoseModel> diagnoseList = [];
@@ -59,6 +60,7 @@ class FUPatientSummaryVM extends ChangeNotifier{
   initService(){
      _patientSummaryService = _ref!.read(patientSummaryServiceProvider);
      _patientProfileService = _ref!.read(PatientProfileServiceProvider);
+     categoryScrollController = ItemScrollController();
   }
   String setMedicationUrl({required String rxCui}){
     String madlinePlusMedicationUrl = "https://connect.medlineplus.gov/application?mainSearchCriteria.v.c=${rxCui}&mainSearchCriteria.v.cs=2.16.840.1.113883.6.88&mainSearchCriteria.v.dn=&informationRecipient.languageCode.c=en";
@@ -74,6 +76,7 @@ class FUPatientSummaryVM extends ChangeNotifier{
     patientSummaryMenuList.forEach((element) {
       if(index == i){
         element.isSelected = true;
+        changeCategoryScrollPosition(index);
       }else{
         element.isSelected = false;
       }
@@ -210,6 +213,11 @@ class FUPatientSummaryVM extends ChangeNotifier{
       providerList.add(element);
     });
     setIsLoading(false);
+  }
+  changeCategoryScrollPosition(index)async{
+    if(categoryScrollController!.isAttached){
+      await categoryScrollController?.scrollTo(index: index, duration: Duration(seconds: 1),alignment: 0.3);
+    }
   }
 
 

@@ -147,7 +147,7 @@ class FacilityService{
 
     Future<dynamic> getFacilitiesByUserId() async{
       try{
-        int currentUserId = await _sharedPrefServices!.getCurrentUserId();
+        int currentUserId = await _sharedPrefServices!.getFacilityId();
         Response? res = await dio?.dio?.get(FacilityController.getFacilitiesByFacilityUserId+"/$currentUserId");
         if(res?.statusCode == 200){
           List<FacilityModel> facilities = [];

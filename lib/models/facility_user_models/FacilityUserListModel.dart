@@ -38,10 +38,7 @@ class FacilityUserListModel {
         this.userName,
         this.isVerified,
         this.isPhoneNumberVerified,
-        this.isEmailVerified}){
-    this.fullName = "${this.firstName} ${this.lastName}";
-
-  }
+        this.isEmailVerified});
 
   FacilityUserListModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];

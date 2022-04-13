@@ -6,8 +6,11 @@ import 'package:hooks_riverpod/all.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:twochealthcare/main.dart';
+import 'package:twochealthcare/models/user/current_user.dart';
 import 'package:twochealthcare/providers/providers.dart';
+import 'package:twochealthcare/services/application_route_service.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
+import 'package:twochealthcare/services/onlunch_activity_routes_service.dart';
 import 'package:twochealthcare/views/auths/otp_verification.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 import 'package:twochealthcare/views/auths/reset_password.dart';
@@ -20,6 +23,8 @@ class ForgetPasswordVM extends ChangeNotifier{
   bool verificationWithEmail = false;
   bool verifyOtpLoading = false;
   int otpLength = 0;
+  ApplicationRouteService? applicationRouteService;
+  OnLaunchActivityAndRoutesService? onLaunchActivityService;
   TextEditingController emailController = TextEditingController(text: "");
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   bool isloading = false;
@@ -61,7 +66,10 @@ class ForgetPasswordVM extends ChangeNotifier{
   }
   initServices(){
     authService = _ref?.read(authServiceProvider);
+    applicationRouteService = _ref?.read(applicationRouteServiceProvider);
+    onLaunchActivityService = _ref?.read(onLaunchActivityServiceProvider);
   }
+
   initForgetPasswordScreen({required String userName}){
     emailController.text = userName;
     verificationWithPhone = false;
@@ -87,6 +95,7 @@ class ForgetPasswordVM extends ChangeNotifier{
     SetVerifyOtpLoadingState(false);
 
   }
+
   verifyResetPasswordCode({String? userName, String? pinCode})async{
     listenForAutoSms();
     SetVerifyOtpLoadingState(true);
@@ -119,7 +128,6 @@ class ForgetPasswordVM extends ChangeNotifier{
   }
 
   verifyVerificationCodeToPhone({String? userName,String? pinCode}) async{
-
     SetVerifyOtpLoadingState(true);
     var res = await authService?.verifyVerificationCodeToPhone(userName: userName,pinCode: pinCode);
     if(res is bool){
@@ -131,6 +139,34 @@ class ForgetPasswordVM extends ChangeNotifier{
       }
     }
     SetVerifyOtpLoadingState(false);
+  }
+
+  verify2FA({required String otp,required String bearerToken}) async{
+    SetVerifyOtpLoadingState(true);
+    var res = await authService?.verify2FA(otp: otp,bearerToken: bearerToken);
+    if(res is CurrentUser){
+      // currentUser = res;
+      SetVerifyOtpLoadingState(false);
+      applicationRouteService?.addAndRemoveScreen(screenName: "Home");
+      onLaunchActivityService?.decideUserFlow();
+      onLaunchActivityService?.syncLastApplicationUseDateAndTime();
+
+    }
+    SetVerifyOtpLoadingState(false);
+
+  }
+
+  send2FACode({required String userId,required int method,required String bearerToken}) async{
+    SetVerifyOtpLoadingState(true);
+    listenForAutoSms();
+    var body = {
+      "userId": userId,
+      "sendMethod": method
+    };
+    var res = await authService?.send2FACode(body: body,bearerToken: bearerToken);
+
+    SetVerifyOtpLoadingState(false);
+
   }
   sendVerificationCodeToEmail(){}
 

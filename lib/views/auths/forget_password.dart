@@ -201,6 +201,7 @@ class forgetPassword extends HookWidget {
                                       Navigator.push(applicationContext!.currentContext!, PageTransition(child: OtpVerification(
                                         userName: userName,
                                         sendBy: forgetPasswordVM.verificationWithPhone? "phone":"email",
+                                        userId: "",
                                       ), type: PageTransitionType.fade));
 
                                     } :(){print("none");},

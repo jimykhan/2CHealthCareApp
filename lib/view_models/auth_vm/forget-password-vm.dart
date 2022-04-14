@@ -164,9 +164,15 @@ class ForgetPasswordVM extends ChangeNotifier{
       "sendMethod": method
     };
     var res = await authService?.send2FACode(body: body,bearerToken: bearerToken);
-
     SetVerifyOtpLoadingState(false);
-
+  }
+  send2FACodeInStartUp({required String userId,required int method,required String bearerToken}) async{
+    listenForAutoSms();
+    var body = {
+      "userId": userId,
+      "sendMethod": method
+    };
+    var res = await authService?.send2FACode(body: body,bearerToken: bearerToken);
   }
   sendVerificationCodeToEmail(){}
 

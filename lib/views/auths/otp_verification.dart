@@ -34,6 +34,7 @@ class OtpVerification extends HookWidget {
     useEffect(() {
 
       forgetPasswordVM.initOtpVerificationScreen();
+      if(from2FA) forgetPasswordVM.send2FACodeInStartUp(userId: userId, method: 0, bearerToken: bearerToken??"");
 
       return () {
         forgetPasswordVM.errorController?.close();

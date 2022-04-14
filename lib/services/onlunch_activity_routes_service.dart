@@ -103,23 +103,38 @@ class OnLaunchActivityAndRoutesService{
   decideUserFlow()async{
     CurrentUser currentUser = await loginVM?.getCurrentUserFromSharedPref();
     if(currentUser.userType == 1){
-      Navigator.pushReplacement(
-          applicationContext!.currentContext!,
-          PageTransition(
-              child: Home(),
-              type: PageTransitionType.bottomToTop));
+      Navigator.pushAndRemoveUntil(
+        applicationContext!.currentContext!,
+        MaterialPageRoute(
+          builder: (BuildContext context) =>
+           Home(),
+        ),
+            (route) => false,
+      );
+      // Navigator.pushReplacement(
+      //     applicationContext!.currentContext!,
+      //     PageTransition(
+      //         child: Home(),
+      //         type: PageTransitionType.bottomToTop));
       return;
     }
 
     if(currentUser.userType == 5){
-      Navigator.pushReplacement(
-          applicationContext!.currentContext!,
-          PageTransition(
-              child: FUHome(),
-              type: PageTransitionType.bottomToTop));
+      Navigator.pushAndRemoveUntil(
+        applicationContext!.currentContext!,
+        MaterialPageRoute(
+          builder: (BuildContext context) =>
+           FUHome(),
+        ),
+            (route) => false,
+      );
+      // Navigator.pushReplacement(
+      //     applicationContext!.currentContext!,
+      //     PageTransition(
+      //         child: FUHome(),
+      //         type: PageTransitionType.bottomToTop));
       return;
     }
-
     else{
       Navigator.pushReplacement(
           applicationContext!.currentContext!,

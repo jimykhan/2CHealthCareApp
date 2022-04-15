@@ -107,13 +107,6 @@ class OnLaunchActivityAndRoutesService{
   }
 
   decideUserFlow()async{
-    RemoteMessage? initialMessage =
-    await FirebaseMessaging.instance.getInitialMessage();
-    print("decide Flow");
-    if (initialMessage != null) {
-      _handleMessage(initialMessage);
-      return;
-    }
     CurrentUser currentUser = await loginVM?.getCurrentUserFromSharedPref();
     if(currentUser.userType == 1){
       Navigator.pushAndRemoveUntil(
@@ -147,21 +140,28 @@ class OnLaunchActivityAndRoutesService{
       return;
     }
   }
-  void _handleMessage(RemoteMessage event) {
+  Future<void> handleMessage() async {
     print("OnMessageOpenedApp call");
-    if(event.notification?.title == "New Message Received"){
-      HomeDecider();
-      applicationRouteService?.addAndRemoveScreen(
-          screenName: "ChatList");
-      Navigator.push(applicationContext!.currentContext!, PageTransition(
-          child: ChatList(), type: PageTransitionType.fade));
+    RemoteMessage? initialMessage =
+    await FirebaseMessaging.instance.getInitialMessage();
+    print("decide Flow");
+    if (initialMessage != null) {
+      if(initialMessage.notification?.title == "New Message Received"){
+        HomeDecider();
+        applicationRouteService?.addAndRemoveScreen(
+            screenName: "ChatList");
+        Navigator.push(applicationContext!.currentContext!, PageTransition(
+            child: ChatList(), type: PageTransitionType.fade));
 
+      }
+      else{
+        HomeDecider();
+        Navigator.push(applicationContext!.currentContext!, PageTransition(
+            child: ModalitiesReading(), type: PageTransitionType.fade));
+      }
+      return;
     }
-    else{
-      HomeDecider();
-      Navigator.push(applicationContext!.currentContext!, PageTransition(
-          child: ModalitiesReading(), type: PageTransitionType.fade));
-    }
+
   }
 
 

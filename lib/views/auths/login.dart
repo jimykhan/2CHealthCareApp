@@ -260,7 +260,7 @@ class Login extends HookWidget {
                       bool isValid = await loginVM.userLogin();
                       if (isValid) {
                         applicationRouteService.addAndRemoveScreen(screenName: "Home");
-                        await firebaseService?.subNotification();
+                        firebaseService?.subNotification();
                         onLaunchActivityService.decideUserFlow();
                         onLaunchActivityService.syncLastApplicationUseDateAndTime();
                       }

@@ -66,7 +66,7 @@ class Home extends HookWidget {
     HomeVM homeVM = useProvider(homeVMProvider);
     ApplicationRouteService applicationRouteService =
         useProvider(applicationRouteServiceProvider);
-    FirebaseService firebaseService = useProvider(firebaseServiceProvider);
+    // FirebaseService firebaseService = useProvider(firebaseServiceProvider);
     useEffect(
       () {
         homeVM.homeScreenLoading = false;

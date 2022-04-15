@@ -21,16 +21,20 @@ class FirebaseService{
   ProviderReference? _ref;
   FirebaseMessaging? _firebaseMessaging;
   LoginVM? _result;
-  LocalNotificationService? _localNotificationService;
-  OnLaunchActivityAndRoutesService? _onLaunchActivityService;
+  // LocalNotificationService? _localNotificationService;
+  // OnLaunchActivityAndRoutesService? _onLaunchActivityService;
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
   FlutterLocalNotificationsPlugin();
-  ApplicationRouteService? applicationRouteService;
+  // ApplicationRouteService? applicationRouteService;
+
   FirebaseService({ProviderReference? ref}){
     _ref = ref;
+    initService();
+
+  }
+  initService(){
+    // applicationRouteService = _ref?.read(applicationRouteServiceProvider);
     initNotification();
-    // initFirebase();
-    applicationRouteService = ref?.read(applicationRouteServiceProvider);
   }
 
 
@@ -52,7 +56,7 @@ class FirebaseService{
       provisional: true,
       sound: true,
     );
-    _localNotificationService = _ref!.read(localNotificationServiceProvider);
+    // _localNotificationService = _ref!.read(localNotificationServiceProvider);
      // localNotificationService!.initLocalNoticationChannel();
 
     if (Platform.isIOS) {
@@ -165,10 +169,10 @@ class FirebaseService{
 
   }
 
-  turnOfChatNotification() {
+  turnOfChatNotification() async{
     var firebaseMessaging = FirebaseMessaging.instance;
     if(_result?.currentUser!=null){
-      firebaseMessaging
+      await firebaseMessaging
           .unsubscribeFromTopic(
           "${_result?.currentUser?.appUserId}-NewMsgReceived")
           .then((value) => print("Unsubscribe From Topic ${_result?.currentUser?.appUserId}-NewMsgReceived"));
@@ -177,10 +181,10 @@ class FirebaseService{
 
   }
 
-  turnOfReadingNotification() {
+  turnOfReadingNotification() async{
     var firebaseMessaging = FirebaseMessaging.instance;
     if (_result?.currentUser != null){
-      firebaseMessaging
+      await firebaseMessaging
           .unsubscribeFromTopic(
           "${_result?.currentUser?.appUserId}-NewDataReceived")
           .then((value) => print("UnSub Topic${_result?.currentUser?.appUserId}-NewDataReceived"));

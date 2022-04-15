@@ -208,9 +208,9 @@ class LoginVM extends ChangeNotifier{
 
 
 
-  userLogout(){
-    firebaseService!.turnOfChatNotification();
-    firebaseService!.turnOfReadingNotification();
+  userLogout()async{
+    await firebaseService!.turnOfChatNotification();
+    await firebaseService!.turnOfReadingNotification();
     updateCurrentUser(null);
     signalRServices?.disConnectSignalR();
     currentUser = null;

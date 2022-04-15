@@ -9,6 +9,7 @@ import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/application_route_service.dart';
 import 'package:twochealthcare/services/connectivity_service.dart';
 import 'package:twochealthcare/services/firebase_service.dart';
+import 'package:twochealthcare/services/onlunch_activity_routes_service.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/view_models/splash_vm/splash_vm.dart';
 import 'package:twochealthcare/views/chat/chat_list.dart';
@@ -21,14 +22,19 @@ class Splash extends HookWidget {
   Widget build(BuildContext context) {
     ApplicationSizing(applicationContext?.currentContext);
     SplashVM deviceService = useProvider(splachVMProvider);
+    OnLaunchActivityAndRoutesService onLaunchActivityAndRoutesService = useProvider(onLaunchActivityServiceProvider);
     ConnectivityService connectivityService = useProvider(connectivityServiceProvider);
     ApplicationRouteService applicationRouteService = useProvider(applicationRouteServiceProvider);
 
 
     useEffect(
           () {
-        Future.microtask(() async {});
-        connectivityService.checkInternetConnection();
+            // onLaunchActivityAndRoutesService.handleMessage();
+            connectivityService.checkInternetConnection();
+        Future.microtask(() async {
+
+        });
+
         return () {
           // Dispose Objects here
         };

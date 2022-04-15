@@ -1,4 +1,6 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:twochealthcare/main.dart';
@@ -12,14 +14,19 @@ import 'package:twochealthcare/services/signal_r_services.dart';
 import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
 import 'package:twochealthcare/view_models/chat_vm/chat_list_vm.dart';
 import 'package:twochealthcare/views/auths/login.dart';
+import 'package:twochealthcare/views/chat/chat_list.dart';
 import 'package:twochealthcare/views/home/home.dart';
+import 'package:twochealthcare/views/readings/modalities_reading.dart';
 
 class SplashVM extends ChangeNotifier{
   ProviderReference? _ref;
   FirebaseService? firebaseService;
+  ApplicationRouteService? applicationRouteService;
   ChatListVM? _chatListVM;
   SplashVM({ProviderReference? ref}){
     _ref = ref;
+    applicationRouteService = _ref?.read(applicationRouteServiceProvider);
+    firebaseService = _ref?.read(firebaseServiceProvider);
     splashDuration();
   }
 
@@ -51,5 +58,7 @@ class SplashVM extends ChangeNotifier{
      }
 
   }
+
+
 
 }

@@ -10,6 +10,7 @@ import 'package:twochealthcare/models/user/current_user.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/application_route_service.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
+import 'package:twochealthcare/services/firebase_service.dart';
 import 'package:twochealthcare/services/onlunch_activity_routes_service.dart';
 import 'package:twochealthcare/views/auths/otp_verification.dart';
 import 'package:sms_autofill/sms_autofill.dart';
@@ -24,6 +25,7 @@ class ForgetPasswordVM extends ChangeNotifier{
   bool verifyOtpLoading = false;
   int otpLength = 0;
   ApplicationRouteService? applicationRouteService;
+  FirebaseService? firebaseService;
   OnLaunchActivityAndRoutesService? onLaunchActivityService;
   TextEditingController emailController = TextEditingController(text: "");
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
@@ -68,6 +70,7 @@ class ForgetPasswordVM extends ChangeNotifier{
     authService = _ref?.read(authServiceProvider);
     applicationRouteService = _ref?.read(applicationRouteServiceProvider);
     onLaunchActivityService = _ref?.read(onLaunchActivityServiceProvider);
+    firebaseService = _ref?.read(firebaseServiceProvider);
   }
 
   initForgetPasswordScreen({required String userName}){
@@ -148,6 +151,7 @@ class ForgetPasswordVM extends ChangeNotifier{
       // currentUser = res;
       SetVerifyOtpLoadingState(false);
       applicationRouteService?.addAndRemoveScreen(screenName: "Home");
+      await firebaseService?.subNotification();
       onLaunchActivityService?.decideUserFlow();
       onLaunchActivityService?.syncLastApplicationUseDateAndTime();
 

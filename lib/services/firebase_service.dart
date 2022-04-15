@@ -28,18 +28,18 @@ class FirebaseService{
   ApplicationRouteService? applicationRouteService;
   FirebaseService({ProviderReference? ref}){
     _ref = ref;
-    initFirebase();
+    initNotification();
+    // initFirebase();
     applicationRouteService = ref?.read(applicationRouteServiceProvider);
   }
 
 
-  initFirebase(){
-    print("try calling firebase initialzeApp");
-    Firebase.initializeApp().whenComplete(() {
-      print("firebase completed...");
-    } );
-
-  }
+  // initFirebase(){
+  //   print("try calling firebase initialzeApp");
+  //   Firebase.initializeApp().whenComplete(() {
+  //     print("firebase completed...");
+  //   } );
+  // }
 
   initNotification() async {
     _firebaseMessaging = FirebaseMessaging.instance;
@@ -55,32 +55,12 @@ class FirebaseService{
     _localNotificationService = _ref!.read(localNotificationServiceProvider);
      // localNotificationService!.initLocalNoticationChannel();
 
-    if (Platform.isAndroid) {
-      _firebaseMessaging!
-          .getToken()
-          .then((value) => print("this is mobile token ${value.toString()}"));
-    }
-    else {
+    if (Platform.isIOS) {
       _firebaseMessaging!.requestPermission();
       String? apnsToken = await _firebaseMessaging!.getAPNSToken();
       _firebaseMessaging!
           .getToken()
           .then((value) => print("this is mobile token ${value.toString()}"));
-  }
-    if (!kIsWeb) {
-      var channel = const AndroidNotificationChannel(
-        '2C_Health', // id
-        'High Importance Notifications', // title
-        description: 'This channel is used for important notifications.', // description
-        importance: Importance.max,
-        enableLights: true,
-      );
-      
-      await flutterLocalNotificationsPlugin
-          .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin>()
-          ?.createNotificationChannel(channel);
-
       await FirebaseMessaging.instance
           .setForegroundNotificationPresentationOptions(
         alert: true,
@@ -88,11 +68,30 @@ class FirebaseService{
         sound: true,
       );
     }
-    _subNotification();
+    else{
+      _firebaseMessaging!
+          .getToken()
+          .then((value) => print("this is mobile token ${value.toString()}"));
+      if (!kIsWeb) {
+        var channel = const AndroidNotificationChannel(
+          '2C_Health', // id
+          'High Importance Notifications', // title
+          description: 'This channel is used for important notifications.', // description
+          importance: Importance.max,
+          enableLights: true,
+        );
+
+        await flutterLocalNotificationsPlugin
+            .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+            ?.createNotificationChannel(channel);
+      }
+    }
+    // _subNotification();
   }
 
 
-  _subNotification() async {
+  subNotification() async {
 
     FirebaseMessaging.onMessage.listen((event) {
       print("this is event${event.notification?.title}");
@@ -124,39 +123,35 @@ class FirebaseService{
       // }
 
     });
-
-
-    FirebaseMessaging.onMessageOpenedApp.listen((event) {
-      print("OnMessageOpenedApp call");
-      if(event.notification?.title == "New Message Received"){
-        Navigator.pushAndRemoveUntil(
-          applicationContext!.currentContext!,
-          MaterialPageRoute(
-            builder: (BuildContext context) =>
-                Home(),
-          ),
-              (route) => false,
-        );
-        applicationRouteService?.addAndRemoveScreen(
-            screenName: "ChatList");
-        Navigator.push(applicationContext!.currentContext!, PageTransition(
-            child: ChatList(), type: PageTransitionType.fade));
-      }
-      else{
-        Navigator.pushAndRemoveUntil(
-          applicationContext!.currentContext!,
-          MaterialPageRoute(
-            builder: (BuildContext context) =>
-                Home(),
-          ),
-              (route) => false,
-        );
-        Navigator.push(applicationContext!.currentContext!, PageTransition(
-            child: ModalitiesReading(), type: PageTransitionType.fade));
-      }
-
-    });
-
+    // FirebaseMessaging.onMessageOpenedApp.listen((event) {
+    //   print("OnMessageOpenedApp call");
+    //   if(event.notification?.title == "New Message Received"){
+    //     Navigator.pushAndRemoveUntil(
+    //       applicationContext!.currentContext!,
+    //       MaterialPageRoute(
+    //         builder: (BuildContext context) =>
+    //             Home(),
+    //       ),
+    //           (route) => false,
+    //     );
+    //     applicationRouteService?.addAndRemoveScreen(
+    //         screenName: "ChatList");
+    //     Navigator.push(applicationContext!.currentContext!, PageTransition(
+    //         child: ChatList(), type: PageTransitionType.fade));
+    //   }
+    //   else{
+    //     Navigator.pushAndRemoveUntil(
+    //       applicationContext!.currentContext!,
+    //       MaterialPageRoute(
+    //         builder: (BuildContext context) =>
+    //             Home(),
+    //       ),
+    //           (route) => false,
+    //     );
+    //     Navigator.push(applicationContext!.currentContext!, PageTransition(
+    //         child: ModalitiesReading(), type: PageTransitionType.fade));
+    //   }
+    // });
     print("///////////////  weather ///////////////////");
     _result = _ref!.read(loginVMProvider);
     if (_result?.currentUser != null) {
@@ -176,7 +171,8 @@ class FirebaseService{
       firebaseMessaging
           .unsubscribeFromTopic(
           "${_result?.currentUser?.appUserId}-NewMsgReceived")
-          .then((value) => null);
+          .then((value) => print("Unsubscribe From Topic ${_result?.currentUser?.appUserId}-NewMsgReceived"));
+
     }
 
   }
@@ -217,6 +213,55 @@ class FirebaseService{
     Navigator.push(applicationContext!.currentContext!, PageTransition(
         child: ModalitiesReading(), type: PageTransitionType.topToBottom));
   }
+
+
+  // Future<void> setupInteractedMessage() async {
+  //   // Get any messages which caused the application to open from
+  //   // a terminated state.
+  //   RemoteMessage? initialMessage =
+  //   await FirebaseMessaging.instance.getInitialMessage();
+  //
+  //   // If the message also contains a data property with a "type" of "chat",
+  //   // navigate to a chat screen
+  //   if (initialMessage != null) {
+  //     _handleMessage(initialMessage);
+  //   }
+  //
+  //   // Also handle any interaction when the app is in the background via a
+  //   // Stream listener
+  //   FirebaseMessaging.onMessageOpenedApp.listen(_handleMessage);
+  // }
+  //
+  // void _handleMessage(RemoteMessage event) {
+  //   print("OnMessageOpenedApp call");
+  //   if(event.notification?.title == "New Message Received"){
+  //     Navigator.pushAndRemoveUntil(
+  //       applicationContext!.currentContext!,
+  //       MaterialPageRoute(
+  //         builder: (BuildContext context) =>
+  //             Home(),
+  //       ),
+  //           (route) => false,
+  //     );
+  //     applicationRouteService?.addAndRemoveScreen(
+  //         screenName: "ChatList");
+  //     Navigator.push(applicationContext!.currentContext!, PageTransition(
+  //         child: ChatList(), type: PageTransitionType.fade));
+  //
+  //   }
+  //   else{
+  //     Navigator.pushAndRemoveUntil(
+  //       applicationContext!.currentContext!,
+  //       MaterialPageRoute(
+  //         builder: (BuildContext context) =>
+  //             Home(),
+  //       ),
+  //           (route) => false,
+  //     );
+  //     Navigator.push(applicationContext!.currentContext!, PageTransition(
+  //         child: ModalitiesReading(), type: PageTransitionType.fade));
+  //   }
+  // }
 
 
 }

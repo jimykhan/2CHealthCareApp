@@ -88,6 +88,7 @@ class ProfileVm extends ChangeNotifier{
       }
       if(res is PatientInfo){
         patientInfo = res;
+        /// Here i need phone number verification flow
         _sharedPrefServices!.setPatientInfo(res);
         setLoading(false);
       }else{

@@ -6,6 +6,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:twochealthcare/constants/api_strings.dart';
 import 'package:twochealthcare/models/user/current_user.dart';
 import 'package:twochealthcare/providers/providers.dart';
+import 'package:twochealthcare/services/application_route_service.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
 import 'package:twochealthcare/services/dio_services/dio_services.dart';
 import 'package:twochealthcare/services/facility_user_services/facility_service.dart';
@@ -16,10 +17,12 @@ import 'package:twochealthcare/view_models/chat_vm/chat_list_vm.dart';
 import 'package:twochealthcare/view_models/facility_user_view_model/home/fu_home_view_model.dart';
 import 'package:twochealthcare/view_models/profile_vm.dart';
 import 'package:twochealthcare/views/auths/login.dart';
+import 'package:twochealthcare/views/chat/chat_list.dart';
 import 'package:twochealthcare/views/facility_user/fu_home/fu_home.dart';
 import 'package:twochealthcare/views/facility_user/fu_home/fu_profile.dart';
 import 'package:twochealthcare/views/home/home.dart';
 import 'package:twochealthcare/views/home/profile.dart';
+import 'package:twochealthcare/views/readings/modalities_reading.dart';
 import 'package:twochealthcare/views/settings/fu_settings/fu_settings.dart';
 import 'package:twochealthcare/views/settings/p_settings/p_settings.dart';
 
@@ -36,6 +39,7 @@ class OnLaunchActivityAndRoutesService{
   ProfileVm? profileVm;
   FacilityService? _facilityService;
   FUHomeViewModel? _fuHomeViewModel;
+  ApplicationRouteService? applicationRouteService;
 
   OnLaunchActivityAndRoutesService({ProviderReference? ref}){
     _ref = ref;
@@ -52,6 +56,7 @@ class OnLaunchActivityAndRoutesService{
     loginVM = _ref!.read(loginVMProvider);
     _facilityService = _ref!.read(facilityServiceProvider);
     _fuHomeViewModel = _ref!.read(fuHomeVMProvider);
+    applicationRouteService = _ref?.read(applicationRouteServiceProvider);
   }
 
   syncLastApplicationUseDateAndTime() async {
@@ -81,11 +86,12 @@ class OnLaunchActivityAndRoutesService{
       "lastLogedIn": DateTime.now().toString()
     });
     _chatListVM?.getGroupsIds();
-    firebaseService?.initNotification();
+    // firebaseService?.initNotification();
     loginVM?.getCurrentUserFromSharedPref();
     signalRServices?.initSignalR();
 
   }
+
   facilityUserOnStartApplicationData()async{
     loginVM?.checkLastLoggedInUser(body: {
       "id":loginVM?.currentUser?.id?.toString()??"",
@@ -93,7 +99,7 @@ class OnLaunchActivityAndRoutesService{
       "lastLogedIn": DateTime.now().toString()
     });
     _chatListVM?.getGroupsIds();
-    firebaseService?.initNotification();
+    // firebaseService?.initNotification();
     _fuHomeViewModel?.getFacilitiesByUserId();
     loginVM?.getCurrentUserFromSharedPref();
     await _facilityService?.getHangfireToken();
@@ -101,6 +107,13 @@ class OnLaunchActivityAndRoutesService{
   }
 
   decideUserFlow()async{
+    RemoteMessage? initialMessage =
+    await FirebaseMessaging.instance.getInitialMessage();
+    print("decide Flow");
+    if (initialMessage != null) {
+      _handleMessage(initialMessage);
+      return;
+    }
     CurrentUser currentUser = await loginVM?.getCurrentUserFromSharedPref();
     if(currentUser.userType == 1){
       Navigator.pushAndRemoveUntil(
@@ -111,11 +124,6 @@ class OnLaunchActivityAndRoutesService{
         ),
             (route) => false,
       );
-      // Navigator.pushReplacement(
-      //     applicationContext!.currentContext!,
-      //     PageTransition(
-      //         child: Home(),
-      //         type: PageTransitionType.bottomToTop));
       return;
     }
 
@@ -128,11 +136,6 @@ class OnLaunchActivityAndRoutesService{
         ),
             (route) => false,
       );
-      // Navigator.pushReplacement(
-      //     applicationContext!.currentContext!,
-      //     PageTransition(
-      //         child: FUHome(),
-      //         type: PageTransitionType.bottomToTop));
       return;
     }
     else{
@@ -142,6 +145,22 @@ class OnLaunchActivityAndRoutesService{
               child: Login(),
               type: PageTransitionType.bottomToTop));
       return;
+    }
+  }
+  void _handleMessage(RemoteMessage event) {
+    print("OnMessageOpenedApp call");
+    if(event.notification?.title == "New Message Received"){
+      HomeDecider();
+      applicationRouteService?.addAndRemoveScreen(
+          screenName: "ChatList");
+      Navigator.push(applicationContext!.currentContext!, PageTransition(
+          child: ChatList(), type: PageTransitionType.fade));
+
+    }
+    else{
+      HomeDecider();
+      Navigator.push(applicationContext!.currentContext!, PageTransition(
+          child: ModalitiesReading(), type: PageTransitionType.fade));
     }
   }
 

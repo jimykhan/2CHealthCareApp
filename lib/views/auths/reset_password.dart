@@ -239,7 +239,7 @@ class ResetPassword extends HookWidget {
                   applicationRouteService.addAndRemoveScreen(screenName: "Home");
                   onLaunchActivityService.decideUserFlow();
                   try{
-                    await firebaseService?.initNotification();
+                    await firebaseService?.subNotification();
                     await signalRServices?.initSignalR();
                     if(loginVM.currentUser?.userType == 1){
                       profileVm.getUserInfo();

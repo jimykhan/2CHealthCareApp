@@ -4,6 +4,10 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/all.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:twochealthcare/views/chat/chat_list.dart';
+import 'package:twochealthcare/views/home/home.dart';
+import 'package:twochealthcare/views/readings/modalities_reading.dart';
 import 'package:twochealthcare/views/splash/splash.dart';
 
 BuildContext? homeContext;
@@ -16,25 +20,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   //     child: ModalitiesReading(), type: PageTransitionType.topToBottom));
 }
 
-void requestNotificationPermission() async {
-  NotificationSettings settings = await FirebaseMessaging.instance
-      .requestPermission(
-          alert: true,
-          announcement: true,
-          badge: true,
-          carPlay: false,
-          criticalAlert: true,
-          provisional: true,
-          sound: true);
 
-  if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-    print("user granted permission");
-  } else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
-    print('user granted provisional permission');
-  } else {
-    print('user declined or has not accepted permission');
-  }
-}
 
 GlobalKey<NavigatorState>? applicationContext = GlobalKey();
 Future<void> main() async {

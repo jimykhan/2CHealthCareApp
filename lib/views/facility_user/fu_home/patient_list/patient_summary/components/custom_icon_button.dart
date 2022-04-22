@@ -20,7 +20,7 @@ class CustomIconButton extends StatelessWidget {
       onTap: onClick,
       child: Container(
         height: height??50,
-        width: width??160,
+        width: width??MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
             boxShadow: CustomShadow.whiteBoxShadowWith15(dy: 0,dx: 0),
             border: Border.all(

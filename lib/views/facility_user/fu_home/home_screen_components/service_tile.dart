@@ -53,7 +53,7 @@ class ServiceTile extends StatelessWidget {
                       child: CircularPercentIndicator(
                   radius:  25.0,
                   lineWidth: 5.0,
-                  percent: Tcompleted/total,
+                  percent: Tcompleted/ (total == 0 ? 1 : total),
                   center: Center(
                       child:Text("${Tcompleted}/${total}",
                         style: Styles.PoppinsRegular(
@@ -78,7 +78,7 @@ class ServiceTile extends StatelessWidget {
                 CircularPercentIndicator(
                   radius:  25.0,
                   lineWidth: 5.0,
-                  percent: completed/total,
+                  percent: completed/(total == 0 ? 1 : total),
                   center: Center(
                     child:Text("${completed}/${total}",
                       style: Styles.PoppinsRegular(

@@ -134,7 +134,7 @@ class FacilityService{
     Future<dynamic> patientServicesummary({required int facilityId, int? month, int? year,}) async{
       try{
         int currentUserId = await _sharedPrefServices!.getCurrentUserId();
-        Response? res = await dio?.dio?.get(PatientsController.patientServiceSummary+"/?facilityUserId=$facilityId&facilityUserId=$currentUserId&Month=$month&Year=$year");
+        Response? res = await dio?.dio?.get(PatientsController.patientServiceSummary+"/?facilityId=$facilityId&facilityUserId=$currentUserId&Month=$month&Year=$year");
         if(res?.statusCode == 200){
           return DashboardPatientSummary.fromJson(res?.data);
         }else{
@@ -147,7 +147,7 @@ class FacilityService{
 
     Future<dynamic> getFacilitiesByUserId() async{
       try{
-        int currentUserId = await _sharedPrefServices!.getFacilityId();
+        int currentUserId = await _sharedPrefServices!.getCurrentUserId();
         Response? res = await dio?.dio?.get(FacilityController.getFacilitiesByFacilityUserId+"/$currentUserId");
         if(res?.statusCode == 200){
           List<FacilityModel> facilities = [];

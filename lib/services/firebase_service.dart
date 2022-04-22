@@ -8,10 +8,12 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hooks_riverpod/all.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:twochealthcare/main.dart';
+import 'package:twochealthcare/models/user/current_user.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/application_route_service.dart';
 import 'package:twochealthcare/services/local_notification_service.dart';
 import 'package:twochealthcare/services/onlunch_activity_routes_service.dart';
+import 'package:twochealthcare/services/shared_pref_services.dart';
 import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
 import 'package:twochealthcare/views/chat/chat_list.dart';
 import 'package:twochealthcare/views/home/home.dart';
@@ -20,7 +22,8 @@ import 'package:twochealthcare/views/readings/modalities_reading.dart';
 class FirebaseService{
   ProviderReference? _ref;
   FirebaseMessaging? _firebaseMessaging;
-  LoginVM? _result;
+  SharedPrefServices? sharedPrefServices;
+
   // LocalNotificationService? _localNotificationService;
   // OnLaunchActivityAndRoutesService? _onLaunchActivityService;
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -35,6 +38,7 @@ class FirebaseService{
   initService(){
     // applicationRouteService = _ref?.read(applicationRouteServiceProvider);
     initNotification();
+    sharedPrefServices = _ref!.read(sharedPrefServiceProvider);
   }
 
 
@@ -157,57 +161,61 @@ class FirebaseService{
     //   }
     // });
     print("///////////////  weather ///////////////////");
-    _result = _ref!.read(loginVMProvider);
-    if (_result?.currentUser != null) {
+    CurrentUser? currentUser = await sharedPrefServices?.getCurrentUser();
+    if (currentUser != null) {
       await _firebaseMessaging!
-          .subscribeToTopic("${_result?.currentUser?.appUserId}-NewDataReceived")
-          .then((value) => print("${_result?.currentUser?.appUserId}-NewDataReceived weather topic subscribe"));
+          .subscribeToTopic("${currentUser.appUserId}-NewDataReceived")
+          .then((value) => print("${currentUser.appUserId}-NewDataReceived weather topic subscribe"));
       await _firebaseMessaging!
-          .subscribeToTopic("${_result?.currentUser?.appUserId}-NewMsgReceived")
-          .then((value) => print("${_result?.currentUser?.appUserId}-NewMsgReceived weather topic subscribe"));
+          .subscribeToTopic("${currentUser.appUserId}-NewMsgReceived")
+          .then((value) => print("${currentUser.appUserId}-NewMsgReceived weather topic subscribe"));
     }
 
   }
 
   turnOfChatNotification() async{
+    CurrentUser? currentUser = await sharedPrefServices?.getCurrentUser();
     var firebaseMessaging = FirebaseMessaging.instance;
-    if(_result?.currentUser!=null){
+    if(currentUser!=null){
       await firebaseMessaging
           .unsubscribeFromTopic(
-          "${_result?.currentUser?.appUserId}-NewMsgReceived")
-          .then((value) => print("Unsubscribe From Topic ${_result?.currentUser?.appUserId}-NewMsgReceived"));
+          "${currentUser.appUserId}-NewMsgReceived")
+          .then((value) => print("Unsubscribe From Topic ${currentUser.appUserId}-NewMsgReceived"));
 
     }
 
   }
 
   turnOfReadingNotification() async{
+    CurrentUser? currentUser = await sharedPrefServices?.getCurrentUser();
     var firebaseMessaging = FirebaseMessaging.instance;
-    if (_result?.currentUser != null){
+    if (currentUser != null){
       await firebaseMessaging
           .unsubscribeFromTopic(
-          "${_result?.currentUser?.appUserId}-NewDataReceived")
-          .then((value) => print("UnSub Topic${_result?.currentUser?.appUserId}-NewDataReceived"));
+          "${currentUser.appUserId}-NewDataReceived")
+          .then((value) => print("UnSub Topic${currentUser.appUserId}-NewDataReceived"));
     }
 
   }
 
-  turnOnChatNotification() {
+  turnOnChatNotification() async{
+    CurrentUser? currentUser = await sharedPrefServices?.getCurrentUser();
     var firebaseMessaging = FirebaseMessaging.instance;
-    if (_result?.currentUser != null){
+    if (currentUser != null){
       // firebaseMessaging
       //     .unsubscribeFromTopic(
-      //     "${result?.currentUser?.appUserId}-NewDataReceived")
+      //     "${currentUser.appUserId}-NewDataReceived")
       //     .then((value) => null);
     }
   }
 
-  turnOnReadingNotification() {
+  turnOnReadingNotification() async{
+    CurrentUser? currentUser = await sharedPrefServices?.getCurrentUser();
     var firebaseMessaging = FirebaseMessaging.instance;
-    if (_result?.currentUser != null){
+    if (currentUser != null){
       firebaseMessaging
           .subscribeToTopic(
-          "${_result?.currentUser?.appUserId}-NewDataReceived")
+          "${currentUser.appUserId}-NewDataReceived")
           .then((value) => null);
     }
   }

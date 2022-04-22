@@ -60,18 +60,24 @@ class PatientSummary extends HookWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    CustomIconButton(onClick: (){
-                      openBottomModal(child: AddCCMEncounter(patientId: fuPatientSummaryVM.patientInfo?.id??0,
-                        ccmmonthlyStatus: fuPatientSummaryVM.patientInfo?.ccmMonthlyStatus??0,
-                      ));
-                    },),
-
-                    CustomIconButton(
-                      onClick: (){
-                        openBottomModal(child: AddRPMEncounter(patientId: fuPatientSummaryVM.patientInfo?.id??0,
+                    Expanded(
+                      flex: 1,
+                      child: CustomIconButton(onClick: (){
+                        openBottomModal(child: AddCCMEncounter(patientId: fuPatientSummaryVM.patientInfo?.id??0,
+                          ccmmonthlyStatus: fuPatientSummaryVM.patientInfo?.ccmMonthlyStatus??0,
                         ));
-                      },
-                      text: "RPM",bgColor: appColorSecondary,fontColor: whiteColor,),
+                      },),
+                    ),
+                    SizedBox(width: 10,),
+                    Expanded(
+                      flex: 1,
+                      child: CustomIconButton(
+                        onClick: (){
+                          openBottomModal(child: AddRPMEncounter(patientId: fuPatientSummaryVM.patientInfo?.id??0,
+                          ));
+                        },
+                        text: "RPM",bgColor: appColorSecondary,fontColor: whiteColor,),
+                    ),
                   ],
                 ),
               ),

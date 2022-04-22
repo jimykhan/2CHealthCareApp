@@ -56,11 +56,18 @@ class ChangeFacilityTile extends StatelessWidget {
                             fontSize: ApplicationSizing.constSize(12),
                             color: fontGrayColor
                         ),),
-                        Text(faciilityName,style: Styles.PoppinsRegular(
-                            fontWeight: FontWeight.w600,
-                            fontSize: ApplicationSizing.constSize(12),
-                            color: appColor
-                        ),),
+                        Expanded(
+                          child: Container(
+                            // alignment: Alignment.center,
+                            child: Text(faciilityName,style: Styles.PoppinsRegular(
+                                fontWeight: FontWeight.w600,
+                                fontSize: ApplicationSizing.constSize(12),
+                                color: appColor
+                            ),
+                              // textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
                       ],
                     )
                   ],

@@ -13,6 +13,7 @@ import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
 import 'package:twochealthcare/view_models/facility_user_view_model/home/fu_profile_view_model.dart';
+
 class FUProfile extends HookWidget {
   FUProfile({Key? key}) : super(key: key);
   GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
@@ -24,7 +25,7 @@ class FUProfile extends HookWidget {
     // useProvider(applicationRouteServiceProvider);
     // FirebaseService firebaseService = useProvider(firebaseServiceProvider);
     useEffect(
-          () {
+      () {
         Future.microtask(() async {
           fuProfileVM.getFuProfileInfo();
         });
@@ -48,135 +49,144 @@ class FUProfile extends HookWidget {
           ),
         ),
       ),
-      body: _body(context,fuProfileVM: fuProfileVM),
+      body: _body(context, fuProfileVM: fuProfileVM),
       floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
       floatingActionButton: FloatingButton(),
     );
   }
 
-  _body(context,{required FUProfileVM fuProfileVM}){
+  _body(context, {required FUProfileVM fuProfileVM}) {
     return Stack(
       children: [
         Container(
-            child: fuProfileVM.fuProfileModel == null ? Column(
-              children:  [
-                NoData(),
-              ],
-            ):
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin()),
-              child: Column(
-                children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    padding: EdgeInsets.all(15),
-                    decoration: BoxDecoration(
-                        boxShadow: CustomShadow.whiteBoxShadowWith15(dy: 0,dx: 0),
-                        border: Border.all(
-                            color: fontGrayColor.withOpacity(0.5),
-                            width: 1
-                        ),
-                        borderRadius: BorderRadius.circular(15),
-                        color: Color(0xffF0F1F5)
-                    ),
-                    child: Row(
+            child: fuProfileVM.fuProfileModel == null
+                ? Column(
+                    children: [
+                      NoData(),
+                    ],
+                  )
+                : Container(
+                    margin: EdgeInsets.symmetric(
+                        horizontal: ApplicationSizing.horizontalMargin()),
+                    child: Column(
                       children: [
-                        CircularImage(
-                          h: 80,
-                          w: 80,
-                        ),
-                        Expanded(
-                          child: Column(
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          padding: EdgeInsets.all(15),
+                          decoration: BoxDecoration(
+                              boxShadow: CustomShadow.whiteBoxShadowWith15(
+                                  dy: 0, dx: 0),
+                              border: Border.all(
+                                  color: fontGrayColor.withOpacity(0.5),
+                                  width: 1),
+                              borderRadius: BorderRadius.circular(15),
+                              color: Color(0xffF0F1F5)),
+                          child: Row(
                             children: [
-                              Text("${fuProfileVM.fuProfileModel?.firstName} ${fuProfileVM.fuProfileModel?.lastName}",
-                              style: Styles.PoppinsRegular(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w600
-                              ),),
-                              Text("${fuProfileVM.fuProfileModel?.email}",
-                              style: Styles.PoppinsRegular(
-                                fontSize: 10,
-                                  fontWeight: FontWeight.w400,
-                                color: fontGrayColor
-                              ),),
-                              Text("${fuProfileVM.fuProfileModel?.phoneNo}",
-                              style: Styles.PoppinsRegular(
-                                fontSize: 10,
-                                  fontWeight: FontWeight.w400,
-                                color: fontGrayColor
-                              ),),
+                              CircularImage(
+                                h: 80,
+                                w: 80,
+                                imageUrl: "assets/icons/personIcon.png",
+                                assetImage: true,
+                              ),
+                              Expanded(
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      "${fuProfileVM.fuProfileModel?.firstName} ${fuProfileVM.fuProfileModel?.lastName}",
+                                      style: Styles.PoppinsRegular(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    Text(
+                                      "${fuProfileVM.fuProfileModel?.email}",
+                                      style: Styles.PoppinsRegular(
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.w400,
+                                          color: fontGrayColor),
+                                    ),
+                                    Text(
+                                      "${fuProfileVM.fuProfileModel?.phoneNo}",
+                                      style: Styles.PoppinsRegular(
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.w400,
+                                          color: fontGrayColor),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ],
                           ),
                         ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 10,),
-                  Container(
-                    padding: EdgeInsets.symmetric(vertical: 20,horizontal: 15),
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                          color: fontGrayColor.withOpacity(0.3),
+                        SizedBox(
+                          height: 15,
                         ),
-                        borderRadius: BorderRadius.circular(15)
-                    ),
-                    child: Column(
-                      children: [
-                        keyValue(key: "Phone No.",value: fuProfileVM.fuProfileModel?.phoneNo??""),
-                        keyValue(key: "Secondary No.",value: fuProfileVM.fuProfileModel?.phoneNo??""),
-                        keyValue(key: "Contact Email",value: fuProfileVM.fuProfileModel?.email??""),
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 20, horizontal: 15),
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                color: fontGrayColor.withOpacity(0.3),
+                              ),
+                              borderRadius: BorderRadius.circular(15)),
+                          child: Column(
+                            children: [
+                              keyValue(
+                                  key: "Phone No.",
+                                  value: fuProfileVM.fuProfileModel?.phoneNo ??
+                                      ""),
+                              keyValue(
+                                  key: "Secondary No.",
+                                  value: fuProfileVM.fuProfileModel?.phoneNo ??
+                                      ""),
+                              keyValue(
+                                  key: "Contact Email",
+                                  value:
+                                      fuProfileVM.fuProfileModel?.email ?? ""),
+                            ],
+                          ),
+                        )
                       ],
                     ),
-                  )
-                ],
-              ),
-            )
-        ),
+                  )),
         fuProfileVM.loadingProfile ? AlertLoader() : Container(),
       ],
     );
   }
-  keyValue({required String key,required String value}){
+
+  keyValue({required String key, required String value}) {
     return Container(
-      padding: EdgeInsets.only(bottom: 5,top: 10),
+      padding: EdgeInsets.only(bottom: 10, top: 10),
       decoration: BoxDecoration(
           border: Border(
-              bottom: BorderSide(
-                  color: fontGrayColor.withOpacity(0.3)
-              )
-          )
-      ),
+              bottom: BorderSide(color: fontGrayColor.withOpacity(0.3)))),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Container(
-            padding: EdgeInsets.all(5),
+            padding: EdgeInsets.only(top: 5, bottom: 5, left: 10, right: 10),
             decoration: BoxDecoration(
-              color: appColorSecondary.withOpacity(0.3),
+              color: Color.fromRGBO(70, 141, 255, 0.27),
               borderRadius: BorderRadius.circular(6),
             ),
-            child: Text(key,style: Styles.PoppinsRegular(
-                color: appColorSecondary,
-                fontSize: 14
-            ),),
+            child: Text(
+              key,
+              style:
+                  Styles.PoppinsRegular(color: appColorSecondary, fontSize: 14),
+            ),
           ),
-
           Expanded(
             child: Container(
               alignment: Alignment.centerRight,
-              child: Text(value,style: Styles.PoppinsRegular(
-                  color: appColor,
-                  fontSize: 12,
-                fontWeight: FontWeight.w400
-              ),),
+              child: Text(
+                value,
+                style: Styles.PoppinsRegular(
+                    color: appColor, fontSize: 12, fontWeight: FontWeight.w400),
+              ),
             ),
           ),
-
-
-
         ],
       ),
     );
   }
-
 }

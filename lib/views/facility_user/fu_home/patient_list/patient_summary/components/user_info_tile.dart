@@ -4,17 +4,23 @@ import 'package:twochealthcare/models/facility_user_models/dashboard_patients/pa
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
+
 class UserInfoTile extends StatelessWidget {
   PatientsModel patientsModel;
-  UserInfoTile({required this.patientsModel,Key? key}) : super(key: key);
+  UserInfoTile({required this.patientsModel, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16,vertical: 8),
-      margin: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin()),
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      margin: EdgeInsets.symmetric(
+          horizontal: ApplicationSizing.horizontalMargin()),
       decoration: BoxDecoration(
-        color: appColor,
+        gradient: LinearGradient(
+          begin: Alignment.centerLeft,
+          end: Alignment.centerLeft,
+          colors: [Color(0Xff4EAF48), Color(0xff388333)],
+        ),
         borderRadius: BorderRadius.circular(15),
         boxShadow: CustomShadow.whiteBoxShadowWith15(),
       ),
@@ -35,16 +41,22 @@ class UserInfoTile extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(patientsModel.fullName??"",style: Styles.PoppinsRegular(
-                    fontSize: ApplicationSizing.constSize(20),
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                  ),),
-                  Text(patientsModel.primaryPhoneNumber??"No Contact",style: Styles.PoppinsRegular(
-                    fontSize: ApplicationSizing.constSize(12),
-                    color: Colors.white,
-                    fontWeight: FontWeight.w400,
-                  ),),
+                  Text(
+                    patientsModel.fullName ?? "",
+                    style: Styles.PoppinsRegular(
+                      fontSize: ApplicationSizing.constSize(20),
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  Text(
+                    patientsModel.primaryPhoneNumber ?? "No Contact",
+                    style: Styles.PoppinsRegular(
+                      fontSize: ApplicationSizing.constSize(12),
+                      color: Colors.white,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -55,26 +67,22 @@ class UserInfoTile extends StatelessWidget {
               alignment: Alignment.centerRight,
               // color: Colors.black,
               child: RichText(
-                text: TextSpan(
-                  children: [
-                    TextSpan(
+                text: TextSpan(children: [
+                  TextSpan(
                       text: "Male, ",
                       style: Styles.PoppinsRegular(
                         fontSize: ApplicationSizing.constSize(12),
                         color: Colors.white,
                         fontWeight: FontWeight.w500,
-                      )
-                    ),
-                    TextSpan(
+                      )),
+                  TextSpan(
                       text: "3 Years",
                       style: Styles.PoppinsRegular(
                         fontSize: ApplicationSizing.constSize(12),
                         color: Colors.white,
                         fontWeight: FontWeight.w500,
-                      )
-                    ),
-                  ]
-                ),
+                      )),
+                ]),
               ),
             ),
           ),

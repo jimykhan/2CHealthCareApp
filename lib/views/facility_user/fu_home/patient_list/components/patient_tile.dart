@@ -10,49 +10,62 @@ import 'package:twochealthcare/views/facility_user/fu_home/patient_list/componen
 
 class PatientTile extends StatelessWidget {
   PatientsModel patientsList;
-   PatientTile({required this.patientsList,Key? key}) : super(key: key);
+  PatientTile({required this.patientsList, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin:  EdgeInsets.symmetric(horizontal: ApplicationSizing.constSize(25)),
-      padding:  EdgeInsets.all(ApplicationSizing.constSize(8)),
+      margin: EdgeInsets.symmetric(
+          horizontal: ApplicationSizing.constSize(20),
+          vertical: ApplicationSizing.constSize(4)),
+      padding: EdgeInsets.only(
+          top: ApplicationSizing.constSize(10),
+          right: ApplicationSizing.constSize(10),
+          left: ApplicationSizing.constSize(10),
+          bottom: ApplicationSizing.constSize(7)),
       decoration: BoxDecoration(
-        border: Border.all(
-          color: fontGrayColor.withOpacity(0.3),
-          width: 1
-        ),
-        borderRadius: BorderRadius.circular(10)
-      ),
+          border: Border.all(color: fontGrayColor.withOpacity(0.3), width: 1),
+          borderRadius: BorderRadius.circular(15)),
       child: Column(
         children: [
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
-
             children: [
               ProfileImage(),
               Expanded(
-                flex: 9,
-                  child: CenterText(patientsList: patientsList,)),
+                  flex: 9,
+                  child: CenterText(
+                    patientsList: patientsList,
+                  )),
               Expanded(
-                flex: 5,
+                  flex: 5,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                     patientsList.lastAppLaunchDate == null ? Container() :  SvgPicture.asset(patientsList.isActve?? false ? "assets/icons/fu_icons/enablePhone.svg" : "assets/icons/fu_icons/disablePhone.svg"),
+                      patientsList.lastAppLaunchDate == null
+                          ? Container()
+                          : SvgPicture.asset(patientsList.isActve ?? false
+                              ? "assets/icons/fu_icons/enablePhone.svg"
+                              : "assets/icons/fu_icons/disablePhone.svg"),
                     ],
                   ))
             ],
           ),
           Container(
-            margin: EdgeInsets.only(top: 5,left: 60),
+            margin: EdgeInsets.only(top: 5, left: 60),
             child: Wrap(
               direction: Axis.horizontal,
               children: [
-                patientsList.isBHIRevoked?? false ? serviceCircle(text: "RPM",color: Color(0xff134389))  : Container(),
-                patientsList.isCCMRevoked?? false ? serviceCircle(text: "CCM")  : Container(),
-                patientsList.isRPMRevoked?? false ? serviceCircle(text: "BHI",color: Color(0xffA148AF))  : Container(),
+                patientsList.isBHIRevoked ?? false
+                    ? serviceCircle(text: "RPM", color: Color(0xff134389))
+                    : Container(),
+                patientsList.isCCMRevoked ?? false
+                    ? serviceCircle(text: "CCM")
+                    : Container(),
+                patientsList.isRPMRevoked ?? false
+                    ? serviceCircle(text: "BHI", color: Color(0xffA148AF))
+                    : Container(),
               ],
             ),
           )
@@ -61,14 +74,17 @@ class PatientTile extends StatelessWidget {
     );
   }
 
-  serviceCircle({Color? color,String? text}){
+  serviceCircle({Color? color, String? text}) {
     return Container(
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: color ?? appColor,
       ),
       padding: EdgeInsets.all(5),
-      child: Text(text??"",style: Styles.PoppinsRegular(fontSize: 8,color: Colors.white),),
+      child: Text(
+        text ?? "",
+        style: Styles.PoppinsRegular(fontSize: 8, color: Colors.white),
+      ),
     );
   }
 }

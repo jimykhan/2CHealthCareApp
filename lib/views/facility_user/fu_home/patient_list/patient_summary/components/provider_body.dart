@@ -23,10 +23,10 @@ class ProviderBody extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    FUPatientSummaryVM _fuPatientSummaryVM = useProvider(fUPatientSummaryVMProvider);
+    FUPatientSummaryVM _fuPatientSummaryVM =
+        useProvider(fUPatientSummaryVMProvider);
     useEffect(
-
-          () {
+      () {
         print("init call of provider");
         Future.microtask(() async {
           await _fuPatientSummaryVM.getProviderByPatientId();
@@ -46,22 +46,29 @@ class ProviderBody extends HookWidget {
           HeadLineTextStyle(
             text: "Care Provider",
           ),
+          SizedBox(
+            height: 15,
+          ),
           Stack(
             children: [
               _fuPatientSummaryVM.isLoading
                   ? AlertLoader()
-                  : _fuPatientSummaryVM.providerList.length == 0 ? NoData()
-                  : ListView.separated(
-                  shrinkWrap: true,
-                  physics: ScrollPhysics(),
-
-                  itemBuilder: (context,index){
-                    return providerHistory(provider: _fuPatientSummaryVM.providerList[index]);
-                  },
-                  separatorBuilder: (context,index){
-                    return SizedBox(height: 10,);
-                  },
-                  itemCount: _fuPatientSummaryVM.providerList.length)
+                  : _fuPatientSummaryVM.providerList.length == 0
+                      ? NoData()
+                      : ListView.separated(
+                          shrinkWrap: true,
+                          physics: ScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            return providerHistory(
+                                provider:
+                                    _fuPatientSummaryVM.providerList[index]);
+                          },
+                          separatorBuilder: (context, index) {
+                            return SizedBox(
+                              height: 10,
+                            );
+                          },
+                          itemCount: _fuPatientSummaryVM.providerList.length)
             ],
           ),
         ],
@@ -92,7 +99,10 @@ class ProviderBody extends HookWidget {
                                   color: Colors.black),
                             ),
                             Text(
-                              provider.specialty ==null || provider.specialty == "" ? "" : " (${provider.specialty ?? ""} )",
+                              provider.specialty == null ||
+                                      provider.specialty == ""
+                                  ? ""
+                                  : " (${provider.specialty ?? ""} )",
                               style: Styles.PoppinsRegular(
                                   fontWeight: FontWeight.w500,
                                   fontSize: ApplicationSizing.constSize(12),
@@ -104,13 +114,14 @@ class ProviderBody extends HookWidget {
                             //         "assets/icons/medicine_info_icon.svg"))
                           ],
                         ),
-
                       ],
                     ),
                   )),
             ],
           ),
-          SizedBox(height:2,),
+          SizedBox(
+            height: 2,
+          ),
           Row(
             children: [
               Expanded(
@@ -128,7 +139,7 @@ class ProviderBody extends HookWidget {
                         ),
                       ),
                       Text(
-                        provider.prevAppointment??"",
+                        provider.prevAppointment ?? "",
                         style: Styles.PoppinsRegular(
                           fontSize: ApplicationSizing.constSize(10),
                           fontWeight: FontWeight.w500,
@@ -139,8 +150,6 @@ class ProviderBody extends HookWidget {
                   ),
                 ),
               ),
-
-
             ],
           ),
           Row(
@@ -163,7 +172,7 @@ class ProviderBody extends HookWidget {
                         ),
                       ),
                       Text(
-                        provider.nextAppointment??"",
+                        provider.nextAppointment ?? "",
                         style: Styles.PoppinsRegular(
                           fontSize: ApplicationSizing.constSize(10),
                           fontWeight: FontWeight.w500,
@@ -176,9 +185,6 @@ class ProviderBody extends HookWidget {
               ),
             ],
           ),
-
-
-
         ],
       ),
     );

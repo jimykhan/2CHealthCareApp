@@ -10,91 +10,97 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
 
 import '../../../../services/auth_services/auth_services.dart';
+
 class AllFacility extends StatelessWidget {
   List<FacilityModel> facilities = [];
   Function changeFacility;
   int selectedFacilityId;
-  AllFacility ({Key? key, required this.facilities,required this.selectedFacilityId,required this.changeFacility}) : super(key: key);
+  AllFacility(
+      {Key? key,
+      required this.facilities,
+      required this.selectedFacilityId,
+      required this.changeFacility})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.only(
-          topRight: Radius.circular(30),
-          topLeft: Radius.circular(30)
-        ),
-        color: Colors.white
-      ),
+          borderRadius: BorderRadius.only(
+              topRight: Radius.circular(30), topLeft: Radius.circular(30)),
+          color: Colors.white),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            margin: EdgeInsets.only(top: 5,bottom: 10),
-            width: 170,
+            margin: EdgeInsets.only(top: 5, bottom: 10),
+            width: 100,
             height: 5,
             decoration: BoxDecoration(
-              color: fontGrayColor,
-              borderRadius: BorderRadius.circular(2)
-            ),
+                color: fontGrayColor, borderRadius: BorderRadius.circular(4)),
           ),
           Container(
             margin: EdgeInsets.only(bottom: 10),
-            child: Text("Change Facility",style: Styles.PoppinsRegular(
-              fontSize: ApplicationSizing.constSize(20),
-              fontWeight: FontWeight.w600
-            ),),
+            child: Text(
+              "Change Facility",
+              style: Styles.PoppinsRegular(
+                  fontSize: ApplicationSizing.constSize(20),
+                  fontWeight: FontWeight.w600),
+            ),
           ),
           Container(
             padding: EdgeInsets.only(bottom: 10),
-              child: SingleChildScrollView(
-                child: ListView.separated(
-                  padding: EdgeInsets.zero,
+            child: SingleChildScrollView(
+              child: ListView.separated(
+                  padding: EdgeInsets.only(left: 10, right: 10),
                   shrinkWrap: true,
-                    physics: ScrollPhysics(),
-                    itemBuilder: (context,index){
-                      return InkWell(
-                        onTap: (){
-                          selectedFacilityId == facilities[index].id ? null : changeFacility(facilities[index].id);
-                        } ,
-                        child: Container(
-                          padding: EdgeInsets.symmetric(vertical: 11),
-                          // color: Colors.red,
-                          margin: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin()),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(facilities[index].facilityName?? "",
+                  physics: ScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return InkWell(
+                      onTap: () {
+                        selectedFacilityId == facilities[index].id
+                            ? null
+                            : changeFacility(facilities[index].id);
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(vertical: 11),
+                        // color: Colors.red,
+                        margin: EdgeInsets.symmetric(
+                            horizontal: ApplicationSizing.horizontalMargin()),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              facilities[index].facilityName ?? "",
                               style: Styles.PoppinsRegular(
-                                fontWeight: FontWeight.w400,
-                                fontSize: ApplicationSizing.constSize(17),
-                                color: Colors.black
-                              ),),
-                              RadioButton(
-                                buttonSelected: selectedFacilityId == facilities[index].id,
-                                onchange: (){},
-                                noText: true,),
-
-                            ],
-                          ),
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: ApplicationSizing.constSize(17),
+                                  color: Colors.black),
+                            ),
+                            RadioButton(
+                              buttonSelected:
+                                  selectedFacilityId == facilities[index].id,
+                              onchange: () {},
+                              noText: true,
+                            ),
+                          ],
                         ),
-                      );
-                    },
-                    separatorBuilder: (context,index){
-                      return Container(
-                        // margin: EdgeInsets.symmetric(horizontal: 5,vertical: 11),
-                        width: MediaQuery.of(context).size.width,
-                        height: 1,
-                        color: fontGrayColor,
-                      );
-                    },
-                    itemCount: facilities.length),
-              ),
+                      ),
+                    );
+                  },
+                  separatorBuilder: (context, index) {
+                    return Container(
+                      // margin: EdgeInsets.symmetric(horizontal: 5,vertical: 11),
+                      width: MediaQuery.of(context).size.width,
+                      height: 1,
+                      color: Color(0xffC6C6C9),
+                    );
+                  },
+                  itemCount: facilities.length),
             ),
-
+          ),
         ],
       ),
     );
   }
 }
-

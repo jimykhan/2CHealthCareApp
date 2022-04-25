@@ -9,14 +9,16 @@ import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
 import 'package:twochealthcare/view_models/facility_user_view_model/fu_patient_summary_veiw_models/fu_patient_summary_view_model.dart';
 import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_summary/components/headline_text_style.dart';
+
 class SummaryBody extends HookWidget {
   SummaryBody({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    FUPatientSummaryVM _fuPatientSummaryVM = useProvider(fUPatientSummaryVMProvider);
+    FUPatientSummaryVM _fuPatientSummaryVM =
+        useProvider(fUPatientSummaryVMProvider);
     useEffect(
-          () {
+      () {
         print("init call of Patient Summary");
         Future.microtask(() async {
           await _fuPatientSummaryVM.getPatientInfoById();
@@ -35,67 +37,76 @@ class SummaryBody extends HookWidget {
           HeadLineTextStyle(
             text: "Patient Summary",
           ),
+          SizedBox(
+            height: 15,
+          ),
           Stack(
             children: [
               _fuPatientSummaryVM.isLoading
                   ? AlertLoader()
-                  : _fuPatientSummaryVM.patientInfo == null ? NoData()
-                  : Container(
-                padding: EdgeInsets.symmetric(vertical: 20,horizontal: 15),
-                decoration: BoxDecoration(
-                    border: Border.all(
-                      color: fontGrayColor.withOpacity(0.3),
-                    ),
-                    borderRadius: BorderRadius.circular(15)
-                ),
-                child: Column(
-                  children: [
-                    keyValue(key: "Phone No.",value: _fuPatientSummaryVM.patientInfo?.homePhone??""),
-                    keyValue(key: "Secondary No.",value: _fuPatientSummaryVM.patientInfo?.emergencyContactSecondaryPhoneNo??""),
-                    keyValue(key: "Date of Birth",value: _fuPatientSummaryVM.patientInfo?.dateOfBirth??""),
-                  ],
-                ),
-              )
+                  : _fuPatientSummaryVM.patientInfo == null
+                      ? NoData()
+                      : Container(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 20, horizontal: 15),
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                color: fontGrayColor.withOpacity(0.3),
+                              ),
+                              borderRadius: BorderRadius.circular(15)),
+                          child: Column(
+                            children: [
+                              keyValue(
+                                  key: "Phone No.",
+                                  value: _fuPatientSummaryVM
+                                          .patientInfo?.homePhone ??
+                                      ""),
+                              keyValue(
+                                  key: "Secondary No.",
+                                  value: _fuPatientSummaryVM.patientInfo
+                                          ?.emergencyContactSecondaryPhoneNo ??
+                                      ""),
+                              keyValue(
+                                  key: "Date of Birth",
+                                  value: _fuPatientSummaryVM
+                                          .patientInfo?.dateOfBirth ??
+                                      ""),
+                            ],
+                          ),
+                        )
             ],
           ),
-
         ],
       ),
     );
   }
 
-  keyValue({required String key,required String value}){
+  keyValue({required String key, required String value}) {
     return Container(
-      padding: EdgeInsets.only(bottom: 5,top: 10),
+      padding: EdgeInsets.only(bottom: 10, top: 10),
       decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(
-            color: fontGrayColor.withOpacity(0.3)
-          )
-        )
-      ),
+          border: Border(
+              bottom: BorderSide(color: fontGrayColor.withOpacity(0.3)))),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Container(
-            padding: EdgeInsets.all(5),
+            padding: EdgeInsets.only(top: 5, bottom: 5, left: 10, right: 10),
             decoration: BoxDecoration(
-              color: appColorSecondary.withOpacity(0.3),
+              color: Color.fromRGBO(70, 141, 255, 0.27),
               borderRadius: BorderRadius.circular(6),
             ),
-            child: Text(key,style: Styles.PoppinsRegular(
-              color: appColorSecondary,
-              fontSize: 14
-            ),),
+            child: Text(
+              key,
+              style:
+                  Styles.PoppinsRegular(color: Color(0xff002F73), fontSize: 14),
+            ),
           ),
-
-          Text(value,style: Styles.PoppinsRegular(
-              color: appColorSecondary,
-              fontSize: 14
-          ),),
-
-
-
+          Text(
+            value,
+            style:
+                Styles.PoppinsRegular(color: Color(0xff4EAF48), fontSize: 14),
+          ),
         ],
       ),
     );

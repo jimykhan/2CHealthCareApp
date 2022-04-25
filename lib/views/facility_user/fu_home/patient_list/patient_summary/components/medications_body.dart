@@ -23,7 +23,8 @@ class MedicationsBody extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    FUPatientSummaryVM _fuPatientSummaryVM = useProvider(fUPatientSummaryVMProvider);
+    FUPatientSummaryVM _fuPatientSummaryVM =
+        useProvider(fUPatientSummaryVMProvider);
     useEffect(
       () {
         print("init call of medications");
@@ -45,24 +46,30 @@ class MedicationsBody extends HookWidget {
           HeadLineTextStyle(
             text: "Medication Records",
           ),
+          SizedBox(
+            height: 15,
+          ),
           Stack(
             children: [
               _fuPatientSummaryVM.isLoading
                   ? AlertLoader()
-                  : _fuPatientSummaryVM.medicationList.length == 0 ? NoData()
-                  : ListView.separated(
-                  shrinkWrap: true,
-                  physics: ScrollPhysics(),
-
-                  itemBuilder: (context,index){
-                    return medicineTile(medicationModel: _fuPatientSummaryVM.medicationList[index],
-                      fuPatientSummaryVM: _fuPatientSummaryVM
-                    );
-                  },
-                  separatorBuilder: (context,index){
-                    return SizedBox(height: 10,);
-                  },
-                  itemCount: _fuPatientSummaryVM.medicationList.length)
+                  : _fuPatientSummaryVM.medicationList.length == 0
+                      ? NoData()
+                      : ListView.separated(
+                          shrinkWrap: true,
+                          physics: ScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            return medicineTile(
+                                medicationModel:
+                                    _fuPatientSummaryVM.medicationList[index],
+                                fuPatientSummaryVM: _fuPatientSummaryVM);
+                          },
+                          separatorBuilder: (context, index) {
+                            return SizedBox(
+                              height: 10,
+                            );
+                          },
+                          itemCount: _fuPatientSummaryVM.medicationList.length)
             ],
           ),
         ],
@@ -70,7 +77,9 @@ class MedicationsBody extends HookWidget {
     );
   }
 
-  medicineTile({required MedicationModel medicationModel,FUPatientSummaryVM? fuPatientSummaryVM}) {
+  medicineTile(
+      {required MedicationModel medicationModel,
+      FUPatientSummaryVM? fuPatientSummaryVM}) {
     return CommonContainer(
       horizontalPadding: 8,
       child: Row(
@@ -87,7 +96,7 @@ class MedicationsBody extends HookWidget {
                       children: [
                         Expanded(
                           child: Text(
-                            medicationModel.medicationName?? "",
+                            medicationModel.medicationName ?? "",
                             style: Styles.PoppinsRegular(
                                 fontWeight: FontWeight.w500,
                                 fontSize: ApplicationSizing.constSize(14),
@@ -95,8 +104,13 @@ class MedicationsBody extends HookWidget {
                           ),
                         ),
                         InkWell(
-                          onTap: (){
-                            openBottomModalDisableDrag(child: MadLinePlus(url: fuPatientSummaryVM?.setMedicationUrl(rxCui: medicationModel.rxCui??"")??"",));
+                          onTap: () {
+                            openBottomModalDisableDrag(
+                                child: MadLinePlus(
+                              url: fuPatientSummaryVM?.setMedicationUrl(
+                                      rxCui: medicationModel.rxCui ?? "") ??
+                                  "",
+                            ));
                           },
                           child: Container(
                               padding: EdgeInsets.symmetric(horizontal: 10),
@@ -127,7 +141,7 @@ class MedicationsBody extends HookWidget {
                                     ),
                                   ),
                                   Text(
-                                    medicationModel.startDate??"Dec 12 2020",
+                                    medicationModel.startDate ?? "Dec 12 2020",
                                     style: Styles.PoppinsRegular(
                                       fontSize: ApplicationSizing.constSize(10),
                                       fontWeight: FontWeight.w500,
@@ -155,7 +169,7 @@ class MedicationsBody extends HookWidget {
                                     ),
                                   ),
                                   Text(
-                                    medicationModel.stopDate??"Dec 12 2021",
+                                    medicationModel.stopDate ?? "Dec 12 2021",
                                     style: Styles.PoppinsRegular(
                                       fontSize: ApplicationSizing.constSize(10),
                                       fontWeight: FontWeight.w500,
@@ -179,7 +193,7 @@ class MedicationsBody extends HookWidget {
                   child: Column(
                 children: [
                   Text(
-                    medicationModel.dose??"5",
+                    medicationModel.dose ?? "5",
                     style: Styles.PoppinsRegular(
                         fontWeight: FontWeight.w500,
                         fontSize: ApplicationSizing.constSize(12)),
@@ -192,19 +206,22 @@ class MedicationsBody extends HookWidget {
                         fontSize: ApplicationSizing.constSize(14),
                         color: appColor),
                   ),
-                  medicationModel.status == null || medicationModel.status == ""  ? Container() : Container(
-                    padding: EdgeInsets.symmetric(vertical: 2, horizontal: 4),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        color: appColor),
-                    child: Text(
-                      medicationModel.status??"",
-                      style: Styles.PoppinsRegular(
-                          fontWeight: FontWeight.w500,
-                          fontSize: ApplicationSizing.constSize(7),
-                          color: whiteColor),
-                    ),
-                  ),
+                  medicationModel.status == null || medicationModel.status == ""
+                      ? Container()
+                      : Container(
+                          padding:
+                              EdgeInsets.symmetric(vertical: 2, horizontal: 4),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              color: appColor),
+                          child: Text(
+                            medicationModel.status ?? "",
+                            style: Styles.PoppinsRegular(
+                                fontWeight: FontWeight.w500,
+                                fontSize: ApplicationSizing.constSize(7),
+                                color: whiteColor),
+                          ),
+                        ),
                 ],
               ))),
         ],

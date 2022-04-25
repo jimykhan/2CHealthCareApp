@@ -21,10 +21,10 @@ class ImmunizationBody extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    FUPatientSummaryVM _fuPatientSummaryVM = useProvider(fUPatientSummaryVMProvider);
+    FUPatientSummaryVM _fuPatientSummaryVM =
+        useProvider(fUPatientSummaryVMProvider);
     useEffect(
-
-          () {
+      () {
         print("init call of allegies");
         Future.microtask(() async {
           await _fuPatientSummaryVM.getImmunizationByPatientId();
@@ -44,22 +44,30 @@ class ImmunizationBody extends HookWidget {
           HeadLineTextStyle(
             text: "Immunizations",
           ),
+          SizedBox(
+            height: 15,
+          ),
           Stack(
             children: [
               _fuPatientSummaryVM.isLoading
                   ? AlertLoader()
-                  : _fuPatientSummaryVM.immunizationList.length == 0 ? NoData()
-                  : ListView.separated(
-                  shrinkWrap: true,
-                  physics: ScrollPhysics(),
-
-                  itemBuilder: (context,index){
-                    return immunizationTile(immunizationModel: _fuPatientSummaryVM.immunizationList[index]);
-                  },
-                  separatorBuilder: (context,index){
-                    return SizedBox(height: 10,);
-                  },
-                  itemCount: _fuPatientSummaryVM.immunizationList.length)
+                  : _fuPatientSummaryVM.immunizationList.length == 0
+                      ? NoData()
+                      : ListView.separated(
+                          shrinkWrap: true,
+                          physics: ScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            return immunizationTile(
+                                immunizationModel: _fuPatientSummaryVM
+                                    .immunizationList[index]);
+                          },
+                          separatorBuilder: (context, index) {
+                            return SizedBox(
+                              height: 10,
+                            );
+                          },
+                          itemCount:
+                              _fuPatientSummaryVM.immunizationList.length)
             ],
           ),
         ],
@@ -83,7 +91,7 @@ class ImmunizationBody extends HookWidget {
                         Row(
                           children: [
                             Text(
-                              immunizationModel.vaccinationCode?? "",
+                              immunizationModel.vaccinationCode ?? "",
                               style: Styles.PoppinsRegular(
                                   fontWeight: FontWeight.w500,
                                   fontSize: ApplicationSizing.constSize(18),
@@ -95,7 +103,6 @@ class ImmunizationBody extends HookWidget {
                             //         "assets/icons/medicine_info_icon.svg"))
                           ],
                         ),
-
                       ],
                     ),
                   )),
@@ -113,7 +120,7 @@ class ImmunizationBody extends HookWidget {
                       ),
                     ),
                     Text(
-                      immunizationModel.date??"",
+                      immunizationModel.date ?? "",
                       style: Styles.PoppinsRegular(
                         fontSize: ApplicationSizing.constSize(10),
                         fontWeight: FontWeight.w500,
@@ -125,57 +132,55 @@ class ImmunizationBody extends HookWidget {
               ),
             ],
           ),
-          SizedBox(height:2,),
+          SizedBox(
+            height: 2,
+          ),
           Row(
             children: [
               Expanded(
                   child: Container(
-                    // color: Colors.green,
-                    child: Column(
+                // color: Colors.green,
+                child: Column(
+                  children: [
+                    Row(
                       children: [
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Text(
-                                immunizationModel.vaccinationDescription?? "",
-                                style: Styles.PoppinsRegular(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: ApplicationSizing.constSize(10),
-                                    color: fontGrayColor),
-                              ),
-                            ),
-                          ],
+                        Expanded(
+                          child: Text(
+                            immunizationModel.vaccinationDescription ?? "",
+                            style: Styles.PoppinsRegular(
+                                fontWeight: FontWeight.w500,
+                                fontSize: ApplicationSizing.constSize(10),
+                                color: fontGrayColor),
+                          ),
                         ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Notes :",
-                              style: Styles.PoppinsRegular(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: ApplicationSizing.constSize(10),
-                                  color: fontGrayColor),
-                            ),
-                            Expanded(
-                              child: Text(
-                                immunizationModel.note?? "",
-                                style: Styles.PoppinsRegular(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: ApplicationSizing.constSize(10),
-                                    color: fontGrayColor),
-                              ),
-                            ),
-                          ],
-                        ),
-
                       ],
                     ),
-                  )),
-
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Notes :",
+                          style: Styles.PoppinsRegular(
+                              fontWeight: FontWeight.w500,
+                              fontSize: ApplicationSizing.constSize(10),
+                              color: fontGrayColor),
+                        ),
+                        Expanded(
+                          child: Text(
+                            immunizationModel.note ?? "",
+                            style: Styles.PoppinsRegular(
+                                fontWeight: FontWeight.w500,
+                                fontSize: ApplicationSizing.constSize(10),
+                                color: fontGrayColor),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              )),
             ],
           ),
-
-
         ],
       ),
     );

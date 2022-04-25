@@ -15,7 +15,7 @@ class AlertLoader extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
       child: Container(
-        margin: EdgeInsets.only(bottom: ApplicationSizing.convert(50)),
+        margin: EdgeInsets.only(bottom: ApplicationSizing.convert(300)),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             color: Colors.white,
@@ -63,4 +63,3 @@ class SimpleLoader extends StatelessWidget {
     );
   }
 }
-

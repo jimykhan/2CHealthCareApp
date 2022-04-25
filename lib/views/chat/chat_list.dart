@@ -78,7 +78,8 @@ class ChatList extends HookWidget {
             decoration: const BoxDecoration(
                 shape: BoxShape.circle,
                 gradient: LinearGradient(
-                    colors: [Color(0Xff4EAF48), Color(0xff60E558)])),
+                  colors: [Color(0Xff4EAF48), Color(0xff388333)],
+                )),
           ),
           onPressed: () {
             applicationRouteService.removeAllAndAdd(screenName: "Home");

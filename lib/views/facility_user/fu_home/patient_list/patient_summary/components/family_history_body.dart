@@ -22,10 +22,10 @@ class FamilyHistoryBody extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    FUPatientSummaryVM _fuPatientSummaryVM = useProvider(fUPatientSummaryVMProvider);
+    FUPatientSummaryVM _fuPatientSummaryVM =
+        useProvider(fUPatientSummaryVMProvider);
     useEffect(
-
-          () {
+      () {
         print("init call of allegies");
         Future.microtask(() async {
           await _fuPatientSummaryVM.getFamilyHistoryByPatientId();
@@ -45,22 +45,30 @@ class FamilyHistoryBody extends HookWidget {
           HeadLineTextStyle(
             text: "Family History",
           ),
+          SizedBox(
+            height: 15,
+          ),
           Stack(
             children: [
               _fuPatientSummaryVM.isLoading
                   ? AlertLoader()
-                  : _fuPatientSummaryVM.familyHistoryList.length == 0 ? NoData()
-                  : ListView.separated(
-                  shrinkWrap: true,
-                  physics: ScrollPhysics(),
-
-                  itemBuilder: (context,index){
-                    return familyHistoryTile(familyHistoryModel: _fuPatientSummaryVM.familyHistoryList[index]);
-                  },
-                  separatorBuilder: (context,index){
-                    return SizedBox(height: 10,);
-                  },
-                  itemCount: _fuPatientSummaryVM.familyHistoryList.length)
+                  : _fuPatientSummaryVM.familyHistoryList.length == 0
+                      ? NoData()
+                      : ListView.separated(
+                          shrinkWrap: true,
+                          physics: ScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            return familyHistoryTile(
+                                familyHistoryModel: _fuPatientSummaryVM
+                                    .familyHistoryList[index]);
+                          },
+                          separatorBuilder: (context, index) {
+                            return SizedBox(
+                              height: 10,
+                            );
+                          },
+                          itemCount:
+                              _fuPatientSummaryVM.familyHistoryList.length)
             ],
           ),
         ],
@@ -84,7 +92,7 @@ class FamilyHistoryBody extends HookWidget {
                         Row(
                           children: [
                             Text(
-                              familyHistoryModel.relation?? "",
+                              familyHistoryModel.relation ?? "",
                               style: Styles.PoppinsRegular(
                                   fontWeight: FontWeight.w500,
                                   fontSize: ApplicationSizing.constSize(18),
@@ -96,7 +104,6 @@ class FamilyHistoryBody extends HookWidget {
                             //         "assets/icons/medicine_info_icon.svg"))
                           ],
                         ),
-
                       ],
                     ),
                   )),
@@ -114,7 +121,7 @@ class FamilyHistoryBody extends HookWidget {
                       ),
                     ),
                     Text(
-                      familyHistoryModel.updatedOn??"",
+                      familyHistoryModel.updatedOn ?? "",
                       style: Styles.PoppinsRegular(
                         fontSize: ApplicationSizing.constSize(10),
                         fontWeight: FontWeight.w500,
@@ -126,69 +133,66 @@ class FamilyHistoryBody extends HookWidget {
               ),
             ],
           ),
-          SizedBox(height:2,),
+          SizedBox(
+            height: 2,
+          ),
           Row(
             children: [
               Expanded(
                   child: Container(
-                    // color: Colors.green,
-                    child: Column(
+                // color: Colors.green,
+                child: Column(
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Notes :",
-                              style: Styles.PoppinsRegular(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: ApplicationSizing.constSize(10),
-                                  color: fontGrayColor),
-                            ),
-                            Expanded(
-                              child: Text(
-                                familyHistoryModel.note?? "",
-                                style: Styles.PoppinsRegular(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: ApplicationSizing.constSize(10),
-                                    color: fontGrayColor),
-                              ),
-                            ),
-                          ],
+                        Text(
+                          "Notes :",
+                          style: Styles.PoppinsRegular(
+                              fontWeight: FontWeight.w500,
+                              fontSize: ApplicationSizing.constSize(10),
+                              color: fontGrayColor),
                         ),
-
-                        Container(
-                          // color: Colors.pink,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Text(
-                                "Condition :",
-                                style: Styles.PoppinsRegular(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: ApplicationSizing.constSize(12),
-                                    color: appColorSecondary),
-                              ),
-                              Expanded(
-                                child: Text(
-                                  familyHistoryModel.condition?? "",
-                                  style: Styles.PoppinsRegular(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: ApplicationSizing.constSize(12),
-                                      color: appColor),
-                                ),
-                              ),
-                            ],
+                        Expanded(
+                          child: Text(
+                            familyHistoryModel.note ?? "",
+                            style: Styles.PoppinsRegular(
+                                fontWeight: FontWeight.w500,
+                                fontSize: ApplicationSizing.constSize(10),
+                                color: fontGrayColor),
                           ),
                         ),
-
                       ],
                     ),
-                  )),
-
+                    Container(
+                      // color: Colors.pink,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(
+                            "Condition :",
+                            style: Styles.PoppinsRegular(
+                                fontWeight: FontWeight.w500,
+                                fontSize: ApplicationSizing.constSize(12),
+                                color: appColorSecondary),
+                          ),
+                          Expanded(
+                            child: Text(
+                              familyHistoryModel.condition ?? "",
+                              style: Styles.PoppinsRegular(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: ApplicationSizing.constSize(12),
+                                  color: appColor),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              )),
             ],
           ),
-
-
         ],
       ),
     );

@@ -36,7 +36,7 @@ class AllPatient extends HookWidget {
     // useProvider(applicationRouteServiceProvider);
     // FirebaseService firebaseService = useProvider(firebaseServiceProvider);
     useEffect(
-          () {
+      () {
         homeVM.resetHome();
         allPatientVM.isloading = true;
         allPatientVM.patientListPageNumber = 1;
@@ -53,7 +53,6 @@ class AllPatient extends HookWidget {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(ApplicationSizing.convert(80)),
         child: CustomAppBar(
-
           leadingIcon: CustomBackButton(),
           color1: Colors.white,
           color2: Colors.white,
@@ -61,11 +60,11 @@ class AllPatient extends HookWidget {
           parentContext: context,
         ),
       ),
-      body: _body(allPatientVM: allPatientVM,homeVM: homeVM),
+      body: _body(allPatientVM: allPatientVM, homeVM: homeVM),
     );
   }
 
-  _body({required AllPatientVM allPatientVM,required HomeVM homeVM}){
+  _body({required AllPatientVM allPatientVM, required HomeVM homeVM}) {
     return Stack(
       children: [
         Column(
@@ -79,9 +78,7 @@ class AllPatient extends HookWidget {
                   Expanded(
                     child: CustomTextField(
                       onchange: allPatientVM.onSearch,
-                      onSubmit: (val){
-
-                      },
+                      onSubmit: (val) {},
                       hints: "Search Patients",
                     ),
                   ),
@@ -95,23 +92,32 @@ class AllPatient extends HookWidget {
               ),
             ),
             Expanded(
-              child: PageWithFloatingButton(container:
-              Column(
+              child: PageWithFloatingButton(
+                  container: Column(
                 children: [
                   Expanded(
-                    child: (allPatientVM.patientsForDashboard?.patientsList!.length == 0 || allPatientVM.patientsForDashboard == null)
+                    child: (allPatientVM.patientsForDashboard?.patientsList!
+                                    .length ==
+                                0 ||
+                            allPatientVM.patientsForDashboard == null)
                         ? NoData()
-                        : PatientList(scrollController: allPatientVM.scrollController, lastIndexLoading: allPatientVM.newPageLoading, patientsList: allPatientVM.patientsForDashboard?.patientsList??[],),
+                        : PatientList(
+                            scrollController: allPatientVM.scrollController,
+                            lastIndexLoading: allPatientVM.newPageLoading,
+                            patientsList: allPatientVM
+                                    .patientsForDashboard?.patientsList ??
+                                [],
+                          ),
                   ),
                 ],
-              )
-              ),
+              )),
             ),
           ],
         ),
-        (allPatientVM.isloading || homeVM.homeScreenLoading) ? AlertLoader() : Container(),
+        (allPatientVM.isloading || homeVM.homeScreenLoading)
+            ? AlertLoader()
+            : Container(),
       ],
     );
   }
-
 }

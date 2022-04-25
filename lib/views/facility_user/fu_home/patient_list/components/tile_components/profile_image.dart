@@ -9,14 +9,13 @@ class ProfileImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: ApplicationSizing.constSize(55),
-      height: ApplicationSizing.constSize(55),
-      padding: EdgeInsets.all(10),
+      width: ApplicationSizing.constSize(60),
+      height: ApplicationSizing.constSize(60),
+      padding: EdgeInsets.all(15),
       decoration: BoxDecoration(
-        color: appColor.withOpacity(0.3),
-        borderRadius: BorderRadius.circular(10)
-      ),
-      child: SvgPicture.asset("assets/icons/home/user-icon.svg",
+          color: appColor, borderRadius: BorderRadius.circular(15)),
+      child: SvgPicture.asset(
+        "assets/icons/home/user-icon.svg",
       ),
     );
   }

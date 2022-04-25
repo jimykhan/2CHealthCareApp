@@ -27,7 +27,7 @@ class ChronicCare extends HookWidget {
   /// 0 for ccm
   /// 1 for rpm
   int serviceType;
-  ChronicCare({required this.serviceType,Key? key}) : super(key: key);
+  ChronicCare({required this.serviceType, Key? key}) : super(key: key);
   GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
@@ -37,7 +37,7 @@ class ChronicCare extends HookWidget {
     // useProvider(applicationRouteServiceProvider);
     // FirebaseService firebaseService = useProvider(firebaseServiceProvider);
     useEffect(
-          () {
+      () {
         homeVM.resetHome();
         chronicCareVM.isloading = true;
         chronicCareVM.patientListPageNumber = 1;
@@ -54,7 +54,6 @@ class ChronicCare extends HookWidget {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(ApplicationSizing.convert(80)),
         child: CustomAppBar(
-
           leadingIcon: CustomBackButton(),
           color1: Colors.white,
           color2: Colors.white,
@@ -62,17 +61,17 @@ class ChronicCare extends HookWidget {
           parentContext: context,
         ),
       ),
-      body: _body(chronicCareVM: chronicCareVM,homeVM: homeVM),
+      body: _body(chronicCareVM: chronicCareVM, homeVM: homeVM),
     );
   }
 
-  _body({required ChronicCareVM chronicCareVM,required HomeVM homeVM}){
+  _body({required ChronicCareVM chronicCareVM, required HomeVM homeVM}) {
     return Stack(
       children: [
         Column(
           children: [
             Container(
-              margin: EdgeInsets.symmetric(horizontal: 25),
+              margin: EdgeInsets.symmetric(horizontal: 20),
               padding: EdgeInsets.only(bottom: 24),
               // height: 80,
               child: Row(
@@ -80,43 +79,46 @@ class ChronicCare extends HookWidget {
                   Expanded(
                     child: CustomTextField(
                       onchange: chronicCareVM.onSearch,
-                      onSubmit: (val){
-
-                      },
+                      onSubmit: (val) {},
                       hints: "Search Patients",
                     ),
                   ),
-                  SizedBox(width: 5,),
+                  SizedBox(
+                    width: 10,
+                  ),
                   SqureIconButton(onClick: () {
-                    openBottomModal(
-                        child: PatientsFilter()
-                    );
+                    openBottomModal(child: PatientsFilter());
                   }),
                 ],
               ),
             ),
             Expanded(
-              child: PageWithFloatingButton(container:
-              Column(
+              child: PageWithFloatingButton(
+                  container: Column(
                 children: [
                   Expanded(
-                    child: (chronicCareVM.chronicCarePatients?.patientsList!.length == 0 || chronicCareVM.chronicCarePatients == null)
+                    child: (chronicCareVM.chronicCarePatients?.patientsList!
+                                    .length ==
+                                0 ||
+                            chronicCareVM.chronicCarePatients == null)
                         ? NoData()
-                        : PatientList(scrollController: chronicCareVM.scrollController, lastIndexLoading: chronicCareVM.newPageLoading, patientsList: chronicCareVM.chronicCarePatients?.patientsList??[],),
+                        : PatientList(
+                            scrollController: chronicCareVM.scrollController,
+                            lastIndexLoading: chronicCareVM.newPageLoading,
+                            patientsList: chronicCareVM
+                                    .chronicCarePatients?.patientsList ??
+                                [],
+                          ),
                   ),
                 ],
-              )
-              ),
+              )),
             ),
           ],
         ),
-        (chronicCareVM.isloading || homeVM.homeScreenLoading) ? AlertLoader() : Container(),
+        (chronicCareVM.isloading || homeVM.homeScreenLoading)
+            ? AlertLoader()
+            : Container(),
       ],
     );
   }
-
 }
-
-
-
-

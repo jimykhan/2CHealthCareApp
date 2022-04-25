@@ -14,10 +14,15 @@ import 'package:twochealthcare/views/care_plan/care_plan.dart';
 import 'package:twochealthcare/views/health_guides/health_guides.dart';
 import 'package:twochealthcare/views/home/profile.dart';
 import 'package:twochealthcare/views/readings/modalities_reading.dart';
+
 class PMenu extends StatelessWidget {
   OnLaunchActivityAndRoutesService onLaunchActivityAndRoutesService;
   LoginVM loginVM;
-  PMenu({required this.loginVM,required this.onLaunchActivityAndRoutesService,Key? key}) : super(key: key);
+  PMenu(
+      {required this.loginVM,
+      required this.onLaunchActivityAndRoutesService,
+      Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,14 +32,15 @@ class PMenu extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Container(
-              padding: EdgeInsets.only(
-                  top: ApplicationSizing.convert(20)),
+              padding: EdgeInsets.only(top: ApplicationSizing.convert(20)),
               child: Column(
                 children: [
                   InkWell(
                     onTap: () {
-                      Navigator.push(context,
-                          PageTransition(child: Profile(), type: PageTransitionType.fade));
+                      Navigator.push(
+                          context,
+                          PageTransition(
+                              child: Profile(), type: PageTransitionType.fade));
                     },
                     child: Container(
                       padding: MenuPadding(),
@@ -57,8 +63,11 @@ class PMenu extends StatelessWidget {
                   ),
                   InkWell(
                     onTap: () {
-                      Navigator.push(context,
-                          PageTransition(child: ModalitiesReading(), type: PageTransitionType.fade));
+                      Navigator.push(
+                          context,
+                          PageTransition(
+                              child: ModalitiesReading(),
+                              type: PageTransitionType.fade));
                     },
                     child: Container(
                       padding: MenuPadding(),
@@ -81,8 +90,11 @@ class PMenu extends StatelessWidget {
                   ),
                   InkWell(
                     onTap: () {
-                      Navigator.push(context,
-                          PageTransition(child: HealthGuides(), type: PageTransitionType.fade));
+                      Navigator.push(
+                          context,
+                          PageTransition(
+                              child: HealthGuides(),
+                              type: PageTransitionType.fade));
                     },
                     child: Container(
                       padding: MenuPadding(),
@@ -127,8 +139,11 @@ class PMenu extends StatelessWidget {
                   ),
                   InkWell(
                     onTap: () {
-                      Navigator.push(context,
-                          PageTransition(child: CarePlan(), type: PageTransitionType.fade));
+                      Navigator.push(
+                          context,
+                          PageTransition(
+                              child: CarePlan(),
+                              type: PageTransitionType.fade));
                     },
                     child: Container(
                       padding: MenuPadding(),
@@ -144,6 +159,9 @@ class PMenu extends StatelessWidget {
                           ),
                           MenuTextStyle(
                             text: "Care Plan",
+                          ),
+                          SizedBox(
+                            height: 15,
                           ),
                         ],
                       ),

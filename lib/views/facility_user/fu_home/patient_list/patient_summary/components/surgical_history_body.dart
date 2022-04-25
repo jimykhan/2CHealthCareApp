@@ -23,10 +23,10 @@ class SurgicalHistoryBody extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    FUPatientSummaryVM _fuPatientSummaryVM = useProvider(fUPatientSummaryVMProvider);
+    FUPatientSummaryVM _fuPatientSummaryVM =
+        useProvider(fUPatientSummaryVMProvider);
     useEffect(
-
-          () {
+      () {
         print("init call of surgical");
         Future.microtask(() async {
           await _fuPatientSummaryVM.getSurgicalHistoryByPatientId();
@@ -46,22 +46,30 @@ class SurgicalHistoryBody extends HookWidget {
           HeadLineTextStyle(
             text: "Surgical History",
           ),
+          SizedBox(
+            height: 15,
+          ),
           Stack(
             children: [
               _fuPatientSummaryVM.isLoading
                   ? AlertLoader()
-                  : _fuPatientSummaryVM.surgicalHistoryList.length == 0 ? NoData()
-                  : ListView.separated(
-                  shrinkWrap: true,
-                  physics: ScrollPhysics(),
-
-                  itemBuilder: (context,index){
-                    return surgicalHistoryTile(surgicalHistoryModel: _fuPatientSummaryVM.surgicalHistoryList[index]);
-                  },
-                  separatorBuilder: (context,index){
-                    return SizedBox(height: 10,);
-                  },
-                  itemCount: _fuPatientSummaryVM.surgicalHistoryList.length)
+                  : _fuPatientSummaryVM.surgicalHistoryList.length == 0
+                      ? NoData()
+                      : ListView.separated(
+                          shrinkWrap: true,
+                          physics: ScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            return surgicalHistoryTile(
+                                surgicalHistoryModel: _fuPatientSummaryVM
+                                    .surgicalHistoryList[index]);
+                          },
+                          separatorBuilder: (context, index) {
+                            return SizedBox(
+                              height: 10,
+                            );
+                          },
+                          itemCount:
+                              _fuPatientSummaryVM.surgicalHistoryList.length)
             ],
           ),
         ],
@@ -85,7 +93,7 @@ class SurgicalHistoryBody extends HookWidget {
                         Row(
                           children: [
                             Text(
-                              surgicalHistoryModel.surgeonName?? "",
+                              surgicalHistoryModel.surgeonName ?? "",
                               style: Styles.PoppinsRegular(
                                   fontWeight: FontWeight.w500,
                                   fontSize: ApplicationSizing.constSize(18),
@@ -97,7 +105,6 @@ class SurgicalHistoryBody extends HookWidget {
                             //         "assets/icons/medicine_info_icon.svg"))
                           ],
                         ),
-
                       ],
                     ),
                   )),
@@ -115,7 +122,7 @@ class SurgicalHistoryBody extends HookWidget {
                       ),
                     ),
                     Text(
-                      surgicalHistoryModel.dateOperated??"",
+                      surgicalHistoryModel.dateOperated ?? "",
                       style: Styles.PoppinsRegular(
                         fontSize: ApplicationSizing.constSize(10),
                         fontWeight: FontWeight.w500,
@@ -127,93 +134,90 @@ class SurgicalHistoryBody extends HookWidget {
               ),
             ],
           ),
-          SizedBox(height:2,),
+          SizedBox(
+            height: 2,
+          ),
           Row(
             children: [
               Expanded(
                   child: Container(
-                    // color: Colors.green,
-                    child: Column(
+                // color: Colors.green,
+                child: Column(
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Notes :",
-                              style: Styles.PoppinsRegular(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: ApplicationSizing.constSize(10),
-                                  color: fontGrayColor),
-                            ),
-                            Expanded(
-                              child: Text(
-                                surgicalHistoryModel.notes?? "",
-                                style: Styles.PoppinsRegular(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: ApplicationSizing.constSize(10),
-                                    color: fontGrayColor),
-                              ),
-                            ),
-                          ],
+                        Text(
+                          "Notes :",
+                          style: Styles.PoppinsRegular(
+                              fontWeight: FontWeight.w500,
+                              fontSize: ApplicationSizing.constSize(10),
+                              color: fontGrayColor),
                         ),
-
-                        Container(
-                          // color: Colors.pink,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Text(
-                                "System :",
-                                style: Styles.PoppinsRegular(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: ApplicationSizing.constSize(12),
-                                    color: appColorSecondary),
-                              ),
-                              Expanded(
-                                child: Text(
-                                  surgicalHistoryModel.surgicalSystemName?? "",
-                                  style: Styles.PoppinsRegular(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: ApplicationSizing.constSize(12),
-                                      color: appColor),
-                                ),
-                              ),
-                            ],
+                        Expanded(
+                          child: Text(
+                            surgicalHistoryModel.notes ?? "",
+                            style: Styles.PoppinsRegular(
+                                fontWeight: FontWeight.w500,
+                                fontSize: ApplicationSizing.constSize(10),
+                                color: fontGrayColor),
                           ),
                         ),
-                        Container(
-                          // color: Colors.pink,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Text(
-                                "Procedure :",
-                                style: Styles.PoppinsRegular(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: ApplicationSizing.constSize(12),
-                                    color: appColorSecondary),
-                              ),
-                              Expanded(
-                                child: Text(
-                                  surgicalHistoryModel.procedure?? "",
-                                  style: Styles.PoppinsRegular(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: ApplicationSizing.constSize(12),
-                                      color: appColor),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-
                       ],
                     ),
-                  )),
-
+                    Container(
+                      // color: Colors.pink,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(
+                            "System :",
+                            style: Styles.PoppinsRegular(
+                                fontWeight: FontWeight.w500,
+                                fontSize: ApplicationSizing.constSize(12),
+                                color: appColorSecondary),
+                          ),
+                          Expanded(
+                            child: Text(
+                              surgicalHistoryModel.surgicalSystemName ?? "",
+                              style: Styles.PoppinsRegular(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: ApplicationSizing.constSize(12),
+                                  color: appColor),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      // color: Colors.pink,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(
+                            "Procedure :",
+                            style: Styles.PoppinsRegular(
+                                fontWeight: FontWeight.w500,
+                                fontSize: ApplicationSizing.constSize(12),
+                                color: appColorSecondary),
+                          ),
+                          Expanded(
+                            child: Text(
+                              surgicalHistoryModel.procedure ?? "",
+                              style: Styles.PoppinsRegular(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: ApplicationSizing.constSize(12),
+                                  color: appColor),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              )),
             ],
           ),
-
-
         ],
       ),
     );

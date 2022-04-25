@@ -40,10 +40,10 @@ class FUHome extends HookWidget {
     // useProvider(applicationRouteServiceProvider);
     // FirebaseService firebaseService = useProvider(firebaseServiceProvider);
     useEffect(
-          () {
-            homeVM.resetHome();
-            fuHomeViewModel.isloading = true;
-            fuHomeViewModel.patientServicesummary();
+      () {
+        homeVM.resetHome();
+        fuHomeViewModel.isloading = true;
+        fuHomeViewModel.patientServicesummary();
         Future.microtask(() async {});
         return () {};
       },
@@ -55,8 +55,7 @@ class FUHome extends HookWidget {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(ApplicationSizing.convert(80)),
         child: CustomAppBar(
-          clickOnNotification: (){
-          },
+          clickOnNotification: () {},
           notifcationIcon: true,
           leadingIcon: InkWell(
             onTap: () {
@@ -71,7 +70,8 @@ class FUHome extends HookWidget {
           paddingLeft: 15,
         ),
       ),
-      body: _body(context,fuHomeViewModel: fuHomeViewModel,homeVM: homeVM,loginVM: loginVM),
+      body: _body(context,
+          fuHomeViewModel: fuHomeViewModel, homeVM: homeVM, loginVM: loginVM),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         enableFeedback: false,
@@ -86,10 +86,12 @@ class FUHome extends HookWidget {
           decoration: const BoxDecoration(
               shape: BoxShape.circle,
               gradient: LinearGradient(
-                  colors: [Color(0Xff4EAF48), Color(0xff60E558)])),
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+                colors: [Color(0Xff4EAF48), Color(0xff388333)],
+              )),
         ),
-        onPressed: () {
-        },
+        onPressed: () {},
       ),
       bottomNavigationBar: BottomBar(
         selectedIndex: 0,
@@ -101,58 +103,86 @@ class FUHome extends HookWidget {
     );
   }
 
-  _body(context,{required FUHomeViewModel fuHomeViewModel,required HomeVM homeVM,required LoginVM loginVM}){
+  _body(context,
+      {required FUHomeViewModel fuHomeViewModel,
+      required HomeVM homeVM,
+      required LoginVM loginVM}) {
     return Stack(
       children: [
         Container(
-          child: Column(
-            children: [
-              ChangeFacilityTile(
-                onClick: () {
-                  openBottomModal(
-                      child: AllFacility(facilities: fuHomeViewModel.facilities,
-                        selectedFacilityId: fuHomeViewModel.currentFacilityId,
-                        changeFacility: fuHomeViewModel.switchFacility,
-                      )
-                  );
-                },
-                loginVM: loginVM,
-              ),
-              SizedBox(height: 10,),
-              fuHomeViewModel.dashboardPatientSummary == null ? Column(
-                children:  [
-                  NoData(),
-                ],
-              ):
-              Column(
-                children: [
-                  ServiceTile(
-                      onclick: (){
-                        Navigator.push(context, PageTransition(child: ChronicCare(serviceType: 0,), type: PageTransitionType.bottomToTop));
-                      },
-                    serviceName: "CCM",
-                    total: fuHomeViewModel.dashboardPatientSummary?.ccmActivePatientsCount??0,
-                    completed: fuHomeViewModel.dashboardPatientSummary?.ccmTimeCompletedPatientsCount??0,
-                    ),
-                  SizedBox(height: 10,),
-                  ServiceTile(
-                      onclick: (){
-                        Navigator.push(context, PageTransition(child: ChronicCare(serviceType: 1,), type: PageTransitionType.bottomToTop));
-                      },
-                    serviceName: "RPM",
-                    total: fuHomeViewModel.dashboardPatientSummary?.rpmActivePatientsCount??0,
-                    completed: fuHomeViewModel.dashboardPatientSummary?.rpmTimeCompletedPatientsCount??0,
-                    Tcompleted: fuHomeViewModel.dashboardPatientSummary?.rpmTransmissionCompletedPatientsCount??0,
-                    isRpm : true,
-                    ),
-                ],
-              ),
-            ],
-          )
-        ),
+            child: Column(
+          children: [
+            ChangeFacilityTile(
+              onClick: () {
+                openBottomModal(
+                    child: AllFacility(
+                  facilities: fuHomeViewModel.facilities,
+                  selectedFacilityId: fuHomeViewModel.currentFacilityId,
+                  changeFacility: fuHomeViewModel.switchFacility,
+                ));
+              },
+              loginVM: loginVM,
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            fuHomeViewModel.dashboardPatientSummary == null
+                ? Column(
+                    children: [
+                      NoData(),
+                    ],
+                  )
+                : Column(
+                    children: [
+                      ServiceTile(
+                        onclick: () {
+                          Navigator.push(
+                              context,
+                              PageTransition(
+                                  child: ChronicCare(
+                                    serviceType: 0,
+                                  ),
+                                  type: PageTransitionType.bottomToTop));
+                        },
+                        serviceName: "CCM",
+                        total: fuHomeViewModel.dashboardPatientSummary
+                                ?.ccmActivePatientsCount ??
+                            0,
+                        completed: fuHomeViewModel.dashboardPatientSummary
+                                ?.ccmTimeCompletedPatientsCount ??
+                            0,
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      ServiceTile(
+                        onclick: () {
+                          Navigator.push(
+                              context,
+                              PageTransition(
+                                  child: ChronicCare(
+                                    serviceType: 1,
+                                  ),
+                                  type: PageTransitionType.bottomToTop));
+                        },
+                        serviceName: "RPM",
+                        total: fuHomeViewModel.dashboardPatientSummary
+                                ?.rpmActivePatientsCount ??
+                            0,
+                        completed: fuHomeViewModel.dashboardPatientSummary
+                                ?.rpmTimeCompletedPatientsCount ??
+                            0,
+                        Tcompleted: fuHomeViewModel.dashboardPatientSummary
+                                ?.rpmTransmissionCompletedPatientsCount ??
+                            0,
+                        isRpm: true,
+                      ),
+                    ],
+                  ),
+          ],
+        )),
         (fuHomeViewModel.isloading) ? AlertLoader() : Container(),
       ],
     );
   }
-
 }

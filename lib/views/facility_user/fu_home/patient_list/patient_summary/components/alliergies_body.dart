@@ -18,9 +18,9 @@ class AllergiesBody extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    FUPatientSummaryVM _fuPatientSummaryVM = useProvider(fUPatientSummaryVMProvider);
+    FUPatientSummaryVM _fuPatientSummaryVM =
+        useProvider(fUPatientSummaryVMProvider);
     useEffect(
-
       () {
         print("init call of allegies");
         Future.microtask(() async {
@@ -41,22 +41,29 @@ class AllergiesBody extends HookWidget {
           HeadLineTextStyle(
             text: "Allergies",
           ),
+          SizedBox(
+            height: 15,
+          ),
           Stack(
             children: [
               _fuPatientSummaryVM.isLoading
                   ? AlertLoader()
-                  : _fuPatientSummaryVM.medicationList.length == 0 ? NoData()
-                  : ListView.separated(
-                  shrinkWrap: true,
-                  physics: ScrollPhysics(),
-
-                  itemBuilder: (context,index){
-                    return allergeTile(allergyModel: _fuPatientSummaryVM.allergyList[index]);
-                  },
-                  separatorBuilder: (context,index){
-                    return SizedBox(height: 10,);
-                  },
-                  itemCount: _fuPatientSummaryVM.allergyList.length)
+                  : _fuPatientSummaryVM.medicationList.length == 0
+                      ? NoData()
+                      : ListView.separated(
+                          shrinkWrap: true,
+                          physics: ScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            return allergeTile(
+                                allergyModel:
+                                    _fuPatientSummaryVM.allergyList[index]);
+                          },
+                          separatorBuilder: (context, index) {
+                            return SizedBox(
+                              height: 10,
+                            );
+                          },
+                          itemCount: _fuPatientSummaryVM.allergyList.length)
             ],
           ),
         ],
@@ -78,7 +85,7 @@ class AllergiesBody extends HookWidget {
                     Row(
                       children: [
                         Text(
-                          allergyModel.agent?? "",
+                          allergyModel.agent ?? "",
                           style: Styles.PoppinsRegular(
                               fontWeight: FontWeight.w500,
                               fontSize: ApplicationSizing.constSize(18),
@@ -94,9 +101,10 @@ class AllergiesBody extends HookWidget {
                       alignment: Alignment.centerLeft,
                       child: Wrap(
                         children: [
-                          createRandomBox(allergyModel.reaction??"",Color(0xffFF3E39)),
-                          createRandomBox("category",Color(0xffEF831F)),
-                          createRandomBox("type",Color(0xff18A9C9))
+                          createRandomBox(
+                              allergyModel.reaction ?? "", Color(0xffFF3E39)),
+                          createRandomBox("category", Color(0xffEF831F)),
+                          createRandomBox("type", Color(0xff18A9C9))
                         ],
                         // children: ["Allergy", "Allergy", "Allergy"]
                         //     .map((e) => createRandomBox(e))
@@ -113,7 +121,7 @@ class AllergiesBody extends HookWidget {
                   child: Column(
                 children: [
                   Text(
-                    allergyModel.createdOn??"",
+                    allergyModel.createdOn ?? "",
                     style: Styles.PoppinsRegular(
                         fontWeight: FontWeight.w500,
                         fontSize: ApplicationSizing.constSize(10),
@@ -123,15 +131,17 @@ class AllergiesBody extends HookWidget {
                     height: 5,
                   ),
                   Container(
-                    padding: EdgeInsets.symmetric(vertical: 3, horizontal: 6),
+                    padding: EdgeInsets.symmetric(vertical: 3, horizontal: 10),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
                         color: appColorSecondary),
                     child: Text(
-                      allergyModel.isActiveState?? false ? "InActive" :"Active",
+                      allergyModel.isActiveState ?? false
+                          ? "InActive"
+                          : "Active",
                       style: Styles.PoppinsRegular(
                           fontWeight: FontWeight.w500,
-                          fontSize: ApplicationSizing.constSize(8),
+                          fontSize: ApplicationSizing.constSize(10),
                           color: whiteColor),
                     ),
                   ),
@@ -142,12 +152,12 @@ class AllergiesBody extends HookWidget {
     );
   }
 
-  Widget createRandomBox(String text,Color color) {
+  Widget createRandomBox(String text, Color color) {
     // Color ramdomColor = randomColorPick();
     Color ramdomColor = color;
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 2, vertical: 2),
-      padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
       decoration: BoxDecoration(
         color: ramdomColor.withOpacity(0.3),
         borderRadius: BorderRadius.circular(6),

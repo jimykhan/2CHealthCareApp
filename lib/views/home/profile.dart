@@ -8,6 +8,7 @@ import 'package:twochealthcare/common_widgets/app_bar_components/appbar_text_sty
 import 'package:twochealthcare/common_widgets/circular_image.dart';
 import 'package:twochealthcare/common_widgets/custom_appbar.dart';
 import 'package:twochealthcare/common_widgets/floating_button.dart';
+import 'package:twochealthcare/constants/validator.dart';
 import 'package:twochealthcare/models/modalities_models/modalities_model.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/application_route_service.dart';
@@ -70,7 +71,7 @@ class Profile extends HookWidget {
   _body(context,{LoginVM? loginVM,ProfileVm? profileVm,
     ForgetPasswordVM? forgetPasswordVM,
   }){
-    MagicMask mask = MagicMask.buildMask('\\+1 (999) 999 99 99');
+
     return Container(
       child: SingleChildScrollView(
         child: Stack(

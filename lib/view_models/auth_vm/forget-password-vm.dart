@@ -151,7 +151,7 @@ class ForgetPasswordVM extends ChangeNotifier{
       // currentUser = res;
       SetVerifyOtpLoadingState(false);
       applicationRouteService?.addAndRemoveScreen(screenName: "Home");
-      await firebaseService?.subNotification();
+      firebaseService?.subNotification();
       onLaunchActivityService?.decideUserFlow();
       onLaunchActivityService?.syncLastApplicationUseDateAndTime();
 

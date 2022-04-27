@@ -67,7 +67,6 @@ class PatientsFilter extends HookWidget {
                             buttonSelected: chronicCareVM.careProviderId == 0
                                 ? false
                                 : true,
-                            onchange: () {},
                             noText: true,
                           ),
                         ],
@@ -102,7 +101,6 @@ class PatientsFilter extends HookWidget {
                             buttonSelected: chronicCareVM.careProviderId == 0
                                 ? true
                                 : false,
-                            onchange: () {},
                             noText: true,
                           ),
                         ],

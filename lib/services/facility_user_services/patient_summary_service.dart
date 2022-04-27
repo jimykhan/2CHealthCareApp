@@ -41,8 +41,14 @@ class PatientSummaryService{
           diagnoseList.add(DiagnoseModel.fromJson(element));
         });
         diagnoseList.forEach((element) {
-          element.diagnosisDate = Jiffy(element.diagnosisDate).format(Strings.dateFormatFullYear);
-          element.resolvedDate = Jiffy(element.resolvedDate).format(Strings.dateFormatFullYear);
+          if(element.diagnosisDate != null){
+            element.diagnosisDate = Jiffy(element.diagnosisDate).format(Strings.dateFormatFullYear);
+          }
+          if(element.resolvedDate !=null){
+            element.resolvedDate = Jiffy(element.resolvedDate).format(Strings.dateFormatFullYear);
+          }
+
+
         });
         return diagnoseList;
       }else{
@@ -62,8 +68,14 @@ class PatientSummaryService{
           medicationList.add(MedicationModel.fromJson(element));
         });
         medicationList.forEach((element) {
-          element.startDate = Jiffy(element.startDate).format(Strings.dateFormatFullYear);
-          element.stopDate = Jiffy(element.stopDate).format(Strings.dateFormatFullYear);
+          if(element.startDate != null) {
+            element.startDate =
+                Jiffy(element.startDate).format(Strings.dateFormatFullYear);
+          }
+          if(element.stopDate != null){
+            element.stopDate = Jiffy(element.stopDate).format(Strings.dateFormatFullYear);
+          }
+
         });
         return medicationList;
       }else{
@@ -73,6 +85,7 @@ class PatientSummaryService{
       return null;
     }
   }
+
   Future<dynamic>getAllergyByPatientId({required int Id})async{
     List<AllergyModel> allergyList = [];
     try{
@@ -82,8 +95,14 @@ class PatientSummaryService{
           allergyList.add(AllergyModel.fromJson(element));
         });
         allergyList.forEach((element) {
-          element.createdOn = Jiffy(element.createdOn).format(Strings.dateFormatFullYear);
-          element.updatedOn = Jiffy(element.updatedOn).format(Strings.dateFormatFullYear);
+          if(element.createdOn !=null) {
+            element.createdOn =
+                Jiffy(element.createdOn).format(Strings.dateFormatFullYear);
+          }
+          if(element.updatedOn !=null) {
+            element.updatedOn =
+                Jiffy(element.updatedOn).format(Strings.dateFormatFullYear);
+          }
         });
         return allergyList;
       }else{
@@ -103,7 +122,10 @@ class PatientSummaryService{
           immunizationList.add(ImmunizationModel.fromJson(element));
         });
         immunizationList.forEach((element) {
-          element.date = Jiffy(element.date).format(Strings.dateFormatFullYear);
+          if(element.date !=null) {
+            element.date =
+                Jiffy(element.date).format(Strings.dateFormatFullYear);
+          }
         });
         return immunizationList;
       }else{
@@ -123,7 +145,10 @@ class PatientSummaryService{
           familyHistoryList.add(FamilyHistoryModel.fromJson(element));
         });
         familyHistoryList.forEach((element) {
-          element.updatedOn = Jiffy(element.updatedOn).format(Strings.dateFormatFullYear);
+          if(element.updatedOn !=null) {
+            element.updatedOn =
+                Jiffy(element.updatedOn).format(Strings.dateFormatFullYear);
+          }
         });
         return familyHistoryList;
       }else{
@@ -143,8 +168,10 @@ class PatientSummaryService{
           surgicalHistoryList.add(SurgicalHistoryModel.fromJson(element));
         });
         surgicalHistoryList.forEach((element) {
-
-          element.createdOn = Jiffy(element.createdOn).format(Strings.dateFormatFullYear);
+          if(element.createdOn !=null) {
+            element.createdOn =
+                Jiffy(element.createdOn).format(Strings.dateFormatFullYear);
+          }
         });
         return surgicalHistoryList;
       }else{

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:easy_mask/easy_mask.dart';
 import 'package:twochealthcare/common_widgets/alert_loader.dart';
 import 'package:twochealthcare/common_widgets/no_data_inlist.dart';
+import 'package:twochealthcare/constants/validator.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
@@ -57,15 +59,15 @@ class SummaryBody extends HookWidget {
                           child: Column(
                             children: [
                               keyValue(
-                                  key: "Phone No.",
-                                  value: _fuPatientSummaryVM
-                                          .patientInfo?.homePhone ??
-                                      ""),
+                                  key:  "Phone No.",
+                                  value: mask.getMaskedString(_fuPatientSummaryVM
+                                      .patientInfo?.homePhone ??
+                                      "")),
                               keyValue(
                                   key: "Secondary No.",
-                                  value: _fuPatientSummaryVM.patientInfo
-                                          ?.emergencyContactSecondaryPhoneNo ??
-                                      ""),
+                                  value: mask.getMaskedString(_fuPatientSummaryVM
+                                      .patientInfo?.emergencyContactSecondaryPhoneNo ??
+                                      "")),
                               keyValue(
                                   key: "Date of Birth",
                                   value: _fuPatientSummaryVM

@@ -7,20 +7,16 @@ import 'package:twochealthcare/common_widgets/alert_loader.dart';
 import 'package:twochealthcare/common_widgets/bottom_bar.dart';
 import 'package:twochealthcare/common_widgets/custom_appbar.dart';
 import 'package:twochealthcare/common_widgets/custom_drawer.dart';
-import 'package:twochealthcare/common_widgets/input_field/custom_text_field.dart';
 import 'package:twochealthcare/common_widgets/app_bar_components/drawer_menu_button.dart';
 import 'package:twochealthcare/common_widgets/no_data_inlist.dart';
 import 'package:twochealthcare/providers/providers.dart';
-import 'package:twochealthcare/services/auth_services/auth_services.dart';
-import 'package:twochealthcare/services/shared_pref_services.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
 import 'package:twochealthcare/view_models/facility_user_view_model/home/fu_home_view_model.dart';
 import 'package:twochealthcare/view_models/home_vm.dart';
-import 'package:twochealthcare/views/facility_user/fu_home/home_screen_components/all_facility.dart';
-import 'package:twochealthcare/views/facility_user/fu_home/home_screen_components/change_facility_tile.dart';
-import 'package:twochealthcare/views/facility_user/fu_home/home_screen_components/service_tile.dart';
-import 'package:twochealthcare/views/facility_user/fu_home/patient_list/all_patient.dart';
+import 'package:twochealthcare/views/facility_user/fu_home/components/change_facility_tile.dart';
+import 'package:twochealthcare/views/facility_user/fu_home/components/all_facility.dart';
+import 'package:twochealthcare/views/facility_user/fu_home/components/service_tile.dart';
 import 'package:twochealthcare/views/facility_user/fu_home/patient_list/chronic_care.dart';
 import 'package:twochealthcare/views/open_bottom_modal.dart';
 
@@ -56,7 +52,7 @@ class FUHome extends HookWidget {
         preferredSize: Size.fromHeight(ApplicationSizing.convert(80)),
         child: CustomAppBar(
           clickOnNotification: () {},
-          notifcationIcon: true,
+          notifcationIcon: false,
           leadingIcon: InkWell(
             onTap: () {
               _scaffoldkey.currentState!.openDrawer();

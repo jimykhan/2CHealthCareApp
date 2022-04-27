@@ -2,17 +2,21 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/all.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:twochealthcare/common_widgets/alert_loader.dart';
 import 'package:twochealthcare/common_widgets/app_bar_components/appbar_text_style.dart';
 import 'package:twochealthcare/common_widgets/circular_image.dart';
 import 'package:twochealthcare/common_widgets/custom_appbar.dart';
 import 'package:twochealthcare/common_widgets/floating_button.dart';
 import 'package:twochealthcare/common_widgets/no_data_inlist.dart';
+import 'package:twochealthcare/common_widgets/verification_mark.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
 import 'package:twochealthcare/view_models/facility_user_view_model/home/fu_profile_view_model.dart';
+import 'package:twochealthcare/views/auths/otp_verification.dart';
+import 'package:twochealthcare/views/facility_user/fu_home/components/verified_info.dart';
 
 class FUProfile extends HookWidget {
   FUProfile({Key? key}) : super(key: key);
@@ -131,18 +135,37 @@ class FUProfile extends HookWidget {
                               borderRadius: BorderRadius.circular(15)),
                           child: Column(
                             children: [
-                              keyValue(
-                                  key: "Phone No.",
-                                  value: fuProfileVM.fuProfileModel?.phoneNo ??
-                                      ""),
+                              VerifiedInfo(isVerified: fuProfileVM.fuProfileModel?.isPhoneNumberVerified?? false,
+                                textInfo: fuProfileVM.fuProfileModel?.phoneNo ?? "",
+                                textInfoTitle: "Phone No.",
+                                ontap: fuProfileVM.fuProfileModel?.isPhoneNumberVerified?? false ? (){
+                                  Navigator.push(context,
+                                      PageTransition(child: OtpVerification(userName: fuProfileVM.fuProfileModel?.userName??"",
+                                        phone: fuProfileVM.fuProfileModel?.phoneNo,
+                                        isForgetPassword: false,
+                                        userId: fuProfileVM.fuProfileModel?.userName??"",
+                                      ), type: PageTransitionType.leftToRight)
+                                  );
+                                } : null,
+                              ),
+
                               keyValue(
                                   key: "Secondary No.",
                                   value: fuProfileVM.fuProfileModel?.phoneNo ??
                                       ""),
-                              keyValue(
-                                  key: "Contact Email",
-                                  value:
-                                      fuProfileVM.fuProfileModel?.email ?? ""),
+                              VerifiedInfo(isVerified: fuProfileVM.fuProfileModel?.isEmailVerified?? false,
+                                textInfo: fuProfileVM.fuProfileModel?.email ?? "",
+                                textInfoTitle: "Email",
+                                ontap: fuProfileVM.fuProfileModel?.isEmailVerified?? false ? (){
+                                  Navigator.push(context,
+                                      PageTransition(child: OtpVerification(userName: fuProfileVM.fuProfileModel?.userName??"",
+                                        phone: fuProfileVM.fuProfileModel?.phoneNo,
+                                        isForgetPassword: false,
+                                        userId: fuProfileVM.fuProfileModel?.userName??"",
+                                      ), type: PageTransitionType.leftToRight)
+                                  );
+                                } : null,
+                              ),
                             ],
                           ),
                         )
@@ -154,7 +177,7 @@ class FUProfile extends HookWidget {
     );
   }
 
-  keyValue({required String key, required String value}) {
+  keyValue({required String key, required String value,Widget? customWidget}) {
     return Container(
       padding: EdgeInsets.only(bottom: 10, top: 10),
       decoration: BoxDecoration(
@@ -178,7 +201,7 @@ class FUProfile extends HookWidget {
           Expanded(
             child: Container(
               alignment: Alignment.centerRight,
-              child: Text(
+              child: customWidget?? Text(
                 value,
                 style: Styles.PoppinsRegular(
                     color: appColor, fontSize: 12, fontWeight: FontWeight.w400),

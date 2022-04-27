@@ -82,6 +82,12 @@ class FacilityService{
     }
 
     }
+  //api.healthforcehub.link/api/Patients/GetPatients2?PageNumber=1&PageSize=10&
+  // CustomListId=0&PatientStatus=1&Assigned=0&RpmStatus=-1&
+  // CcmStatus=&CcmMonthlyStatus=&profileStatus=0&FacilityUserId=11&FacilityId=1
+  // &CareProviderId=0&BillingProviderId=0&SortBy=&SortOrder=0&SearchParam=&ServiceMonth=4
+  // &ConsentDate=0&DiseaseIds=&ModifiedDate=0&ServiceYear=2022&FilterBy=1&ccmTimeRange=3,4,5,6,7
+  // &DateAssignedFrom=&DateAssignedTo=
 
   Future<dynamic>getPatients2({int filterBy = 1,required int pageNumber,int patientStatus = 1,
     int assigned = 0,int rpmStatus = -1,String? ccmStatus,String? ccmMonthlyStatus,int careProviderId = 0,

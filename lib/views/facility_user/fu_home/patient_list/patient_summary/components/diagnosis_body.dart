@@ -41,7 +41,7 @@ class DiagnosisBody extends HookWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           HeadLineTextStyle(
-            text: "Allergies",
+            text: "Diagnosis",
           ),
           Stack(
             children: [

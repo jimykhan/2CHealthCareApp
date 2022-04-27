@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:twochealthcare/constants/validator.dart';
 import 'package:twochealthcare/models/facility_user_models/dashboard_patients/patients_model.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
@@ -64,7 +65,7 @@ class CenterText extends StatelessWidget {
                       ),
                       Expanded(
                         child: Text(
-                          patientsList.primaryPhoneNumber ?? "No contact",
+                          mask.getMaskedString(patientsList.primaryPhoneNumber ?? "") ,
                           maxLines: 1,
                           overflow: TextOverflow.fade,
                           style: Styles.PoppinsRegular(

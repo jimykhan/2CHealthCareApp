@@ -209,6 +209,7 @@ class LoginVM extends ChangeNotifier{
 
 
   userLogout()async{
+    setLoading(true);
     await firebaseService!.turnOfChatNotification();
     await firebaseService!.turnOfReadingNotification();
     updateCurrentUser(null);
@@ -222,5 +223,6 @@ class LoginVM extends ChangeNotifier{
       ),
           (route) => false,
     );
+    setLoading(false);
   }
 }

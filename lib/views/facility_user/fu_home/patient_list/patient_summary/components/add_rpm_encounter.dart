@@ -83,7 +83,7 @@ class AddRPMEncounter extends HookWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                    Container(
-                     height: MediaQuery.of(context).size.height-150,
+                     height: MediaQuery.of(context).size.height-170,
                      child: Column(
                        children: [
                          Container(
@@ -209,8 +209,6 @@ class AddRPMEncounter extends HookWidget {
                    ),
 
                    Container(
-                    // padding: EdgeInsets.symmetric(vertical: 10),
-                    // color: Colors.red,
                     alignment: Alignment.bottomCenter,
                     child: Row(
                       children: [

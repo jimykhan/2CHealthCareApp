@@ -134,7 +134,16 @@ class FUProfile extends HookWidget {
                               ),
                               borderRadius: BorderRadius.circular(15)),
                           child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              Container(
+                                child: Text("Organizational Information",
+                                style: Styles.PoppinsRegular(
+                                  fontSize: ApplicationSizing.constSize(14),
+                                  color: appColorSecondary,
+                                  fontWeight: FontWeight.w700
+                                ),),
+                              ),
                               VerifiedInfo(isVerified: fuProfileVM.fuProfileModel?.isPhoneNumberVerified?? false,
                                 textInfo: fuProfileVM.fuProfileModel?.phoneNo ?? "",
                                 textInfoTitle: "Phone No.",
@@ -148,6 +157,11 @@ class FUProfile extends HookWidget {
                                   );
                                 } : null,
                               ),
+
+                              keyValue(
+                                  key: "Facility Name",
+                                  value: fuProfileVM.fuProfileModel?.facilityDto?.facilityName ??
+                                      ""),
 
                               keyValue(
                                   key: "Secondary No.",

@@ -46,7 +46,7 @@ class DiagnosisBody extends HookWidget {
           Stack(
             children: [
               _fuPatientSummaryVM.isLoading
-                  ? AlertLoader()
+                  ? AlertLoader(bottomMargin: 350)
                   : _fuPatientSummaryVM.diagnoseList.length == 0 ? NoData()
                   : ListView.separated(
                   shrinkWrap: true,

@@ -52,7 +52,7 @@ class ProviderBody extends HookWidget {
           Stack(
             children: [
               _fuPatientSummaryVM.isLoading
-                  ? AlertLoader()
+                  ? AlertLoader(bottomMargin: 350)
                   : _fuPatientSummaryVM.providerList.length == 0
                       ? NoData()
                       : ListView.separated(

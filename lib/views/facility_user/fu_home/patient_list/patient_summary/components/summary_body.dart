@@ -45,7 +45,7 @@ class SummaryBody extends HookWidget {
           Stack(
             children: [
               _fuPatientSummaryVM.isLoading
-                  ? AlertLoader()
+                  ? AlertLoader(bottomMargin: 350)
                   : _fuPatientSummaryVM.patientInfo == null
                       ? NoData()
                       : Container(
@@ -72,6 +72,21 @@ class SummaryBody extends HookWidget {
                                   key: "Date of Birth",
                                   value: _fuPatientSummaryVM
                                           .patientInfo?.dateOfBirth ??
+                                      ""),
+                              keyValue(
+                                  key:  "Billing Provider",
+                                  value: _fuPatientSummaryVM
+                                      .patientInfo?.billingProviderName ??
+                                      ""),
+                              keyValue(
+                                  key:  "Care Provider",
+                                  value: _fuPatientSummaryVM
+                                      .patientInfo?.careFacilitatorName ??
+                                      ""),
+                              keyValue(
+                                  key:  "Insurance Plan",
+                                  value: _fuPatientSummaryVM
+                                      .patientInfo?.insurancePlanName ??
                                       ""),
                             ],
                           ),
@@ -104,10 +119,16 @@ class SummaryBody extends HookWidget {
                   Styles.PoppinsRegular(color: Color(0xff002F73), fontSize: 14),
             ),
           ),
-          Text(
-            value,
-            style:
-                Styles.PoppinsRegular(color: Color(0xff4EAF48), fontSize: 14),
+          Expanded(
+            child: Container(
+              alignment: Alignment.centerRight,
+              child: Text(
+                value,
+                style:
+                    Styles.PoppinsRegular(color: Color(0xff4EAF48), fontSize: 14),
+                textAlign: TextAlign.center,
+              ),
+            ),
           ),
         ],
       ),

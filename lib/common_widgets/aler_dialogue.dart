@@ -1,8 +1,13 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hooks_riverpod/all.dart';
 import 'package:icofont_flutter/icofont_flutter.dart';
 import 'package:twochealthcare/common_widgets/filled_button.dart';
+import 'package:twochealthcare/common_widgets/loader.dart';
 import 'package:twochealthcare/main.dart';
+import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
@@ -89,85 +94,11 @@ logoutAlertDialog({required LoginVM loginVM}) {
     context: applicationContext!.currentContext!,
     builder: (BuildContext context) {
       // return object of type Dialog
-      return Scaffold(
-        // color: Colors.transparent,
-        backgroundColor: Colors.transparent,
-        body: Container(
-          height: MediaQuery.of(context).size.height,
-          alignment: Alignment.center,
-          margin: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin(n: 25)),
-          child: Container(
-            height: 250,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-                color: Colors.white,
-
-              // border: Border.all(
-              //   width: 1,
-              //   color: Color(0xff116DDA).withOpacity(0.7),
-              // )
-
-            ),
-            padding: EdgeInsets.symmetric(
-              vertical:ApplicationSizing.convert(10),
-              horizontal:ApplicationSizing.convert(30),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        padding: EdgeInsets.only(top: 10),
-                        child: Text("Are you sure you want to log out?",
-                          textAlign: TextAlign.center,
-                          style: Styles.PoppinsRegular(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 18
-                          ),),
-                      ),
-                      Container(
-                        child: Column(
-                          children: [
-                            FilledButton(onTap: (){
-                              loginVM.userLogout();
-                            },
-                                txt: "Log out",
-                                color1: appColor,
-                                txtcolor: Colors.white,
-                                w: 200,
-                                borderRadius: 30
-                            ),
-                            SizedBox(height: 10,),
-                            FilledButton(onTap: (){
-                              Navigator.pop(context);
-                            },
-                              color1: Colors.white,
-                              w: 200,
-                              borderRadius: 30,
-                              borderColor: Colors.red,
-                              txtcolor: Colors.red,
-                              txt: "Cancel",
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ],
-            ),
-
-          ),
-        ),
-      );
+      return ConfirmLogout();
     },
   );
 }
+
 GenerateAlert({required Widget child}) {
   showDialog(
     context: applicationContext!.currentContext!,
@@ -186,5 +117,98 @@ GenerateAlert({required Widget child}) {
 
     },
   );
+}
+
+class ConfirmLogout extends HookWidget {
+  const ConfirmLogout({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    LoginVM loginVM = useProvider(loginVMProvider);
+    useEffect(
+          () {
+        Future.microtask(() async {});
+        return () {};
+      },
+      const [],
+    );
+    return Scaffold(
+      // color: Colors.transparent,
+      backgroundColor: Colors.transparent,
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        alignment: Alignment.center,
+        margin: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin(n: 25)),
+        child: Container(
+          height: 250,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15),
+            color: Colors.white,
+
+            // border: Border.all(
+            //   width: 1,
+            //   color: Color(0xff116DDA).withOpacity(0.7),
+            // )
+
+          ),
+          padding: EdgeInsets.symmetric(
+            vertical:ApplicationSizing.convert(10),
+            horizontal:ApplicationSizing.convert(30),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.only(top: 10),
+                      child: Text("Are you sure you want to log out?",
+                        textAlign: TextAlign.center,
+                        style: Styles.PoppinsRegular(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 18
+                        ),),
+                    ),
+                    Container(
+                      child: loginVM.loading ? Container(margin:EdgeInsets.only(bottom: 30),
+                          child: loader()) : Column(
+                        children: [
+                           FilledButton(onTap: (){
+                            loginVM.userLogout();
+                          },
+                              txt: "Log out",
+                              color1: appColor,
+                              txtcolor: Colors.white,
+                              w: 200,
+                              borderRadius: 30
+                          ),
+                          SizedBox(height: 10,),
+                          FilledButton(onTap: (){
+                            Navigator.pop(context);
+                          },
+                            color1: Colors.white,
+                            w: 200,
+                            borderRadius: 30,
+                            borderColor: Colors.red,
+                            txtcolor: Colors.red,
+                            txt: "Cancel",
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ],
+          ),
+
+        ),
+      ),
+    );
+  }
 }
 

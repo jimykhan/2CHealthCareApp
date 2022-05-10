@@ -6,6 +6,7 @@ import 'package:hooks_riverpod/all.dart';
 import 'package:twochealthcare/common_widgets/alert_loader.dart';
 import 'package:twochealthcare/common_widgets/app_bar_components/appbar_text_style.dart';
 import 'package:twochealthcare/common_widgets/app_bar_components/back_button.dart';
+import 'package:twochealthcare/common_widgets/collapsible_container.dart';
 import 'package:twochealthcare/common_widgets/custom_appbar.dart';
 import 'package:twochealthcare/common_widgets/input_field/custom_text_erea.dart';
 import 'package:twochealthcare/common_widgets/yes_no_question.dart';
@@ -15,11 +16,17 @@ import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
 import 'package:twochealthcare/view_models/care_plan_vm/care_plan_vm.dart';
+import 'package:twochealthcare/view_models/facility_user_view_model/fu_patient_summary_veiw_models/fu_patient_summary_view_model.dart';
 import 'package:twochealthcare/view_models/profile_vm.dart';
 import 'package:twochealthcare/views/care_plan/components/isChallengeChecked.dart';
+import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_summary/components/alliergies_body.dart';
+import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_summary/components/diagnosis_body.dart';
 import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_summary/components/headline_text_style.dart';
+import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_summary/components/medications_body.dart';
+import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_summary/components/view_patient_emergency_contact.dart';
 import 'package:twochealthcare/views/home/components/widgets.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:twochealthcare/views/home/edit_emergency_contact.dart';
 
 class CarePlan extends HookWidget {
   bool isPatientSummary;
@@ -30,10 +37,15 @@ class CarePlan extends HookWidget {
     ApplicationRouteService applicationRouteService =
     useProvider(applicationRouteServiceProvider);
     CarePlanVM carePlanVM = useProvider(carePlanVMProvider);
+    FUPatientSummaryVM _fuPatientSummaryVM =
+    useProvider(fUPatientSummaryVMProvider);
     useEffect(
           () {
+            carePlanVM.carePlanHistory.forEach((element) {
+              element["isExpand"] = false;
+            });
         Future.microtask(() async {
-          carePlanVM.getCarePlanByPatientId();
+          carePlanVM.getCarePlanByPatientId(Id: isPatientSummary? _fuPatientSummaryVM.patientInfo?.id : null);
         });
 
         return () {
@@ -93,6 +105,23 @@ class CarePlan extends HookWidget {
           SingleChildScrollView(
             child: Column(
               children: [
+                ListView.separated(
+                  shrinkWrap: true,
+                    physics: ScrollPhysics(),
+                    itemBuilder: (context,index){
+                      return CollapsibleContainer(
+                        IsCollaps: carePlanVM.ChangeCollaps,
+                        isExpand: carePlanVM.carePlanHistory[index]["isExpand"],
+                        title: carePlanVM.carePlanHistory[index]["title"],
+                        child: carePlanVM.carePlanHistory[index]["body"],
+                        Index: index,
+                      );
+                    },
+                    separatorBuilder: (context,index){
+                      return SizedBox(height: 15,);
+                    },
+                    itemCount: carePlanVM.carePlanHistory.length),
+
                 ApplicationSizing.verticalSpacer(n: 15),
                 _carePlans(context,carePlanVM: carePlanVM),
                 ApplicationSizing.verticalSpacer(n: 15),
@@ -110,17 +139,25 @@ class CarePlan extends HookWidget {
           horizontal: ApplicationSizing.horizontalMargin()),
       child: Column(
         children: [
-          challenges(carePlanVM: carePlanVM),
+
+          patientAssessment(carePlanVM: carePlanVM),
           ApplicationSizing.verticalSpacer(),
-          advanceDirectives(carePlanVM: carePlanVM),
+          socialDemographic(carePlanVM: carePlanVM),
           ApplicationSizing.verticalSpacer(),
-          _goals(carePlanVM: carePlanVM)
+          patientResouces(carePlanVM: carePlanVM),
+          ApplicationSizing.verticalSpacer(),
+          advanceDirectivesSection(carePlanVM: carePlanVM),
+          ApplicationSizing.verticalSpacer(),
+          _goals(carePlanVM: carePlanVM),
+          ApplicationSizing.verticalSpacer(),
+          chronicCondition(carePlanVM: carePlanVM)
+
         ],
       ),
     );
   }
 
-  challenges({required CarePlanVM carePlanVM}){
+  patientAssessment({required CarePlanVM carePlanVM}){
     return Column(
       children: [
         Row(
@@ -135,7 +172,7 @@ class CarePlan extends HookWidget {
                   child: Row(
                     children: [
                       Text(
-                        "Demographics",
+                        "Patient Assessment",
                         style: Styles.PoppinsRegular(
                             fontWeight: FontWeight.w700,
                             fontSize: ApplicationSizing.fontScale(15),
@@ -162,7 +199,15 @@ class CarePlan extends HookWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                child: Text("I have challenges with:",
+                child: Text("Functional:",
+                  style: Styles.PoppinsRegular(
+                    fontWeight: FontWeight.w500,
+                    fontSize: ApplicationSizing.fontScale(16),
+                  ),
+                ),
+              ),
+              Container(
+                child: Text("Do you have any issues with:",
                   style: Styles.PoppinsRegular(
                     fontWeight: FontWeight.w500,
                     fontSize: ApplicationSizing.fontScale(16),
@@ -174,13 +219,13 @@ class CarePlan extends HookWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Expanded(
-                      flex:3,
-                      child: IsChallengeChecked(isChecked: carePlanVM.carePlanModel?.challengesWithTransportation??false,
-                        pressChecked: () {  },
-                        challengeName: "Transportion",
-                      ),
-                    ),
+                    // Expanded(
+                    //   flex:3,
+                    //   child: IsChallengeChecked(isChecked: carePlanVM.carePlanModel?.challengesWithTransportation??false,
+                    //     pressChecked: () {  },
+                    //     challengeName: "Transportion",
+                    //   ),
+                    // ),
                     Expanded(
                       flex:2,
                       child: Container(
@@ -188,6 +233,14 @@ class CarePlan extends HookWidget {
                           pressChecked: () {  },
                           challengeName: "Vision",
                         ),
+                      ),
+                    ),
+                    Expanded(
+                      flex:2,
+                      child: IsChallengeChecked(
+                        isChecked: carePlanVM.carePlanModel?.challengesWithHearing??false,
+                        pressChecked: () {  },
+                        challengeName: "Hearing",
                       ),
                     ),
                   ],
@@ -199,16 +252,10 @@ class CarePlan extends HookWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
-                      flex:3,
-                      child: IsChallengeChecked(isChecked: carePlanVM.carePlanModel?.challengesWithHearing??false,
-                        pressChecked: () {  },
-                        challengeName: "Hearing",
-                      ),
-                    ),
-                    Expanded(
                       flex:2,
                       child: Container(
-                        child: IsChallengeChecked(isChecked: carePlanVM.carePlanModel?.challengesWithMobility??false,
+                        child: IsChallengeChecked(
+                          isChecked: carePlanVM.carePlanModel?.challengesWithMobility?? false,
                           pressChecked: () {  },
                           challengeName: "Mobility",
                         ),
@@ -252,200 +299,19 @@ class CarePlan extends HookWidget {
                 color: fontGrayColor,
               )
           ),
-          child: YesNoQuestion(pressNo: () {  }, pressYes: () {  },
-            isChecked: carePlanVM.carePlanModel?.religionImpactsOnHealthCare??false,
-            question: "My Religion/Spirituality impacts my health care:",
-            textEditingController: carePlanVM.religionController,
-          ),
-        ),
-      ],
-    );
-  }
-
-  advanceDirectives({required CarePlanVM carePlanVM}){
-    return Column(
-      children: [
-        Row(
-          children: [
-            Expanded(
-              child: Container(
-                padding: EdgeInsets.symmetric(
-                    horizontal: ApplicationSizing.horizontalMargin()),
-                decoration: boxDecoration,
-                child: Container(
-                  margin: EdgeInsets.symmetric(vertical: 3),
-                  child: Row(
-                    children: [
-                      Text(
-                        "Advance Directives",
-                        style: Styles.PoppinsRegular(
-                            fontWeight: FontWeight.w700,
-                            fontSize: ApplicationSizing.fontScale(15),
-                            color: Colors.white),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-        ApplicationSizing.verticalSpacer(),
-        Container(
-          padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(
-                width: 1,
-                color: fontGrayColor,
-              )
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              YesNoQuestion(pressNo: () {  }, pressYes: () {  },
-                isChecked: carePlanVM.carePlanModel?.healthCareAdvancedDirectives??false,
-              question: "Healthcare Advance Directives",
-                textEditingController: carePlanVM.healthCareAdvancedDirectivesController,
-              ),
-              ApplicationSizing.verticalSpacer(),
-              YesNoQuestion(pressNo: () {  }, pressYes: () {  },
-                isChecked: carePlanVM.carePlanModel?.polst??false,
-                question: "Physician Orders for Life Sustaining Treatment (POLST)",
-                textEditingController: carePlanVM.polstController,
-              ),
-              ApplicationSizing.verticalSpacer(),
-              YesNoQuestion(pressNo: () {  }, pressYes: () {  },
-                isChecked: carePlanVM.carePlanModel?.powerOfAttorney??false,
-                question: "Power of Attorney (Financial / Healthcare)",
-                textEditingController: carePlanVM.powerOfAttorneyController,
-              ),
-
-
-            ],
-          ),
-        ),
-        ApplicationSizing.verticalSpacer(),
-        Container(
-          padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(
-                width: 1,
-                color: fontGrayColor,
-              )
-          ),
-          child: Container(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                fourOptionQuestion(onOption1: () {  }, onOption2: () {  },
-                  selectedOption: carePlanVM.carePlanModel?.iLive?.toUpperCase().trim() == "alone".toUpperCase() ? 1
-                      : carePlanVM.carePlanModel?.iLive?.toUpperCase().trim() == "partner/spouse".toUpperCase() ? 2 :
-                  carePlanVM.carePlanModel?.iLive?.toUpperCase().trim() == "ExtendedFamily".toUpperCase() ? 3 :
-                  carePlanVM.carePlanModel?.iLive?.toUpperCase().trim() == "other".toUpperCase() ? 4 : 1,
-                  question: "I live",
-                  option1: "Alone",
-                  option2: "Partner/Spouse",
-                  option3: "Extended Family",
-                  option4: "Other",
-                  disableComment: true, onOption3: () {  }, onOption4: () {  },
-                ),
-              ],
-            ),
-          ),
-        ),
-        ApplicationSizing.verticalSpacer(),
-        Container(
-          padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(
-                width: 1,
-                color: fontGrayColor,
-              )
-          ),
-          child: Container(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                fourOptionQuestion(onOption1: () {  }, onOption2: () {  },
-                  selectedOption: carePlanVM.carePlanModel?.iLearnBestBy?.toUpperCase().trim() == "reading".toUpperCase() ? 1
-                      : carePlanVM.carePlanModel?.iLearnBestBy?.toUpperCase().trim() == "Beingtalkedto".toUpperCase() ? 2 :
-                  carePlanVM.carePlanModel?.iLearnBestBy?.toUpperCase().trim() == "Beingshowhow".toUpperCase() ? 3 :
-                  carePlanVM.carePlanModel?.iLearnBestBy?.toUpperCase().trim() == "listeningtotapes".toUpperCase() ? 4 : 1,
-                  question: "I learn best by",
-                  option1: "Reading",
-                  option2: "Being talked to",
-                  option3: "Being show how",
-                  option4: "Listening to tapes", onOption3: () {  }, onOption4: () {  },
-                  textEditingController: carePlanVM.iLearnBestByController,
-
-                ),
-              ],
-            ),
-          ),
-        ),
-        ApplicationSizing.verticalSpacer(),
-        Container(
-          padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(
-                width: 1,
-                color: fontGrayColor,
-              )
-          ),
-          child: Container(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                YesNoQuestion(
-                  question: "I have access to the Internet", pressYes: () {  }, pressNo: () {  }, isChecked: false,
-                  disableComment: carePlanVM.carePlanModel?.internetAccess??false,
-                ),
-              ],
-            ),
-          ),
-        ),
-        ApplicationSizing.verticalSpacer(),
-        Container(
-          padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(
-                width: 1,
-                color: fontGrayColor,
-              )
-          ),
-          child: Container(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                YesNoQuestion(
-                  question: "I have issues with Diet", pressYes: () {  }, pressNo: () {  },
-                  isChecked: carePlanVM.carePlanModel?.dietIssues??false,
-                  textEditingController: carePlanVM.dietIssuesController,
-                ),
-              ],
-            ),
-          ),
-        ),
-        ApplicationSizing.verticalSpacer(),
-        Container(
-          padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(
-                width: 1,
-                color: fontGrayColor,
-              )
-          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                child: Text("I am concerned about:",
+                child: Text("Activities of Daily Living:",
+                  style: Styles.PoppinsRegular(
+                    fontWeight: FontWeight.w500,
+                    fontSize: ApplicationSizing.fontScale(16),
+                  ),
+                ),
+              ),
+              Container(
+                child: Text("Which of the following can you do on your own?",
                   style: Styles.PoppinsRegular(
                     fontWeight: FontWeight.w500,
                     fontSize: ApplicationSizing.fontScale(16),
@@ -458,122 +324,97 @@ class CarePlan extends HookWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
+                      flex:2,
+                      child: Container(
+                        child: IsChallengeChecked(
+                          isChecked: carePlanVM.carePlanModel?.dailyLivingBath??false,
+                          pressChecked: () {  },
+                          challengeName: "Bath",
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex:2,
                       child: IsChallengeChecked(
-                        isChecked: carePlanVM.carePlanModel?.concernedAboutManagingChronicCondition??false,
+                        isChecked: carePlanVM.carePlanModel?.dailyLivingWalk??false,
                         pressChecked: () {  },
-                        challengeName: "My ability to manage my chronic condition",
+                        challengeName: "Walk",
                       ),
                     ),
                   ],
                 ),
               ),
-              ApplicationSizing.verticalSpacer(n: 5),
+              ApplicationSizing.verticalSpacer(),
               Container(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
-                      flex:3,
-                      child: IsChallengeChecked(
-                        isChecked: false,
-                        pressChecked: () {  },
-                        challengeName: "Financial issues",
+                      flex:2,
+                      child: Container(
+                        child: IsChallengeChecked(
+                          isChecked: carePlanVM.carePlanModel?.dailyLivingDress?? false,
+                          pressChecked: () {  },
+                          challengeName: "Dress",
+                        ),
                       ),
                     ),
                     Expanded(
-                      flex:3,
+                      flex:2,
                       child: Container(
                         child: IsChallengeChecked(
-                          isChecked: carePlanVM.carePlanModel?.concernedAboutEmotionalIssues??false,
+                          isChecked: carePlanVM.carePlanModel?.dailyLivingEat?? false,
                           pressChecked: () {  },
-                          challengeName: "Emotional issues",
+                          challengeName: "Eat",
                         ),
                       ),
                     ),
                   ],
                 ),
               ),
-              ApplicationSizing.verticalSpacer(n: 5),
+              ApplicationSizing.verticalSpacer(),
               Container(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
-                      child: IsChallengeChecked(
-                        isChecked: false,
-                        pressChecked: () {  },
-                        challengeName: "Having access to Healthcare",
+                      flex:2,
+                      child: Container(
+                        child: IsChallengeChecked(
+                          isChecked: carePlanVM.carePlanModel?.dailyLivingTransfer?? false,
+                          pressChecked: () {  },
+                          challengeName: "Transfer in/out of chair, etc.",
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex:2,
+                      child: Container(
+                        child: IsChallengeChecked(
+                          isChecked: carePlanVM.carePlanModel?.dailyLivingRestroom?? false,
+                          pressChecked: () {  },
+                          challengeName: "Use the restroom",
+                        ),
                       ),
                     ),
                   ],
                 ),
               ),
-              ApplicationSizing.verticalSpacer(n: 5),
+              ApplicationSizing.verticalSpacer(),
               Container(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
-                      child: IsChallengeChecked(
-                        isChecked: false,
-                        pressChecked: () {  },
-                        challengeName: "My decrease energy level / Fatigue",
+                      child: Container(
+                        child: IsChallengeChecked(
+                          isChecked: carePlanVM.carePlanModel?.dailyLivingNone?? false,
+                          pressChecked: () {  },
+                          challengeName: "None",
+                        ),
                       ),
                     ),
-                  ],
-                ),
-              ),
-              ApplicationSizing.verticalSpacer(n: 5),
-              Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: IsChallengeChecked(
-                        isChecked: false,
-                        pressChecked: () {  },
-                        challengeName: "Thinking or memory problems",
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              ApplicationSizing.verticalSpacer(n: 5),
-              Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: IsChallengeChecked(
-                        isChecked: false,
-                        pressChecked: () {  },
-                        challengeName: "Spiritual issues",
-                      ),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: IsChallengeChecked(
-                        isChecked: carePlanVM.carePlanModel?.concernedAboutFamilyIssues??false,
-                        pressChecked: () {  },
-                        challengeName: "Family issues",
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              ApplicationSizing.verticalSpacer(n: 5),
-              Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: IsChallengeChecked(
-                        isChecked: false,
-                        pressChecked: () {  },
-                        challengeName: "End of life issues",
-                      ),
-                    ),
+
                   ],
                 ),
               ),
@@ -595,18 +436,1106 @@ class CarePlan extends HookWidget {
                 child: CustomTextArea(
                   onchange: (val){}, onSubmit: (val){},
                   isEnable: false,
-                  hints: "Comments..",
-                  textEditingController: carePlanVM.concernedAboutOtherController,
+                  hints: "Daily Living",
+                  textEditingController: carePlanVM.dailyLivingController,
                 ),
               )
             ],
           ),
         ),
+        ApplicationSizing.verticalSpacer(),
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(
+                width: 1,
+                color: fontGrayColor,
+              )
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                child: Text("Instrumental Daily Activities:",
+                  style: Styles.PoppinsRegular(
+                    fontWeight: FontWeight.w500,
+                    fontSize: ApplicationSizing.fontScale(16),
+                  ),
+                ),
+              ),
+              Container(
+                child: Text("Which of the following can you do on your own?",
+                  style: Styles.PoppinsRegular(
+                    fontWeight: FontWeight.w500,
+                    fontSize: ApplicationSizing.fontScale(16),
+                  ),
+                ),
+              ),
+              ApplicationSizing.verticalSpacer(),
+              Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      flex:2,
+                      child: Container(
+                        child: IsChallengeChecked(
+                          isChecked: carePlanVM.carePlanModel?.instrumentalDailyGrocery??false,
+                          pressChecked: () {  },
+                          challengeName: "Shop for groceries",
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex:2,
+                      child: IsChallengeChecked(
+                        isChecked: carePlanVM.carePlanModel?.instrumentalDailyTelephone??false,
+                        pressChecked: () {  },
+                        challengeName: "Use the telephone",
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              ApplicationSizing.verticalSpacer(),
+              Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      flex:2,
+                      child: Container(
+                        child: IsChallengeChecked(
+                          isChecked: carePlanVM.carePlanModel?.instrumentalDailyHouseWork?? false,
+                          pressChecked: () {  },
+                          challengeName: "Housework",
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex:2,
+                      child: Container(
+                        child: IsChallengeChecked(
+                          isChecked: carePlanVM.carePlanModel?.instrumentalDailyFinances?? false,
+                          pressChecked: () {  },
+                          challengeName: "Handle finances",
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              ApplicationSizing.verticalSpacer(),
+              Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      flex:2,
+                      child: Container(
+                        child: IsChallengeChecked(
+                          isChecked: carePlanVM.carePlanModel?.instrumentalDailyTransportation?? false,
+                          pressChecked: () {  },
+                          challengeName: "Drive/use public transportation",
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex:2,
+                      child: Container(
+                        child: IsChallengeChecked(
+                          isChecked: carePlanVM.carePlanModel?.instrumentalDailyMeals?? false,
+                          pressChecked: () {  },
+                          challengeName: "Make meals",
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              ApplicationSizing.verticalSpacer(),
+              Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+
+                    Expanded(
+                      flex: 2,
+                      child: Container(
+                        child: IsChallengeChecked(
+                          isChecked: carePlanVM.carePlanModel?.instrumentalDailyMedication?? false,
+                          pressChecked: () {  },
+                          challengeName: "Take medications",
+                        ),
+                      ),
+                    ),
+
+                    Expanded(
+                      flex: 2,
+                      child: Container(
+                        child: IsChallengeChecked(
+                          isChecked: carePlanVM.carePlanModel?.instrumentalDailyNone?? false,
+                          pressChecked: () {  },
+                          challengeName: "None",
+                        ),
+                      ),
+                    ),
+
+                  ],
+                ),
+              ),
+              ApplicationSizing.verticalSpacer(),
+              Container(
+                child: Text("Other Comments",
+                  style: Styles.PoppinsRegular(
+                      fontWeight: FontWeight.w500,
+                      fontSize: ApplicationSizing.fontScale(16),
+                      color: fontGrayColor
+                  ),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(
+                    horizontal: 5,
+                    vertical: 5
+                ),
+                child: CustomTextArea(
+                  onchange: (val){}, onSubmit: (val){},
+                  isEnable: false,
+                  hints: "Daily Activity",
+                  textEditingController: carePlanVM.dailyLivingController,
+                ),
+              )
+            ],
+          ),
+        ),
+        ApplicationSizing.verticalSpacer(),
+        // Container(
+        //   padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
+        //   decoration: BoxDecoration(
+        //       borderRadius: BorderRadius.circular(10),
+        //       border: Border.all(
+        //         width: 1,
+        //         color: fontGrayColor,
+        //       )
+        //   ),
+        //   child: YesNoQuestion(pressNo: () {  }, pressYes: () {  },
+        //     isChecked: carePlanVM.carePlanModel?.religionImpactsOnHealthCare??false,
+        //     question: "My Religion/Spirituality impacts my health care:",
+        //     textEditingController: carePlanVM.religionController,
+        //   ),
+        // ),
+      ],
+    );
+  }
+  socialDemographic({required CarePlanVM carePlanVM}){
+    return Column(
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: Container(
+                padding: EdgeInsets.symmetric(
+                    horizontal: ApplicationSizing.horizontalMargin()),
+                decoration: boxDecoration,
+                child: Container(
+                  margin: EdgeInsets.symmetric(vertical: 3),
+                  child: Row(
+                    children: [
+                      Text(
+                        "Social/Demographic",
+                        style: Styles.PoppinsRegular(
+                            fontWeight: FontWeight.w700,
+                            fontSize: ApplicationSizing.fontScale(15),
+                            color: Colors.white),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        ApplicationSizing.verticalSpacer(),
+        TextFieldQuestion(question: "Do you require help with transportation/ Have adequate access to healthcare:",
+            textEditingController:carePlanVM.requireTransportationController),
+        ApplicationSizing.verticalSpacer(),
+        fourOptionQuestion(onOption1: () {  }, onOption2: () {  },
+          selectedOption: carePlanVM.carePlanModel?.iLive?.toUpperCase().trim() == "alone".toUpperCase() ? 1
+              : carePlanVM.carePlanModel?.iLive?.toUpperCase().trim() == "partner/spouse".toUpperCase() ? 2 :
+          carePlanVM.carePlanModel?.iLive?.toUpperCase().trim() == "ExtendedFamily".toUpperCase() ? 3 :
+          carePlanVM.carePlanModel?.iLive?.toUpperCase().trim() == "other".toUpperCase() ? 4 : 1,
+          question: "Patient live",
+          option1: "Alone",
+          option2: "Partner/Spouse",
+          option3: "Extended Family",
+          option4: "Other",
+          disableComment: true, onOption3: () {  }, onOption4: () {  },
+        ),
+        ApplicationSizing.verticalSpacer(),
+        TextFieldQuestion(
+            question: "English as a second language (ESL):",
+            textEditingController:carePlanVM.eSLController),
+
+        // YesNoQuestion(pressNo: () {  }, pressYes: () {  },
+        //   isChecked: carePlanVM.carePlanModel?.healthCareAdvancedDirectives??false,
+        //   question: "Healthcare Advance Directives",
+        //   textEditingController: carePlanVM.healthCareAdvancedDirectivesController,
+        // ),
+        // ApplicationSizing.verticalSpacer(),
+        // YesNoQuestion(pressNo: () {  }, pressYes: () {  },
+        //   isChecked: carePlanVM.carePlanModel?.polst??false,
+        //   question: "Physician Orders for Life Sustaining Treatment (POLST)",
+        //   textEditingController: carePlanVM.polstController,
+        // ),
+        ApplicationSizing.verticalSpacer(),
+        YesNoQuestion(pressNo: () {  }, pressYes: () {  },
+          isChecked: carePlanVM.carePlanModel?.internetAccess??false,
+          question: "Patient Have Internet Access",
+          textEditingController: carePlanVM.powerOfAttorneyController,
+          disableComment: true,
+        ),
+        ApplicationSizing.verticalSpacer(),
+        YesNoQuestion(pressNo: () {  }, pressYes: () {  },
+          isChecked: carePlanVM.carePlanModel?.cellPhone??false,
+          question: "Patient Have Cell Phone",
+          disableComment: true,
+        ),
+        ApplicationSizing.verticalSpacer(),
+        TextFieldQuestion(
+          question: "Patients Cell Phone number is:",
+          textEditingController:carePlanVM.patientPhoneNo,
+          isTextArea: false,
+        ),
+        ApplicationSizing.verticalSpacer(),
+        YesNoQuestion(pressNo: () {  }, pressYes: () {  },
+          isChecked: false,
+          question: "Patients can respond to Text Messages",
+          disableComment: true,
+        ),
+        ApplicationSizing.verticalSpacer(),
+        ViewPatientEmergencyContact(
+          name: carePlanVM.carePlanModel?.emergencyContactName,
+          relationship: carePlanVM.carePlanModel?.emergencyContactRelationship,
+          secondayNo: carePlanVM.carePlanModel?.emergencyContactSecondaryPhoneNo,
+          primaryNo: carePlanVM.carePlanModel?.emergencyContactPrimaryPhoneNo,
+        ),
+
+        ApplicationSizing.verticalSpacer(),
+        ViewPatientEmergencyContact(
+          title: "Do you have a designated caregiver?",
+          name: carePlanVM.carePlanModel?.careGiverContactName,
+          relationship: carePlanVM.carePlanModel?.careGiverContactRelationship,
+          secondayNo: carePlanVM.carePlanModel?.careGiverContactSecondaryPhoneNo,
+          primaryNo: carePlanVM.carePlanModel?.careGiverContactPrimaryPhoneNo,
+        ),
+        ApplicationSizing.verticalSpacer(),
+
+        // Container(
+        //   padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
+        //   decoration: BoxDecoration(
+        //       borderRadius: BorderRadius.circular(10),
+        //       border: Border.all(
+        //         width: 1,
+        //         color: fontGrayColor,
+        //       )
+        //   ),
+        //   child: Container(
+        //     child: Column(
+        //       crossAxisAlignment: CrossAxisAlignment.start,
+        //       children: [
+        //         fourOptionQuestion(onOption1: () {  }, onOption2: () {  },
+        //           selectedOption: carePlanVM.carePlanModel?.iLearnBestBy?.toUpperCase().trim() == "reading".toUpperCase() ? 1
+        //               : carePlanVM.carePlanModel?.iLearnBestBy?.toUpperCase().trim() == "Beingtalkedto".toUpperCase() ? 2 :
+        //           carePlanVM.carePlanModel?.iLearnBestBy?.toUpperCase().trim() == "Beingshowhow".toUpperCase() ? 3 :
+        //           carePlanVM.carePlanModel?.iLearnBestBy?.toUpperCase().trim() == "listeningtotapes".toUpperCase() ? 4 : 1,
+        //           question: "I learn best by",
+        //           option1: "Reading",
+        //           option2: "Being talked to",
+        //           option3: "Being show how",
+        //           option4: "Listening to tapes", onOption3: () {  }, onOption4: () {  },
+        //           textEditingController: carePlanVM.iLearnBestByController,
+        //
+        //         ),
+        //       ],
+        //     ),
+        //   ),
+        // ),
+        // ApplicationSizing.verticalSpacer(),
+        // Container(
+        //   padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
+        //   decoration: BoxDecoration(
+        //       borderRadius: BorderRadius.circular(10),
+        //       border: Border.all(
+        //         width: 1,
+        //         color: fontGrayColor,
+        //       )
+        //   ),
+        //   child: Container(
+        //     child: Column(
+        //       crossAxisAlignment: CrossAxisAlignment.start,
+        //       children: [
+        //         YesNoQuestion(
+        //           question: "I have access to the Internet", pressYes: () {  }, pressNo: () {  }, isChecked: false,
+        //           disableComment: carePlanVM.carePlanModel?.internetAccess??false,
+        //         ),
+        //       ],
+        //     ),
+        //   ),
+        // ),
+        // ApplicationSizing.verticalSpacer(),
+        // Container(
+        //   padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
+        //   decoration: BoxDecoration(
+        //       borderRadius: BorderRadius.circular(10),
+        //       border: Border.all(
+        //         width: 1,
+        //         color: fontGrayColor,
+        //       )
+        //   ),
+        //   child: Container(
+        //     child: Column(
+        //       crossAxisAlignment: CrossAxisAlignment.start,
+        //       children: [
+        //         YesNoQuestion(
+        //           question: "I have issues with Diet", pressYes: () {  }, pressNo: () {  },
+        //           isChecked: carePlanVM.carePlanModel?.dietIssues??false,
+        //           textEditingController: carePlanVM.dietIssuesController,
+        //         ),
+        //       ],
+        //     ),
+        //   ),
+        // ),
+        // ApplicationSizing.verticalSpacer(),
+        // Container(
+        //   padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
+        //   decoration: BoxDecoration(
+        //       borderRadius: BorderRadius.circular(10),
+        //       border: Border.all(
+        //         width: 1,
+        //         color: fontGrayColor,
+        //       )
+        //   ),
+        //   child: Column(
+        //     crossAxisAlignment: CrossAxisAlignment.start,
+        //     children: [
+        //       Container(
+        //         child: Text("I am concerned about:",
+        //           style: Styles.PoppinsRegular(
+        //             fontWeight: FontWeight.w500,
+        //             fontSize: ApplicationSizing.fontScale(16),
+        //           ),
+        //         ),
+        //       ),
+        //       ApplicationSizing.verticalSpacer(),
+        //       Container(
+        //         child: Row(
+        //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //           children: [
+        //             Expanded(
+        //               child: IsChallengeChecked(
+        //                 isChecked: carePlanVM.carePlanModel?.concernedAboutManagingChronicCondition??false,
+        //                 pressChecked: () {  },
+        //                 challengeName: "My ability to manage my chronic condition",
+        //               ),
+        //             ),
+        //           ],
+        //         ),
+        //       ),
+        //       ApplicationSizing.verticalSpacer(n: 5),
+        //       Container(
+        //         child: Row(
+        //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //           children: [
+        //             Expanded(
+        //               flex:3,
+        //               child: IsChallengeChecked(
+        //                 isChecked: false,
+        //                 pressChecked: () {  },
+        //                 challengeName: "Financial issues",
+        //               ),
+        //             ),
+        //             Expanded(
+        //               flex:3,
+        //               child: Container(
+        //                 child: IsChallengeChecked(
+        //                   isChecked: carePlanVM.carePlanModel?.concernedAboutEmotionalIssues??false,
+        //                   pressChecked: () {  },
+        //                   challengeName: "Emotional issues",
+        //                 ),
+        //               ),
+        //             ),
+        //           ],
+        //         ),
+        //       ),
+        //       ApplicationSizing.verticalSpacer(n: 5),
+        //       Container(
+        //         child: Row(
+        //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //           children: [
+        //             Expanded(
+        //               child: IsChallengeChecked(
+        //                 isChecked: false,
+        //                 pressChecked: () {  },
+        //                 challengeName: "Having access to Healthcare",
+        //               ),
+        //             ),
+        //           ],
+        //         ),
+        //       ),
+        //       ApplicationSizing.verticalSpacer(n: 5),
+        //       Container(
+        //         child: Row(
+        //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //           children: [
+        //             Expanded(
+        //               child: IsChallengeChecked(
+        //                 isChecked: false,
+        //                 pressChecked: () {  },
+        //                 challengeName: "My decrease energy level / Fatigue",
+        //               ),
+        //             ),
+        //           ],
+        //         ),
+        //       ),
+        //       ApplicationSizing.verticalSpacer(n: 5),
+        //       Container(
+        //         child: Row(
+        //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //           children: [
+        //             Expanded(
+        //               child: IsChallengeChecked(
+        //                 isChecked: false,
+        //                 pressChecked: () {  },
+        //                 challengeName: "Thinking or memory problems",
+        //               ),
+        //             ),
+        //           ],
+        //         ),
+        //       ),
+        //       ApplicationSizing.verticalSpacer(n: 5),
+        //       Container(
+        //         child: Row(
+        //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //           children: [
+        //             Expanded(
+        //               flex: 1,
+        //               child: IsChallengeChecked(
+        //                 isChecked: false,
+        //                 pressChecked: () {  },
+        //                 challengeName: "Spiritual issues",
+        //               ),
+        //             ),
+        //             Expanded(
+        //               flex: 1,
+        //               child: IsChallengeChecked(
+        //                 isChecked: carePlanVM.carePlanModel?.concernedAboutFamilyIssues??false,
+        //                 pressChecked: () {  },
+        //                 challengeName: "Family issues",
+        //               ),
+        //             ),
+        //           ],
+        //         ),
+        //       ),
+        //       ApplicationSizing.verticalSpacer(n: 5),
+        //       Container(
+        //         child: Row(
+        //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //           children: [
+        //             Expanded(
+        //               child: IsChallengeChecked(
+        //                 isChecked: false,
+        //                 pressChecked: () {  },
+        //                 challengeName: "End of life issues",
+        //               ),
+        //             ),
+        //           ],
+        //         ),
+        //       ),
+        //       ApplicationSizing.verticalSpacer(),
+        //       Container(
+        //         child: Text("Other Comments",
+        //           style: Styles.PoppinsRegular(
+        //               fontWeight: FontWeight.w500,
+        //               fontSize: ApplicationSizing.fontScale(16),
+        //               color: fontGrayColor
+        //           ),
+        //         ),
+        //       ),
+        //       Container(
+        //         margin: EdgeInsets.symmetric(
+        //             horizontal: 5,
+        //             vertical: 5
+        //         ),
+        //         child: CustomTextArea(
+        //           onchange: (val){}, onSubmit: (val){},
+        //           isEnable: false,
+        //           hints: "Comments..",
+        //           textEditingController: carePlanVM.concernedAboutOtherController,
+        //         ),
+        //       )
+        //     ],
+        //   ),
+        // ),
 
       ],
     );
   }
 
+  patientResouces({required CarePlanVM carePlanVM}){
+    return Column(
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: Container(
+                padding: EdgeInsets.symmetric(
+                    horizontal: ApplicationSizing.horizontalMargin()),
+                decoration: boxDecoration,
+                child: Container(
+                  margin: EdgeInsets.symmetric(vertical: 3),
+                  child: Row(
+                    children: [
+                      Text(
+                        "Patient Resources",
+                        style: Styles.PoppinsRegular(
+                            fontWeight: FontWeight.w700,
+                            fontSize: ApplicationSizing.fontScale(15),
+                            color: Colors.white),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        ApplicationSizing.verticalSpacer(),
+        Container(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ApplicationSizing.verticalSpacer(),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                      width: 1,
+                      color: fontGrayColor,
+                    )
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      child: Text("Is the patient utilizing any Community/Social Services (HHC/Skilled Nursing etc.):",
+                        style: Styles.PoppinsRegular(
+                          fontWeight: FontWeight.w500,
+                          fontSize: ApplicationSizing.fontScale(16),
+                        ),
+                      ),
+                    ),
+                    ApplicationSizing.verticalSpacer(),
+                    Container(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          // Expanded(
+                          //   flex:3,
+                          //   child: IsChallengeChecked(isChecked: carePlanVM.carePlanModel?.challengesWithTransportation??false,
+                          //     pressChecked: () {  },
+                          //     challengeName: "Transportion",
+                          //   ),
+                          // ),
+                          Expanded(
+                            flex:2,
+                            child: Container(
+                              child: IsChallengeChecked(isChecked: carePlanVM.carePlanModel?.discussWithPhysician??false,
+                                pressChecked: () {  },
+                                challengeName: "Home Health Care",
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            flex:2,
+                            child: IsChallengeChecked(
+                              isChecked: carePlanVM.carePlanModel?.discussWithPhysician??false,
+                              pressChecked: () {  },
+                              challengeName: "Skilled Nursing",
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    ApplicationSizing.verticalSpacer(),
+                    Container(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            flex:2,
+                            child: Container(
+                              child: IsChallengeChecked(
+                                isChecked: carePlanVM.carePlanModel?.discussWithPhysician?? false,
+                                pressChecked: () {  },
+                                challengeName: "Physiotherapy",
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            flex:2,
+                            child: Container(
+                              child: IsChallengeChecked(
+                                isChecked: carePlanVM.carePlanModel?.discussWithPhysician?? false,
+                                pressChecked: () {  },
+                                challengeName: "Home Hospice",
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    ApplicationSizing.verticalSpacer(),
+                    Container(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            flex:2,
+                            child: Container(
+                              child: IsChallengeChecked(
+                                isChecked: carePlanVM.carePlanModel?.discussWithPhysician?? false,
+                                pressChecked: () {  },
+                                challengeName: "Other",
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    ApplicationSizing.verticalSpacer(),
+                    Container(
+                      child: Text("Other Comments",
+                        style: Styles.PoppinsRegular(
+                            fontWeight: FontWeight.w500,
+                            fontSize: ApplicationSizing.fontScale(16),
+                            color: fontGrayColor
+                        ),
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.symmetric(
+                          horizontal: 5,
+                          vertical: 5
+                      ),
+                      child: CustomTextArea(
+                        onchange: (val){}, onSubmit: (val){},
+                        isEnable: false,
+                        hints: "Comments..",
+                        textEditingController: carePlanVM.challengesController,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+        ApplicationSizing.verticalSpacer(),
+
+      ],
+    );
+  }
+  // advanceDirectives({required CarePlanVM carePlanVM}){
+  //   return Column(
+  //     children: [
+  //       Row(
+  //         children: [
+  //           Expanded(
+  //             child: Container(
+  //               padding: EdgeInsets.symmetric(
+  //                   horizontal: ApplicationSizing.horizontalMargin()),
+  //               decoration: boxDecoration,
+  //               child: Container(
+  //                 margin: EdgeInsets.symmetric(vertical: 3),
+  //                 child: Row(
+  //                   children: [
+  //                     Text(
+  //                       "Advance Directives",
+  //                       style: Styles.PoppinsRegular(
+  //                           fontWeight: FontWeight.w700,
+  //                           fontSize: ApplicationSizing.fontScale(15),
+  //                           color: Colors.white),
+  //                     ),
+  //                   ],
+  //                 ),
+  //               ),
+  //             ),
+  //           ),
+  //         ],
+  //       ),
+  //       ApplicationSizing.verticalSpacer(),
+  //       Container(
+  //         padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
+  //         decoration: BoxDecoration(
+  //             borderRadius: BorderRadius.circular(10),
+  //             border: Border.all(
+  //               width: 1,
+  //               color: fontGrayColor,
+  //             )
+  //         ),
+  //         child: Column(
+  //           crossAxisAlignment: CrossAxisAlignment.start,
+  //           children: [
+  //             YesNoQuestion(pressNo: () {  }, pressYes: () {  },
+  //               isChecked: carePlanVM.carePlanModel?.healthCareAdvancedDirectives??false,
+  //             question: "Healthcare Advance Directives",
+  //               textEditingController: carePlanVM.healthCareAdvancedDirectivesController,
+  //             ),
+  //             ApplicationSizing.verticalSpacer(),
+  //             YesNoQuestion(pressNo: () {  }, pressYes: () {  },
+  //               isChecked: carePlanVM.carePlanModel?.polst??false,
+  //               question: "Physician Orders for Life Sustaining Treatment (POLST)",
+  //               textEditingController: carePlanVM.polstController,
+  //             ),
+  //             ApplicationSizing.verticalSpacer(),
+  //             YesNoQuestion(pressNo: () {  }, pressYes: () {  },
+  //               isChecked: carePlanVM.carePlanModel?.powerOfAttorney??false,
+  //               question: "Power of Attorney (Financial / Healthcare)",
+  //               textEditingController: carePlanVM.powerOfAttorneyController,
+  //             ),
+  //
+  //
+  //           ],
+  //         ),
+  //       ),
+  //       ApplicationSizing.verticalSpacer(),
+  //       Container(
+  //         padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
+  //         decoration: BoxDecoration(
+  //             borderRadius: BorderRadius.circular(10),
+  //             border: Border.all(
+  //               width: 1,
+  //               color: fontGrayColor,
+  //             )
+  //         ),
+  //         child: Container(
+  //           child: Column(
+  //             crossAxisAlignment: CrossAxisAlignment.start,
+  //             children: [
+  //               fourOptionQuestion(onOption1: () {  }, onOption2: () {  },
+  //                 selectedOption: carePlanVM.carePlanModel?.iLive?.toUpperCase().trim() == "alone".toUpperCase() ? 1
+  //                     : carePlanVM.carePlanModel?.iLive?.toUpperCase().trim() == "partner/spouse".toUpperCase() ? 2 :
+  //                 carePlanVM.carePlanModel?.iLive?.toUpperCase().trim() == "ExtendedFamily".toUpperCase() ? 3 :
+  //                 carePlanVM.carePlanModel?.iLive?.toUpperCase().trim() == "other".toUpperCase() ? 4 : 1,
+  //                 question: "I live",
+  //                 option1: "Alone",
+  //                 option2: "Partner/Spouse",
+  //                 option3: "Extended Family",
+  //                 option4: "Other",
+  //                 disableComment: true, onOption3: () {  }, onOption4: () {  },
+  //               ),
+  //             ],
+  //           ),
+  //         ),
+  //       ),
+  //       ApplicationSizing.verticalSpacer(),
+  //       Container(
+  //         padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
+  //         decoration: BoxDecoration(
+  //             borderRadius: BorderRadius.circular(10),
+  //             border: Border.all(
+  //               width: 1,
+  //               color: fontGrayColor,
+  //             )
+  //         ),
+  //         child: Container(
+  //           child: Column(
+  //             crossAxisAlignment: CrossAxisAlignment.start,
+  //             children: [
+  //               fourOptionQuestion(onOption1: () {  }, onOption2: () {  },
+  //                 selectedOption: carePlanVM.carePlanModel?.iLearnBestBy?.toUpperCase().trim() == "reading".toUpperCase() ? 1
+  //                     : carePlanVM.carePlanModel?.iLearnBestBy?.toUpperCase().trim() == "Beingtalkedto".toUpperCase() ? 2 :
+  //                 carePlanVM.carePlanModel?.iLearnBestBy?.toUpperCase().trim() == "Beingshowhow".toUpperCase() ? 3 :
+  //                 carePlanVM.carePlanModel?.iLearnBestBy?.toUpperCase().trim() == "listeningtotapes".toUpperCase() ? 4 : 1,
+  //                 question: "I learn best by",
+  //                 option1: "Reading",
+  //                 option2: "Being talked to",
+  //                 option3: "Being show how",
+  //                 option4: "Listening to tapes", onOption3: () {  }, onOption4: () {  },
+  //                 textEditingController: carePlanVM.iLearnBestByController,
+  //
+  //               ),
+  //             ],
+  //           ),
+  //         ),
+  //       ),
+  //       ApplicationSizing.verticalSpacer(),
+  //       Container(
+  //         padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
+  //         decoration: BoxDecoration(
+  //             borderRadius: BorderRadius.circular(10),
+  //             border: Border.all(
+  //               width: 1,
+  //               color: fontGrayColor,
+  //             )
+  //         ),
+  //         child: Container(
+  //           child: Column(
+  //             crossAxisAlignment: CrossAxisAlignment.start,
+  //             children: [
+  //               YesNoQuestion(
+  //                 question: "I have access to the Internet", pressYes: () {  }, pressNo: () {  }, isChecked: false,
+  //                 disableComment: carePlanVM.carePlanModel?.internetAccess??false,
+  //               ),
+  //             ],
+  //           ),
+  //         ),
+  //       ),
+  //       ApplicationSizing.verticalSpacer(),
+  //       Container(
+  //         padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
+  //         decoration: BoxDecoration(
+  //             borderRadius: BorderRadius.circular(10),
+  //             border: Border.all(
+  //               width: 1,
+  //               color: fontGrayColor,
+  //             )
+  //         ),
+  //         child: Container(
+  //           child: Column(
+  //             crossAxisAlignment: CrossAxisAlignment.start,
+  //             children: [
+  //               YesNoQuestion(
+  //                 question: "I have issues with Diet", pressYes: () {  }, pressNo: () {  },
+  //                 isChecked: carePlanVM.carePlanModel?.dietIssues??false,
+  //                 textEditingController: carePlanVM.dietIssuesController,
+  //               ),
+  //             ],
+  //           ),
+  //         ),
+  //       ),
+  //       ApplicationSizing.verticalSpacer(),
+  //       Container(
+  //         padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
+  //         decoration: BoxDecoration(
+  //             borderRadius: BorderRadius.circular(10),
+  //             border: Border.all(
+  //               width: 1,
+  //               color: fontGrayColor,
+  //             )
+  //         ),
+  //         child: Column(
+  //           crossAxisAlignment: CrossAxisAlignment.start,
+  //           children: [
+  //             Container(
+  //               child: Text("I am concerned about:",
+  //                 style: Styles.PoppinsRegular(
+  //                   fontWeight: FontWeight.w500,
+  //                   fontSize: ApplicationSizing.fontScale(16),
+  //                 ),
+  //               ),
+  //             ),
+  //             ApplicationSizing.verticalSpacer(),
+  //             Container(
+  //               child: Row(
+  //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //                 children: [
+  //                   Expanded(
+  //                     child: IsChallengeChecked(
+  //                       isChecked: carePlanVM.carePlanModel?.concernedAboutManagingChronicCondition??false,
+  //                       pressChecked: () {  },
+  //                       challengeName: "My ability to manage my chronic condition",
+  //                     ),
+  //                   ),
+  //                 ],
+  //               ),
+  //             ),
+  //             ApplicationSizing.verticalSpacer(n: 5),
+  //             Container(
+  //               child: Row(
+  //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //                 children: [
+  //                   Expanded(
+  //                     flex:3,
+  //                     child: IsChallengeChecked(
+  //                       isChecked: false,
+  //                       pressChecked: () {  },
+  //                       challengeName: "Financial issues",
+  //                     ),
+  //                   ),
+  //                   Expanded(
+  //                     flex:3,
+  //                     child: Container(
+  //                       child: IsChallengeChecked(
+  //                         isChecked: carePlanVM.carePlanModel?.concernedAboutEmotionalIssues??false,
+  //                         pressChecked: () {  },
+  //                         challengeName: "Emotional issues",
+  //                       ),
+  //                     ),
+  //                   ),
+  //                 ],
+  //               ),
+  //             ),
+  //             ApplicationSizing.verticalSpacer(n: 5),
+  //             Container(
+  //               child: Row(
+  //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //                 children: [
+  //                   Expanded(
+  //                     child: IsChallengeChecked(
+  //                       isChecked: false,
+  //                       pressChecked: () {  },
+  //                       challengeName: "Having access to Healthcare",
+  //                     ),
+  //                   ),
+  //                 ],
+  //               ),
+  //             ),
+  //             ApplicationSizing.verticalSpacer(n: 5),
+  //             Container(
+  //               child: Row(
+  //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //                 children: [
+  //                   Expanded(
+  //                     child: IsChallengeChecked(
+  //                       isChecked: false,
+  //                       pressChecked: () {  },
+  //                       challengeName: "My decrease energy level / Fatigue",
+  //                     ),
+  //                   ),
+  //                 ],
+  //               ),
+  //             ),
+  //             ApplicationSizing.verticalSpacer(n: 5),
+  //             Container(
+  //               child: Row(
+  //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //                 children: [
+  //                   Expanded(
+  //                     child: IsChallengeChecked(
+  //                       isChecked: false,
+  //                       pressChecked: () {  },
+  //                       challengeName: "Thinking or memory problems",
+  //                     ),
+  //                   ),
+  //                 ],
+  //               ),
+  //             ),
+  //             ApplicationSizing.verticalSpacer(n: 5),
+  //             Container(
+  //               child: Row(
+  //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //                 children: [
+  //                   Expanded(
+  //                     flex: 1,
+  //                     child: IsChallengeChecked(
+  //                       isChecked: false,
+  //                       pressChecked: () {  },
+  //                       challengeName: "Spiritual issues",
+  //                     ),
+  //                   ),
+  //                   Expanded(
+  //                     flex: 1,
+  //                     child: IsChallengeChecked(
+  //                       isChecked: carePlanVM.carePlanModel?.concernedAboutFamilyIssues??false,
+  //                       pressChecked: () {  },
+  //                       challengeName: "Family issues",
+  //                     ),
+  //                   ),
+  //                 ],
+  //               ),
+  //             ),
+  //             ApplicationSizing.verticalSpacer(n: 5),
+  //             Container(
+  //               child: Row(
+  //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //                 children: [
+  //                   Expanded(
+  //                     child: IsChallengeChecked(
+  //                       isChecked: false,
+  //                       pressChecked: () {  },
+  //                       challengeName: "End of life issues",
+  //                     ),
+  //                   ),
+  //                 ],
+  //               ),
+  //             ),
+  //             ApplicationSizing.verticalSpacer(),
+  //             Container(
+  //               child: Text("Other Comments",
+  //                 style: Styles.PoppinsRegular(
+  //                     fontWeight: FontWeight.w500,
+  //                     fontSize: ApplicationSizing.fontScale(16),
+  //                     color: fontGrayColor
+  //                 ),
+  //               ),
+  //             ),
+  //             Container(
+  //               margin: EdgeInsets.symmetric(
+  //                   horizontal: 5,
+  //                   vertical: 5
+  //               ),
+  //               child: CustomTextArea(
+  //                 onchange: (val){}, onSubmit: (val){},
+  //                 isEnable: false,
+  //                 hints: "Comments..",
+  //                 textEditingController: carePlanVM.concernedAboutOtherController,
+  //               ),
+  //             )
+  //           ],
+  //         ),
+  //       ),
+  //
+  //     ],
+  //   );
+  // }
+  advanceDirectivesSection({required CarePlanVM carePlanVM}){
+    return Column(
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: Container(
+                padding: EdgeInsets.symmetric(
+                    horizontal: ApplicationSizing.horizontalMargin()),
+                decoration: boxDecoration,
+                child: Container(
+                  margin: EdgeInsets.symmetric(vertical: 3),
+                  child: Row(
+                    children: [
+                      Text(
+                        "Advance Directives Section",
+                        style: Styles.PoppinsRegular(
+                            fontWeight: FontWeight.w700,
+                            fontSize: ApplicationSizing.fontScale(15),
+                            color: Colors.white),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        ApplicationSizing.verticalSpacer(),
+        YesNoQuestion(pressNo: () {  }, pressYes: () {  },
+          isChecked: carePlanVM.carePlanModel?.advancedDirectivesPlans??false,
+          question: "Are your Advanced Directives Plans in place?",
+          disableComment: true,
+        ),
+        ApplicationSizing.verticalSpacer(),
+        YesNoQuestion(pressNo: () {  }, pressYes: () {  },
+          isChecked: carePlanVM.carePlanModel?.discussWithPhysician??false,
+          question: "Would you like to discuss this further with your physician?",
+          textEditingController: carePlanVM.discussWithPhysicianController,
+        ),
+        ApplicationSizing.verticalSpacer(),
+      ],
+    );
+  }
   _goals({required CarePlanVM carePlanVM}){
     return Column(
       children: [
@@ -713,6 +1642,51 @@ class CarePlan extends HookWidget {
           ),
         ),
         ApplicationSizing.verticalSpacer(),
+      ],
+    );
+  }
+
+  chronicCondition({required CarePlanVM carePlanVM}){
+    return Column(
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: Container(
+                padding: EdgeInsets.symmetric(
+                    horizontal: ApplicationSizing.horizontalMargin()),
+                decoration: boxDecoration,
+                child: Container(
+                  margin: EdgeInsets.symmetric(vertical: 3),
+                  child: Row(
+                    children: [
+                      Text(
+                        "Chronic Condition",
+                        style: Styles.PoppinsRegular(
+                            fontWeight: FontWeight.w700,
+                            fontSize: ApplicationSizing.fontScale(15),
+                            color: Colors.white),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        ApplicationSizing.verticalSpacer(),
+        TextFieldQuestion(question: "Chronic Obstructive Pulmonary Disease and Bronchiectasi",
+            textEditingController:carePlanVM.chronicObstructiveController),
+        ApplicationSizing.verticalSpacer(),
+
+        TextFieldQuestion(question: "Asthma",
+            textEditingController:carePlanVM.asthmaController),
+
+        ApplicationSizing.verticalSpacer(),
+
+        TextFieldQuestion(question: "Depression",
+            textEditingController:carePlanVM.depressionController),
+
       ],
     );
   }

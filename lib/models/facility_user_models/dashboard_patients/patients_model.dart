@@ -58,6 +58,7 @@ class PatientsModel {
 
   /// not in model
   bool? isActve;
+  int? age;
 
 
   PatientsModel(
@@ -117,7 +118,8 @@ class PatientsModel {
         this.isRPMRevoked,
         this.ccmFlagged,
         this.lastAppLaunchDate,
-        this.isActve = false
+        this.isActve = false,
+        this.age
       });
 
   PatientsModel.fromJson(Map<String, dynamic> json) {

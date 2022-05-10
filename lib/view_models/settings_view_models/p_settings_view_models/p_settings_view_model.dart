@@ -3,7 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/patient_profile_service.dart';
 import 'package:twochealthcare/services/settings_services/p_settings_services/p_settings_service.dart';
-import 'package:twochealthcare/util/conversion.dart';
+import 'package:twochealthcare/util/data_format.dart';
 
 class PSettingsViewModel extends ChangeNotifier{
   bool getBlueButtonUrlLoading = false;

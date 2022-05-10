@@ -147,7 +147,8 @@ class FUProfile extends HookWidget {
                               VerifiedInfo(isVerified: fuProfileVM.fuProfileModel?.isPhoneNumberVerified?? false,
                                 textInfo: fuProfileVM.fuProfileModel?.phoneNo ?? "",
                                 textInfoTitle: "Phone No.",
-                                ontap: fuProfileVM.fuProfileModel?.isPhoneNumberVerified?? false ? (){
+                                ontap: fuProfileVM.fuProfileModel?.isPhoneNumberVerified?? false ? null :
+                                    (){
                                   // Navigator.push(context,
                                   //     PageTransition(child: OtpVerification(userName: fuProfileVM.fuProfileModel?.userName??"",
                                   //       phone: fuProfileVM.fuProfileModel?.phoneNo,
@@ -155,7 +156,7 @@ class FUProfile extends HookWidget {
                                   //       userId: fuProfileVM.fuProfileModel?.userName??"",
                                   //     ), type: PageTransitionType.leftToRight)
                                   // );
-                                } : null,
+                                },
                               ),
 
                               keyValue(
@@ -170,7 +171,8 @@ class FUProfile extends HookWidget {
                               VerifiedInfo(isVerified: fuProfileVM.fuProfileModel?.isEmailVerified?? false,
                                 textInfo: fuProfileVM.fuProfileModel?.email ?? "",
                                 textInfoTitle: "Email",
-                                ontap: fuProfileVM.fuProfileModel?.isEmailVerified?? false ? (){
+                                ontap: fuProfileVM.fuProfileModel?.isEmailVerified?? false ? null
+                                :(){
                                   // Navigator.push(context,
                                   //     PageTransition(child: OtpVerification(userName: fuProfileVM.fuProfileModel?.userName??"",
                                   //       phone: fuProfileVM.fuProfileModel?.phoneNo,
@@ -178,7 +180,7 @@ class FUProfile extends HookWidget {
                                   //       userId: fuProfileVM.fuProfileModel?.userName??"",
                                   //     ), type: PageTransitionType.leftToRight)
                                   // );
-                                } : null,
+                                },
                               ),
                             ],
                           ),

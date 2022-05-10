@@ -28,6 +28,19 @@ class PatientProfileService{
         if(patientInfo.dateOfBirth != null){
           patientInfo.dateOfBirth = Jiffy(patientInfo.dateOfBirth).format(Strings.dateFormatFullYear);
         }
+        if(patientInfo.specialists != null ){
+          patientInfo.specialists?.forEach((element) {
+            if(element.prevAppointment != null && element.prevAppointment != ""){
+              element.prevAppointment = Jiffy(element.prevAppointment).format(Strings.dateFormatFullYear);
+            }
+            if(element.prevAppointment != null && element.prevAppointment != ""){
+              element.nextAppointment = Jiffy(element.nextAppointment).format(Strings.dateFormatFullYear);
+            }
+
+
+          });
+        }
+
         return patientInfo;
 
       }else{
@@ -94,6 +107,7 @@ class PatientProfileService{
     }
 
   }
+
   Future<dynamic> getStatesList() async {
     try{
       final dio = _ref!.read(dioServicesProvider);

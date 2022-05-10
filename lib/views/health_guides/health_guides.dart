@@ -13,7 +13,7 @@ import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/application_route_service.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
-import 'package:twochealthcare/util/conversion.dart';
+import 'package:twochealthcare/util/data_format.dart';
 import 'package:twochealthcare/util/styles.dart';
 import 'package:twochealthcare/view_models/health_guides_vm/health_guides_vm.dart';
 import 'package:twochealthcare/views/health_guides/in_app_browser.dart';

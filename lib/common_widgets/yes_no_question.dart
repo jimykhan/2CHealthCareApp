@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:twochealthcare/common_widgets/input_field/custom_text_erea.dart';
+import 'package:twochealthcare/common_widgets/input_field/custom_text_field.dart';
 import 'package:twochealthcare/common_widgets/radio-button.dart';
 import 'package:twochealthcare/common_widgets/toggle_button.dart';
 import 'package:twochealthcare/util/application_colors.dart';
@@ -23,6 +24,14 @@ class YesNoQuestion extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(
+            width: 1,
+            color: fontGrayColor,
+          )
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -126,6 +135,14 @@ class fourOptionQuestion extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(
+            width: 1,
+            color: fontGrayColor,
+          )
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -211,6 +228,58 @@ class fourOptionQuestion extends StatelessWidget {
               )
             ],
           )
+        ],
+      ),
+    );
+
+  }
+}
+
+class TextFieldQuestion extends StatelessWidget {
+  String? question;
+  TextEditingController? textEditingController;
+  bool isTextArea;
+  TextFieldQuestion({this.textEditingController,this.question,this.isTextArea = true, Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(
+            width: 1,
+            color: fontGrayColor,
+          )
+      ),
+      child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                child: Text(question??"Other Comments",
+                  style: Styles.PoppinsRegular(
+                    fontWeight: FontWeight.w500,
+                    fontSize: ApplicationSizing.fontScale(16),
+                  ),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(
+                    horizontal: 5,
+                    vertical: 5
+                ),
+                child: isTextArea ? CustomTextArea(
+                  onchange: (val){}, onSubmit: (val){},
+                  isEnable: false,
+                  hints: "Comments..",
+                  textEditingController: textEditingController,
+                ) : CustomTextField(
+                    onchange: (val){}, onSubmit: (val){},
+                  isEnable: false,
+                  hints: "Comments..",
+                  textEditingController: textEditingController,
+                ),
+              )
         ],
       ),
     );

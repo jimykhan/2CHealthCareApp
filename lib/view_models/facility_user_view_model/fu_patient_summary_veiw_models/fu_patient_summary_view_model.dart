@@ -4,6 +4,7 @@ import 'package:jiffy/jiffy.dart';
 import 'package:twochealthcare/constants/strings.dart';
 import 'package:twochealthcare/models/facility_user_models/dashboard_patients/patients_for_dashboard.dart';
 import 'package:twochealthcare/models/facility_user_models/dashboard_patients/patients_model.dart';
+import 'package:twochealthcare/models/facility_user_models/fu_profile_models/fu_profile_model.dart';
 import 'package:twochealthcare/models/patient_summary/allergy_model.dart';
 import 'package:twochealthcare/models/patient_summary/diagnose_model.dart';
 import 'package:twochealthcare/models/patient_summary/family_history_model.dart';
@@ -13,6 +14,7 @@ import 'package:twochealthcare/models/patient_summary/surgical_history_model.dar
 import 'package:twochealthcare/models/profile_models/current_user_info_model.dart';
 import 'package:twochealthcare/models/profile_models/specialists_model.dart';
 import 'package:twochealthcare/providers/providers.dart';
+import 'package:twochealthcare/services/facility_user_services/facility_service.dart';
 import 'package:twochealthcare/services/facility_user_services/patient_summary_service.dart';
 import 'package:twochealthcare/services/patient_profile_service.dart';
 import 'package:twochealthcare/views/care_plan/care_plan.dart';
@@ -27,9 +29,11 @@ import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class FUPatientSummaryVM extends ChangeNotifier{
+  FUProfileModel? billingProvider;
   PatientsModel? summaryPatientsModel;
   bool isLoading = false;
   PatientSummaryService? _patientSummaryService;
+  FacilityService? _facilityService;
   PatientProfileService? _patientProfileService;
   ItemScrollController? categoryScrollController;
 
@@ -57,9 +61,13 @@ class FUPatientSummaryVM extends ChangeNotifier{
     _ref = ref;
     initService();
   }
+   int? _patientId(){
+    return patientInfo?.id;
+  }
   initService(){
      _patientSummaryService = _ref!.read(patientSummaryServiceProvider);
      _patientProfileService = _ref!.read(PatientProfileServiceProvider);
+     _facilityService = _ref!.read(facilityServiceProvider);
      categoryScrollController = ItemScrollController();
   }
   String setMedicationUrl({required String rxCui}){
@@ -191,10 +199,13 @@ class FUPatientSummaryVM extends ChangeNotifier{
   getPatientInfoById()async{
     try{
       setIsLoading(true);
+      patientInfo = null;
       var res = await _patientProfileService?.getUserInfo(currentUserId : summaryPatientsModel?.id??-1);
       if(res !=null && res is PatientInfo){
         patientInfo = res;
         setIsLoading(false);
+        if(patientInfo?.billingProviderId != null)
+        billingProvider = await _facilityService?.getFuProfileInfo(Id: patientInfo!.billingProviderId!);
       }else{
         setIsLoading(false);
       }
@@ -208,8 +219,6 @@ class FUPatientSummaryVM extends ChangeNotifier{
   getProviderByPatientId(){
     providerList = [];
     patientInfo?.specialists?.forEach((element) {
-        element.prevAppointment = Jiffy(element.prevAppointment).format(Strings.dateFormatFullYear);
-        element.nextAppointment = Jiffy(element.nextAppointment).format(Strings.dateFormatFullYear);
       providerList.add(element);
     });
     setIsLoading(false);

@@ -14,6 +14,7 @@ import 'package:twochealthcare/common_widgets/loader.dart';
 import 'package:twochealthcare/common_widgets/mask_formatter.dart';
 import 'package:twochealthcare/common_widgets/notification_widget.dart';
 import 'package:twochealthcare/constants/strings.dart';
+import 'package:twochealthcare/models/profile_models/current_user_info_model.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/application_route_service.dart';
 import 'package:twochealthcare/util/application_colors.dart';
@@ -42,7 +43,7 @@ class EditEmergencyContact extends HookWidget {
       },
       const [],
     );
-    return Scaffold(
+    return  Scaffold(
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(ApplicationSizing.convert(80)),
           child: CustomAppBar(

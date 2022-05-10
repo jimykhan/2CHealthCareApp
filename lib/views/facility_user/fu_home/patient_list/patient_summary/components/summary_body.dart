@@ -48,49 +48,158 @@ class SummaryBody extends HookWidget {
                   ? AlertLoader(bottomMargin: 350)
                   : _fuPatientSummaryVM.patientInfo == null
                       ? NoData()
-                      : Container(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 20, horizontal: 15),
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                color: fontGrayColor.withOpacity(0.3),
-                              ),
-                              borderRadius: BorderRadius.circular(15)),
-                          child: Column(
-                            children: [
-                              keyValue(
-                                  key:  "Phone No.",
-                                  value: mask.getMaskedString(_fuPatientSummaryVM
-                                      .patientInfo?.homePhone ??
-                                      "")),
-                              keyValue(
-                                  key: "Secondary No.",
-                                  value: mask.getMaskedString(_fuPatientSummaryVM
-                                      .patientInfo?.emergencyContactSecondaryPhoneNo ??
-                                      "")),
-                              keyValue(
-                                  key: "Date of Birth",
-                                  value: _fuPatientSummaryVM
+                      : Column(
+                        children: [
+                          Container(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 20, horizontal: 15),
+                              decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: fontGrayColor.withOpacity(0.3),
+                                  ),
+                                  borderRadius: BorderRadius.circular(15)),
+                              child: Column(
+                                children: [
+                                  keyValue(
+                                      key:  "EMR Id",
+                                      value: _fuPatientSummaryVM
+                                          .patientInfo?.patientEmrId ??
+                                          ""),
+                                  keyValue(
+                                      key: "Date of Birth",
+                                      value: _fuPatientSummaryVM
                                           .patientInfo?.dateOfBirth ??
-                                      ""),
-                              keyValue(
-                                  key:  "Billing Provider",
-                                  value: _fuPatientSummaryVM
-                                      .patientInfo?.billingProviderName ??
-                                      ""),
-                              keyValue(
-                                  key:  "Care Provider",
-                                  value: _fuPatientSummaryVM
-                                      .patientInfo?.careFacilitatorName ??
-                                      ""),
-                              keyValue(
-                                  key:  "Insurance Plan",
-                                  value: _fuPatientSummaryVM
-                                      .patientInfo?.insurancePlanName ??
-                                      ""),
-                            ],
+                                          ""),
+                                  keyValue(
+                                      key: "User Name",
+                                      value: _fuPatientSummaryVM
+                                          .patientInfo?.userName ??
+                                          ""),
+                                  keyValue(
+                                      key:  "Primary Phone No",
+                                      value: mask.getMaskedString(_fuPatientSummaryVM
+                                          .patientInfo?.homePhone ??
+                                          "")),
+                                  keyValue(
+                                      key: "Secondary Phone No",
+                                      value: mask.getMaskedString(_fuPatientSummaryVM
+                                          .patientInfo?.emergencyContactSecondaryPhoneNo ??
+                                          "")),
+                                ],
+                              ),
+                            ),
+                          SizedBox(height: 10,),
+                          Container(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 20, horizontal: 15),
+                              decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: fontGrayColor.withOpacity(0.3),
+                                  ),
+                                  borderRadius: BorderRadius.circular(15)),
+                              child: Column(
+                                children: [
+                                  keyValue(
+                                      key:  "Contact Name",
+                                      value: _fuPatientSummaryVM
+                                          .patientInfo?.emergencyContactName ??
+                                          ""),
+                                  keyValue(
+                                      key: "Contact Relationship",
+                                      value: _fuPatientSummaryVM
+                                          .patientInfo?.emergencyContactRelationship ??
+                                          ""),
+                                  keyValue(
+                                      key:  "Primary Contact No",
+                                      value: mask.getMaskedString(_fuPatientSummaryVM
+                                          .patientInfo?.emergencyContactPrimaryPhoneNo ??
+                                          "")),
+                                  keyValue(
+                                      key: "Secondary Contact No",
+                                      value: mask.getMaskedString(_fuPatientSummaryVM
+                                          .patientInfo?.emergencyContactSecondaryPhoneNo ??
+                                          "")),
+                                ],
+                              ),
+                            ),
+
+                          SizedBox(height: 10,),
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 20, horizontal: 15),
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: fontGrayColor.withOpacity(0.3),
+                                ),
+                                borderRadius: BorderRadius.circular(15)),
+                            child: Column(
+                              children: [
+                                keyValue(
+                                    key:  "Billing Provider",
+                                    value: _fuPatientSummaryVM
+                                        .patientInfo?.billingProviderName ??
+                                        ""),
+                                keyValue(
+                                    key: "Care Provider",
+                                    rightWidget: Wrap(
+                                      direction: Axis.horizontal,
+                                      children: _fuPatientSummaryVM.patientInfo != null ?
+                                          _fuPatientSummaryVM.patientInfo!.careProviders != null ?
+                                          _fuPatientSummaryVM.patientInfo!.careProviders!.map((e) =>
+                                              Container(
+                                                padding: EdgeInsets.all(2),
+                                                decoration: BoxDecoration(
+                                                  color: appColorSecondary,
+                                                  shape: BoxShape.circle
+                                                ),
+                                                child: Text("${e.nameAbbreviation}",
+                                                  style: Styles.PoppinsRegular(
+                                                    color: Colors.white,
+                                                    fontSize: 12
+                                                  ),
+                                                ),)
+                                          ).toList() : []
+                                          : []
+                                    ),),
+                                keyValue(
+                                    key:  "Insurance Plan",
+                                    value: _fuPatientSummaryVM
+                                        .patientInfo?.insurancePlanName ??
+                                        ""),
+                              ],
+                            ),
                           ),
-                        )
+
+                          SizedBox(height: 10,),
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 20, horizontal: 15),
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: fontGrayColor.withOpacity(0.3),
+                                ),
+                                borderRadius: BorderRadius.circular(15)),
+                            child: Column(
+                              children: [
+                                keyValue(
+                                    key:  "Last CCM",
+                                    value: _fuPatientSummaryVM
+                                        .patientInfo?.currentMonthCompletedTime ??
+                                        ""),
+                                keyValue(
+                                    key: "PCM Appointment Date",
+                                    value: _fuPatientSummaryVM.patientInfo?.consentDate??""),
+                                keyValue(
+                                    key:  "Hospitalization Date",
+                                    value: _fuPatientSummaryVM
+                                        .patientInfo?.consentDate ??
+                                        ""),
+                              ],
+                            ),
+                          ),
+
+                        ],
+                      )
             ],
           ),
         ],
@@ -98,7 +207,7 @@ class SummaryBody extends HookWidget {
     );
   }
 
-  keyValue({required String key, required String value}) {
+  keyValue({required String key, String? value,Widget? rightWidget}) {
     return Container(
       padding: EdgeInsets.only(bottom: 10, top: 10),
       decoration: BoxDecoration(
@@ -122,7 +231,7 @@ class SummaryBody extends HookWidget {
           Expanded(
             child: Container(
               alignment: Alignment.centerRight,
-              child: Text(
+              child: value == null ? rightWidget?? Container()  : Text(
                 value,
                 style:
                     Styles.PoppinsRegular(color: Color(0xff4EAF48), fontSize: 14),

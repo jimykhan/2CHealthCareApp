@@ -5,6 +5,8 @@ import 'package:hooks_riverpod/all.dart';
 import 'package:twochealthcare/common_widgets/alert_loader.dart';
 import 'package:twochealthcare/common_widgets/no_data_inlist.dart';
 import 'package:twochealthcare/common_widgets/verification_mark.dart';
+import 'package:twochealthcare/models/facility_user_models/dashboard_patients/patients_model.dart';
+import 'package:twochealthcare/models/facility_user_models/fu_profile_models/fu_profile_model.dart';
 import 'package:twochealthcare/models/patient_summary/allergy_model.dart';
 import 'package:twochealthcare/models/patient_summary/diagnose_model.dart';
 import 'package:twochealthcare/models/patient_summary/family_history_model.dart';
@@ -15,8 +17,10 @@ import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
 import 'package:twochealthcare/view_models/facility_user_view_model/fu_patient_summary_veiw_models/fu_patient_summary_view_model.dart';
+import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_summary/components/billing_provider_tile.dart';
 import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_summary/components/common_container.dart';
 import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_summary/components/headline_text_style.dart';
+import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_summary/components/user_info_tile.dart';
 
 class ProviderBody extends HookWidget {
   ProviderBody({Key? key}) : super(key: key);
@@ -44,8 +48,13 @@ class ProviderBody extends HookWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           HeadLineTextStyle(
-            text: "Care Provider",
+            text: "Billing Provider",
           ),
+          BillingProviderTile(billingProvider: _fuPatientSummaryVM.billingProvider?? FUProfileModel(),),
+          HeadLineTextStyle(
+            text: "Other Providers",
+          ),
+
           SizedBox(
             height: 15,
           ),
@@ -98,15 +107,17 @@ class ProviderBody extends HookWidget {
                                   fontSize: ApplicationSizing.constSize(18),
                                   color: Colors.black),
                             ),
-                            Text(
-                              provider.specialty == null ||
-                                      provider.specialty == ""
-                                  ? ""
-                                  : " (${provider.specialty ?? ""} )",
-                              style: Styles.PoppinsRegular(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: ApplicationSizing.constSize(12),
-                                  color: appColorSecondary),
+                            Expanded(
+                              child: Text(
+                                provider.specialty == null ||
+                                        provider.specialty == ""
+                                    ? ""
+                                    : " (${provider.specialty ?? ""} )",
+                                style: Styles.PoppinsRegular(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: ApplicationSizing.constSize(12),
+                                    color: appColorSecondary),
+                              ),
                             ),
                             // Container(
                             //     padding: EdgeInsets.symmetric(horizontal: 10),
@@ -130,8 +141,7 @@ class ProviderBody extends HookWidget {
                   // color: Colors.red,
                   child: Row(
                     children: [
-                      Text(
-                        "Previous Appointment: ",
+                      Text("Previous Appointment: ",
                         style: Styles.PoppinsRegular(
                           fontSize: ApplicationSizing.constSize(10),
                           fontWeight: FontWeight.w500,

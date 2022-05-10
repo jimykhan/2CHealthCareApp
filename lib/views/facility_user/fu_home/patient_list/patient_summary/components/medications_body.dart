@@ -123,7 +123,7 @@ class MedicationsBody extends HookWidget {
                       height: 15,
                     ),
                     Container(
-                      // color: Colors.black,
+                      // color: Colors.blueGrey,
                       child: Row(
                         children: [
                           Expanded(
@@ -140,12 +140,14 @@ class MedicationsBody extends HookWidget {
                                       color: Colors.black,
                                     ),
                                   ),
-                                  Text(
-                                    medicationModel.startDate ?? "Dec 12 2020",
-                                    style: Styles.PoppinsRegular(
-                                      fontSize: ApplicationSizing.constSize(10),
-                                      fontWeight: FontWeight.w500,
-                                      color: appColor,
+                                  Expanded(
+                                    child: Text(
+                                      medicationModel.startDate ?? "",
+                                      style: Styles.PoppinsRegular(
+                                        fontSize: ApplicationSizing.constSize(10),
+                                        fontWeight: FontWeight.w500,
+                                        color: appColor,
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -168,12 +170,14 @@ class MedicationsBody extends HookWidget {
                                       color: Colors.black,
                                     ),
                                   ),
-                                  Text(
-                                    medicationModel.stopDate ?? "Dec 12 2021",
-                                    style: Styles.PoppinsRegular(
-                                      fontSize: ApplicationSizing.constSize(10),
-                                      fontWeight: FontWeight.w500,
-                                      color: appColor,
+                                  Expanded(
+                                    child: Text(
+                                      medicationModel.stopDate ?? "",
+                                      style: Styles.PoppinsRegular(
+                                        fontSize: ApplicationSizing.constSize(10),
+                                        fontWeight: FontWeight.w500,
+                                        color: appColor,
+                                      ),
                                     ),
                                   ),
                                 ],

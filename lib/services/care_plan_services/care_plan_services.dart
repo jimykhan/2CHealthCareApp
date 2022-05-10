@@ -20,10 +20,10 @@ class CarePlanServices{
   }
 
 
-  Future<dynamic> getCarePlanByPatientId() async{
+  Future<dynamic> getCarePlanByPatientId({int? Id}) async{
     try{
       int patientId = await _authServices!.getCurrentUserId();
-      Response response = await _dioServices!.dio!.get(ApiStrings.getCarePlanMasterByPatientId+"/$patientId");
+      Response response = await _dioServices!.dio!.get(ApiStrings.getCarePlanMasterByPatientId+"/${Id??patientId}");
       if(response.statusCode == 200){
         CarePlanModel carePlanModel = CarePlanModel.fromJson(response.data);
         return carePlanModel;

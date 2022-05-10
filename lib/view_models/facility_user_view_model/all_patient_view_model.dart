@@ -55,6 +55,7 @@ class AllPatientVM extends ChangeNotifier{
     searchParam: searchParam);
     if(res!=null){
       PatientsForDashboard newPList = res as PatientsForDashboard;
+
       if(newPList != null && newPList.patientsList!.isNotEmpty){
         if(patientListPageNumber == 1){
           patientsForDashboard = newPList;

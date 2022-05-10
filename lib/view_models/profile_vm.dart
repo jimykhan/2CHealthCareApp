@@ -12,7 +12,7 @@ import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
 import 'package:twochealthcare/services/patient_profile_service.dart';
 import 'package:twochealthcare/services/shared_pref_services.dart';
-import 'package:twochealthcare/util/conversion.dart';
+import 'package:twochealthcare/util/data_format.dart';
 import 'package:twochealthcare/views/home/profile.dart';
 
 class ProfileVm extends ChangeNotifier{

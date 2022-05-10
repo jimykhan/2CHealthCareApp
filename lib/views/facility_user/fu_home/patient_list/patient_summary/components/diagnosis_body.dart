@@ -219,12 +219,14 @@ class DiagnosisBody extends HookWidget {
                           color: appColorSecondary,
                         ),
                       ),
-                      Text(
-                        diagnoseModel.diagnosisDate??"",
-                        style: Styles.PoppinsRegular(
-                          fontSize: ApplicationSizing.constSize(10),
-                          fontWeight: FontWeight.w500,
-                          color: appColor,
+                      Expanded(
+                        child: Text(
+                          diagnoseModel.diagnosisDate??"",
+                          style: Styles.PoppinsRegular(
+                            fontSize: ApplicationSizing.constSize(10),
+                            fontWeight: FontWeight.w500,
+                            color: appColor,
+                          ),
                         ),
                       ),
                     ],

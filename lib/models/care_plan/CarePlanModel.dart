@@ -1,11 +1,6 @@
 class CarePlanModel {
-  int? id;
-  String? dateUpdated;
   bool? challengesWithTransportation;
-  bool? challengesWithVision;
-  bool? challengesWithHearing;
-  bool? challengesWithMobility;
-  String? challengesWithEnglish;
+  bool? challengesWithEnglish;
   String? challengesComments;
   bool? religionImpactsOnHealthCare;
   String? religionImpactOnHealthCareComments;
@@ -15,26 +10,21 @@ class CarePlanModel {
   String? polstComments;
   bool? powerOfAttorney;
   String? powerOfAttorneyComments;
-  Null? accomodation;
+  String? accomodation;
   String? iLearnBestBy;
-  bool? internetAccess;
   bool? dietIssues;
   String? dietIssuesComments;
   bool? concernedAboutManagingChronicCondition;
-  String? concernedAboutFinantialIssues;
-  String? concernedAboutAccessToHealthCare;
-  String? concernedAboutEnergyLevelFatigue;
+  bool? concernedAboutFinantialIssues;
+  bool? concernedAboutAccessToHealthCare;
+  bool? concernedAboutEnergyLevelFatigue;
   bool? concernedAboutEmotionalIssues;
   bool? concernedAboutFamilyIssues;
   bool? concernedAboutSpiritualSupport;
-  String? concernedAboutMemoryProblems;
-  String? concernedAboutEndOfLife;
+  bool? concernedAboutMemoryProblems;
+  bool? concernedAboutEndOfLife;
   String? concernedAboutOther;
   bool? isApprovedByBillingProvider;
-  int? satisfactionWithMedicalCare;
-  String? satisfactionComment;
-  String? wantToImproveOnComment;
-  String? iLive;
   String? iLearnBestByComment;
   bool? isG0506;
   int? patientId;
@@ -42,14 +32,67 @@ class CarePlanModel {
   CarePlanApproval? carePlanApproval;
   String? currentApprovalUpdatedOn;
   String? lastApprovedDate;
+  String? updatedOn;
+  String? updatedUser;
+  int? id;
+  String? physicianSuggestedDietPlan;
+  bool? challengesWithVision;
+  bool? challengesWithHearing;
+  bool? challengesWithMobility;
+  String? physicalNote;
+  bool? dailyLivingBath;
+  bool? dailyLivingWalk;
+  bool? dailyLivingDress;
+  bool? dailyLivingEat;
+  bool? dailyLivingTransfer;
+  bool? dailyLivingRestroom;
+  bool? dailyLivingNone;
+  String? dailyLivingActivitiesNote;
+  bool? instrumentalDailyGrocery;
+  bool? instrumentalDailyTelephone;
+  bool? instrumentalDailyHouseWork;
+  bool? instrumentalDailyFinances;
+  bool? instrumentalDailyTransportation;
+  bool? instrumentalDailyMeals;
+  bool? instrumentalDailyMedication;
+  bool? instrumentalDailyNone;
+  String? instrumentalDailyActivitiesNote;
+  int? littleInterest;
+  int? feelingDown;
+  String? psychosocialNote;
+  String? helpWithTransportation;
+  String? iLive;
+  bool? internetAccess;
+  bool? cellPhone;
+  String? cellPhoneNumber;
+  bool? textMessages;
+  String? emergencyContactName;
+  String? emergencyContactRelationship;
+  String? emergencyContactPrimaryPhoneNo;
+  String? emergencyContactSecondaryPhoneNo;
+  String? careGiverContactName;
+  String? careGiverContactRelationship;
+  String? careGiverContactPrimaryPhoneNo;
+  String? careGiverContactSecondaryPhoneNo;
+  String? careGiverNote;
+  String? esl;
+  String? utilizingCommunity;
+  bool? advancedDirectivesPlans;
+  bool? discussWithPhysician;
+  String? advanceDirectivesNote;
+  int? satisfactionWithMedicalCare;
+  String? satisfactionComment;
+  String? wantToImproveOnComment;
+  bool? isCCMConsentTaken;
+  String? ccmStartedDate;
+  String? billingProviderName;
+  List<String>? careCoordinatorName;
+  int? carePlanStatusColor;
+  List<String>? dailyLiving;
+  List<String>? instrumentalDaily;
 
   CarePlanModel(
-      {this.id,
-        this.dateUpdated,
-        this.challengesWithTransportation,
-        this.challengesWithVision,
-        this.challengesWithHearing,
-        this.challengesWithMobility,
+      {this.challengesWithTransportation,
         this.challengesWithEnglish,
         this.challengesComments,
         this.religionImpactsOnHealthCare,
@@ -62,7 +105,6 @@ class CarePlanModel {
         this.powerOfAttorneyComments,
         this.accomodation,
         this.iLearnBestBy,
-        this.internetAccess,
         this.dietIssues,
         this.dietIssuesComments,
         this.concernedAboutManagingChronicCondition,
@@ -76,25 +118,74 @@ class CarePlanModel {
         this.concernedAboutEndOfLife,
         this.concernedAboutOther,
         this.isApprovedByBillingProvider,
-        this.satisfactionWithMedicalCare,
-        this.satisfactionComment,
-        this.wantToImproveOnComment,
-        this.iLive,
         this.iLearnBestByComment,
         this.isG0506,
         this.patientId,
         this.status,
         this.carePlanApproval,
         this.currentApprovalUpdatedOn,
-        this.lastApprovedDate});
+        this.lastApprovedDate,
+        this.updatedOn,
+        this.updatedUser,
+        this.id,
+        this.physicianSuggestedDietPlan,
+        this.challengesWithVision,
+        this.challengesWithHearing,
+        this.challengesWithMobility,
+        this.physicalNote,
+        this.dailyLivingBath,
+        this.dailyLivingWalk,
+        this.dailyLivingDress,
+        this.dailyLivingEat,
+        this.dailyLivingTransfer,
+        this.dailyLivingRestroom,
+        this.dailyLivingNone,
+        this.dailyLivingActivitiesNote,
+        this.instrumentalDailyGrocery,
+        this.instrumentalDailyTelephone,
+        this.instrumentalDailyHouseWork,
+        this.instrumentalDailyFinances,
+        this.instrumentalDailyTransportation,
+        this.instrumentalDailyMeals,
+        this.instrumentalDailyMedication,
+        this.instrumentalDailyNone,
+        this.instrumentalDailyActivitiesNote,
+        this.littleInterest,
+        this.feelingDown,
+        this.psychosocialNote,
+        this.helpWithTransportation,
+        this.iLive,
+        this.internetAccess,
+        this.cellPhone,
+        this.cellPhoneNumber,
+        this.textMessages,
+        this.emergencyContactName,
+        this.emergencyContactRelationship,
+        this.emergencyContactPrimaryPhoneNo,
+        this.emergencyContactSecondaryPhoneNo,
+        this.careGiverContactName,
+        this.careGiverContactRelationship,
+        this.careGiverContactPrimaryPhoneNo,
+        this.careGiverContactSecondaryPhoneNo,
+        this.careGiverNote,
+        this.esl,
+        this.utilizingCommunity,
+        this.advancedDirectivesPlans,
+        this.discussWithPhysician,
+        this.advanceDirectivesNote,
+        this.satisfactionWithMedicalCare,
+        this.satisfactionComment,
+        this.wantToImproveOnComment,
+        this.isCCMConsentTaken,
+        this.ccmStartedDate,
+        this.billingProviderName,
+        this.careCoordinatorName,
+        this.carePlanStatusColor,
+        this.dailyLiving,
+        this.instrumentalDaily});
 
   CarePlanModel.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    dateUpdated = json['dateUpdated'];
     challengesWithTransportation = json['challengesWithTransportation'];
-    challengesWithVision = json['challengesWithVision'];
-    challengesWithHearing = json['challengesWithHearing'];
-    challengesWithMobility = json['challengesWithMobility'];
     challengesWithEnglish = json['challengesWithEnglish'];
     challengesComments = json['challengesComments'];
     religionImpactsOnHealthCare = json['religionImpactsOnHealthCare'];
@@ -109,7 +200,6 @@ class CarePlanModel {
     powerOfAttorneyComments = json['powerOfAttorneyComments'];
     accomodation = json['accomodation'];
     iLearnBestBy = json['iLearnBestBy'];
-    internetAccess = json['internetAccess'];
     dietIssues = json['dietIssues'];
     dietIssuesComments = json['dietIssuesComments'];
     concernedAboutManagingChronicCondition =
@@ -124,10 +214,6 @@ class CarePlanModel {
     concernedAboutEndOfLife = json['concernedAboutEndOfLife'];
     concernedAboutOther = json['concernedAboutOther'];
     isApprovedByBillingProvider = json['isApprovedByBillingProvider'];
-    satisfactionWithMedicalCare = json['satisfactionWithMedicalCare'];
-    satisfactionComment = json['satisfactionComment'];
-    wantToImproveOnComment = json['wantToImproveOnComment'];
-    iLive = json['iLive'];
     iLearnBestByComment = json['iLearnBestByComment'];
     isG0506 = json['isG0506'];
     patientId = json['patientId'];
@@ -137,16 +223,69 @@ class CarePlanModel {
         : null;
     currentApprovalUpdatedOn = json['currentApprovalUpdatedOn'];
     lastApprovedDate = json['lastApprovedDate'];
+    updatedOn = json['updatedOn'];
+    updatedUser = json['updatedUser'];
+    id = json['id'];
+    physicianSuggestedDietPlan = json['physicianSuggestedDietPlan'];
+    challengesWithVision = json['challengesWithVision'];
+    challengesWithHearing = json['challengesWithHearing'];
+    challengesWithMobility = json['challengesWithMobility'];
+    physicalNote = json['physicalNote'];
+    dailyLivingBath = json['dailyLivingBath'];
+    dailyLivingWalk = json['dailyLivingWalk'];
+    dailyLivingDress = json['dailyLivingDress'];
+    dailyLivingEat = json['dailyLivingEat'];
+    dailyLivingTransfer = json['dailyLivingTransfer'];
+    dailyLivingRestroom = json['dailyLivingRestroom'];
+    dailyLivingNone = json['dailyLivingNone'];
+    dailyLivingActivitiesNote = json['dailyLivingActivitiesNote'];
+    instrumentalDailyGrocery = json['instrumentalDailyGrocery'];
+    instrumentalDailyTelephone = json['instrumentalDailyTelephone'];
+    instrumentalDailyHouseWork = json['instrumentalDailyHouseWork'];
+    instrumentalDailyFinances = json['instrumentalDailyFinances'];
+    instrumentalDailyTransportation = json['instrumentalDailyTransportation'];
+    instrumentalDailyMeals = json['instrumentalDailyMeals'];
+    instrumentalDailyMedication = json['instrumentalDailyMedication'];
+    instrumentalDailyNone = json['instrumentalDailyNone'];
+    instrumentalDailyActivitiesNote = json['instrumentalDailyActivitiesNote'];
+    littleInterest = json['littleInterest'];
+    feelingDown = json['feelingDown'];
+    psychosocialNote = json['psychosocialNote'];
+    helpWithTransportation = json['helpWithTransportation'];
+    iLive = json['iLive'];
+    internetAccess = json['internetAccess'];
+    cellPhone = json['cellPhone'];
+    cellPhoneNumber = json['cellPhoneNumber'];
+    textMessages = json['textMessages'];
+    emergencyContactName = json['emergencyContactName'];
+    emergencyContactRelationship = json['emergencyContactRelationship'];
+    emergencyContactPrimaryPhoneNo = json['emergencyContactPrimaryPhoneNo'];
+    emergencyContactSecondaryPhoneNo = json['emergencyContactSecondaryPhoneNo'];
+    careGiverContactName = json['careGiverContactName'];
+    careGiverContactRelationship = json['careGiverContactRelationship'];
+    careGiverContactPrimaryPhoneNo = json['careGiverContactPrimaryPhoneNo'];
+    careGiverContactSecondaryPhoneNo = json['careGiverContactSecondaryPhoneNo'];
+    careGiverNote = json['careGiverNote'];
+    esl = json['esl'];
+    utilizingCommunity = json['utilizingCommunity'];
+    advancedDirectivesPlans = json['advancedDirectivesPlans'];
+    discussWithPhysician = json['discussWithPhysician'];
+    advanceDirectivesNote = json['advanceDirectivesNote'];
+    satisfactionWithMedicalCare = json['satisfactionWithMedicalCare'];
+    satisfactionComment = json['satisfactionComment'];
+    wantToImproveOnComment = json['wantToImproveOnComment'];
+    isCCMConsentTaken = json['isCCMConsentTaken'];
+    ccmStartedDate = json['ccmStartedDate'];
+    billingProviderName = json['billingProviderName'];
+    careCoordinatorName = json['careCoordinatorName'] != null ? json['careCoordinatorName'].cast<String>() : [];
+    carePlanStatusColor = json['carePlanStatusColor'];
+    dailyLiving = json['dailyLiving'] != null ? json['dailyLiving'].cast<String>() : [];
+    instrumentalDaily = json['instrumentalDaily'] != null ? json['instrumentalDaily'].cast<String>() : [];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['dateUpdated'] = this.dateUpdated;
     data['challengesWithTransportation'] = this.challengesWithTransportation;
-    data['challengesWithVision'] = this.challengesWithVision;
-    data['challengesWithHearing'] = this.challengesWithHearing;
-    data['challengesWithMobility'] = this.challengesWithMobility;
     data['challengesWithEnglish'] = this.challengesWithEnglish;
     data['challengesComments'] = this.challengesComments;
     data['religionImpactsOnHealthCare'] = this.religionImpactsOnHealthCare;
@@ -161,7 +300,6 @@ class CarePlanModel {
     data['powerOfAttorneyComments'] = this.powerOfAttorneyComments;
     data['accomodation'] = this.accomodation;
     data['iLearnBestBy'] = this.iLearnBestBy;
-    data['internetAccess'] = this.internetAccess;
     data['dietIssues'] = this.dietIssues;
     data['dietIssuesComments'] = this.dietIssuesComments;
     data['concernedAboutManagingChronicCondition'] =
@@ -179,10 +317,6 @@ class CarePlanModel {
     data['concernedAboutEndOfLife'] = this.concernedAboutEndOfLife;
     data['concernedAboutOther'] = this.concernedAboutOther;
     data['isApprovedByBillingProvider'] = this.isApprovedByBillingProvider;
-    data['satisfactionWithMedicalCare'] = this.satisfactionWithMedicalCare;
-    data['satisfactionComment'] = this.satisfactionComment;
-    data['wantToImproveOnComment'] = this.wantToImproveOnComment;
-    data['iLive'] = this.iLive;
     data['iLearnBestByComment'] = this.iLearnBestByComment;
     data['isG0506'] = this.isG0506;
     data['patientId'] = this.patientId;
@@ -192,6 +326,70 @@ class CarePlanModel {
     }
     data['currentApprovalUpdatedOn'] = this.currentApprovalUpdatedOn;
     data['lastApprovedDate'] = this.lastApprovedDate;
+    data['updatedOn'] = this.updatedOn;
+    data['updatedUser'] = this.updatedUser;
+    data['id'] = this.id;
+    data['physicianSuggestedDietPlan'] = this.physicianSuggestedDietPlan;
+    data['challengesWithVision'] = this.challengesWithVision;
+    data['challengesWithHearing'] = this.challengesWithHearing;
+    data['challengesWithMobility'] = this.challengesWithMobility;
+    data['physicalNote'] = this.physicalNote;
+    data['dailyLivingBath'] = this.dailyLivingBath;
+    data['dailyLivingWalk'] = this.dailyLivingWalk;
+    data['dailyLivingDress'] = this.dailyLivingDress;
+    data['dailyLivingEat'] = this.dailyLivingEat;
+    data['dailyLivingTransfer'] = this.dailyLivingTransfer;
+    data['dailyLivingRestroom'] = this.dailyLivingRestroom;
+    data['dailyLivingNone'] = this.dailyLivingNone;
+    data['dailyLivingActivitiesNote'] = this.dailyLivingActivitiesNote;
+    data['instrumentalDailyGrocery'] = this.instrumentalDailyGrocery;
+    data['instrumentalDailyTelephone'] = this.instrumentalDailyTelephone;
+    data['instrumentalDailyHouseWork'] = this.instrumentalDailyHouseWork;
+    data['instrumentalDailyFinances'] = this.instrumentalDailyFinances;
+    data['instrumentalDailyTransportation'] =
+        this.instrumentalDailyTransportation;
+    data['instrumentalDailyMeals'] = this.instrumentalDailyMeals;
+    data['instrumentalDailyMedication'] = this.instrumentalDailyMedication;
+    data['instrumentalDailyNone'] = this.instrumentalDailyNone;
+    data['instrumentalDailyActivitiesNote'] =
+        this.instrumentalDailyActivitiesNote;
+    data['littleInterest'] = this.littleInterest;
+    data['feelingDown'] = this.feelingDown;
+    data['psychosocialNote'] = this.psychosocialNote;
+    data['helpWithTransportation'] = this.helpWithTransportation;
+    data['iLive'] = this.iLive;
+    data['internetAccess'] = this.internetAccess;
+    data['cellPhone'] = this.cellPhone;
+    data['cellPhoneNumber'] = this.cellPhoneNumber;
+    data['textMessages'] = this.textMessages;
+    data['emergencyContactName'] = this.emergencyContactName;
+    data['emergencyContactRelationship'] = this.emergencyContactRelationship;
+    data['emergencyContactPrimaryPhoneNo'] =
+        this.emergencyContactPrimaryPhoneNo;
+    data['emergencyContactSecondaryPhoneNo'] =
+        this.emergencyContactSecondaryPhoneNo;
+    data['careGiverContactName'] = this.careGiverContactName;
+    data['careGiverContactRelationship'] = this.careGiverContactRelationship;
+    data['careGiverContactPrimaryPhoneNo'] =
+        this.careGiverContactPrimaryPhoneNo;
+    data['careGiverContactSecondaryPhoneNo'] =
+        this.careGiverContactSecondaryPhoneNo;
+    data['careGiverNote'] = this.careGiverNote;
+    data['esl'] = this.esl;
+    data['utilizingCommunity'] = this.utilizingCommunity;
+    data['advancedDirectivesPlans'] = this.advancedDirectivesPlans;
+    data['discussWithPhysician'] = this.discussWithPhysician;
+    data['advanceDirectivesNote'] = this.advanceDirectivesNote;
+    data['satisfactionWithMedicalCare'] = this.satisfactionWithMedicalCare;
+    data['satisfactionComment'] = this.satisfactionComment;
+    data['wantToImproveOnComment'] = this.wantToImproveOnComment;
+    data['isCCMConsentTaken'] = this.isCCMConsentTaken;
+    data['ccmStartedDate'] = this.ccmStartedDate;
+    data['billingProviderName'] = this.billingProviderName;
+    data['careCoordinatorName'] = this.careCoordinatorName;
+    data['carePlanStatusColor'] = this.carePlanStatusColor;
+    data['dailyLiving'] = this.dailyLiving;
+    data['instrumentalDaily'] = this.instrumentalDaily;
     return data;
   }
 }

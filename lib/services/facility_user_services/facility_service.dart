@@ -9,6 +9,7 @@ import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
 import 'package:twochealthcare/services/dio_services/dio_services.dart';
 import 'package:twochealthcare/services/shared_pref_services.dart';
+import 'package:twochealthcare/util/data_format.dart';
 import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
 import 'dart:core';
 
@@ -31,12 +32,12 @@ class FacilityService{
     _authServices = _ref!.read(authServiceProvider);
   }
 
-  Future<dynamic>getFuProfileInfo()async{
+  Future<dynamic>getFuProfileInfo({int? Id})async{
 
     FUProfileModel? fuProfileModel;
     try{
       int facilityId = await _authServices!.getCurrentUserId();
-      Response? res = await dio?.dio?.get(FacilityController.getFacilityUser+"/$facilityId");
+      Response? res = await dio?.dio?.get(FacilityController.getFacilityUser+"/${Id ?? facilityId}");
       if(res?.statusCode == 200){
         fuProfileModel = FUProfileModel.fromJson(res!.data);
         return fuProfileModel;
@@ -61,6 +62,9 @@ class FacilityService{
       if(res?.statusCode == 200){
         patientsForDashboard = PatientsForDashboard.fromJson(res!.data);
         patientsForDashboard.patientsList?.forEach((element) {
+          if(element.dateOfBirth != null ){
+            element.age = findAgeInYears(dateOfBirht: element.dateOfBirth!);
+          }
           if(element.lastAppLaunchDate !=null){
             DateTime currentDate = DateTime.now();
             final lastLoginDate = DateTime.parse(element.lastAppLaunchDate!);
@@ -115,6 +119,9 @@ class FacilityService{
       if(res?.statusCode == 200){
         patientsForDashboard = PatientsForDashboard.fromJson(res!.data);
         patientsForDashboard.patientsList?.forEach((element) {
+          if(element.dateOfBirth != null ){
+            element.age = findAgeInYears(dateOfBirht: element.dateOfBirth!);
+          }
           if(element.lastAppLaunchDate !=null){
             DateTime currentDate = DateTime.now();
             final lastLoginDate = DateTime.parse(element.lastAppLaunchDate!);

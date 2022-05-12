@@ -107,8 +107,7 @@ class MedicationsBody extends HookWidget {
                           onTap: () {
                             openBottomModalDisableDrag(
                                 child: MadLinePlus(
-                              url: fuPatientSummaryVM?.setMedicationUrl(
-                                      rxCui: medicationModel.rxCui ?? "") ??
+                              url:  medicationModel.medlineUrl??""
                                   "",
                             ));
                           },

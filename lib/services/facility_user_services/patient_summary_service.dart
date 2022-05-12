@@ -43,6 +43,7 @@ class PatientSummaryService{
           medicationList.add(MedicationModel.fromJson(element));
         });
         medicationList.forEach((element) {
+          element.medlineUrl = "https://connect.medlineplus.gov/application?mainSearchCriteria.v.c=${element.rxCui}&mainSearchCriteria.v.cs=2.16.840.1.113883.6.88&mainSearchCriteria.v.dn=&informationRecipient.languageCode.c=en";
           if(element.startDate != null) {
             element.startDate =
                 Jiffy(element.startDate).format(Strings.dateFormatFullYear);

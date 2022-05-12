@@ -33,6 +33,7 @@ class DiagnosisService{
           diagnoseList.add(DiagnoseModel.fromJson(element));
         });
         diagnoseList.forEach((element) {
+          element.medlineUrl = "https://connect.medlineplus.gov/application?mainSearchCriteria.v.c=${element.icdCode}&mainSearchCriteria.v.cs=2.16.840.1.113883.6.90&mainSearchCriteria.v.dn=&informationRecipient.languageCode.c=en";
           if(element.diagnosisDate != null){
             element.diagnosisDate = Jiffy(element.diagnosisDate).format(Strings.dateFormatFullYear);
           }

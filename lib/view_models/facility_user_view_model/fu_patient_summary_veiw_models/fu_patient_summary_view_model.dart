@@ -73,10 +73,6 @@ class FUPatientSummaryVM extends ChangeNotifier{
      _diagnosisService = _ref!.read(diagnosisServiceProvider);
      categoryScrollController = ItemScrollController();
   }
-  String setMedicationUrl({required String rxCui}){
-    String madlinePlusMedicationUrl = "https://connect.medlineplus.gov/application?mainSearchCriteria.v.c=${rxCui}&mainSearchCriteria.v.cs=2.16.840.1.113883.6.88&mainSearchCriteria.v.dn=&informationRecipient.languageCode.c=en";
-    return madlinePlusMedicationUrl;
-  }
 
   setIsLoading(check){
     isLoading = check;

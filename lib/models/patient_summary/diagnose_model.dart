@@ -19,6 +19,9 @@ class DiagnoseModel {
   int? patientId;
   String? patientName;
 
+  /// not is api response
+  String? medlineUrl;
+
   DiagnoseModel(
       {this.id,
         this.practiceId,
@@ -38,7 +41,9 @@ class DiagnoseModel {
         this.note,
         this.status,
         this.patientId,
-        this.patientName});
+        this.patientName,
+        this.medlineUrl,
+      });
 
   DiagnoseModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];

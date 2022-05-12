@@ -91,10 +91,10 @@ class AllergiesBody extends HookWidget {
                               fontSize: ApplicationSizing.constSize(18),
                               color: Colors.black),
                         ),
-                        Container(
-                            padding: EdgeInsets.symmetric(horizontal: 10),
-                            child: SvgPicture.asset(
-                                "assets/icons/medicine_info_icon.svg"))
+                        // Container(
+                        //     padding: EdgeInsets.symmetric(horizontal: 10),
+                        //     child: SvgPicture.asset(
+                        //         "assets/icons/medicine_info_icon.svg"))
                       ],
                     ),
                     Container(

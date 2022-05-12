@@ -9,6 +9,10 @@ class MedicationModel {
   int? patientId;
   String? patientName;
 
+  /// not in api response
+  String? medlineUrl;
+
+
   MedicationModel(
       {this.id,
         this.medicationName,
@@ -18,7 +22,9 @@ class MedicationModel {
         this.stopDate,
         this.status,
         this.patientId,
-        this.patientName});
+        this.patientName,
+        this.medlineUrl
+      });
 
   MedicationModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];

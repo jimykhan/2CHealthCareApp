@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:page_transition/page_transition.dart';
@@ -15,14 +16,46 @@ import 'package:twochealthcare/views/chat/chat_screen.dart';
 class ChatListVM extends ChangeNotifier{
   List<UnReadChat> unReadChats = [];
   List<GetGroupsModel> groupIds= [];
+  List<GetGroupsModel> allGroups= [];
   bool loadingGroupId = true;
   ProviderReference? _ref;
   AuthServices? _authServices;
   SignalRServices? _signalRServices;
   ApplicationRouteService? _applicationRouteService;
+  // TextEditingController searchController = TextEditingController();
+  bool searchedGroup = false;
+
   ChatListVM({ProviderReference? ref}){
     _ref = ref;
     initService();
+  }
+
+  onClickSearch(){
+    searchedGroup = !searchedGroup;
+    notifyListeners();
+  }
+  onGroupSearch(String val){
+    print("${val.length} $val");
+    groupIds = [];
+    groupIds.addAll(allGroups);
+    if(val.length == 0){
+      groupIds = [];
+      groupIds.addAll(allGroups);
+    }else{
+      groupIds = [];
+      allGroups.forEach((element) {
+        if(element.title!
+            .toLowerCase()
+            .contains(val.toLowerCase())){
+          groupIds.add(element);
+        }
+      });
+    }
+    notifyListeners();
+  }
+  onGroupSearchSubmit(String val){
+    searchedGroup = false;
+    notifyListeners();
   }
 
   initService(){
@@ -69,6 +102,7 @@ class ChatListVM extends ChangeNotifier{
       });
     });
   }
+
   setLoadingGroupId(bool check){
     loadingGroupId = check;
     notifyListeners();
@@ -84,11 +118,13 @@ class ChatListVM extends ChangeNotifier{
 
       if (response is List<GetGroupsModel>) {
         groupIds = [];
+        allGroups = [];
         response.forEach((element) {
           if(element.lastMessageTime != null){
             element.lastMessageTime = Jiffy(element.lastMessageTime).format(Strings.dateAndTimeFormat);
           }
           groupIds.add(element);
+          allGroups.add(element);
           unReadChats = [];
           if(element.unreadMsgCount!>0){
             unReadChats.add(

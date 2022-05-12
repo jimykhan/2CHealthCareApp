@@ -96,6 +96,7 @@ class AllergyController{
 
 class DiagnoseController{
   static const String getDiagnosesByPatientId = baseUrl + "/api/Diagnosis/GetDiagnosesByPatientId";
+  static const String getChronicConditionsByPatientId = baseUrl + "/api/Diagnosis/GetChronicConditionsByPatientId";
 
 }
 

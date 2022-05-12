@@ -46,6 +46,7 @@ class CarePlan extends HookWidget {
             });
         Future.microtask(() async {
           carePlanVM.getCarePlanByPatientId(Id: isPatientSummary? _fuPatientSummaryVM.patientInfo?.id : null);
+          carePlanVM.getChronicConditionsByPatientId(Id: isPatientSummary? _fuPatientSummaryVM.patientInfo?.id : null);
         });
 
         return () {
@@ -141,6 +142,8 @@ class CarePlan extends HookWidget {
         children: [
 
           patientAssessment(carePlanVM: carePlanVM),
+          ApplicationSizing.verticalSpacer(),
+          Psychosocial(carePlanVM: carePlanVM),
           ApplicationSizing.verticalSpacer(),
           socialDemographic(carePlanVM: carePlanVM),
           ApplicationSizing.verticalSpacer(),
@@ -629,6 +632,63 @@ class CarePlan extends HookWidget {
       ],
     );
   }
+
+  Psychosocial({required CarePlanVM carePlanVM}){
+    return Column(
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: Container(
+                padding: EdgeInsets.symmetric(
+                    horizontal: ApplicationSizing.horizontalMargin()),
+                decoration: boxDecoration,
+                child: Container(
+                  margin: EdgeInsets.symmetric(vertical: 3),
+                  child: Row(
+                    children: [
+                      Text(
+                        "PHQ-2 :",
+                        style: Styles.PoppinsRegular(
+                            fontWeight: FontWeight.w700,
+                            fontSize: ApplicationSizing.fontScale(15),
+                            color: Colors.white),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        ApplicationSizing.verticalSpacer(),
+        fourOptionQuestion(onOption1: () {  }, onOption2: () {  },
+          selectedOption: (carePlanVM.carePlanModel?.littleInterest??0)+1,
+          question: "Little interest or pleasure in doing things",
+          option1: "0",
+          option2: "+1",
+          option3: "+2",
+          option4: "+3",
+          disableComment: true, onOption3: () {  }, onOption4: () {  },
+        ),
+        ApplicationSizing.verticalSpacer(),
+
+        fourOptionQuestion(onOption1: () {  }, onOption2: () {  },
+          selectedOption: (carePlanVM.carePlanModel?.feelingDown??0)+1,
+          question: "Feeling down, depressed or hopeless",
+          option1: "0",
+          option2: "+1",
+          option3: "+2",
+          option4: "+3",
+          disableComment: false, onOption3: () {  }, onOption4: () {  },
+          textEditingController: carePlanVM.feelingDownController,
+        ),
+        ApplicationSizing.verticalSpacer(),
+
+      ],
+    );
+  }
+
   socialDemographic({required CarePlanVM carePlanVM}){
     return Column(
       children: [
@@ -982,7 +1042,6 @@ class CarePlan extends HookWidget {
       ],
     );
   }
-
   patientResouces({required CarePlanVM carePlanVM}){
     return Column(
       children: [

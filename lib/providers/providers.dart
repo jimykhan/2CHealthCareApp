@@ -6,6 +6,7 @@ import 'package:twochealthcare/services/ccm_services/ccm_services.dart';
 import 'package:twochealthcare/services/chat_services/chat_list_service.dart';
 import 'package:twochealthcare/services/chat_services/chat_screen_service.dart';
 import 'package:twochealthcare/services/connectivity_service.dart';
+import 'package:twochealthcare/services/diagnosis_service.dart';
 import 'package:twochealthcare/services/dio_services/dio_services.dart';
 import 'package:twochealthcare/services/facility_user_services/facility_service.dart';
 import 'package:twochealthcare/services/facility_user_services/patient_summary_service.dart';
@@ -99,4 +100,5 @@ final fuSettingsServiceProvider = Provider<FuSettingsService>((ref)=>FuSettingsS
 final patientSummaryServiceProvider = Provider<PatientSummaryService>((ref)=>PatientSummaryService(ref: ref));
 final rpmServiceProvider = Provider<RpmService>((ref)=>RpmService(ref: ref));
 final ccmServiceProvider = Provider<CcmService>((ref)=>CcmService(ref: ref));
+final diagnosisServiceProvider = Provider<DiagnosisService>((ref)=>DiagnosisService(ref: ref));
 /// Simple Providers

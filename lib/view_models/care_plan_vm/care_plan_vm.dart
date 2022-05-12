@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:twochealthcare/models/care_plan/CarePlanModel.dart';
+import 'package:twochealthcare/models/patient_summary/chronic_condition.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/care_plan_services/care_plan_services.dart';
+import 'package:twochealthcare/services/diagnosis_service.dart';
 import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_summary/components/alliergies_body.dart';
 import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_summary/components/diagnosis_body.dart';
 import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_summary/components/medications_body.dart';
@@ -11,7 +13,9 @@ import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_
 class CarePlanVM extends ChangeNotifier{
   ProviderReference? _ref;
   CarePlanServices? _carePlanServices;
+  DiagnosisService? _diagnosisService;
   CarePlanModel? carePlanModel;
+  List<ChronicConditionModel> chronicConditions = [];
   bool loadingCarePlan = false;
   List carePlanHistory =  [
     {
@@ -55,6 +59,7 @@ class CarePlanVM extends ChangeNotifier{
   TextEditingController satisfactionController = TextEditingController();
   TextEditingController wantToImproveOnController = TextEditingController();
   TextEditingController concernedAboutOtherController = TextEditingController();
+  TextEditingController feelingDownController = TextEditingController();
   CarePlanVM({ProviderReference? ref}){
     _ref = ref;
     initService();
@@ -63,6 +68,7 @@ class CarePlanVM extends ChangeNotifier{
 
   initService(){
     _carePlanServices = _ref!.read(carePlanServiceProvider);
+    _diagnosisService = _ref!.read(diagnosisServiceProvider);
   }
 
   ChangeCollaps(bool isCollaps, int Index){
@@ -82,13 +88,27 @@ class CarePlanVM extends ChangeNotifier{
     loadingCarePlan = check;
     notifyListeners();
   }
-   getCarePlanByPatientId({int? Id}) async {
+  getChronicConditionsByPatientId({int? Id}) async {
+    try{
+      setLoadingCarePlan(true);
+      var res = await _diagnosisService?.getChronicConditionsByPatientId(Id: Id);
+      if(res is List<ChronicConditionModel>){
+          chronicConditions = res;
+          setChronicConditionsValue();
+      }
+      setLoadingCarePlan(false);
+    }catch(e){
+      setLoadingCarePlan(false);
+    }
+  }
+
+  getCarePlanByPatientId({int? Id}) async {
     try{
       setLoadingCarePlan(true);
       var res = await _carePlanServices?.getCarePlanByPatientId(Id: Id);
       if(res is CarePlanModel){
-          carePlanModel = res;
-          setValueToTextArea();
+        carePlanModel = res;
+        setValueToTextArea();
       }
       setLoadingCarePlan(false);
     }catch(e){
@@ -104,9 +124,7 @@ class CarePlanVM extends ChangeNotifier{
     eSLController.text = carePlanModel?.esl??"";
     patientPhoneNo.text = carePlanModel?.cellPhoneNumber??"";
     discussWithPhysicianController.text = carePlanModel?.physicalNote??"";
-    chronicObstructiveController.text = "";
-    asthmaController.text = "";
-    depressionController.text = "";
+    feelingDownController.text = carePlanModel?.psychosocialNote??"";
     // religionController.text = carePlanModel?.religionImpactOnHealthCareComments??"";
     // healthCareAdvancedDirectivesController.text = carePlanModel?.healthCareAdvancedDirectivesComments??"";
 
@@ -117,5 +135,15 @@ class CarePlanVM extends ChangeNotifier{
     satisfactionController.text = carePlanModel?.satisfactionComment??"";
     wantToImproveOnController.text = carePlanModel?.wantToImproveOnComment??"";
     concernedAboutOtherController.text = carePlanModel?.concernedAboutOther??"";
+  }
+  setChronicConditionsValue(){
+    chronicObstructiveController.text = "";
+    asthmaController.text = "";
+    depressionController.text = "";
+    chronicConditions.forEach((element) {
+      if(element.chronicConditionId == 11) chronicObstructiveController.text = element.note??"";
+      if(element.chronicConditionId == 6) depressionController.text = element.note??"";
+      if(element.chronicConditionId == 12) asthmaController.text = element.note??"";
+    });
   }
   }

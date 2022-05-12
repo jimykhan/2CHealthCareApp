@@ -32,32 +32,7 @@ class PatientSummaryService{
     _authServices = _ref!.read(authServiceProvider);
   }
 
-  Future<dynamic>getDiagnosisByPatientId({required int Id})async{
-    List<DiagnoseModel> diagnoseList = [];
-    try{
-      Response? res = await dio?.dio?.get(DiagnoseController.getDiagnosesByPatientId+"/$Id");
-      if(res?.statusCode == 200){
-        res?.data?.forEach((element) {
-          diagnoseList.add(DiagnoseModel.fromJson(element));
-        });
-        diagnoseList.forEach((element) {
-          if(element.diagnosisDate != null){
-            element.diagnosisDate = Jiffy(element.diagnosisDate).format(Strings.dateFormatFullYear);
-          }
-          if(element.resolvedDate !=null){
-            element.resolvedDate = Jiffy(element.resolvedDate).format(Strings.dateFormatFullYear);
-          }
 
-
-        });
-        return diagnoseList;
-      }else{
-        return null;
-      }
-    }catch(e){
-      return null;
-    }
-  }
 
   Future<dynamic>getMedicationByPatientId({required int Id})async{
     List<MedicationModel> medicationList = [];

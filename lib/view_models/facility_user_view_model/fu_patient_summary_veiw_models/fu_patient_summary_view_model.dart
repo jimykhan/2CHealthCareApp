@@ -14,6 +14,7 @@ import 'package:twochealthcare/models/patient_summary/surgical_history_model.dar
 import 'package:twochealthcare/models/profile_models/current_user_info_model.dart';
 import 'package:twochealthcare/models/profile_models/specialists_model.dart';
 import 'package:twochealthcare/providers/providers.dart';
+import 'package:twochealthcare/services/diagnosis_service.dart';
 import 'package:twochealthcare/services/facility_user_services/facility_service.dart';
 import 'package:twochealthcare/services/facility_user_services/patient_summary_service.dart';
 import 'package:twochealthcare/services/patient_profile_service.dart';
@@ -34,6 +35,7 @@ class FUPatientSummaryVM extends ChangeNotifier{
   bool isLoading = false;
   PatientSummaryService? _patientSummaryService;
   FacilityService? _facilityService;
+  DiagnosisService? _diagnosisService;
   PatientProfileService? _patientProfileService;
   ItemScrollController? categoryScrollController;
 
@@ -68,6 +70,7 @@ class FUPatientSummaryVM extends ChangeNotifier{
      _patientSummaryService = _ref!.read(patientSummaryServiceProvider);
      _patientProfileService = _ref!.read(PatientProfileServiceProvider);
      _facilityService = _ref!.read(facilityServiceProvider);
+     _diagnosisService = _ref!.read(diagnosisServiceProvider);
      categoryScrollController = ItemScrollController();
   }
   String setMedicationUrl({required String rxCui}){
@@ -96,7 +99,7 @@ class FUPatientSummaryVM extends ChangeNotifier{
   getDiagnosisByPatientId()async{
     try{
       setIsLoading(true);
-      var res = await _patientSummaryService?.getDiagnosisByPatientId(Id: summaryPatientsModel?.id??-1);
+      var res = await _diagnosisService?.getDiagnosisByPatientId(Id: summaryPatientsModel?.id??-1);
       if(res !=null && res is List<DiagnoseModel>){
         diagnoseList = [];
         diagnoseList.addAll(res);

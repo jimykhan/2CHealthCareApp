@@ -9,6 +9,7 @@ import 'package:twochealthcare/common_widgets/app_bar_components/appbar_text_sty
 import 'package:twochealthcare/common_widgets/bottom_bar.dart';
 import 'package:twochealthcare/common_widgets/circular_image.dart';
 import 'package:twochealthcare/common_widgets/custom_appbar.dart';
+import 'package:twochealthcare/common_widgets/input_field/custom_text_field.dart';
 import 'package:twochealthcare/common_widgets/no_data_inlist.dart';
 import 'package:twochealthcare/common_widgets/notification_widget.dart';
 import 'package:twochealthcare/models/chat_model/GetGroups.dart';
@@ -55,11 +56,18 @@ class ChatList extends HookWidget {
             color2: Colors.white,
             hight: ApplicationSizing.convert(80),
             parentContext: context,
-            centerWigets: AppBarTextStyle(
+            centerWigets: chatListVM.searchedGroup ? _searchField(chatListVM: chatListVM) :AppBarTextStyle(
               text: "Chat List",
             ),
+            trailingIcon: InkWell(
+              onTap: chatListVM.onClickSearch,
+              child: Icon( chatListVM.searchedGroup ? Icons.cancel : Icons.person_search,
+                color: appColor,size: 27,),
+            ),
           ),
+
         ),
+
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: FloatingActionButton(
           // backgroundColor: Colors.black,
@@ -118,6 +126,19 @@ class ChatList extends HookWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+  _searchField({required ChatListVM chatListVM,}){
+    return Expanded(
+      child: Container(
+          padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
+        margin: EdgeInsets.only(left: 40,right: 10,bottom: 10,top: 10),
+          // height: 60,
+          child: CustomTextField(
+              onchange: chatListVM.onGroupSearch,
+              onSubmit: chatListVM.onGroupSearchSubmit,
+          )
       ),
     );
   }

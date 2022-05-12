@@ -37,10 +37,11 @@ class OtpVerification extends HookWidget {
   Widget build(BuildContext context) {
     final ForgetPasswordVM forgetPasswordVM = useProvider(forgetPasswordVMProvider);
     useEffect(() {
-
       forgetPasswordVM.initOtpVerificationScreen();
-      if(from2FA) forgetPasswordVM.send2FACodeInStartUp(userId: userId, method: 0, bearerToken: bearerToken??"");
-      if(isPhoneVerification) forgetPasswordVM.sendVerificationCodeToPhone(userName: userName??"",phoneNumber: phone??"");
+      Future.microtask(() async {
+        if(from2FA) await forgetPasswordVM.send2FACodeInStartUp(userId: userId, method: 0, bearerToken: bearerToken??"");
+        if(isPhoneVerification) await forgetPasswordVM.sendVerificationCodeToPhone(userName: userName,phoneNumber: phone??"");
+      });
       return () {
         forgetPasswordVM.errorController?.close();
         // forgetPasswordVM.otpTextEditingController?.dispose();

@@ -120,10 +120,10 @@ class OtpVerification extends HookWidget {
                                   obscureText: false,
                                   animationType: AnimationType.fade,
                                   pinTheme: PinTheme(
-                                    shape: PinCodeFieldShape.box,
-                                    borderRadius: BorderRadius.circular(5),
+                                    shape: PinCodeFieldShape.circle,
+                                    borderRadius: null,
                                     fieldHeight: ApplicationSizing.convert(40),
-                                    fieldWidth: ApplicationSizing.convert(35),
+                                    fieldWidth: ApplicationSizing.convert(40),
 
                                     // disabledColor: appColor.withOpacity(0.3),
                                     activeColor: appColor,

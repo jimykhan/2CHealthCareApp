@@ -149,13 +149,15 @@ class FUProfile extends HookWidget {
                                 textInfoTitle: "Phone No.",
                                 ontap: fuProfileVM.fuProfileModel?.isPhoneNumberVerified?? false ? null :
                                     (){
-                                  // Navigator.push(context,
-                                  //     PageTransition(child: OtpVerification(userName: fuProfileVM.fuProfileModel?.userName??"",
-                                  //       phone: fuProfileVM.fuProfileModel?.phoneNo,
-                                  //       isForgetPassword: false,
-                                  //       userId: fuProfileVM.fuProfileModel?.userName??"",
-                                  //     ), type: PageTransitionType.leftToRight)
-                                  // );
+                                  Navigator.push(context,
+                                      PageTransition(child: OtpVerification(
+                                        userName: fuProfileVM.fuProfileModel?.userName??"",
+                                        phone: fuProfileVM.fuProfileModel?.phoneNo,
+                                        isForgetPassword: false,
+                                        userId: fuProfileVM.fuProfileModel?.userName??"",
+                                        isPhoneVerification: true,
+                                      ), type: PageTransitionType.leftToRight)
+                                  );
                                 },
                               ),
 
@@ -173,13 +175,14 @@ class FUProfile extends HookWidget {
                                 textInfoTitle: "Email",
                                 ontap: fuProfileVM.fuProfileModel?.isEmailVerified?? false ? null
                                 :(){
-                                  // Navigator.push(context,
-                                  //     PageTransition(child: OtpVerification(userName: fuProfileVM.fuProfileModel?.userName??"",
-                                  //       phone: fuProfileVM.fuProfileModel?.phoneNo,
-                                  //       isForgetPassword: false,
-                                  //       userId: fuProfileVM.fuProfileModel?.userName??"",
-                                  //     ), type: PageTransitionType.leftToRight)
-                                  // );
+                                  Navigator.push(context,
+                                      PageTransition(child: OtpVerification(userName: fuProfileVM.fuProfileModel?.userName??"",
+                                        phone: fuProfileVM.fuProfileModel?.phoneNo,
+                                        isForgetPassword: false,
+                                        userId: fuProfileVM.fuProfileModel?.userName??"",
+                                        isEmailVerification: true,
+                                      ), type: PageTransitionType.leftToRight)
+                                  );
                                 },
                               ),
                             ],

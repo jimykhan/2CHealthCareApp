@@ -265,9 +265,10 @@ class Profile extends HookWidget {
                                               phone: profileVm.patientInfo?.homePhone,
                                               isForgetPassword: false,
                                             userId: profileVm.patientInfo?.userId??"",
+                                            isPhoneVerification : true,
                                           ), type: PageTransitionType.leftToRight)
                                         );
-                                        forgetPasswordVM?.sendVerificationCodeToPhone(userName: profileVm.patientInfo?.userName??"",phoneNumber: profileVm.patientInfo?.homePhone??"");
+
 
                                       },
                                       child: Container(

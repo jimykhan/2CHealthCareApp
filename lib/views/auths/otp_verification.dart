@@ -23,10 +23,15 @@ class OtpVerification extends HookWidget {
   String? phone;
   String? bearerToken;
   bool isForgetPassword;
+  bool isEmailVerification;
+  bool isPhoneVerification;
   bool from2FA;
   String sendBy;
   OtpVerification({required this.userName,this.phone, this.isForgetPassword = true,
-    this.sendBy = "phone",this.from2FA = false,required this.userId,this.bearerToken});
+    this.sendBy = "phone",this.from2FA = false,required this.userId,this.bearerToken,
+    this.isEmailVerification = false,
+    this.isPhoneVerification = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +40,7 @@ class OtpVerification extends HookWidget {
 
       forgetPasswordVM.initOtpVerificationScreen();
       if(from2FA) forgetPasswordVM.send2FACodeInStartUp(userId: userId, method: 0, bearerToken: bearerToken??"");
-
+      if(isPhoneVerification) forgetPasswordVM.sendVerificationCodeToPhone(userName: userName??"",phoneNumber: phone??"");
       return () {
         forgetPasswordVM.errorController?.close();
         // forgetPasswordVM.otpTextEditingController?.dispose();
@@ -97,7 +102,9 @@ class OtpVerification extends HookWidget {
                                   alignment: Alignment.centerLeft,
                                   child: RichText(
                                     text: TextSpan(
-                                        text: phone??userName,
+                                        text: isPhoneVerification ? phone??""
+                                            : isEmailVerification ? userName
+                                            : "${phone} / ${userName}",
                                         style: Styles.PoppinsRegular(
                                             fontSize: ApplicationSizing.fontScale(14),
                                             fontWeight: FontWeight.w700

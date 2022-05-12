@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:twochealthcare/common_widgets/aler_dialogue.dart';
 import 'package:twochealthcare/common_widgets/drawer_components/menu_spacing.dart';
 import 'package:twochealthcare/main.dart';
@@ -18,22 +19,21 @@ import '../menu_text_style.dart';
 
 class FUMenu extends StatelessWidget {
   LoginVM loginVM;
-  FUMenu({required this.loginVM,Key? key}) : super(key: key);
+  FUMenu({required this.loginVM, Key? key}) : super(key: key);
   double iconSize = ApplicationSizing.constSize(25);
   @override
   Widget build(BuildContext context) {
     return Container(
       child: Container(
         margin: EdgeInsets.only(
-          // left: ApplicationSizing.constSize(20),
-          // right: ApplicationSizing.constSize(20),
-          // top: ApplicationSizing.constSize(10),
-        ),
+            // left: ApplicationSizing.constSize(20),
+            // right: ApplicationSizing.constSize(20),
+            // top: ApplicationSizing.constSize(10),
+            ),
         child: Column(
           children: [
             InkWell(
-              onTap: () {
-              },
+              onTap: () {},
               child: Container(
                 padding: MenuPadding(),
                 child: Row(
@@ -41,7 +41,7 @@ class FUMenu extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Icon(
-                      FluentSystemIcons.ic_fluent_badge_regular,
+                      FluentSystemIcons.ic_fluent_home_filled,
                       size: iconSize,
                       color: appColor,
                     ),
@@ -94,7 +94,7 @@ class FUMenu extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Icon(
-                      FluentSystemIcons.ic_fluent_power_regular,
+                      FluentSystemIcons.ic_fluent_apps_list_filled,
                       size: iconSize,
                       color: appColor,
                     ),

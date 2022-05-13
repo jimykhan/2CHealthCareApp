@@ -48,7 +48,7 @@ class AllergiesBody extends HookWidget {
             children: [
               _fuPatientSummaryVM.isLoading
                   ? AlertLoader(bottomMargin: 350)
-                  : _fuPatientSummaryVM.medicationList.length == 0
+                  : _fuPatientSummaryVM.allergyList.length == 0
                       ? NoData()
                       : ListView.separated(
                           shrinkWrap: true,

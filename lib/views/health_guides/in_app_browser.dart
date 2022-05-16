@@ -20,18 +20,19 @@ import 'package:webview_flutter/webview_flutter.dart';
 class InAppBrowser extends HookWidget {
   String url;
   String title;
-   InAppBrowser({Key? key,required this.url,required this.title}) : super(key: key);
+  InAppBrowser({Key? key, required this.url, required this.title})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    ApplicationRouteService applicationRouteService = useProvider(applicationRouteServiceProvider);
+    ApplicationRouteService applicationRouteService =
+        useProvider(applicationRouteServiceProvider);
     HealthGuidesVM healthGuidesVM = useProvider(healthGuidesVMProviders);
 
     useEffect(
-          () {
+      () {
         healthGuidesVM.webPageLoading = true;
-        Future.microtask(() async {
-        });
+        Future.microtask(() async {});
         return () {
           // Dispose Objects here
         };
@@ -39,32 +40,35 @@ class InAppBrowser extends HookWidget {
       const [],
     );
     return Scaffold(
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(ApplicationSizing.convert(80)),
-          child: CustomAppBar(
-            leadingIcon: CustomBackButton(),
-            color1: Colors.white,
-            color2: Colors.white,
-            hight: ApplicationSizing.convert(80),
-            parentContext: context,
-            centerWigets: AppBarTextStyle(
-              text: title,
-            ),
-            // trailingIcon: healthGuidesVM.navigationControl(),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(ApplicationSizing.convert(70)),
+        child: CustomAppBar(
+          leadingIcon: CustomBackButton(),
+          color1: Colors.white,
+          color2: Colors.white,
+          hight: ApplicationSizing.convert(70),
+          parentContext: context,
+          centerWigets: AppBarTextStyle(
+            text: title,
           ),
+          // trailingIcon: healthGuidesVM.navigationControl(),
         ),
-          body: Container(
-            child: Column(
-              children: [
+      ),
+      body: Container(
+        child: Column(
+          children: [
             Container(
-                height: 3,
-                child: LinearPercentIndicator(//leaner progress bar
-                  padding: EdgeInsets.zero,
+              height: 3,
+              child: LinearPercentIndicator(
+                //leaner progress bar
+                padding: EdgeInsets.zero,
                 animation: true,
                 width: MediaQuery.of(context).size.width,
                 animationDuration: 1000,
                 lineHeight: 3.0,
-                percent: healthGuidesVM.progressWebPageLoad == 0.1 ? 0 : healthGuidesVM.progressWebPageLoad,
+                percent: healthGuidesVM.progressWebPageLoad == 0.1
+                    ? 0
+                    : healthGuidesVM.progressWebPageLoad,
                 // center: Text(
                 //   percent.toString() + "%",
                 //   style: TextStyle(
@@ -75,28 +79,24 @@ class InAppBrowser extends HookWidget {
                 // linearStrokeCap: LinearStrokeCap.,
                 progressColor: appColor,
                 backgroundColor: Colors.grey[300],
-            ),
               ),
-                Expanded(
-                  child: healthGuidesVM.inAppWebView(initailUrl: url),)
-              ],
             ),
-          ),
+            Expanded(
+              child: healthGuidesVM.inAppWebView(initailUrl: url),
+            )
+          ],
+        ),
+      ),
 
-
-        // body: Container(
-        //   child: !healthGuidesVM.controller.isCompleted ? AlertLoader() : WebView(
-        //     initialUrl: url,
-        //     onWebViewCreated: (WebViewController webViewController) {
-        //       healthGuidesVM.controller.complete(webViewController);
-        //
-        //     },
-        //   ),
-        // )
+      // body: Container(
+      //   child: !healthGuidesVM.controller.isCompleted ? AlertLoader() : WebView(
+      //     initialUrl: url,
+      //     onWebViewCreated: (WebViewController webViewController) {
+      //       healthGuidesVM.controller.complete(webViewController);
+      //
+      //     },
+      //   ),
+      // )
     );
   }
-
-
-
-
 }

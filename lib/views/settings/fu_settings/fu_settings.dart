@@ -14,13 +14,13 @@ class FUSettings extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    ApplicationRouteService applicationRouteService = useProvider(applicationRouteServiceProvider);
+    ApplicationRouteService applicationRouteService =
+        useProvider(applicationRouteServiceProvider);
     // PSettingsViewModel pSettingsViewModel = useProvider(pSettigsVMProvider);
 
     useEffect(
-          () {
-        Future.microtask(() async {
-        });
+      () {
+        Future.microtask(() async {});
         return () {
           // Dispose Objects here
         };
@@ -30,22 +30,22 @@ class FUSettings extends HookWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(ApplicationSizing.convert(80)),
+        preferredSize: Size.fromHeight(ApplicationSizing.convert(70)),
         child: CustomAppBar(
           leadingIcon: CustomBackButton(),
           color1: Colors.white,
           color2: Colors.white,
-          hight: ApplicationSizing.convert(80),
+          hight: ApplicationSizing.convert(70),
           parentContext: context,
           centerWigets: AppBarTextStyle(
             text: "Settings",
           ),
         ),
       ),
-      body:Container(
+      body: Container(
         child: Column(
           children: [
-           Text("Comming Soon"),
+            Text("Comming Soon"),
           ],
         ),
       ),

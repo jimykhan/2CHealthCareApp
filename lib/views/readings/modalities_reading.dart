@@ -81,12 +81,12 @@ class ModalitiesReading extends HookWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(ApplicationSizing.convert(80)),
+        preferredSize: Size.fromHeight(ApplicationSizing.convert(70)),
         child: CustomAppBar(
           leadingIcon: CustomBackButton(),
           color1: Colors.white,
           color2: Colors.white,
-          hight: ApplicationSizing.convert(80),
+          hight: ApplicationSizing.convert(70),
           parentContext: context,
           centerWigets: AppBarTextStyle(
             text: "My Readings",

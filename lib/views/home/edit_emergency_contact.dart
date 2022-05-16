@@ -24,15 +24,15 @@ import 'package:twochealthcare/view_models/profile_vm.dart';
 import 'package:twochealthcare/views/home/components/widgets.dart';
 
 class EditEmergencyContact extends HookWidget {
-   EditEmergencyContact({Key? key}) : super(key: key);
+  EditEmergencyContact({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     ApplicationRouteService applicationRouteService =
-    useProvider(applicationRouteServiceProvider);
+        useProvider(applicationRouteServiceProvider);
     ProfileVm profileVM = useProvider(profileVMProvider);
     useEffect(
-          () {
+      () {
         profileVM.initEditEmergencyContactInfo();
         Future.microtask(() async {});
 
@@ -43,40 +43,41 @@ class EditEmergencyContact extends HookWidget {
       },
       const [],
     );
-    return  Scaffold(
+    return Scaffold(
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(ApplicationSizing.convert(80)),
+          preferredSize: Size.fromHeight(ApplicationSizing.convert(70)),
           child: CustomAppBar(
             leadingIcon: CustomBackButton(),
             color1: Colors.white,
             color2: Colors.white,
-            hight: ApplicationSizing.convert(80),
+            hight: ApplicationSizing.convert(70),
             parentContext: context,
             centerWigets: AppBarTextStyle(
               text: "Update Emergency Contact",
             ),
             trailingIcon: InkWell(
-              onTap: (){
+              onTap: () {
                 profileVM.editEmergencyContactInfo();
               },
               child: Container(
                 padding: EdgeInsets.all(5),
-                child: Icon(Icons.check,
-                  color: appColor,),
+                child: Icon(
+                  Icons.check,
+                  color: appColor,
+                ),
               ),
             ),
           ),
         ),
         body: Stack(
           children: [
-            _body(context,profileVm: profileVM),
+            _body(context, profileVm: profileVM),
             profileVM.loading ? AlertLoader() : Container(),
           ],
-        )
-    );
+        ));
   }
 
-  _body(context,{required ProfileVm profileVm}) {
+  _body(context, {required ProfileVm profileVm}) {
     return Container(
       child: Stack(
         children: [
@@ -84,10 +85,8 @@ class EditEmergencyContact extends HookWidget {
             child: Column(
               children: [
                 ApplicationSizing.verticalSpacer(n: 15),
-                _contactInfomation(context,profileVm: profileVm),
+                _contactInfomation(context, profileVm: profileVm),
                 ApplicationSizing.verticalSpacer(n: 15),
-
-
               ],
             ),
           ),
@@ -109,7 +108,7 @@ class EditEmergencyContact extends HookWidget {
     );
   }
 
-  _contactInfomation(context,{required ProfileVm profileVm}) {
+  _contactInfomation(context, {required ProfileVm profileVm}) {
     return Container(
       padding: EdgeInsets.symmetric(
           horizontal: ApplicationSizing.horizontalMargin()),
@@ -160,7 +159,8 @@ class EditEmergencyContact extends HookWidget {
                   padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
                   child: CustomTextField(
                     onchange: (val) {},
-                    textEditingController: profileVm.emergencyNameEditController,
+                    textEditingController:
+                        profileVm.emergencyNameEditController,
                     textInputType: TextInputType.text,
                     hints: "Name",
                     // color1:
@@ -192,7 +192,8 @@ class EditEmergencyContact extends HookWidget {
                   child: CustomTextField(
                     inputFormatter: [MaskFormatter("000-000-0000")],
                     onchange: (val) {},
-                    textEditingController: profileVm.emergencyPrimaryPhoneEditController,
+                    textEditingController:
+                        profileVm.emergencyPrimaryPhoneEditController,
                     textInputType: TextInputType.phone,
                     hints: "Primary Phone",
                     // color1:
@@ -203,7 +204,6 @@ class EditEmergencyContact extends HookWidget {
               ],
             ),
           ),
-
           Container(
             margin: EdgeInsets.only(top: ApplicationSizing.convert(10)),
             child: Column(
@@ -222,7 +222,7 @@ class EditEmergencyContact extends HookWidget {
                 ),
                 Container(
                   padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
-                  child: dropDown(context,profileVm: profileVm),
+                  child: dropDown(context, profileVm: profileVm),
                 ),
               ],
             ),
@@ -248,7 +248,8 @@ class EditEmergencyContact extends HookWidget {
                   child: CustomTextField(
                     inputFormatter: [MaskFormatter("000-000-0000")],
                     onchange: (val) {},
-                    textEditingController: profileVm.emergencySecondaryPhoneEditController,
+                    textEditingController:
+                        profileVm.emergencySecondaryPhoneEditController,
                     textInputType: TextInputType.phone,
                     hints: "Secondary Phone",
                     // color1:
@@ -263,7 +264,8 @@ class EditEmergencyContact extends HookWidget {
       ),
     );
   }
-  Widget dropDown(BuildContext context,{required ProfileVm profileVm}) {
+
+  Widget dropDown(BuildContext context, {required ProfileVm profileVm}) {
     return Row(
       children: [
         Expanded(
@@ -271,15 +273,17 @@ class EditEmergencyContact extends HookWidget {
             padding: EdgeInsets.only(right: 8, left: 8),
             decoration: BoxDecoration(
                 border: Border.all(
-                  color:  disableColor,
-                  width:  1.2,
+                  color: disableColor,
+                  width: 1.2,
                 ),
                 borderRadius: BorderRadius.circular(7)),
             child: DropdownButton<String>(
               value: profileVm.dropdownValue,
               isExpanded: true,
-              icon: const Icon(Icons.keyboard_arrow_down,
-              size: 30,),
+              icon: const Icon(
+                Icons.keyboard_arrow_down,
+                size: 30,
+              ),
               // iconSize: 24,
               // elevation: 16,
               style: Styles.PoppinsRegular(
@@ -291,14 +295,14 @@ class EditEmergencyContact extends HookWidget {
                   .map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
-                  child: Text(value,
-                  style: Styles.PoppinsRegular(
-                    fontSize: ApplicationSizing.fontScale(14),
-                  ),
+                  child: Text(
+                    value,
+                    style: Styles.PoppinsRegular(
+                      fontSize: ApplicationSizing.fontScale(14),
+                    ),
                   ),
                 );
-              })
-                  .toList(),
+              }).toList(),
             ),
           ),
         ),

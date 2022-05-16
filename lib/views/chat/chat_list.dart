@@ -49,25 +49,28 @@ class ChatList extends HookWidget {
     );
     return Scaffold(
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(ApplicationSizing.convert(80)),
+          preferredSize: Size.fromHeight(ApplicationSizing.convert(70)),
           child: CustomAppBar(
             leadingIcon: Container(),
             color1: Colors.white,
             color2: Colors.white,
-            hight: ApplicationSizing.convert(80),
+            hight: ApplicationSizing.convert(70),
             parentContext: context,
-            centerWigets: chatListVM.searchedGroup ? _searchField(chatListVM: chatListVM) :AppBarTextStyle(
-              text: "Chat List",
-            ),
+            centerWigets: chatListVM.searchedGroup
+                ? _searchField(chatListVM: chatListVM)
+                : AppBarTextStyle(
+                    text: "Chat List",
+                  ),
             trailingIcon: InkWell(
               onTap: chatListVM.onClickSearch,
-              child: Icon( chatListVM.searchedGroup ? Icons.cancel : Icons.person_search,
-                color: appColor,size: 27,),
+              child: Icon(
+                chatListVM.searchedGroup ? Icons.cancel : Icons.person_search,
+                color: appColor,
+                size: 27,
+              ),
             ),
           ),
-
         ),
-
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: FloatingActionButton(
           // backgroundColor: Colors.black,
@@ -129,17 +132,19 @@ class ChatList extends HookWidget {
       ),
     );
   }
-  _searchField({required ChatListVM chatListVM,}){
+
+  _searchField({
+    required ChatListVM chatListVM,
+  }) {
     return Expanded(
       child: Container(
           padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
-        margin: EdgeInsets.only(left: 40,right: 10,bottom: 10,top: 10),
+          margin: EdgeInsets.only(left: 40, right: 10, bottom: 10, top: 10),
           // height: 60,
           child: CustomTextField(
-              onchange: chatListVM.onGroupSearch,
-              onSubmit: chatListVM.onGroupSearchSubmit,
-          )
-      ),
+            onchange: chatListVM.onGroupSearch,
+            onSubmit: chatListVM.onGroupSearchSubmit,
+          )),
     );
   }
 

@@ -17,19 +17,19 @@ import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_
 import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_summary/components/user_info_tile.dart';
 import 'package:twochealthcare/views/open_bottom_modal.dart';
 
-
 class PatientSummary extends HookWidget {
   PatientsModel patientsModel;
-  PatientSummary({required this.patientsModel,Key? key}) : super(key: key);
+  PatientSummary({required this.patientsModel, Key? key}) : super(key: key);
   GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
-    FUPatientSummaryVM fuPatientSummaryVM = useProvider(fUPatientSummaryVMProvider);
+    FUPatientSummaryVM fuPatientSummaryVM =
+        useProvider(fUPatientSummaryVMProvider);
     fuPatientSummaryVM.summaryPatientsModel = patientsModel;
     useEffect(
-          () {
-            fuPatientSummaryVM.onMenuChange(0);
-            fuPatientSummaryVM.isLoading = false;
+      () {
+        fuPatientSummaryVM.onMenuChange(0);
+        fuPatientSummaryVM.isLoading = false;
         Future.microtask(() async {});
         return () {};
       },
@@ -39,65 +39,84 @@ class PatientSummary extends HookWidget {
       backgroundColor: Colors.white,
       key: _scaffoldkey,
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(ApplicationSizing.convert(80)),
+        preferredSize: Size.fromHeight(ApplicationSizing.convert(70)),
         child: CustomAppBar(
-            centerWigets: AppBarTextStyle(
-          text: "Patient Summary",
-        ),
+          centerWigets: AppBarTextStyle(
+            text: "Patient Summary",
+          ),
           leadingIcon: CustomBackButton(),
           color1: Colors.white,
           color2: Colors.white,
-          hight: ApplicationSizing.convert(80),
+          hight: ApplicationSizing.convert(70),
           parentContext: context,
         ),
       ),
       body: Container(
-        child:  Column(
-            children: [
-              UserInfoTile(patientsModel: patientsModel,),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin(),vertical: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: CustomIconButton(onClick: (){
-                        openBottomModal(child: AddCCMEncounter(patientId: fuPatientSummaryVM.patientInfo?.id??0,
-                          ccmmonthlyStatus: fuPatientSummaryVM.patientInfo?.ccmMonthlyStatus??0,
+        child: Column(
+          children: [
+            UserInfoTile(
+              patientsModel: patientsModel,
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(
+                  horizontal: ApplicationSizing.horizontalMargin(),
+                  vertical: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: CustomIconButton(
+                      onClick: () {
+                        openBottomModal(
+                            child: AddCCMEncounter(
+                          patientId: fuPatientSummaryVM.patientInfo?.id ?? 0,
+                          ccmmonthlyStatus: fuPatientSummaryVM
+                                  .patientInfo?.ccmMonthlyStatus ??
+                              0,
                         ));
-                      },),
+                      },
                     ),
-                    SizedBox(width: 10,),
-                    Expanded(
-                      flex: 1,
-                      child: CustomIconButton(
-                        onClick: (){
-                          openBottomModal(child: AddRPMEncounter(patientId: fuPatientSummaryVM.patientInfo?.id??0,
-                          ));
-                        },
-                        text: "RPM",bgColor: appColorSecondary,fontColor: whiteColor,),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: CustomIconButton(
+                      onClick: () {
+                        openBottomModal(
+                            child: AddRPMEncounter(
+                          patientId: fuPatientSummaryVM.patientInfo?.id ?? 0,
+                        ));
+                      },
+                      text: "RPM",
+                      bgColor: appColorSecondary,
+                      fontColor: whiteColor,
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-              SliderMenu(menu: fuPatientSummaryVM.patientSummaryMenuList,
-              onMenuClick: fuPatientSummaryVM.onMenuChange,),
-              Expanded(
-                child: SingleChildScrollView(
-                    physics: ScrollPhysics(),
-                    child: selectedBody(fuPatientSummaryVM)),
-              )
-            ],
-          ),
+            ),
+            SliderMenu(
+              menu: fuPatientSummaryVM.patientSummaryMenuList,
+              onMenuClick: fuPatientSummaryVM.onMenuChange,
+            ),
+            Expanded(
+              child: SingleChildScrollView(
+                  physics: ScrollPhysics(),
+                  child: selectedBody(fuPatientSummaryVM)),
+            )
+          ],
+        ),
       ),
     );
   }
 
-  Widget selectedBody(FUPatientSummaryVM fuPatientSummaryVM){
+  Widget selectedBody(FUPatientSummaryVM fuPatientSummaryVM) {
     Widget body = Container();
     fuPatientSummaryVM.patientSummaryMenuList.forEach((element) {
-      if(element.isSelected){
+      if (element.isSelected) {
         body = element.body;
       }
     });

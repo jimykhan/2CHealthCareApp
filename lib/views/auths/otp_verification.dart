@@ -142,10 +142,12 @@ class OtpVerification extends HookWidget {
 
                                     // disabledColor: appColor.withOpacity(0.3),
                                     activeColor: appColor,
-                                    inactiveColor: Colors.grey,
+                                    inactiveColor:
+                                        Color(0xff12121D).withOpacity(0.1),
                                     selectedColor: appColor,
 
-                                    inactiveFillColor: Colors.white,
+                                    inactiveFillColor:
+                                        Color(0xff12121d).withOpacity(0.05),
                                     selectedFillColor: Colors.white,
                                     activeFillColor: Colors.white,
                                   ),

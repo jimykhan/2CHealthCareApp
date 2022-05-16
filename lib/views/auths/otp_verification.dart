@@ -23,19 +23,36 @@ class OtpVerification extends HookWidget {
   String? phone;
   String? bearerToken;
   bool isForgetPassword;
+  bool isEmailVerification;
+  bool isPhoneVerification;
   bool from2FA;
   String sendBy;
-  OtpVerification({required this.userName,this.phone, this.isForgetPassword = true,
-    this.sendBy = "phone",this.from2FA = false,required this.userId,this.bearerToken});
+  OtpVerification({
+    required this.userName,
+    this.phone,
+    this.isForgetPassword = true,
+    this.sendBy = "phone",
+    this.from2FA = false,
+    required this.userId,
+    this.bearerToken,
+    this.isEmailVerification = false,
+    this.isPhoneVerification = false,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final ForgetPasswordVM forgetPasswordVM = useProvider(forgetPasswordVMProvider);
+    final ForgetPasswordVM forgetPasswordVM =
+        useProvider(forgetPasswordVMProvider);
     useEffect(() {
-
       forgetPasswordVM.initOtpVerificationScreen();
-      if(from2FA) forgetPasswordVM.send2FACodeInStartUp(userId: userId, method: 0, bearerToken: bearerToken??"");
-
+      Future.microtask(() async {
+        if (from2FA)
+          await forgetPasswordVM.send2FACodeInStartUp(
+              userId: userId, method: 0, bearerToken: bearerToken ?? "");
+        if (isPhoneVerification)
+          await forgetPasswordVM.sendVerificationCodeToPhone(
+              userName: userName, phoneNumber: phone ?? "");
+      });
       return () {
         forgetPasswordVM.errorController?.close();
         // forgetPasswordVM.otpTextEditingController?.dispose();
@@ -61,12 +78,15 @@ class OtpVerification extends HookWidget {
                       Expanded(
                         child: Container(
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(ApplicationSizing.convert(5)),
+                              borderRadius: BorderRadius.circular(
+                                  ApplicationSizing.convert(5)),
                               // color: Colors.red
                             ),
                             padding: EdgeInsets.symmetric(
                                 vertical: ApplicationSizing.convert(25)),
-                            margin: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin()),
+                            margin: EdgeInsets.symmetric(
+                                horizontal:
+                                    ApplicationSizing.horizontalMargin()),
                             child: Column(
                               children: [
                                 Container(
@@ -75,34 +95,37 @@ class OtpVerification extends HookWidget {
                                     text: TextSpan(
                                         text: "Code Verification",
                                         style: Styles.PoppinsBold(
-                                            fontSize: ApplicationSizing.fontScale(20),
+                                            fontSize:
+                                                ApplicationSizing.fontScale(20),
                                             fontWeight: FontWeight.w700,
-                                            color: appColor
-                                        )),
+                                            color: appColor)),
                                   ),
                                 ),
                                 Container(
                                   alignment: Alignment.centerLeft,
                                   child: RichText(
                                     text: TextSpan(
-                                        text: "Please enter the 6-digit code send to you at",
+                                        text:
+                                            "Please enter the 6-digit code send to you at",
                                         style: Styles.PoppinsRegular(
-                                            fontSize: ApplicationSizing.fontScale(12),
-                                            color: fontGrayColor
-
-                                        )),
+                                            fontSize:
+                                                ApplicationSizing.fontScale(12),
+                                            color: fontGrayColor)),
                                   ),
                                 ),
                                 Container(
                                   alignment: Alignment.centerLeft,
                                   child: RichText(
                                     text: TextSpan(
-                                        text: phone??userName,
+                                        text: isPhoneVerification
+                                            ? phone ?? ""
+                                            : isEmailVerification
+                                                ? userName
+                                                : "${phone} / ${userName}",
                                         style: Styles.PoppinsRegular(
-                                            fontSize: ApplicationSizing.fontScale(14),
-                                            fontWeight: FontWeight.w700
-
-                                        )),
+                                            fontSize:
+                                                ApplicationSizing.fontScale(14),
+                                            fontWeight: FontWeight.w700)),
                                   ),
                                 ),
                                 ApplicationSizing.verticalSpacer(n: 40),
@@ -112,41 +135,51 @@ class OtpVerification extends HookWidget {
                                   obscureText: false,
                                   animationType: AnimationType.fade,
                                   pinTheme: PinTheme(
-                                    shape: PinCodeFieldShape.box,
-                                    borderRadius: BorderRadius.circular(5),
-                                    fieldHeight: ApplicationSizing.convert(40),
-                                    fieldWidth: ApplicationSizing.convert(35),
+                                    shape: PinCodeFieldShape.circle,
+                                    borderRadius: null,
+                                    fieldHeight: ApplicationSizing.convert(50),
+                                    fieldWidth: ApplicationSizing.convert(50),
 
                                     // disabledColor: appColor.withOpacity(0.3),
                                     activeColor: appColor,
-                                    inactiveColor: Colors.grey,
+                                    inactiveColor:
+                                        Color(0xff12121D).withOpacity(0.1),
                                     selectedColor: appColor,
 
-                                    inactiveFillColor: Colors.white,
+                                    inactiveFillColor:
+                                        Color(0xff12121d).withOpacity(0.05),
                                     selectedFillColor: Colors.white,
                                     activeFillColor: Colors.white,
                                   ),
-                                  animationDuration: Duration(milliseconds: 300),
+                                  animationDuration:
+                                      Duration(milliseconds: 300),
                                   enableActiveFill: true,
-                                  errorAnimationController: forgetPasswordVM.errorController,
+                                  errorAnimationController:
+                                      forgetPasswordVM.errorController,
                                   keyboardType: TextInputType.number,
-                                  controller: forgetPasswordVM.otpTextEditingController,
+                                  controller:
+                                      forgetPasswordVM.otpTextEditingController,
                                   cursorColor: appColor,
                                   cursorHeight: ApplicationSizing.convert(20),
-
                                   textStyle: Styles.PoppinsRegular(
                                     fontSize: ApplicationSizing.fontScale(20),
                                   ),
                                   onCompleted: (v) {
-                                    print("Completed${v} ${forgetPasswordVM.otpTextEditingController?.text??""}");
-                                    if(isForgetPassword){
-                                      forgetPasswordVM.verifyResetPasswordCode(userName: userName,pinCode: v.toString());
-                                    }
-                                    else if(from2FA){
-                                      forgetPasswordVM.verify2FA(otp: v.toString(), bearerToken: bearerToken??"");
-                                    }
-                                    else{
-                                      forgetPasswordVM.verifyVerificationCodeToPhone(userName: userName,pinCode: v.toString());
+                                    print(
+                                        "Completed${v} ${forgetPasswordVM.otpTextEditingController?.text ?? ""}");
+                                    if (isForgetPassword) {
+                                      forgetPasswordVM.verifyResetPasswordCode(
+                                          userName: userName,
+                                          pinCode: v.toString());
+                                    } else if (from2FA) {
+                                      forgetPasswordVM.verify2FA(
+                                          otp: v.toString(),
+                                          bearerToken: bearerToken ?? "");
+                                    } else {
+                                      forgetPasswordVM
+                                          .verifyVerificationCodeToPhone(
+                                              userName: userName,
+                                              pinCode: v.toString());
                                     }
                                   },
                                   onChanged: (value) {
@@ -159,43 +192,54 @@ class OtpVerification extends HookWidget {
                                     return true;
                                   },
                                 ),
-                                SizedBox(height: ApplicationSizing.convert(40),),
+                                SizedBox(
+                                  height: ApplicationSizing.convert(40),
+                                ),
                                 Container(
                                   child: RichText(
-                                    text: TextSpan(
-                                      children: [
-                                        TextSpan(
+                                    text: TextSpan(children: [
+                                      TextSpan(
                                           text: "Didn’t receive code?",
                                           style: Styles.PoppinsRegular(
-                                            fontSize: ApplicationSizing.fontScale(12),
-                                            fontWeight: FontWeight.w400,
-                                            color: fontGrayColor
-                                          )
-                                        ),
-                                        TextSpan(
-                                            recognizer: TapGestureRecognizer()
-                                          ..onTap = () {
-                                              if(isForgetPassword){
-                                                forgetPasswordVM.sendVerificationCode(userName: userName,sendBy: sendBy);
-                                              }else if(from2FA){
-                                                forgetPasswordVM.send2FACode(userId: userId,method: 0, bearerToken: bearerToken??"");
+                                              fontSize:
+                                                  ApplicationSizing.fontScale(
+                                                      12),
+                                              fontWeight: FontWeight.w400,
+                                              color: fontGrayColor)),
+                                      TextSpan(
+                                          recognizer: TapGestureRecognizer()
+                                            ..onTap = () {
+                                              if (isForgetPassword) {
+                                                forgetPasswordVM
+                                                    .sendVerificationCode(
+                                                        userName: userName,
+                                                        sendBy: sendBy);
+                                              } else if (from2FA) {
+                                                forgetPasswordVM.send2FACode(
+                                                    userId: userId,
+                                                    method: 0,
+                                                    bearerToken:
+                                                        bearerToken ?? "");
+                                              } else {
+                                                forgetPasswordVM
+                                                    .sendVerificationCodeToPhone(
+                                                        userName: userName,
+                                                        phoneNumber: phone);
                                               }
-                                              else{
-                                                forgetPasswordVM.sendVerificationCodeToPhone(userName: userName,phoneNumber: phone);
-                                              }
-                                          },
-                                            text: "  Resend Code",
-                                            style: Styles.PoppinsRegular(
-                                                fontSize: ApplicationSizing.fontScale(12),
-                                                fontWeight: FontWeight.w400,
-                                                color: appColor
-                                            )
-                                        ),
-                                      ]
-                                    ),
+                                            },
+                                          text: "Resend Code",
+                                          style: Styles.PoppinsRegular(
+                                              fontSize:
+                                                  ApplicationSizing.fontScale(
+                                                      12),
+                                              fontWeight: FontWeight.w400,
+                                              color: appColor)),
+                                    ]),
                                   ),
                                 ),
-                                SizedBox(height: ApplicationSizing.convert(40),),
+                                SizedBox(
+                                  height: ApplicationSizing.convert(40),
+                                ),
                                 // Container(
                                 //   child: forgetPasswordVM.verifyOtpLoading
                                 //       ? loader()
@@ -214,16 +258,15 @@ class OtpVerification extends HookWidget {
                                 // ),
                                 FilledButton(
                                   txt: "go back".toUpperCase(),
-                                  color1: appColor ,
+                                  color1: appColor,
                                   borderColor: appColor,
                                   borderwidth: 0,
-                                  onTap: (){
+                                  onTap: () {
                                     Navigator.pop(context);
                                   },
                                 )
                               ],
-                            )
-                        ),
+                            )),
                       )
                     ],
                   )
@@ -231,13 +274,9 @@ class OtpVerification extends HookWidget {
               ),
             ),
           ),
-          forgetPasswordVM.verifyOtpLoading ? AlertLoader()  : Container(),
+          forgetPasswordVM.verifyOtpLoading ? AlertLoader() : Container(),
         ],
       ),
     );
   }
-
-
-
-
 }

@@ -136,7 +136,8 @@ class ForgetPasswordVM extends ChangeNotifier{
     if(res is bool){
       if(res){
         SetVerifyOtpLoadingState(false);
-        Navigator.pushReplacement(applicationContext!.currentContext!, PageTransition(child: Profile(), type: PageTransitionType.fade));
+        onLaunchActivityService?.profileDecider();
+        // Navigator.pushReplacement(applicationContext!.currentContext!, PageTransition(child: Profile(), type: PageTransitionType.fade));
       }else{
         SetVerifyOtpLoadingState(false);
       }

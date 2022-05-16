@@ -140,6 +140,7 @@ class OnLaunchActivityAndRoutesService{
       return;
     }
   }
+
   Future<void> handleMessage() async {
     print("OnMessageOpenedApp call");
     RemoteMessage? initialMessage =

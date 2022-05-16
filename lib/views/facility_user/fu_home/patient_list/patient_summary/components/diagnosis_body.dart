@@ -22,10 +22,10 @@ class DiagnosisBody extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    FUPatientSummaryVM _fuPatientSummaryVM = useProvider(fUPatientSummaryVMProvider);
+    FUPatientSummaryVM _fuPatientSummaryVM =
+        useProvider(fUPatientSummaryVMProvider);
     useEffect(
-
-          () {
+      () {
         print("init call of allegies");
         Future.microtask(() async {
           await _fuPatientSummaryVM.getDiagnosisByPatientId();
@@ -45,22 +45,29 @@ class DiagnosisBody extends HookWidget {
           HeadLineTextStyle(
             text: "Diagnosis",
           ),
+          SizedBox(
+            height: 10,
+          ),
           Stack(
             children: [
               _fuPatientSummaryVM.isLoading
                   ? AlertLoader(bottomMargin: 350)
-                  : _fuPatientSummaryVM.diagnoseList.length == 0 ? NoData()
-                  : ListView.separated(
-                  shrinkWrap: true,
-                  physics: ScrollPhysics(),
-
-                  itemBuilder: (context,index){
-                    return diagnoseTile(diagnoseModel: _fuPatientSummaryVM.diagnoseList[index]);
-                  },
-                  separatorBuilder: (context,index){
-                    return SizedBox(height: 10,);
-                  },
-                  itemCount: _fuPatientSummaryVM.diagnoseList.length)
+                  : _fuPatientSummaryVM.diagnoseList.length == 0
+                      ? NoData()
+                      : ListView.separated(
+                          shrinkWrap: true,
+                          physics: ScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            return diagnoseTile(
+                                diagnoseModel:
+                                    _fuPatientSummaryVM.diagnoseList[index]);
+                          },
+                          separatorBuilder: (context, index) {
+                            return SizedBox(
+                              height: 10,
+                            );
+                          },
+                          itemCount: _fuPatientSummaryVM.diagnoseList.length)
             ],
           ),
         ],
@@ -84,7 +91,7 @@ class DiagnosisBody extends HookWidget {
                         Row(
                           children: [
                             Text(
-                              diagnoseModel.icdCode?? "",
+                              diagnoseModel.icdCode ?? "",
                               style: Styles.PoppinsRegular(
                                   fontWeight: FontWeight.w500,
                                   fontSize: ApplicationSizing.constSize(18),
@@ -94,8 +101,8 @@ class DiagnosisBody extends HookWidget {
                               onTap: () {
                                 openBottomModalDisableDrag(
                                     child: MadLinePlus(
-                                      url: diagnoseModel.medlineUrl??"",
-                                    ));
+                                  url: diagnoseModel.medlineUrl ?? "",
+                                ));
                               },
                               child: Container(
                                   padding: EdgeInsets.symmetric(horizontal: 10),
@@ -108,34 +115,37 @@ class DiagnosisBody extends HookWidget {
                             //         "assets/icons/medicine_info_icon.svg"))
                           ],
                         ),
-
                       ],
                     ),
                   )),
               Expanded(
-                  flex: 2,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        padding: EdgeInsets.symmetric(vertical: 3, horizontal: 6),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            color: appColorSecondary),
-                        child: Text(
-                          diagnoseModel.isChronic?? false ? "InActive" :"Active",
-                          style: Styles.PoppinsRegular(
-                              fontWeight: FontWeight.w500,
-                              fontSize: ApplicationSizing.constSize(8),
-                              color: whiteColor),
-                        ),
+                flex: 2,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.symmetric(vertical: 3, horizontal: 6),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          color: appColorSecondary),
+                      child: Text(
+                        diagnoseModel.isChronic ?? false
+                            ? "InActive"
+                            : "Active",
+                        style: Styles.PoppinsRegular(
+                            fontWeight: FontWeight.w500,
+                            fontSize: ApplicationSizing.constSize(8),
+                            color: whiteColor),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
-          SizedBox(height:2,),
+          SizedBox(
+            height: 2,
+          ),
           Row(
             children: [
               Expanded(
@@ -148,7 +158,7 @@ class DiagnosisBody extends HookWidget {
                           children: [
                             Expanded(
                               child: Text(
-                                diagnoseModel.description?? "",
+                                diagnoseModel.description ?? "",
                                 style: Styles.PoppinsRegular(
                                     fontWeight: FontWeight.w500,
                                     fontSize: ApplicationSizing.constSize(10),
@@ -169,7 +179,7 @@ class DiagnosisBody extends HookWidget {
                             ),
                             Expanded(
                               child: Text(
-                                diagnoseModel.note?? "",
+                                diagnoseModel.note ?? "",
                                 style: Styles.PoppinsRegular(
                                     fontWeight: FontWeight.w500,
                                     fontSize: ApplicationSizing.constSize(10),
@@ -178,7 +188,6 @@ class DiagnosisBody extends HookWidget {
                             ),
                           ],
                         ),
-
                       ],
                     ),
                   )),
@@ -196,7 +205,9 @@ class DiagnosisBody extends HookWidget {
                               fontSize: ApplicationSizing.constSize(10),
                               color: appColor),
                         ),
-                        VerificationMark(isVerified: diagnoseModel.isOnCcm?? false,),
+                        VerificationMark(
+                          isVerified: diagnoseModel.isOnCcm ?? false,
+                        ),
                       ],
                     ),
                     Column(
@@ -208,7 +219,9 @@ class DiagnosisBody extends HookWidget {
                               fontSize: ApplicationSizing.constSize(10),
                               color: appColor),
                         ),
-                        VerificationMark(isVerified: diagnoseModel.isOnRpm?? false,),
+                        VerificationMark(
+                          isVerified: diagnoseModel.isOnRpm ?? false,
+                        ),
                       ],
                     ),
                   ],
@@ -216,7 +229,9 @@ class DiagnosisBody extends HookWidget {
               ),
             ],
           ),
-          SizedBox(height:2,),
+          SizedBox(
+            height: 2,
+          ),
           Row(
             children: [
               Expanded(
@@ -235,7 +250,7 @@ class DiagnosisBody extends HookWidget {
                       ),
                       Expanded(
                         child: Text(
-                          diagnoseModel.diagnosisDate??"",
+                          diagnoseModel.diagnosisDate ?? "",
                           style: Styles.PoppinsRegular(
                             fontSize: ApplicationSizing.constSize(10),
                             fontWeight: FontWeight.w500,
@@ -264,7 +279,7 @@ class DiagnosisBody extends HookWidget {
                         ),
                       ),
                       Text(
-                        diagnoseModel.resolvedDate??"",
+                        diagnoseModel.resolvedDate ?? "",
                         style: Styles.PoppinsRegular(
                           fontSize: ApplicationSizing.constSize(10),
                           fontWeight: FontWeight.w500,
@@ -277,7 +292,6 @@ class DiagnosisBody extends HookWidget {
               ),
             ],
           ),
-
         ],
       ),
     );

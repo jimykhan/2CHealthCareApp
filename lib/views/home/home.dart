@@ -88,10 +88,10 @@ class Home extends HookWidget {
               _scaffoldkey.currentState!.openDrawer();
             },
             child: Container(
-                alignment: Alignment.centerLeft,
-                padding: EdgeInsets.only(right: 20),
-                child:
-                    SvgPicture.asset("assets/icons/home/side-menu-icon.svg")),
+              alignment: Alignment.centerLeft,
+              padding: EdgeInsets.only(right: 20),
+              child: SvgPicture.asset("assets/icons/home/side-menu-icon.svg"),
+            ),
           ),
           color1: Colors.white,
           color2: Colors.white,
@@ -319,7 +319,7 @@ class Home extends HookWidget {
     return Container(
       // width: 150,
       height: ApplicationSizing.convert(150),
-       padding: EdgeInsets.symmetric(horizontal: ApplicationSizing.convert(10)),
+      padding: EdgeInsets.symmetric(horizontal: ApplicationSizing.convert(10)),
       decoration: BoxDecoration(
         color: item["color"],
         // color: Colors.blueAccent,

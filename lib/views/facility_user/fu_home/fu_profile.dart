@@ -137,53 +137,88 @@ class FUProfile extends HookWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Container(
-                                child: Text("Organizational Information",
-                                style: Styles.PoppinsRegular(
-                                  fontSize: ApplicationSizing.constSize(14),
-                                  color: appColorSecondary,
-                                  fontWeight: FontWeight.w700
-                                ),),
+                                child: Text(
+                                  "Organizational Information",
+                                  style: Styles.PoppinsRegular(
+                                      fontSize: ApplicationSizing.constSize(14),
+                                      color: appColorSecondary,
+                                      fontWeight: FontWeight.w700),
+                                ),
                               ),
-                              VerifiedInfo(isVerified: fuProfileVM.fuProfileModel?.isPhoneNumberVerified?? false,
-                                textInfo: fuProfileVM.fuProfileModel?.phoneNo ?? "",
+                              VerifiedInfo(
+                                isVerified: fuProfileVM.fuProfileModel
+                                        ?.isPhoneNumberVerified ??
+                                    false,
+                                textInfo:
+                                    fuProfileVM.fuProfileModel?.phoneNo ?? "",
                                 textInfoTitle: "Phone No.",
-                                ontap: fuProfileVM.fuProfileModel?.isPhoneNumberVerified?? false ? null :
-                                    (){
-                                  Navigator.push(context,
-                                      PageTransition(child: OtpVerification(
-                                        userName: fuProfileVM.fuProfileModel?.userName??"",
-                                        phone: fuProfileVM.fuProfileModel?.phoneNo,
-                                        isForgetPassword: false,
-                                        userId: fuProfileVM.fuProfileModel?.userName??"",
-                                        isPhoneVerification: true,
-                                      ), type: PageTransitionType.leftToRight)
-                                  );
-                                },
+                                ontap: fuProfileVM.fuProfileModel
+                                            ?.isPhoneNumberVerified ??
+                                        false
+                                    ? null
+                                    : () {
+                                        Navigator.push(
+                                            context,
+                                            PageTransition(
+                                                child: OtpVerification(
+                                                  userName: fuProfileVM
+                                                          .fuProfileModel
+                                                          ?.userName ??
+                                                      "",
+                                                  phone: fuProfileVM
+                                                      .fuProfileModel?.phoneNo,
+                                                  isForgetPassword: false,
+                                                  userId: fuProfileVM
+                                                          .fuProfileModel
+                                                          ?.userName ??
+                                                      "",
+                                                  isPhoneVerification: true,
+                                                ),
+                                                type: PageTransitionType
+                                                    .leftToRight));
+                                      },
                               ),
-
                               keyValue(
                                   key: "Facility Name",
-                                  value: fuProfileVM.fuProfileModel?.facilityDto?.facilityName ??
+                                  value: fuProfileVM.fuProfileModel?.facilityDto
+                                          ?.facilityName ??
                                       ""),
-
                               keyValue(
                                   key: "Secondary No.",
                                   value: fuProfileVM.fuProfileModel?.phoneNo ??
                                       ""),
-                              VerifiedInfo(isVerified: fuProfileVM.fuProfileModel?.isEmailVerified?? false,
-                                textInfo: fuProfileVM.fuProfileModel?.email ?? "",
+                              VerifiedInfo(
+                                isVerified: fuProfileVM
+                                        .fuProfileModel?.isEmailVerified ??
+                                    false,
+                                textInfo:
+                                    fuProfileVM.fuProfileModel?.email ?? "",
                                 textInfoTitle: "Email",
-                                ontap: fuProfileVM.fuProfileModel?.isEmailVerified?? false ? null
-                                :(){
-                                  Navigator.push(context,
-                                      PageTransition(child: OtpVerification(userName: fuProfileVM.fuProfileModel?.userName??"",
-                                        phone: fuProfileVM.fuProfileModel?.phoneNo,
-                                        isForgetPassword: false,
-                                        userId: fuProfileVM.fuProfileModel?.userName??"",
-                                        isEmailVerification: true,
-                                      ), type: PageTransitionType.leftToRight)
-                                  );
-                                },
+                                ontap: fuProfileVM
+                                            .fuProfileModel?.isEmailVerified ??
+                                        false
+                                    ? null
+                                    : () {
+                                        Navigator.push(
+                                            context,
+                                            PageTransition(
+                                                child: OtpVerification(
+                                                  userName: fuProfileVM
+                                                          .fuProfileModel
+                                                          ?.userName ??
+                                                      "",
+                                                  phone: fuProfileVM
+                                                      .fuProfileModel?.phoneNo,
+                                                  isForgetPassword: false,
+                                                  userId: fuProfileVM
+                                                          .fuProfileModel
+                                                          ?.userName ??
+                                                      "",
+                                                  isEmailVerification: true,
+                                                ),
+                                                type: PageTransitionType
+                                                    .leftToRight));
+                                      },
                               ),
                             ],
                           ),
@@ -196,9 +231,9 @@ class FUProfile extends HookWidget {
     );
   }
 
-  keyValue({required String key, required String value,Widget? customWidget}) {
+  keyValue({required String key, required String value, Widget? customWidget}) {
     return Container(
-      padding: EdgeInsets.only(bottom: 10, top: 10),
+      padding: EdgeInsets.only(bottom: 5, top: 8),
       decoration: BoxDecoration(
           border: Border(
               bottom: BorderSide(color: fontGrayColor.withOpacity(0.3)))),
@@ -220,11 +255,14 @@ class FUProfile extends HookWidget {
           Expanded(
             child: Container(
               alignment: Alignment.centerRight,
-              child: customWidget?? Text(
-                value,
-                style: Styles.PoppinsRegular(
-                    color: appColor, fontSize: 12, fontWeight: FontWeight.w400),
-              ),
+              child: customWidget ??
+                  Text(
+                    value,
+                    style: Styles.PoppinsRegular(
+                        color: appColor,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400),
+                  ),
             ),
           ),
         ],

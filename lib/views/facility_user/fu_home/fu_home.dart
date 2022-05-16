@@ -120,7 +120,7 @@ class FUHome extends HookWidget {
               loginVM: loginVM,
             ),
             SizedBox(
-              height: 20,
+              height: 15,
             ),
             fuHomeViewModel.dashboardPatientSummary == null
                 ? Column(
@@ -149,7 +149,7 @@ class FUHome extends HookWidget {
                             0,
                       ),
                       SizedBox(
-                        height: 20,
+                        height: 15,
                       ),
                       ServiceTile(
                         onclick: () {

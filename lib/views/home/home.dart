@@ -81,7 +81,7 @@ class Home extends HookWidget {
       backgroundColor: Colors.white,
       key: _scaffoldkey,
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(ApplicationSizing.convert(80)),
+        preferredSize: Size.fromHeight(ApplicationSizing.convert(70)),
         child: CustomAppBar(
           leadingIcon: InkWell(
             onTap: () {
@@ -95,7 +95,7 @@ class Home extends HookWidget {
           ),
           color1: Colors.white,
           color2: Colors.white,
-          hight: ApplicationSizing.convert(80),
+          hight: ApplicationSizing.convert(70),
           parentContext: context,
           paddingLeft: 15,
         ),

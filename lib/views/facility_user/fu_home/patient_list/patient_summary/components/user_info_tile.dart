@@ -17,8 +17,8 @@ class UserInfoTile extends StatelessWidget {
           horizontal: ApplicationSizing.horizontalMargin()),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          begin: Alignment.centerLeft,
-          end: Alignment.centerLeft,
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
           colors: [Color(0Xff4EAF48), Color(0xff388333)],
         ),
         borderRadius: BorderRadius.circular(15),

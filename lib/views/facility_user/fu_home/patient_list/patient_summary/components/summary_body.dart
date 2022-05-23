@@ -85,7 +85,7 @@ class SummaryBody extends HookWidget {
                                       key: "Secondary Phone No",
                                       value: mask.getMaskedString(
                                           _fuPatientSummaryVM.patientInfo
-                                                  ?.emergencyContactSecondaryPhoneNo ??
+                                                  ?.personNumber ??
                                               "")),
                                 ],
                               ),
@@ -204,17 +204,17 @@ class SummaryBody extends HookWidget {
                                   keyValue(
                                       key: "Last CCM",
                                       value: _fuPatientSummaryVM.patientInfo
-                                              ?.currentMonthCompletedTime ??
+                                              ?.lastCCMDate ??
                                           ""),
                                   keyValue(
                                       key: "PCM Appointment Date",
                                       value: _fuPatientSummaryVM
-                                              .patientInfo?.consentDate ??
+                                              .patientInfo?.recentPCPAppointment ??
                                           ""),
                                   keyValue(
                                       key: "Hospitalization Date",
                                       value: _fuPatientSummaryVM
-                                              .patientInfo?.consentDate ??
+                                              .patientInfo?.hospitalizationDate ??
                                           ""),
                                 ],
                               ),

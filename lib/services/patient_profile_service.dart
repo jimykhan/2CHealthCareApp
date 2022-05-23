@@ -28,6 +28,15 @@ class PatientProfileService{
         if(patientInfo.dateOfBirth != null){
           patientInfo.dateOfBirth = Jiffy(patientInfo.dateOfBirth).format(Strings.dateFormatFullYear);
         }
+        if(patientInfo.lastCCMDate != null && patientInfo.lastCCMDate != ""){
+          patientInfo.lastCCMDate = Jiffy(patientInfo.lastCCMDate).format(Strings.dateFormatFullYear);
+        }
+        if(patientInfo.recentPCPAppointment != null && patientInfo.recentPCPAppointment != ""){
+          patientInfo.recentPCPAppointment = Jiffy(patientInfo.recentPCPAppointment).format(Strings.dateFormatFullYear);
+        }
+        if(patientInfo.hospitalizationDate != null && patientInfo.homePhone != ""){
+          patientInfo.hospitalizationDate = Jiffy(patientInfo.hospitalizationDate).format(Strings.dateFormatFullYear);
+        }
         if(patientInfo.specialists != null ){
           patientInfo.specialists?.forEach((element) {
             if(element.prevAppointment != null && element.prevAppointment != ""){

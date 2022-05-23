@@ -12,7 +12,6 @@ class PatientInfo {
   String? socialSecurityNumber;
   String? medicalRecordNumber;
   String? otherIdNumber;
-  String? insuranceNumber;
   String? medicareNumber;
   String? planAYear;
   String? planAMonth;
@@ -48,14 +47,15 @@ class PatientInfo {
   String? zip;
   String? country;
   String? homePhone;
+  String? countryCallingCode;
   bool? phoneNumberConfirmed;
+  String? personNumber;
   String? dateOfBirth;
   int? consentType;
   String? consentDocUrl;
   bool? isConsentTaken;
   String? consentDate;
   String? sex;
-  String? personNumber;
   String? dateAssigned;
   String? currentMonthCompletedTime;
   String? currentMonthRemainingTime;
@@ -80,8 +80,20 @@ class PatientInfo {
   int? psychiatristId;
   int? insurancePlanId;
   String? insurancePlanName;
+  String? insuranceNumber;
+  int? secondaryInsurancePlanId;
+  String? secondaryInsurancePlanName;
+  String? secondaryInsuranceNumber;
   bool? profileStatus;
   String? userId;
+  String? lastAppLaunchDate;
+  int? carePlanStatusColor;
+  String? lastCCMDate;
+  String? recentPCPAppointment;
+  String? hospitalizationDate;
+  String? stickyNoteHigh;
+  String? stickyNoteMedium;
+  String? stickyNoteLow;
   List<int>? chronicDiseasesIds;
   List<DiagnosesList>? diagnosesList;
   List<Medications>? medications;
@@ -96,7 +108,6 @@ class PatientInfo {
         this.socialSecurityNumber,
         this.medicalRecordNumber,
         this.otherIdNumber,
-        this.insuranceNumber,
         this.medicareNumber,
         this.planAYear,
         this.planAMonth,
@@ -132,14 +143,15 @@ class PatientInfo {
         this.zip,
         this.country,
         this.homePhone,
+        this.countryCallingCode,
         this.phoneNumberConfirmed,
+        this.personNumber,
         this.dateOfBirth,
         this.consentType,
         this.consentDocUrl,
         this.isConsentTaken,
         this.consentDate,
         this.sex,
-        this.personNumber,
         this.dateAssigned,
         this.currentMonthCompletedTime,
         this.currentMonthRemainingTime,
@@ -164,8 +176,20 @@ class PatientInfo {
         this.psychiatristId,
         this.insurancePlanId,
         this.insurancePlanName,
+        this.insuranceNumber,
+        this.secondaryInsurancePlanId,
+        this.secondaryInsurancePlanName,
+        this.secondaryInsuranceNumber,
         this.profileStatus,
         this.userId,
+        this.lastAppLaunchDate,
+        this.carePlanStatusColor,
+        this.lastCCMDate,
+        this.recentPCPAppointment,
+        this.hospitalizationDate,
+        this.stickyNoteHigh,
+        this.stickyNoteMedium,
+        this.stickyNoteLow,
         this.chronicDiseasesIds,
         this.diagnosesList,
         this.medications,
@@ -180,7 +204,6 @@ class PatientInfo {
     socialSecurityNumber = json['socialSecurityNumber'];
     medicalRecordNumber = json['medicalRecordNumber'];
     otherIdNumber = json['otherIdNumber'];
-    insuranceNumber = json['insuranceNumber'];
     medicareNumber = json['medicareNumber'];
     planAYear = json['planAYear'];
     planAMonth = json['planAMonth'];
@@ -216,14 +239,15 @@ class PatientInfo {
     zip = json['zip'];
     country = json['country'];
     homePhone = json['homePhone'];
+    countryCallingCode = json['countryCallingCode'];
     phoneNumberConfirmed = json['phoneNumberConfirmed'];
+    personNumber = json['personNumber'];
     dateOfBirth = json['dateOfBirth'];
     consentType = json['consentType'];
     consentDocUrl = json['consentDocUrl'];
     isConsentTaken = json['isConsentTaken'];
     consentDate = json['consentDate'];
     sex = json['sex'];
-    personNumber = json['personNumber'];
     dateAssigned = json['dateAssigned'];
     currentMonthCompletedTime = json['currentMonthCompletedTime'];
     currentMonthRemainingTime = json['currentMonthRemainingTime'];
@@ -241,7 +265,7 @@ class PatientInfo {
     if (json['careProviders'] != null) {
       careProviders = <CareProviders>[];
       json['careProviders'].forEach((v) {
-        careProviders!.add(CareProviders.fromJson(v));
+        careProviders!.add(new CareProviders.fromJson(v));
       });
     }
     careFacilitatorName = json['careFacilitatorName'];
@@ -253,8 +277,20 @@ class PatientInfo {
     psychiatristId = json['psychiatristId'];
     insurancePlanId = json['insurancePlanId'];
     insurancePlanName = json['insurancePlanName'];
+    insuranceNumber = json['insuranceNumber'];
+    secondaryInsurancePlanId = json['secondaryInsurancePlanId'];
+    secondaryInsurancePlanName = json['secondaryInsurancePlanName'];
+    secondaryInsuranceNumber = json['secondaryInsuranceNumber'];
     profileStatus = json['profileStatus'];
     userId = json['userId'];
+    lastAppLaunchDate = json['lastAppLaunchDate'];
+    carePlanStatusColor = json['carePlanStatusColor'];
+    lastCCMDate = json['lastCCMDate'];
+    recentPCPAppointment = json['recentPCPAppointment'];
+    hospitalizationDate = json['hospitalizationDate'];
+    stickyNoteHigh = json['stickyNoteHigh'];
+    stickyNoteMedium = json['stickyNoteMedium'];
+    stickyNoteLow = json['stickyNoteLow'];
     chronicDiseasesIds = json['chronicDiseasesIds'].cast<int>();
     if (json['diagnosesList'] != null) {
       diagnosesList = <DiagnosesList>[];
@@ -269,7 +305,7 @@ class PatientInfo {
       });
     }
     if (json['specialists'] != null) {
-      specialists =  <Specialists>[];
+      specialists = <Specialists>[];
       json['specialists'].forEach((v) {
         specialists!.add(new Specialists.fromJson(v));
       });
@@ -283,7 +319,7 @@ class PatientInfo {
     if (json['patientConsents'] != null) {
       patientConsents = <PatientConsents>[];
       json['patientConsents'].forEach((v) {
-        patientConsents!.add(PatientConsents.fromJson(v));
+        patientConsents!.add(new PatientConsents.fromJson(v));
       });
     }
   }
@@ -296,7 +332,6 @@ class PatientInfo {
     data['socialSecurityNumber'] = this.socialSecurityNumber;
     data['medicalRecordNumber'] = this.medicalRecordNumber;
     data['otherIdNumber'] = this.otherIdNumber;
-    data['insuranceNumber'] = this.insuranceNumber;
     data['medicareNumber'] = this.medicareNumber;
     data['planAYear'] = this.planAYear;
     data['planAMonth'] = this.planAMonth;
@@ -332,14 +367,15 @@ class PatientInfo {
     data['zip'] = this.zip;
     data['country'] = this.country;
     data['homePhone'] = this.homePhone;
+    data['countryCallingCode'] = this.countryCallingCode;
     data['phoneNumberConfirmed'] = this.phoneNumberConfirmed;
+    data['personNumber'] = this.personNumber;
     data['dateOfBirth'] = this.dateOfBirth;
     data['consentType'] = this.consentType;
     data['consentDocUrl'] = this.consentDocUrl;
     data['isConsentTaken'] = this.isConsentTaken;
     data['consentDate'] = this.consentDate;
     data['sex'] = this.sex;
-    data['personNumber'] = this.personNumber;
     data['dateAssigned'] = this.dateAssigned;
     data['currentMonthCompletedTime'] = this.currentMonthCompletedTime;
     data['currentMonthRemainingTime'] = this.currentMonthRemainingTime;
@@ -370,8 +406,20 @@ class PatientInfo {
     data['psychiatristId'] = this.psychiatristId;
     data['insurancePlanId'] = this.insurancePlanId;
     data['insurancePlanName'] = this.insurancePlanName;
+    data['insuranceNumber'] = this.insuranceNumber;
+    data['secondaryInsurancePlanId'] = this.secondaryInsurancePlanId;
+    data['secondaryInsurancePlanName'] = this.secondaryInsurancePlanName;
+    data['secondaryInsuranceNumber'] = this.secondaryInsuranceNumber;
     data['profileStatus'] = this.profileStatus;
     data['userId'] = this.userId;
+    data['lastAppLaunchDate'] = this.lastAppLaunchDate;
+    data['carePlanStatusColor'] = this.carePlanStatusColor;
+    data['lastCCMDate'] = this.lastCCMDate;
+    data['recentPCPAppointment'] = this.recentPCPAppointment;
+    data['hospitalizationDate'] = this.hospitalizationDate;
+    data['stickyNoteHigh'] = this.stickyNoteHigh;
+    data['stickyNoteMedium'] = this.stickyNoteMedium;
+    data['stickyNoteLow'] = this.stickyNoteLow;
     data['chronicDiseasesIds'] = this.chronicDiseasesIds;
     if (this.diagnosesList != null) {
       data['diagnosesList'] =
@@ -394,3 +442,4 @@ class PatientInfo {
     return data;
   }
 }
+

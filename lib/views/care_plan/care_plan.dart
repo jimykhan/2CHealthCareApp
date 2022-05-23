@@ -641,7 +641,7 @@ class CarePlan extends HookWidget {
                   onSubmit: (val) {},
                   isEnable: false,
                   hints: "Daily Activity",
-                  textEditingController: carePlanVM.dailyLivingController,
+                  textEditingController: carePlanVM.instrumentalDailyLivingController,
                 ),
               )
             ],
@@ -761,7 +761,7 @@ class CarePlan extends HookWidget {
         TextFieldQuestion(
             question:
                 "Do you require help with transportation/ Have adequate access to healthcare:",
-            textEditingController: carePlanVM.requireTransportationController),
+            textEditingController: carePlanVM.helpwithTransportationController),
         ApplicationSizing.verticalSpacer(),
         fourOptionQuestion(
           onOption1: () {},
@@ -1267,7 +1267,7 @@ class CarePlan extends HookWidget {
                         onSubmit: (val) {},
                         isEnable: false,
                         hints: "Comments..",
-                        textEditingController: carePlanVM.challengesController,
+                        textEditingController: carePlanVM.utilizingCommunityController,
                       ),
                     )
                   ],
@@ -1662,15 +1662,15 @@ class CarePlan extends HookWidget {
           disableComment: true,
         ),
         ApplicationSizing.verticalSpacer(),
-        YesNoQuestion(
-          pressNo: () {},
-          pressYes: () {},
-          isChecked: carePlanVM.carePlanModel?.discussWithPhysician ?? false,
-          question:
-              "Would you like to discuss this further with your physician?",
-          textEditingController: carePlanVM.discussWithPhysicianController,
-        ),
-        ApplicationSizing.verticalSpacer(),
+        // YesNoQuestion(
+        //   pressNo: () {},
+        //   pressYes: () {},
+        //   isChecked: carePlanVM.carePlanModel?.discussWithPhysician ?? false,
+        //   question:
+        //       "Would you like to discuss this further with your physician?",
+        //   textEditingController: carePlanVM.discussWithPhysicianController,
+        // ),
+        // ApplicationSizing.verticalSpacer(),
       ],
     );
   }

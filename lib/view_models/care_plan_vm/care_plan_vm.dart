@@ -138,6 +138,7 @@ class CarePlanVM extends ChangeNotifier{
     concernedAboutOtherController.text = carePlanModel?.concernedAboutOther??"";
     utilizingCommunityController.text = carePlanModel?.utilizingCommunity??"";
   }
+
   setChronicConditionsValue(){
     chronicObstructiveController.text = "";
     asthmaController.text = "";

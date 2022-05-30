@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/all.dart';
 import 'package:twochealthcare/common_widgets/aler_dialogue.dart';
@@ -77,10 +78,12 @@ class AddRPMEncounter extends HookWidget {
             SingleChildScrollView(
               child: Column(
                 mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    height: MediaQuery.of(context).size.height - 170,
+                    // height: MediaQuery.of(context).size.height - 270,
                     child: Column(
                       children: [
                         Container(
@@ -240,50 +243,53 @@ class AddRPMEncounter extends HookWidget {
                       ],
                     ),
                   ),
-                  Container(
-                    alignment: Alignment.bottomCenter,
-                    child: Row(
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: FilledButton(
-                            onTap: () {
-                              GenerateAlert(child: ChangeBillingProvider());
-                            },
-                            color1: appColorSecondary,
-                            borderColor: appColorSecondary,
-                            txt: "change provider".toUpperCase(),
-                            paddingLeftRight: 0,
-                            fontsize: 13,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Expanded(
-                            flex: 1,
-                            child: _rmpEncounterVM.addEncounterLoader
-                                ? SimpleLoader()
-                                : FilledButton(
-                                    onTap: _rmpEncounterVM.isFormValid
-                                        ? () {
-                                            _rmpEncounterVM.addRpmEncounter(
-                                                patientId: patientId);
-                                          }
-                                        : null,
-                                    color1: _rmpEncounterVM.isFormValid
-                                        ? appColor
-                                        : appColorLight,
-                                    borderColor: _rmpEncounterVM.isFormValid
-                                        ? appColor
-                                        : appColorLight,
-                                    txt: "Add encounter".toUpperCase(),
-                                    paddingLeftRight: 0,
-                                    fontsize: 13,
-                                  )),
-                      ],
+
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 20),
+              // color: Colors.amber,
+              alignment: Alignment.bottomCenter,
+              child: Row(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: FilledButton(
+                      onTap: () {
+                        GenerateAlert(child: ChangeBillingProvider());
+                      },
+                      color1: appColorSecondary,
+                      borderColor: appColorSecondary,
+                      txt: "change provider".toUpperCase(),
+                      paddingLeftRight: 0,
+                      fontsize: 13,
                     ),
                   ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Expanded(
+                      flex: 1,
+                      child: _rmpEncounterVM.addEncounterLoader
+                          ? SimpleLoader()
+                          : FilledButton(
+                        onTap: _rmpEncounterVM.isFormValid
+                            ? () {
+                          _rmpEncounterVM.addRpmEncounter(
+                              patientId: patientId);
+                        }
+                            : null,
+                        color1: _rmpEncounterVM.isFormValid
+                            ? appColor
+                            : appColorLight,
+                        borderColor: _rmpEncounterVM.isFormValid
+                            ? appColor
+                            : appColorLight,
+                        txt: "Add encounter".toUpperCase(),
+                        paddingLeftRight: 0,
+                        fontsize: 13,
+                      )),
                 ],
               ),
             ),

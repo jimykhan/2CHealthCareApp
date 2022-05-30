@@ -23,6 +23,7 @@ import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_
 import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_summary/components/diagnosis_body.dart';
 import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_summary/components/headline_text_style.dart';
 import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_summary/components/medications_body.dart';
+import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_summary/components/summary_body.dart';
 import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_summary/components/view_patient_emergency_contact.dart';
 import 'package:twochealthcare/views/home/components/widgets.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -110,9 +111,78 @@ class CarePlan extends HookWidget {
     return Container(
       child: Stack(
         children: [
+
           SingleChildScrollView(
             child: Column(
               children: [
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin(),vertical: 10),
+                  padding: EdgeInsets.symmetric(
+                      vertical: 20, horizontal: 15),
+                  decoration: BoxDecoration(
+                      border: Border.all(
+                        color: fontGrayColor.withOpacity(0.3),
+                      ),
+                      borderRadius: BorderRadius.circular(15)),
+                  child: Column(
+                    children: [
+                      keyValue(
+                          key: "Last Update",
+                          value: carePlanVM.carePlanModel
+                              ?.updatedOn ??
+                              ""),
+                      keyValue(
+                          key: "Update By",
+                          value: carePlanVM.carePlanModel
+                              ?.updatedUser ??
+                              ""),
+                      keyValue(
+                        key: "Care Provider",
+                        rightWidget: Wrap(
+                            direction: Axis.horizontal,
+                            children: carePlanVM.carePlanModel?.billingProviderName
+                                !=
+                                null
+                                ? carePlanVM.carePlanModel!
+                                .careCoordinatorName !=
+                                null
+                                ? carePlanVM.carePlanModel!
+                                .careCoordinatorName!
+                                .map((e) => Container(
+                              // padding:
+                              // EdgeInsets.all(2),
+                              // decoration: BoxDecoration(
+                              //     color:
+                              //     appColorSecondary,
+                              //     shape: BoxShape
+                              //         .circle),
+                              child: Text(
+                                "${e},",
+                                style: Styles
+                                    .PoppinsRegular(
+                                    color: Color(0xff4EAF48),
+                                    fontSize:
+                                    14),
+                              ),
+                            ))
+                                .toList()
+                                : []
+                                : []),
+                      ),
+                      keyValue(
+                          key: "Billing Provider",
+                          value: carePlanVM.carePlanModel
+                              ?.billingProviderName ??
+                              ""),
+
+                      keyValue(
+                          key: "CCM Started Date",
+                          value: carePlanVM.carePlanModel?.ccmStartedDate ??
+                              ""),
+                    ],
+                  ),
+                ),
+
                 ListView.separated(
                     shrinkWrap: true,
                     physics: ScrollPhysics(),
@@ -833,7 +903,7 @@ class CarePlan extends HookWidget {
         YesNoQuestion(
           pressNo: () {},
           pressYes: () {},
-          isChecked: false,
+          isChecked: carePlanVM.carePlanModel?.textMessages?? false,
           question: "Patients can respond to Text Messages",
           disableComment: true,
         ),

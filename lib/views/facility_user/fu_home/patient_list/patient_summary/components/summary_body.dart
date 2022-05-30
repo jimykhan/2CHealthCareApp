@@ -228,42 +228,43 @@ class SummaryBody extends HookWidget {
     );
   }
 
-  keyValue({required String key, String? value, Widget? rightWidget}) {
-    return Container(
-      padding: EdgeInsets.only(bottom: 5, top: 8),
-      decoration: BoxDecoration(
-          border: Border(
-              bottom: BorderSide(color: fontGrayColor.withOpacity(0.3)))),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Container(
-            padding: EdgeInsets.only(top: 5, bottom: 5, left: 10, right: 10),
-            decoration: BoxDecoration(
-              color: Color.fromRGBO(70, 141, 255, 0.27),
-              borderRadius: BorderRadius.circular(6),
-            ),
-            child: Text(
-              key,
-              style:
-                  Styles.PoppinsRegular(color: Color(0xff002F73), fontSize: 14),
+
+}
+keyValue({required String key, String? value, Widget? rightWidget}) {
+  return Container(
+    padding: EdgeInsets.only(bottom: 5, top: 8),
+    decoration: BoxDecoration(
+        border: Border(
+            bottom: BorderSide(color: fontGrayColor.withOpacity(0.3)))),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Container(
+          padding: EdgeInsets.only(top: 5, bottom: 5, left: 10, right: 10),
+          decoration: BoxDecoration(
+            color: Color.fromRGBO(70, 141, 255, 0.27),
+            borderRadius: BorderRadius.circular(6),
+          ),
+          child: Text(
+            key,
+            style:
+            Styles.PoppinsRegular(color: Color(0xff002F73), fontSize: 14),
+          ),
+        ),
+        Expanded(
+          child: Container(
+            alignment: Alignment.centerRight,
+            child: value == null
+                ? rightWidget ?? Container()
+                : Text(
+              value,
+              style: Styles.PoppinsRegular(
+                  color: Color(0xff4EAF48), fontSize: 14),
+              textAlign: TextAlign.center,
             ),
           ),
-          Expanded(
-            child: Container(
-              alignment: Alignment.centerRight,
-              child: value == null
-                  ? rightWidget ?? Container()
-                  : Text(
-                      value,
-                      style: Styles.PoppinsRegular(
-                          color: Color(0xff4EAF48), fontSize: 14),
-                      textAlign: TextAlign.center,
-                    ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+        ),
+      ],
+    ),
+  );
 }

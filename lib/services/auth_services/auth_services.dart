@@ -54,11 +54,13 @@ class AuthServices{
         }
       }
       else{
+        // SnackBarMessage(message: response.data?.toString()??"");
         return null;
       }
     }
     catch(e){
-        return null;
+      rethrow;
+        // return null;
     }
   }
   Future<dynamic> changePassword({String? userName, String? password, String? confirmPassword,

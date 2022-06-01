@@ -64,16 +64,22 @@ class LoginVM extends ChangeNotifier{
   }
 
   Future<bool> userLogin({String? userName, String? password, bool? rememberMe}) async {
-    setLoading(true);
-    var res = await authService?.userLogin(userName: emailController.text,
-        password: passwordController.text);
-    if(res is CurrentUser){
-      currentUser = res;
+    try{
+      setLoading(true);
+      var res = await authService?.userLogin(userName: emailController.text,
+          password: passwordController.text);
+      if(res is CurrentUser){
+        currentUser = res;
+        setLoading(false);
+        return true;
+      }
       setLoading(false);
-      return true;
+      return false;
+    }catch(e){
+      setLoading(false);
+      rethrow;
     }
-    setLoading(false);
-    return false;
+
   }
 
   updateCurrentUser(var data){

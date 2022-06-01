@@ -159,7 +159,8 @@ class ModalitiesReading extends HookWidget {
                                           //     child: const BloodPressureReading(), type: PageTransitionType.bottomToTop));
                                         }
                                       },
-                                      child: Container(
+                                      child: modality.modality ==
+                                          "WT" ? Container() : Container(
                                         margin: EdgeInsets.symmetric(
                                           horizontal: ApplicationSizing
                                               .horizontalMargin(),

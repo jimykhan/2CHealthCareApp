@@ -8,7 +8,7 @@ import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 
 class BadRequestException extends DioError {
-  dynamic? data;
+  dynamic data;
   BadRequestException(RequestOptions r, {this.data}) : super(requestOptions: r);
 
   @override

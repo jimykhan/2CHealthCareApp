@@ -88,6 +88,7 @@ class ChatInfo extends HookWidget {
             margin: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin()),
             child: CustomTextField(
               // onchange: loginVM!.onChangeEmail,
+              checkFocus: (val){},
               textEditingController: chatScreenVM.searchController,
               hints: "Search...",
               color1: disableColor ,

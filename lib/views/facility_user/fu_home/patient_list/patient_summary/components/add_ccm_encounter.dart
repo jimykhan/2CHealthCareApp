@@ -119,6 +119,7 @@ class AddCCMEncounter extends HookWidget {
                         children: [
                           Expanded(
                               child: CustomTextField(
+                                checkFocus: (val){},
                             onchange: _ccmEncounterVM.formValidation,
                             onSubmit: _ccmEncounterVM.formValidation,
                             hints: 'Date',
@@ -162,6 +163,7 @@ class AddCCMEncounter extends HookWidget {
                                   _ccmEncounterVM.pickTime(context);
                                 },
                                 child: CustomTextField(
+                                  checkFocus: (val){},
                                   textEditingController:
                                       _ccmEncounterVM.startTimeController,
                                   textInputType: TextInputType.number,
@@ -193,6 +195,7 @@ class AddCCMEncounter extends HookWidget {
                             Container(
                               margin: EdgeInsets.only(top: 1),
                               child: CustomTextField(
+                                checkFocus: (val){},
                                 textEditingController:
                                     _ccmEncounterVM.endTimeController,
                                 textInputType: TextInputType.number,
@@ -222,6 +225,7 @@ class AddCCMEncounter extends HookWidget {
                     Container(
                       margin: EdgeInsets.only(top: 1),
                       child: CustomTextField(
+                        checkFocus: (val){},
                         textEditingController:
                             _ccmEncounterVM.durationController,
                         textInputType: TextInputType.number,

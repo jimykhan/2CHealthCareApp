@@ -158,6 +158,7 @@ class EditEmergencyContact extends HookWidget {
                 Container(
                   padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
                   child: CustomTextField(
+                    checkFocus: (val){},
                     onchange: (val) {},
                     textEditingController:
                         profileVm.emergencyNameEditController,
@@ -190,6 +191,7 @@ class EditEmergencyContact extends HookWidget {
                 Container(
                   padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
                   child: CustomTextField(
+                    checkFocus: (val){},
                     inputFormatter: [MaskFormatter("000-000-0000")],
                     onchange: (val) {},
                     textEditingController:
@@ -246,6 +248,7 @@ class EditEmergencyContact extends HookWidget {
                 Container(
                   padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
                   child: CustomTextField(
+                    checkFocus: (val){},
                     inputFormatter: [MaskFormatter("000-000-0000")],
                     onchange: (val) {},
                     textEditingController:

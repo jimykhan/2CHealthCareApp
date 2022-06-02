@@ -19,6 +19,7 @@ import 'package:twochealthcare/services/onlunch_activity_routes_service.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
+import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
 import 'package:twochealthcare/view_models/chat_vm/chat_list_vm.dart';
 import 'package:twochealthcare/views/chat/chat_screen.dart';
 import 'package:twochealthcare/views/home/home.dart';
@@ -32,8 +33,8 @@ class ChatList extends HookWidget {
     ChatListVM chatListVM = useProvider(chatListVMProvider);
     ApplicationRouteService applicationRouteService =
         useProvider(applicationRouteServiceProvider);
-    OnLaunchActivityAndRoutesService onLaunchActivityService =
-        useProvider(onLaunchActivityServiceProvider);
+    OnLaunchActivityAndRoutesService onLaunchActivityService = useProvider(onLaunchActivityServiceProvider);
+    LoginVM loginVM = useProvider(loginVMProvider);
     useEffect(
       () {
         Future.microtask(() async {
@@ -56,23 +57,26 @@ class ChatList extends HookWidget {
             color2: Colors.white,
             hight: ApplicationSizing.convert(70),
             parentContext: context,
-            centerWigets: chatListVM.searchedGroup
-                ? _searchField(chatListVM: chatListVM)
-                : AppBarTextStyle(
-                    text: "Chat List",
-                  ),
-            trailingIcon: InkWell(
-              onTap: chatListVM.onClickSearch,
-              child: Icon(
-                chatListVM.searchedGroup ? Icons.cancel : Icons.person_search,
-                color: appColor,
-                size: 27,
-              ),
+            centerWigets: AppBarTextStyle(
+              text: "Chat List",
             ),
+            // chatListVM.searchedGroup
+            //     ? _searchField(chatListVM: chatListVM)
+            //     : AppBarTextStyle(
+            //         text: "Chat List",
+            //       ),
+            // trailingIcon: InkWell(
+            //   onTap: chatListVM.onClickSearch,
+            //   child: Icon(
+            //     chatListVM.searchedGroup ? Icons.cancel : Icons.person_search,
+            //     color: appColor,
+            //     size: 27,
+            //   ),
+            // ),
           ),
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: FloatingActionButton(
+        floatingActionButtonLocation:  FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: (chatListVM.isTextFieldActive) ? Container() : FloatingActionButton(
           // backgroundColor: Colors.black,
           // child: SvgPicture.asset(
           //   "assets/icons/bottom_navbar/user-icon.svg",
@@ -108,7 +112,8 @@ class ChatList extends HookWidget {
         ),
         body: _body(
             chatListVM: chatListVM,
-            applicationRouteService: applicationRouteService));
+            applicationRouteService: applicationRouteService,
+        loginVM: loginVM));
   }
 
   _emptyChat() {
@@ -134,56 +139,63 @@ class ChatList extends HookWidget {
   }
 
   _searchField({
-    required ChatListVM chatListVM,
+     ChatListVM? chatListVM,
   }) {
-    return Expanded(
-      child: Container(
-          padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
-          margin: EdgeInsets.only(left: 40, right: 10, bottom: 10, top: 10),
-          // height: 60,
+    return  Container(
+          padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+          margin: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin(),vertical: 10),
+          height: 50,
           child: CustomTextField(
-            onchange: chatListVM.onGroupSearch,
-            onSubmit: chatListVM.onGroupSearchSubmit,
-          )),
-    );
+            onchange: chatListVM!.onGroupSearch,
+            checkFocus: chatListVM.checkFocus,
+            onSubmit: (val){},
+            hints: "Search Group",
+
+          ));
   }
 
   _body(
       {ChatListVM? chatListVM,
-      required ApplicationRouteService applicationRouteService}) {
-    return (chatListVM?.groupIds.length == 0 && !chatListVM!.loadingGroupId)
-        ? NoData()
-        : Container(
-            child: Stack(
-              children: [
-                ListView.separated(
-                    shrinkWrap: true,
-                    physics: ScrollPhysics(),
-                    itemBuilder: (BuildContext context, int index) {
-                      return GestureDetector(
-                        onTap: () {
-                          applicationRouteService.addScreen(
-                              screenName: "${chatListVM?.groupIds[index].id}");
-                          Navigator.push(
-                              context,
-                              PageTransition(
-                                  child: ChatScreen(
-                                    getGroupsModel: chatListVM?.groupIds[index],
-                                  ),
-                                  type: PageTransitionType.fade));
-                        },
-                        child: chatTile(
-                            getGroupsModel: chatListVM?.groupIds[index]),
-                      );
-                    },
-                    separatorBuilder: (BuildContext context, int index) {
-                      return ApplicationSizing.verticalSpacer();
-                    },
-                    itemCount: chatListVM?.groupIds.length ?? 0),
-                chatListVM!.loadingGroupId ? AlertLoader() : Container(),
-              ],
-            ),
-          );
+      required ApplicationRouteService applicationRouteService,required LoginVM loginVM}) {
+    return Column(
+      children: [
+        (loginVM.currentUser?.userType == 1) ? Container() : _searchField(chatListVM: chatListVM),
+        Expanded(child: (chatListVM?.groupIds.length == 0 && !chatListVM!.loadingGroupId)
+            ? NoData()
+            : Container(
+          child: Stack(
+            children: [
+              ListView.separated(
+                  shrinkWrap: true,
+                  physics: ScrollPhysics(),
+                  itemBuilder: (BuildContext context, int index) {
+                    return GestureDetector(
+                      onTap: () {
+                        applicationRouteService.addScreen(
+                            screenName: "${chatListVM?.groupIds[index].id}");
+                        Navigator.push(
+                            context,
+                            PageTransition(
+                                child: ChatScreen(
+                                  getGroupsModel: chatListVM?.groupIds[index],
+                                ),
+                                type: PageTransitionType.fade));
+                      },
+                      child: chatTile(
+                          getGroupsModel: chatListVM?.groupIds[index]),
+                    );
+                  },
+                  separatorBuilder: (BuildContext context, int index) {
+                    return ApplicationSizing.verticalSpacer();
+                  },
+                  itemCount: chatListVM?.groupIds.length ?? 0),
+              chatListVM!.loadingGroupId ? AlertLoader() : Container(),
+
+            ],
+          ),
+        ),),
+      ],
+    );
   }
 
   chatTile({GetGroupsModel? getGroupsModel}) {

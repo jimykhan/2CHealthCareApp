@@ -107,6 +107,7 @@ class forgetPassword extends HookWidget {
                                 onchange: (val) {
                                   // fieldValidation("email");
                                 },
+                                checkFocus: (val){},
                                 textEditingController: forgetPasswordVM.emailController,
                                 textInputType: TextInputType.emailAddress,
                                 hints: "UserName/Email",

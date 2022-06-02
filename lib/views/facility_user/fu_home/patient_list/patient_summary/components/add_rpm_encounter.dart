@@ -100,6 +100,7 @@ class AddRPMEncounter extends HookWidget {
                                   children: [
                                     Expanded(
                                         child: CustomTextField(
+                                          checkFocus: (val){},
                                       onchange: _rmpEncounterVM.formValidation,
                                       onSubmit: _rmpEncounterVM.formValidation,
                                       hints: 'Date',
@@ -135,6 +136,7 @@ class AddRPMEncounter extends HookWidget {
                               Container(
                                 margin: EdgeInsets.only(top: 1),
                                 child: CustomTextField(
+                                  checkFocus: (val){},
                                   textEditingController:
                                       _rmpEncounterVM.durationController,
                                   textInputType: TextInputType.number,

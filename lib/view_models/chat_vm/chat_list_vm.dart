@@ -22,18 +22,21 @@ class ChatListVM extends ChangeNotifier{
   AuthServices? _authServices;
   SignalRServices? _signalRServices;
   ApplicationRouteService? _applicationRouteService;
+  bool isTextFieldActive = false;
   // TextEditingController searchController = TextEditingController();
-  bool searchedGroup = false;
+
 
   ChatListVM({ProviderReference? ref}){
     _ref = ref;
     initService();
   }
 
-  onClickSearch(){
-    searchedGroup = !searchedGroup;
+  checkFocus(bool val){
+    isTextFieldActive = val;
     notifyListeners();
   }
+
+
   onGroupSearch(String val){
     print("${val.length} $val");
     groupIds = [];
@@ -53,10 +56,7 @@ class ChatListVM extends ChangeNotifier{
     }
     notifyListeners();
   }
-  onGroupSearchSubmit(String val){
-    searchedGroup = false;
-    notifyListeners();
-  }
+
 
   initService(){
     _authServices = _ref!.read(authServiceProvider);

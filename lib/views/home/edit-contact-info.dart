@@ -172,6 +172,7 @@ class EditContactInfo extends HookWidget {
                 Container(
                   padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
                   child: CustomTextField(
+                    checkFocus: (val){},
                     inputFormatter: [MaskFormatter("000-000-0000")],
                     onchange: profileVm.onPrimaryPhoneChange,
                     textEditingController: profileVm.primaryPhoneEditController,
@@ -210,6 +211,7 @@ class EditContactInfo extends HookWidget {
                 Container(
                   padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
                   child: CustomTextField(
+                    checkFocus: (val){},
                     inputFormatter: [MaskFormatter("000-000-0000")],
                     onchange: (val) {},
                     textEditingController:
@@ -282,6 +284,7 @@ class EditContactInfo extends HookWidget {
                 Container(
                   padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
                   child: CustomTextField(
+                    checkFocus: (val){},
                     onchange: profileVm.onCurrentAddressChange,
                     textEditingController:
                         profileVm.currentAddressEditController,
@@ -320,6 +323,7 @@ class EditContactInfo extends HookWidget {
                 Container(
                   padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
                   child: CustomTextField(
+                    checkFocus: (val){},
                     inputFormatter: [MaskFormatter("00000")],
                     onchange: profileVm.oncAZipCodeChange,
                     textEditingController: profileVm.cAZipCodeEditController,
@@ -358,6 +362,7 @@ class EditContactInfo extends HookWidget {
                 Container(
                   padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
                   child: CustomTextField(
+                    checkFocus: (val){},
                     onchange: (val) {},
                     textEditingController: profileVm.cACityEditController,
                     textInputType: TextInputType.text,
@@ -389,6 +394,7 @@ class EditContactInfo extends HookWidget {
                 Container(
                   padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
                   child: CustomTextField(
+                    checkFocus: (val){},
                     onchange: (val) {},
                     textEditingController: profileVm.cAStateEditController,
                     textInputType: TextInputType.text,
@@ -528,6 +534,7 @@ class EditContactInfo extends HookWidget {
                 Container(
                   padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
                   child: CustomTextField(
+                    checkFocus: (val){},
                     onchange: (val) {},
                     textEditingController: profileVm.isMailingSame
                         ? profileVm.currentAddressEditController
@@ -562,6 +569,7 @@ class EditContactInfo extends HookWidget {
                 Container(
                   padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
                   child: CustomTextField(
+                    checkFocus: (val){},
                     isEnable: !profileVm.isMailingSame,
                     onchange: (val) {},
                     textEditingController: profileVm.isMailingSame
@@ -598,6 +606,7 @@ class EditContactInfo extends HookWidget {
                 Container(
                   padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
                   child: CustomTextField(
+                    checkFocus: (val){},
                     isEnable: !profileVm.isMailingSame,
                     onchange: (val) {},
                     textEditingController: profileVm.isMailingSame
@@ -632,6 +641,7 @@ class EditContactInfo extends HookWidget {
                 Container(
                   padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
                   child: CustomTextField(
+                    checkFocus: (val){},
                     isEnable: !profileVm.isMailingSame,
                     onchange: (val) {},
                     textEditingController: profileVm.isMailingSame

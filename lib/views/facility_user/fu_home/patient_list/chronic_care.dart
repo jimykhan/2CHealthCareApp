@@ -78,6 +78,7 @@ class ChronicCare extends HookWidget {
                 children: [
                   Expanded(
                     child: CustomTextField(
+                      checkFocus: (val){},
                       onchange: chronicCareVM.onSearch,
                       onSubmit: (val) {},
                       hints: "Search Patients",

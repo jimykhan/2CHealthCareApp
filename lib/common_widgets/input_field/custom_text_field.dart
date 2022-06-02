@@ -11,6 +11,7 @@ class CustomTextField extends StatefulWidget {
   TextStyle? textStyle;
   Function(String val) onchange;
   Function(String val) onSubmit;
+  Function(bool val) checkFocus;
   String? hints;
   Widget? trailingIcon;
   double? borderWidth;
@@ -18,6 +19,7 @@ class CustomTextField extends StatefulWidget {
   TextEditingController? textEditingController;
   bool? obscureText;
   bool? isEnable;
+  FocusNode? myFocusNode;
   List<TextInputFormatter>? inputFormatter;
   CustomTextField(
       {this.isEnable = true,
@@ -33,7 +35,9 @@ class CustomTextField extends StatefulWidget {
       required this.onSubmit,
        this.inputFormatter,
         this.textStyle,
-        this.bgColor
+        this.bgColor,
+        this.myFocusNode,
+        required this.checkFocus
       });
   @override
   _CustomTextFieldState createState() => _CustomTextFieldState();
@@ -44,7 +48,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // height: size.convert(context, 50),
+      // height: 50,
       padding: EdgeInsets.only(right: 8, left: 8),
       decoration: BoxDecoration(
           border: Border.all(
@@ -59,52 +63,51 @@ class _CustomTextFieldState extends State<CustomTextField> {
         children: <Widget>[
           widget.iconWidget ?? Container(),
           Expanded(
-            child: Column(
-              children: [
-                Container(
-                  // height: size.convert(context, 40),
-                  height: 50,
-                  child: Focus(
-                    onFocusChange: (val) {
-                      if (val) {
-                        borderColor = appColor;
-                        widget.onSubmit;
-                        setState(() {});
-                      } else {
-                        widget.onSubmit;
-                        borderColor = null;
-                        setState(() {});
-                      }
-
-                      print(val);
-                    },
-                    child: TextFormField(
-                      style: Styles.PoppinsRegular(
-                        fontSize: ApplicationSizing.fontScale(14),
-                      ),
-                      inputFormatters: widget.inputFormatter,
-                      onFieldSubmitted: widget.onSubmit,
-                      onChanged: widget.onchange,
-                      enabled: widget.isEnable ?? true,
-                      cursorWidth: 1.2,
-                      obscureText: widget.obscureText ?? false,
-                      keyboardType: widget.textInputType ?? TextInputType.text,
-                      controller: widget.textEditingController,
-
-                      decoration: InputDecoration(
-                          contentPadding: EdgeInsets.zero,
-                          disabledBorder: InputBorder.none,
-                          border: InputBorder.none,
-                          hintText: widget.hints ?? "",
-                          hintStyle: widget.textStyle?? Styles.PoppinsRegular(
-                              color: fontGrayColor,
-                              fontSize: ApplicationSizing.fontScale(12)),
-                        labelStyle: TextStyle()
-                      ),
-                    ),
+            child: Container(
+              // color: Colors.blueGrey,
+              // height: size.convert(context, 40),
+              // height: 50,
+              child: Focus(
+                onFocusChange: (val) {
+                  if (val) {
+                    borderColor = appColor;
+                    widget.onSubmit;
+                    setState(() {});
+                  } else {
+                    widget.onSubmit;
+                    borderColor = null;
+                    setState(() {});
+                  }
+                  widget.checkFocus(val);
+                  print(val);
+                },
+                child: TextFormField(
+                  style: Styles.PoppinsRegular(
+                    fontSize: ApplicationSizing.fontScale(14),
                   ),
+                  inputFormatters: widget.inputFormatter,
+                  onFieldSubmitted: widget.onSubmit,
+                  onChanged: widget.onchange,
+                  enabled: widget.isEnable ?? true,
+                  cursorWidth: 1.2,
+                  obscureText: widget.obscureText ?? false,
+                  keyboardType: widget.textInputType ?? TextInputType.text,
+                  controller: widget.textEditingController,
+
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.zero,
+                    disabledBorder: InputBorder.none,
+                    border: InputBorder.none,
+                    hintText: widget.hints ?? "",
+                    hintStyle: widget.textStyle?? Styles.PoppinsRegular(
+                        color: fontGrayColor,
+                        fontSize: ApplicationSizing.fontScale(12)),
+                    labelStyle: TextStyle(),
+
+                  ),
+                  focusNode: widget.myFocusNode,
                 ),
-              ],
+              ),
             ),
           ),
           widget.trailingIcon ?? Container(),

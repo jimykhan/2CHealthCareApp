@@ -131,6 +131,7 @@ class Login extends HookWidget {
               Container(
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
                 child: CustomTextField(
+                  checkFocus: (val){},
                   onchange: loginVM!.onChangeEmail,
                   textEditingController: loginVM.emailController,
                   textInputType: TextInputType.emailAddress,
@@ -164,6 +165,7 @@ class Login extends HookWidget {
               Container(
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
                 child: CustomTextField(
+                  checkFocus: (val){},
                   onchange: loginVM.onChangePassword,
                   textEditingController: loginVM.passwordController,
                   textInputType: TextInputType.text,

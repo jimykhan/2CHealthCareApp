@@ -77,6 +77,7 @@ class AllPatient extends HookWidget {
                 children: [
                   Expanded(
                     child: CustomTextField(
+                      checkFocus: (val){},
                       onchange: allPatientVM.onSearch,
                       onSubmit: (val) {},
                       hints: "Search Patients",

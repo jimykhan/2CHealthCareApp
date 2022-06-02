@@ -278,6 +278,7 @@ class TextFieldQuestion extends StatelessWidget {
                   isEnable: false,
                   hints: "Comments..",
                   textEditingController: textEditingController,
+                  checkFocus: (val){},
                 ),
               )
         ],

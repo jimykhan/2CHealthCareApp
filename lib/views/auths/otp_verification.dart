@@ -121,7 +121,7 @@ class OtpVerification extends HookWidget {
                                             ? phone ?? ""
                                             : isEmailVerification
                                                 ? userName
-                                                : "${phone} / ${userName}",
+                                                : "${phone??""} ${phone == null ?"":"/"} ${userName}",
                                         style: Styles.PoppinsRegular(
                                             fontSize:
                                                 ApplicationSizing.fontScale(14),

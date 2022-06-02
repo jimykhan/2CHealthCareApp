@@ -49,18 +49,22 @@ class AddRPMEncounter extends HookWidget {
               Navigator.pop(context);
             },
           ),
+          trailingIcon: _rmpEncounterVM.addEncounterLoader
+              ? SimpleLoader()
+              : TickIconButton(
+            color: _rmpEncounterVM.isFormValid ? appColor : fontGrayColor,
+            onClick: _rmpEncounterVM.isFormValid
+                ? () {
+              _rmpEncounterVM.addRpmEncounter(patientId: patientId);
+            }
+                : null,
+          ),
+          addLeftMargin: true,
           color1: Colors.white,
           color2: Colors.white,
           hight: ApplicationSizing.convert(70),
           parentContext: context,
-          // trailingIcon: _rmpEncounterVM.addEncounterLoader ? SimpleLoader() : TickIconButton(
-          //   color: _rmpEncounterVM.isFormValid? appColor : fontGrayColor,
-          //   onClick: _rmpEncounterVM.isFormValid ? ()  {
-          //     _rmpEncounterVM.addRpmEncounter(patientId: patientId);
-          //
-          //   } : null,
-          // ),
-          addLeftMargin: true,
+
         ),
       ),
       body: Container(
@@ -201,24 +205,80 @@ class AddRPMEncounter extends HookWidget {
                         Container(
                           margin: EdgeInsets.only(top: 5),
                           child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
-                                "Current Billing Provider:",
-                                style: Styles.PoppinsRegular(
-                                  fontSize: ApplicationSizing.constSize(12),
-                                  fontWeight: FontWeight.w700,
+                              Expanded(
+                                flex: 2,
+                                child: Container(
+                                  // color: Colors.blue,
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        "Current Billing Provider:",
+                                        style: Styles.PoppinsRegular(
+                                          fontSize: ApplicationSizing.constSize(12),
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Expanded(
+                                        child: Text(
+                                          "${_rmpEncounterVM.selectedBillingProvider?.fullName}",
+                                          style: Styles.PoppinsRegular(
+                                              fontSize: ApplicationSizing.constSize(12),
+                                              fontWeight: FontWeight.w700,
+                                              color: fontGrayColor),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                               SizedBox(
                                 width: 5,
                               ),
-                              Text(
-                                "${_rmpEncounterVM.selectedBillingProvider?.fullName}",
-                                style: Styles.PoppinsRegular(
-                                    fontSize: ApplicationSizing.constSize(12),
-                                    fontWeight: FontWeight.w700,
-                                    color: fontGrayColor),
+                              InkWell(
+                                onTap: (){
+                                  GenerateAlert(child: ChangeBillingProvider());
+                                },
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                      border: Border(
+                                          bottom: BorderSide(width: 1.5,color: appColor)
+                                      )
+                                  ),
+                                  child: Text(
+                                    "Change Provider",
+                                    style: Styles.PoppinsRegular(
+                                        fontSize: ApplicationSizing.constSize(11),
+                                        fontWeight: FontWeight.w700,
+                                        color: appColor
+                                    ),
+                                  ),
+                                ),
                               ),
+                              // Expanded(
+                              //   flex: 1,
+                              //   child: Container(
+                              //     alignment: Alignment.center,
+                              //     decoration: BoxDecoration(
+                              //       border: Border(
+                              //         bottom: BorderSide(width: 1.5,color: appColor)
+                              //       )
+                              //     ),
+                              //     child: Text(
+                              //       "Change Provider",
+                              //       style: Styles.PoppinsRegular(
+                              //         fontSize: ApplicationSizing.constSize(11),
+                              //         fontWeight: FontWeight.w700,
+                              //         color: appColor
+                              //       ),
+                              //     ),
+                              //   ),
+                              // ),
                             ],
                           ),
                         ),
@@ -249,52 +309,52 @@ class AddRPMEncounter extends HookWidget {
                 ],
               ),
             ),
-            Container(
-              margin: EdgeInsets.symmetric(vertical: 20),
-              // color: Colors.amber,
-              alignment: Alignment.bottomCenter,
-              child: Row(
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: FilledButton(
-                      onTap: () {
-                        GenerateAlert(child: ChangeBillingProvider());
-                      },
-                      color1: appColorSecondary,
-                      borderColor: appColorSecondary,
-                      txt: "change provider".toUpperCase(),
-                      paddingLeftRight: 0,
-                      fontsize: 13,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Expanded(
-                      flex: 1,
-                      child: _rmpEncounterVM.addEncounterLoader
-                          ? SimpleLoader()
-                          : FilledButton(
-                        onTap: _rmpEncounterVM.isFormValid
-                            ? () {
-                          _rmpEncounterVM.addRpmEncounter(
-                              patientId: patientId);
-                        }
-                            : null,
-                        color1: _rmpEncounterVM.isFormValid
-                            ? appColor
-                            : appColorLight,
-                        borderColor: _rmpEncounterVM.isFormValid
-                            ? appColor
-                            : appColorLight,
-                        txt: "Add encounter".toUpperCase(),
-                        paddingLeftRight: 0,
-                        fontsize: 13,
-                      )),
-                ],
-              ),
-            ),
+            // Container(
+            //   margin: EdgeInsets.symmetric(vertical: 20),
+            //   // color: Colors.amber,
+            //   alignment: Alignment.bottomCenter,
+            //   child: Row(
+            //     children: [
+            //       Expanded(
+            //         flex: 1,
+            //         child: FilledButton(
+            //           onTap: () {
+            //             GenerateAlert(child: ChangeBillingProvider());
+            //           },
+            //           color1: appColorSecondary,
+            //           borderColor: appColorSecondary,
+            //           txt: "change provider".toUpperCase(),
+            //           paddingLeftRight: 0,
+            //           fontsize: 13,
+            //         ),
+            //       ),
+            //       SizedBox(
+            //         width: 10,
+            //       ),
+            //       Expanded(
+            //           flex: 1,
+            //           child: _rmpEncounterVM.addEncounterLoader
+            //               ? SimpleLoader()
+            //               : FilledButton(
+            //             onTap: _rmpEncounterVM.isFormValid
+            //                 ? () {
+            //               _rmpEncounterVM.addRpmEncounter(
+            //                   patientId: patientId);
+            //             }
+            //                 : null,
+            //             color1: _rmpEncounterVM.isFormValid
+            //                 ? appColor
+            //                 : appColorLight,
+            //             borderColor: _rmpEncounterVM.isFormValid
+            //                 ? appColor
+            //                 : appColorLight,
+            //             txt: "Add encounter".toUpperCase(),
+            //             paddingLeftRight: 0,
+            //             fontsize: 13,
+            //           )),
+            //     ],
+            //   ),
+            // ),
           ],
         ),
       ),

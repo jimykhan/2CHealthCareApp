@@ -159,8 +159,12 @@ class SummaryBody extends HookWidget {
                                                 ? _fuPatientSummaryVM
                                                     .patientInfo!.careProviders!
                                                     .map((e) => Container(
-                                                          padding:
-                                                              EdgeInsets.all(2),
+
+                                                          alignment: Alignment.center,
+                                                          height: 25,
+                                                          width: 25,
+                                                          margin:
+                                                              EdgeInsets.symmetric(horizontal: 0.3),
                                                           decoration: BoxDecoration(
                                                               color:
                                                                   appColorSecondary,

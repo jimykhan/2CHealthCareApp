@@ -156,7 +156,7 @@ class FUProfile extends HookWidget {
                                             ?.isPhoneNumberVerified ??
                                         false
                                     ? null
-                                    : () {
+                                    : (fuProfileVM.fuProfileModel?.phoneNo == null ||fuProfileVM.fuProfileModel?.phoneNo == "") ? null : () {
                                         Navigator.push(
                                             context,
                                             PageTransition(
@@ -198,14 +198,15 @@ class FUProfile extends HookWidget {
                                             .fuProfileModel?.isEmailVerified ??
                                         false
                                     ? null
-                                    : () {
+                                    : (fuProfileVM.fuProfileModel?.email == null ||fuProfileVM.fuProfileModel?.email == "") ? null : () {
                                         Navigator.push(
                                             context,
                                             PageTransition(
                                                 child: OtpVerification(
-                                                  userName: fuProfileVM
+                                                  userName: "",
+                                                  email: fuProfileVM
                                                           .fuProfileModel
-                                                          ?.userName ??
+                                                          ?.email ??
                                                       "",
                                                   phone: fuProfileVM
                                                       .fuProfileModel?.phoneNo,

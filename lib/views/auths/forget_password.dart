@@ -19,8 +19,12 @@ import 'package:twochealthcare/views/auths/otp_verification.dart';
 class forgetPassword extends HookWidget {
   bool isSmsVerify = false;
   bool isEmailVerify = false;
+  String? phone;
+  String? email;
   String userName;
-  forgetPassword({required this.userName,required this.isSmsVerify,required this.isEmailVerify});
+  forgetPassword({required this.userName,required this.isSmsVerify,required this.isEmailVerify,this.email,
+    this.phone
+  });
 
 
 
@@ -202,6 +206,10 @@ class forgetPassword extends HookWidget {
                                       Navigator.push(applicationContext!.currentContext!, PageTransition(child: OtpVerification(
                                         userName: userName,
                                         sendBy: forgetPasswordVM.verificationWithPhone? "phone":"email",
+                                        isPhoneVerification: forgetPasswordVM.verificationWithPhone ? true : false,
+                                        isEmailVerification: !(forgetPasswordVM.verificationWithPhone) ? true : false,
+                                        phone: phone,
+                                        email: email,
                                         userId: "",
                                       ), type: PageTransitionType.fade));
 

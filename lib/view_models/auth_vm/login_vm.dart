@@ -101,6 +101,8 @@ class LoginVM extends ChangeNotifier{
         userName: emailController.text,
         isEmailVerify: res.verifiedEmail!,
         isSmsVerify: res.verifiedSMS!,
+        phone: res.phoneNumber??"",
+        email: res.email??"",
       ), type: PageTransitionType.fade));
     }
     setLoading(false);

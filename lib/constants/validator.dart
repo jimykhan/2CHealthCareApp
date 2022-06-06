@@ -1,6 +1,7 @@
 import 'package:easy_mask/easy_mask.dart';
 
 MagicMask mask = MagicMask.buildMask('\\+1 (999) 999 99 99');
+
 class Validator{
   static bool emailValidator(String val){
     if(val.length>0){

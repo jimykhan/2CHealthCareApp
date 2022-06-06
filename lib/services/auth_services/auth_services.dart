@@ -42,9 +42,13 @@ class AuthServices{
         if(currentUser.is2faRequired?? false){
           Navigator.push(applicationContext!.currentContext!,
               PageTransition(child: OtpVerification(userName: currentUser.userName??"",
-                from2FA: true,isForgetPassword: false,
+                from2FA: true,
+                isForgetPassword: false,
                 userId: currentUser.appUserId??"",
                 bearerToken: currentUser.bearerToken??"",
+                phone: currentUser.phoneNumber??"",
+                email: currentUser.email??"",
+
               ),
                   type: PageTransitionType.fade));
           return null;

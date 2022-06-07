@@ -27,12 +27,12 @@ class OtpVerification extends HookWidget {
   bool isEmailVerification;
   bool isPhoneVerification;
   bool from2FA;
-  String sendBy;
+  String? sendBy;
   OtpVerification({
     required this.userName,
     this.phone,
     this.isForgetPassword = true,
-    this.sendBy = "phone",
+    this.sendBy,
     this.from2FA = false,
     required this.userId,
     this.bearerToken,
@@ -51,7 +51,7 @@ class OtpVerification extends HookWidget {
         if (from2FA)
           await forgetPasswordVM.send2FACodeInStartUp(
               userId: userId, method: 2, bearerToken: bearerToken ?? "");
-        if (isPhoneVerification)
+        if (isPhoneVerification && sendBy == null)
           await forgetPasswordVM.sendVerificationCodeToPhone(
               userName: userName, phoneNumber: phone ?? "");
       });

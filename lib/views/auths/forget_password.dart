@@ -202,7 +202,8 @@ class forgetPassword extends HookWidget {
                                     borderwidth: 0,
                                     onTap: forgetPasswordVM.verificationWithPhone || forgetPasswordVM.verificationWithEmail?
                                         () async {
-                                      await forgetPasswordVM.sendVerificationCode(userName: userName ,sendBy: forgetPasswordVM.verificationWithPhone? "phone":"email");
+                                      await forgetPasswordVM.sendVerificationCode(
+                                          userName: userName ,sendBy: forgetPasswordVM.verificationWithPhone? "phone":"email");
                                       Navigator.push(applicationContext!.currentContext!, PageTransition(child: OtpVerification(
                                         userName: userName,
                                         sendBy: forgetPasswordVM.verificationWithPhone? "phone":"email",

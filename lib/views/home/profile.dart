@@ -56,7 +56,7 @@ class Profile extends HookWidget {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(ApplicationSizing.convert(70)),
         child: CustomAppBar(
-          leadingIcon: CustomBackButton(),
+          leadingIcon: Container(),
           color1: Colors.white,
           color2: Colors.white,
           hight: ApplicationSizing.convert(70),
@@ -262,10 +262,7 @@ class Profile extends HookWidget {
                                       alignment: Alignment.centerLeft,
                                       child: tile(
                                           key: "Primary Phone No.",
-                                          value: mask.getMaskedString(
-                                            profileVm.patientInfo?.homePhone ??
-                                                "",
-                                          )),
+                                          value: profileVm.patientInfo?.homePhoneCountryCallingCode ?? ""),
                                     ),
                                     profileVm.patientInfo == null
                                         ? Container()
@@ -286,7 +283,7 @@ class Profile extends HookWidget {
                                                                   "",
                                                               phone: profileVm
                                                                   .patientInfo
-                                                                  ?.homePhone,
+                                                                  ?.homePhoneCountryCallingCode,
                                                               isForgetPassword:
                                                                   false,
                                                               userId: profileVm

@@ -110,7 +110,7 @@ class FUProfile extends HookWidget {
                                           color: fontGrayColor),
                                     ),
                                     Text(
-                                      "${fuProfileVM.fuProfileModel?.phoneNo}",
+                                      "${fuProfileVM.fuProfileModel?.phoneNoWithCountryCallingCode}",
                                       style: Styles.PoppinsRegular(
                                           fontSize: 10,
                                           fontWeight: FontWeight.w400,
@@ -149,14 +149,14 @@ class FUProfile extends HookWidget {
                                 isVerified: fuProfileVM.fuProfileModel
                                         ?.isPhoneNumberVerified ??
                                     false,
-                                textInfo:
-                                    fuProfileVM.fuProfileModel?.phoneNo ?? "",
+                                textInfo: fuProfileVM.fuProfileModel?.phoneNoWithCountryCallingCode??"",
+
                                 textInfoTitle: "Phone No.",
                                 ontap: fuProfileVM.fuProfileModel
                                             ?.isPhoneNumberVerified ??
                                         false
                                     ? null
-                                    : (fuProfileVM.fuProfileModel?.phoneNo == null ||fuProfileVM.fuProfileModel?.phoneNo == "") ? null : () {
+                                    :  () {
                                         Navigator.push(
                                             context,
                                             PageTransition(
@@ -165,8 +165,7 @@ class FUProfile extends HookWidget {
                                                           .fuProfileModel
                                                           ?.userName ??
                                                       "",
-                                                  phone: fuProfileVM
-                                                      .fuProfileModel?.phoneNo,
+                                                  phone: fuProfileVM.fuProfileModel?.phoneNoWithCountryCallingCode,
                                                   isForgetPassword: false,
                                                   userId: fuProfileVM
                                                           .fuProfileModel
@@ -183,10 +182,10 @@ class FUProfile extends HookWidget {
                                   value: fuProfileVM.fuProfileModel?.facilityDto
                                           ?.facilityName ??
                                       ""),
-                              keyValue(
-                                  key: "Secondary No.",
-                                  value: fuProfileVM.fuProfileModel?.phoneNo ??
-                                      ""),
+                              // keyValue(
+                              //     key: "Secondary No.",
+                              //     value: fuProfileVM.fuProfileModel?.phoneNo ??
+                              //         ""),
                               VerifiedInfo(
                                 isVerified: fuProfileVM
                                         .fuProfileModel?.isEmailVerified ??

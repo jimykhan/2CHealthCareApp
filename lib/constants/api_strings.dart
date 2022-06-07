@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart' as Foundation;
  const String test = "https://api.healthforcehub.link";
  const String staging = "https://apistaging.healthforcehub.link";
  const String production = "https://api.2chealthsolutions.com";
- const String baseUrl = test;
+ const String baseUrl = staging;
 class ApiStrings {
   static const String signIn = baseUrl +"/api/Account/token2";
   static const String getPatientInfoById =

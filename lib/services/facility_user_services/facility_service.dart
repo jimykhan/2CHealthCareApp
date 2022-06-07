@@ -33,13 +33,17 @@ class FacilityService{
   }
 
   Future<dynamic>getFuProfileInfo({int? Id})async{
-
     FUProfileModel? fuProfileModel;
     try{
       int facilityId = await _authServices!.getCurrentUserId();
       Response? res = await dio?.dio?.get(FacilityController.getFacilityUser+"/${Id ?? facilityId}");
       if(res?.statusCode == 200){
         fuProfileModel = FUProfileModel.fromJson(res!.data);
+        if(fuProfileModel.countryCallingCode != null || fuProfileModel.countryCallingCode == ""){
+          fuProfileModel.phoneNoWithCountryCallingCode = "(${fuProfileModel.countryCallingCode}) ${fuProfileModel.phoneNo}";
+        }else{
+          fuProfileModel.phoneNoWithCountryCallingCode = "${fuProfileModel.phoneNo}";
+        }
         return fuProfileModel;
       }else{
         return null;
@@ -64,6 +68,11 @@ class FacilityService{
         patientsForDashboard.patientsList?.forEach((element) {
           if(element.dateOfBirth != null ){
             element.age = findAgeInYears(dateOfBirht: element.dateOfBirth!);
+          }
+          if(element.countryCallingCode != null || element.countryCallingCode == ""){
+            element.primaryPhoneNoWithCountryCode = "(${element.countryCallingCode}) ${element.primaryPhoneNoWithCountryCode}";
+          }else{
+            element.primaryPhoneNoWithCountryCode = "${element.primaryPhoneNumber}";
           }
           if(element.lastAppLaunchDate !=null){
             DateTime currentDate = DateTime.now();

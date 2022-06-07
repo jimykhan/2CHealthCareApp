@@ -25,6 +25,11 @@ class PatientProfileService{
       if(response.statusCode == 200){
         // sharePrf.setCurrentUser(response.data);
         PatientInfo patientInfo = PatientInfo.fromJson(response.data);
+        if(patientInfo.countryCallingCode != null || patientInfo.countryCallingCode == ""){
+          patientInfo.homePhoneCountryCallingCode = "(${patientInfo.countryCallingCode}) ${patientInfo.homePhone}";
+        }else{
+          patientInfo.homePhoneCountryCallingCode = "${patientInfo.homePhone}";
+        }
         if(patientInfo.dateOfBirth != null){
           patientInfo.dateOfBirth = Jiffy(patientInfo.dateOfBirth).format(Strings.dateFormatFullYear);
         }

@@ -101,6 +101,8 @@ class PatientInfo {
   List<CarePlanApproval>? carePlanApproval;
   List<PatientConsents>? patientConsents;
 
+  String? homePhoneCountryCallingCode;
+
   PatientInfo(
       {this.id,
         this.patientEmrId,
@@ -195,7 +197,9 @@ class PatientInfo {
         this.medications,
         this.specialists,
         this.carePlanApproval,
-        this.patientConsents});
+        this.patientConsents,
+        this.homePhoneCountryCallingCode
+      });
 
   PatientInfo.fromJson(Map<String, dynamic> json) {
     id = json['id'];

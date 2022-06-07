@@ -33,13 +33,15 @@ class FacilityService{
   }
 
   Future<dynamic>getFuProfileInfo({int? Id})async{
-
     FUProfileModel? fuProfileModel;
     try{
       int facilityId = await _authServices!.getCurrentUserId();
       Response? res = await dio?.dio?.get(FacilityController.getFacilityUser+"/${Id ?? facilityId}");
       if(res?.statusCode == 200){
         fuProfileModel = FUProfileModel.fromJson(res!.data);
+        if(fuProfileModel.countryCallingCode != null || fuProfileModel.countryCallingCode == ""){
+          fuProfileModel.phoneNoWithCountryCallingCode = "(${fuProfileModel.countryCallingCode}) ${fuProfileModel.phoneNo}";
+        }
         return fuProfileModel;
       }else{
         return null;

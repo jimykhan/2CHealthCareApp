@@ -173,9 +173,18 @@ class AuthServices{
 
   Future<dynamic> sendVerificationCodeToPhone({String? userName, String? phoneNumber}) async {
     try{
+      String? number = phoneNumber;
+      String? callingCode;
+      if(phoneNumber?.contains("(")??false){
+        callingCode = phoneNumber?.split(" ")[0];
+        number = phoneNumber?.split(" ")[1];
+      }
+
       Map<String,String> resquestBody = {
-        "phonenumber":phoneNumber??"",
-        "username":userName??""};
+        "phonenumber":number?.replaceAll("(", "").replaceAll(")", "").replaceAll(" ", "")??"",
+        "username":userName??"",
+        "countryCallingCode": callingCode?.replaceAll("(", "").replaceAll(")", "").replaceAll(" ", "")??"",
+      };
       final dio = _ref!.read(dioServicesProvider);
       Response response = await dio.dio!.post(ApiStrings.sendPhoneNoVerificationToken,
           data: resquestBody

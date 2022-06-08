@@ -48,7 +48,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // height: 50,
+      height: 50,
       padding: EdgeInsets.only(right: 8, left: 8),
       decoration: BoxDecoration(
           border: Border.all(

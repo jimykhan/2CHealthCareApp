@@ -119,7 +119,7 @@ class ForgetPasswordVM extends ChangeNotifier{
     otpTextEditingController?.text = "";
     listenForAutoSms();
     SetVerifyOtpLoadingState(true);
-    var res = await authService?.sendVerificationCodeToPhone(userName: userName,phoneNumber: phoneNumber?.replaceAll("(", "").replaceAll(")", "").replaceAll(" ", ""));
+    var res = await authService?.sendVerificationCodeToPhone(userName: userName,phoneNumber: phoneNumber);
     if(res is bool){
       if(res){
         SetVerifyOtpLoadingState(false);

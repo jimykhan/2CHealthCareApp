@@ -4,6 +4,7 @@ import 'package:jiffy/jiffy.dart';
 import 'package:twochealthcare/common_widgets/snackber_message.dart';
 import 'package:twochealthcare/constants/api_strings.dart';
 import 'package:twochealthcare/constants/strings.dart';
+import 'package:twochealthcare/constants/validator.dart';
 import 'package:twochealthcare/models/profile_models/current_user_info_model.dart';
 import 'package:twochealthcare/models/profile_models/paitent_care_providers_model.dart';
 import 'package:twochealthcare/models/profile_models/state_model.dart';
@@ -25,11 +26,16 @@ class PatientProfileService{
       if(response.statusCode == 200){
         // sharePrf.setCurrentUser(response.data);
         PatientInfo patientInfo = PatientInfo.fromJson(response.data);
-        if(patientInfo.countryCallingCode != null || patientInfo.countryCallingCode == ""){
+        if(patientInfo.countryCallingCode != null && patientInfo.countryCallingCode != ""){
           patientInfo.homePhoneCountryCallingCode = "(${patientInfo.countryCallingCode}) ${patientInfo.homePhone}";
         }else{
           patientInfo.homePhoneCountryCallingCode = "${patientInfo.homePhone}";
         }
+        patientInfo.emergencyContactSecondaryPhoneNo = mask.getMaskedString(patientInfo.emergencyContactSecondaryPhoneNo??"");
+        patientInfo.emergencyContactSecondaryPhoneNo = mask.getMaskedString(patientInfo.emergencyContactSecondaryPhoneNo??"");
+        patientInfo.emergencyContactPrimaryPhoneNo = mask.getMaskedString(patientInfo.emergencyContactPrimaryPhoneNo??"");
+        patientInfo.emergencyContactRelationship = mask.getMaskedString(patientInfo.emergencyContactRelationship??"");
+        patientInfo.personNumber = mask.getMaskedString(patientInfo.personNumber??"");
         if(patientInfo.dateOfBirth != null){
           patientInfo.dateOfBirth = Jiffy(patientInfo.dateOfBirth).format(Strings.dateFormatFullYear);
         }
@@ -79,6 +85,13 @@ class PatientProfileService{
         if(response.data is List){
           response.data.forEach((item){
             careProviders.add(PatientCareProvider.fromJson(item));
+          });
+          careProviders.forEach((element) {
+            if(element.countryCallingCode != null && element.countryCallingCode != ""){
+              element.phoneNoWithCountryCallingCode = "(${element.countryCallingCode}) ${element.contactNo}";
+            }else{
+              element.phoneNoWithCountryCallingCode = "${element.contactNo}";
+            }
           });
         }
         return careProviders;

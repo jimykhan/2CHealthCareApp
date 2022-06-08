@@ -41,7 +41,8 @@ class Profile extends HookWidget {
     useEffect(
       () {
         Future.microtask(() async {
-          profileVm.getUserInfo();
+          await profileVm.getUserInfo();
+          await profileVm.getAllCountry();
         });
         return () {
           applicationRouteService.removeScreen(screenName: "Profile");
@@ -147,9 +148,9 @@ class Profile extends HookWidget {
                             tile(
                                 key: "Contact No",
                                 // value: profileVm.currentUserInfo?.careProviders?[index].e??""
-                                value: mask.getMaskedString(profileVm
-                                        .patientCareProvider[index].contactNo ??
-                                    "")),
+                                value: profileVm
+                                        .patientCareProvider[index].phoneNoWithCountryCallingCode ??
+                                    ""),
                           ],
                         );
                       },
@@ -316,9 +317,9 @@ class Profile extends HookWidget {
                                   alignment: Alignment.centerRight,
                                   child: tile(
                                       key: "Secondary Contact No.",
-                                      value: mask.getMaskedString(
+                                      value:
                                           profileVm.patientInfo?.personNumber ??
-                                              "")),
+                                              ""),
                                 )),
                           ],
                         ),

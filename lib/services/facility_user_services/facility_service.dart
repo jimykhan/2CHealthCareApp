@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:hooks_riverpod/all.dart';
 import 'package:twochealthcare/constants/api_strings.dart';
+import 'package:twochealthcare/constants/validator.dart';
 import 'package:twochealthcare/models/facility_user_models/FacilityUserListModel.dart';
 import 'package:twochealthcare/models/facility_user_models/dashboard_patients/dashboard_patient_summary.dart';
 import 'package:twochealthcare/models/facility_user_models/dashboard_patients/patients_for_dashboard.dart';
@@ -39,7 +40,7 @@ class FacilityService{
       Response? res = await dio?.dio?.get(FacilityController.getFacilityUser+"/${Id ?? facilityId}");
       if(res?.statusCode == 200){
         fuProfileModel = FUProfileModel.fromJson(res!.data);
-        if(fuProfileModel.countryCallingCode != null || fuProfileModel.countryCallingCode == ""){
+        if(fuProfileModel.countryCallingCode != null && fuProfileModel.countryCallingCode != ""){
           fuProfileModel.phoneNoWithCountryCallingCode = "(${fuProfileModel.countryCallingCode}) ${fuProfileModel.phoneNo}";
         }else{
           fuProfileModel.phoneNoWithCountryCallingCode = "${fuProfileModel.phoneNo}";
@@ -69,7 +70,7 @@ class FacilityService{
           if(element.dateOfBirth != null ){
             element.age = findAgeInYears(dateOfBirht: element.dateOfBirth!);
           }
-          if(element.countryCallingCode != null || element.countryCallingCode == ""){
+          if(element.countryCallingCode != null && element.countryCallingCode != ""){
             element.primaryPhoneNoWithCountryCode = "(${element.countryCallingCode}) ${element.primaryPhoneNoWithCountryCode}";
           }else{
             element.primaryPhoneNoWithCountryCode = "${element.primaryPhoneNumber}";
@@ -131,6 +132,7 @@ class FacilityService{
           if(element.dateOfBirth != null ){
             element.age = findAgeInYears(dateOfBirht: element.dateOfBirth!);
           }
+          element.primaryPhoneNumber = mask.getMaskedString(element.primaryPhoneNumber??"");
           if(element.lastAppLaunchDate !=null){
             DateTime currentDate = DateTime.now();
             final lastLoginDate = DateTime.parse(element.lastAppLaunchDate!);

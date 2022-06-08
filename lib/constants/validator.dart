@@ -21,7 +21,7 @@ class Validator{
     }
   }
   static bool PhoneNumberValidator(String val){
-    if(val.length == 12){
+    if(val.length == 10){
       return true;
     }
     else{

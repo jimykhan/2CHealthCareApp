@@ -77,16 +77,16 @@ class SummaryBody extends HookWidget {
                                           ""),
                                   keyValue(
                                       key: "Primary Phone No",
-                                      value: mask.getMaskedString(
-                                          _fuPatientSummaryVM
+                                      value:
+                                          mask.getMaskedString(_fuPatientSummaryVM
                                                   .patientInfo?.homePhone ??
                                               "")),
                                   keyValue(
                                       key: "Secondary Phone No",
-                                      value: mask.getMaskedString(
+                                      value:
                                           _fuPatientSummaryVM.patientInfo
                                                   ?.personNumber ??
-                                              "")),
+                                              ""),
                                 ],
                               ),
                             ),
@@ -115,16 +115,16 @@ class SummaryBody extends HookWidget {
                                           ""),
                                   keyValue(
                                       key: "Primary Contact No",
-                                      value: mask.getMaskedString(
+                                      value:
                                           _fuPatientSummaryVM.patientInfo
                                                   ?.emergencyContactPrimaryPhoneNo ??
-                                              "")),
+                                              ""),
                                   keyValue(
                                       key: "Secondary Contact No",
-                                      value: mask.getMaskedString(
+                                      value:
                                           _fuPatientSummaryVM.patientInfo
                                                   ?.emergencyContactSecondaryPhoneNo ??
-                                              "")),
+                                              ""),
                                 ],
                               ),
                             ),

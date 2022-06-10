@@ -75,6 +75,7 @@ class FacilityService{
           }else{
             element.primaryPhoneNoWithCountryCode = "${element.primaryPhoneNumber}";
           }
+          element.primaryPhoneNumber = mask.getMaskedString(element.primaryPhoneNumber??"");
           if(element.lastAppLaunchDate !=null){
             DateTime currentDate = DateTime.now();
             final lastLoginDate = DateTime.parse(element.lastAppLaunchDate!);

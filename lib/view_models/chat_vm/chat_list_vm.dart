@@ -119,13 +119,14 @@ class ChatListVM extends ChangeNotifier{
       if (response is List<GetGroupsModel>) {
         groupIds = [];
         allGroups = [];
+        unReadChats = [];
         response.forEach((element) {
           if(element.lastMessageTime != null){
             element.lastMessageTime = Jiffy(element.lastMessageTime).format(Strings.dateAndTimeFormat);
           }
           groupIds.add(element);
           allGroups.add(element);
-          unReadChats = [];
+
           if(element.unreadMsgCount!>0){
             unReadChats.add(
                 UnReadChat(unReadMessages: element.unreadMsgCount,
@@ -154,11 +155,13 @@ class ChatListVM extends ChangeNotifier{
       groupIds.forEach((element) {
         if(element.id.toString() == groupId){
           element.unreadMsgCount = 0;
-          notifyListeners();
+          // notifyListeners();
         }
       });
     }
     unReadChats.removeWhere((element) => element.chatGroupId == int.parse(groupId));
+    unReadChats.removeWhere((element) => element.unReadMessages! == 0);
+    notifyListeners();
   }
 
 }

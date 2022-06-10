@@ -65,8 +65,9 @@ class CarePlan extends HookWidget {
     return isPatientSummary
         ? withOutScaffold(context, carePlanVM: carePlanVM)
         : Scaffold(
+            primary: false,
             appBar: PreferredSize(
-              preferredSize: Size.fromHeight(ApplicationSizing.convert(70)),
+              preferredSize: Size.fromHeight(ApplicationSizing.convert(90)),
               child: CustomAppBar(
                 leadingIcon: CustomBackButton(),
                 color1: Colors.white,

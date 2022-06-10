@@ -70,6 +70,7 @@ class ChatScreen extends HookWidget {
       const [],
     );
     return Scaffold(
+      primary: false,
       backgroundColor: Color(0xffFBFBFB),
       // backgroundColor: Colors.black,
       // drawerScrimColor: Colors.black,

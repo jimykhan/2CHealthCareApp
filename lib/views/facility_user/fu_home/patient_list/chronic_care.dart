@@ -49,10 +49,11 @@ class ChronicCare extends HookWidget {
       const [],
     );
     return Scaffold(
+      primary: false,
       backgroundColor: Colors.white,
       key: _scaffoldkey,
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(ApplicationSizing.convert(70)),
+        preferredSize: Size.fromHeight(ApplicationSizing.convert(90)),
         child: CustomAppBar(
           leadingIcon: CustomBackButton(),
           color1: Colors.white,

@@ -38,8 +38,9 @@ class AddRPMEncounter extends HookWidget {
       const [],
     );
     return Scaffold(
+      primary: false,
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(ApplicationSizing.convert(70)),
+        preferredSize: Size.fromHeight(ApplicationSizing.convert(90)),
         child: CustomAppBar(
           centerWigets: AppBarTextStyle(
             text: "Add Rpm Encounter",

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/all.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:twochealthcare/common_widgets/app_bar_components/appbar_text_style.dart';
 import 'package:twochealthcare/common_widgets/app_bar_components/back_button.dart';
 import 'package:twochealthcare/common_widgets/custom_appbar.dart';
@@ -9,9 +10,11 @@ import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
+import 'package:twochealthcare/view_models/ccm_vm/ccm_logs_vm.dart';
 import 'package:twochealthcare/view_models/facility_user_view_model/fu_patient_summary_veiw_models/fu_patient_summary_view_model.dart';
-import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_summary/components/add_ccm_encounter.dart';
-import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_summary/components/add_rpm_encounter.dart';
+import 'package:twochealthcare/views/ccm_view/add_ccm_encounter.dart';
+import 'package:twochealthcare/views/ccm_view/ccm_logs_view.dart';
+import 'package:twochealthcare/views/rpm_view/add_rpm_encounter.dart';
 import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_summary/components/custom_icon_button.dart';
 import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_summary/components/sliderMenu.dart';
 import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_summary/components/user_info_tile.dart';
@@ -69,13 +72,20 @@ class PatientSummary extends HookWidget {
                     flex: 1,
                     child: CustomIconButton(
                       onClick: () {
-                        openBottomModal(
-                            child: AddCCMEncounter(
-                          patientId: fuPatientSummaryVM.patientInfo?.id ?? 0,
-                          ccmmonthlyStatus: fuPatientSummaryVM
-                                  .patientInfo?.ccmMonthlyStatus ??
-                              0,
-                        ));
+                        Navigator.push(context, PageTransition(type: PageTransitionType.bottomToTop,
+                            child: CcmLogsView(
+                                patientId: fuPatientSummaryVM.patientInfo?.id ?? 0,
+                                ccmmonthlyStatus: fuPatientSummaryVM
+                                        .patientInfo?.ccmMonthlyStatus ??
+                                    0,
+                            )));
+                        // openBottomModal(
+                        //     child: AddCCMEncounter(
+                        //   patientId: fuPatientSummaryVM.patientInfo?.id ?? 0,
+                        //   ccmmonthlyStatus: fuPatientSummaryVM
+                        //           .patientInfo?.ccmMonthlyStatus ??
+                        //       0,
+                        // ));
                       },
                     ),
                   ),
@@ -86,6 +96,7 @@ class PatientSummary extends HookWidget {
                     flex: 1,
                     child: CustomIconButton(
                       onClick: () {
+
                         openBottomModal(
                             child: AddRPMEncounter(
                           patientId: fuPatientSummaryVM.patientInfo?.id ?? 0,

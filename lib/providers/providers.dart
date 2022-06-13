@@ -29,6 +29,7 @@ import 'package:twochealthcare/view_models/application_package_vm.dart';
 import 'package:twochealthcare/view_models/auth_vm/forget-password-vm.dart';
 import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
 import 'package:twochealthcare/view_models/care_plan_vm/care_plan_vm.dart';
+import 'package:twochealthcare/view_models/ccm_vm/ccm_logs_vm.dart';
 import 'package:twochealthcare/view_models/chat_vm/chat_list_vm.dart';
 import 'package:twochealthcare/view_models/chat_vm/chat_screen_vm.dart';
 import 'package:twochealthcare/view_models/facility_user_view_model/all_patient_view_model.dart';
@@ -48,7 +49,7 @@ import 'package:twochealthcare/view_models/settings_view_models/fu_settings_view
 import 'package:twochealthcare/view_models/settings_view_models/p_settings_view_models/p_settings_view_model.dart';
 import 'package:twochealthcare/view_models/splash_vm/splash_vm.dart';
 
-import '../view_models/rpm_vm/ccm_encounter_vm.dart';
+import '../view_models/ccm_vm/ccm_encounter_vm.dart';
 /// ChangeNotifierProvider
 final splachVMProvider =  ChangeNotifierProvider<SplashVM>((ref)=>SplashVM(ref: ref));
 final loginVMProvider =  ChangeNotifierProvider<LoginVM>((ref)=>LoginVM(ref: ref));
@@ -74,6 +75,7 @@ final fuAllPatientVM = ChangeNotifierProvider<AllPatientVM>((ref)=>AllPatientVM(
 final fuChronicCareVMProvider = ChangeNotifierProvider<ChronicCareVM>((ref)=>ChronicCareVM(ref: ref));
 final rpmEncounterVMProvider = ChangeNotifierProvider<RpmEncounterVM>((ref)=>RpmEncounterVM(ref: ref));
 final ccmEncounterVMProvider = ChangeNotifierProvider<CcmEncounterVM>((ref)=>CcmEncounterVM(ref: ref));
+final ccmLogsVMProvider = ChangeNotifierProvider<CcmLogsVM>((ref)=>CcmLogsVM(ref: ref));
 /// ChangeNotifierProvider
 
 

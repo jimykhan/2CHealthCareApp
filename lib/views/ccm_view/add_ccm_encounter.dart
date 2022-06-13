@@ -19,7 +19,7 @@ import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
-import 'package:twochealthcare/view_models/rpm_vm/ccm_encounter_vm.dart';
+import 'package:twochealthcare/view_models/ccm_vm/ccm_encounter_vm.dart';
 import 'package:twochealthcare/view_models/rpm_vm/rpm_encounter_vm.dart';
 import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_summary/components/encounters_components/change_billing_provider.dart';
 

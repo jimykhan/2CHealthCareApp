@@ -37,7 +37,8 @@ class BottomBar extends HookWidget {
     ApplicationRouteService applicationRouteService =
         useProvider(applicationRouteServiceProvider);
     ChatListVM chatScreenVM = useProvider(chatListVMProvider);
-    OnLaunchActivityAndRoutesService onLaunchActivityService = useProvider(onLaunchActivityServiceProvider);
+    OnLaunchActivityAndRoutesService onLaunchActivityService =
+        useProvider(onLaunchActivityServiceProvider);
     ChatListVM chatListVM = useProvider(chatListVMProvider);
 
     useEffect(
@@ -49,112 +50,118 @@ class BottomBar extends HookWidget {
       },
       const [],
     );
-    return BottomAppBar(
-      color: appColor,
-      shape: const CircularNotchedRectangle(),
-      notchMargin: 9.0,
-      elevation: 1,
-      child: Container(
-        margin: EdgeInsets.symmetric(
-            horizontal: ApplicationSizing.horizontalMargin()),
+    return  BottomAppBar(
+/// Customize Bottom app bar in plugin code remove safe
+        color: appColor,
+        shape: const CircularNotchedRectangle(),
+        notchMargin: 9.0,
+        elevation: 1,
+        child: Container(
+          margin: EdgeInsets.symmetric(
+              horizontal: ApplicationSizing.horizontalMargin()),
 
-        height: Platform.isIOS
-            ? ApplicationSizing.convert(50)
-            : ApplicationSizing.convert(60),
-        // color: Colors.black,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Expanded(
-              flex: 1,
-              child: InkWell(
-                onTap: () {
-                  if (selectedIndex != 1) {
-                    applicationRouteService.addAndRemoveScreen(
-                        screenName: "Profile");
-                    onLaunchActivityService.profileDecider();
-                    print("do something on selected index $selectedIndex}");
-                  }
-                },
-                child: Container(
-                  alignment: Alignment.center,
-                  child: SvgPicture.asset(
-                    "assets/icons/bottom_navbar/user-icon.svg",
-                    height: ApplicationSizing.convert(25),
+          height: Platform.isIOS
+              ? ApplicationSizing.convert(60)
+              : ApplicationSizing.convert(60),
+          // color: Colors.black,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Expanded(
+                flex: 1,
+                child: InkWell(
+                  onTap: () {
+                    if (selectedIndex != 1) {
+                      applicationRouteService.addAndRemoveScreen(
+                          screenName: "Profile");
+                      onLaunchActivityService.profileDecider();
+                      print("do something on selected index $selectedIndex}");
+                    }
+                  },
+                  child: Container(
+                    alignment: Alignment.center,
+                    child: SvgPicture.asset(
+                      "assets/icons/bottom_navbar/user-icon.svg",
+                      height: ApplicationSizing.convert(25),
+                    ),
                   ),
                 ),
               ),
-            ),
-            ApplicationSizing.horizontalSpacer(n: 180),
-            Expanded(
-              flex: 1,
-              child: InkWell(
-                onTap: () async {
-                  if (selectedIndex != 2) {
-                    if (connectivityService.connectionStatus ==
-                        ConnectivityResult.none) {
-                      SnackBarMessage(
-                          message:
-                              "No internet connection detected, please try again.");
-                    } else {
-                      var check = await homeVM.checkChatStatus();
-                      print(
-                          "this is application mode = ${Foundation.kDebugMode}");
-                      if (check is bool) {
-                      if(check){
-                        if(chatListVM.groupIds.length == 1){
-                          applicationRouteService.addScreen(
-                              screenName: "${chatListVM.groupIds[0].id}");
-                          Navigator.pushReplacement(
-                              context,
-                              PageTransition(
-                                  child: ChatScreen(getGroupsModel: chatScreenVM.groupIds[0],backToHome: true,),
-                                  type: PageTransitionType.bottomToTop));
-                        }else{
-                          applicationRouteService.addAndRemoveScreen(
-                              screenName: "ChatList");
-
-                          Navigator.pushReplacement(
-                              context,
-                              PageTransition(
-                                  child: ChatList(),
-                                  type: PageTransitionType.bottomToTop));
-                        }
-
-                      }else{
-                        SnackBarMessage(message: "Chat disable for this user!");
-                      }
+              ApplicationSizing.horizontalSpacer(n: 180),
+              Expanded(
+                flex: 1,
+                child: InkWell(
+                  onTap: () async {
+                    if (selectedIndex != 2) {
+                      if (connectivityService.connectionStatus ==
+                          ConnectivityResult.none) {
+                        SnackBarMessage(
+                            message:
+                                "No internet connection detected, please try again.");
                       } else {
-                        SnackBarMessage(message: "Some thing went wrong!");
-                      }
-                    }
-                    print("do something on selected index $selectedIndex}");
-                  }
-                },
-                child: Stack(
-                  alignment: Alignment.topCenter,
-                  children: [
-                    Container(
-                      // color: Colors.red,
-                      alignment: Alignment.center,
+                        var check = await homeVM.checkChatStatus();
+                        print(
+                            "this is application mode = ${Foundation.kDebugMode}");
+                        if (check is bool) {
+                          if (check) {
+                            if (chatListVM.groupIds.length == 1) {
+                              applicationRouteService.addScreen(
+                                  screenName: "${chatListVM.groupIds[0].id}");
+                              Navigator.pushReplacement(
+                                  context,
+                                  PageTransition(
+                                      child: ChatScreen(
+                                        getGroupsModel: chatScreenVM.groupIds[0],
+                                        backToHome: true,
+                                      ),
+                                      type: PageTransitionType.bottomToTop));
+                            } else {
+                              applicationRouteService.addAndRemoveScreen(
+                                  screenName: "ChatList");
 
-                      child: SvgPicture.asset(
-                        "assets/icons/bottom_navbar/message-icon.svg",
-                        height: ApplicationSizing.convert(25),
+                              Navigator.pushReplacement(
+                                  context,
+                                  PageTransition(
+                                      child: ChatList(),
+                                      type: PageTransitionType.bottomToTop));
+                            }
+                          } else {
+                            SnackBarMessage(
+                                message: "Chat disable for this user!");
+                          }
+                        } else {
+                          SnackBarMessage(message: "Some thing went wrong!");
+                        }
+                      }
+                      print("do something on selected index $selectedIndex}");
+                    }
+                  },
+                  child: Stack(
+                    alignment: Alignment.topCenter,
+                    children: [
+                      Container(
+                        // color: Colors.red,
+                        alignment: Alignment.center,
+
+                        child: SvgPicture.asset(
+                          "assets/icons/bottom_navbar/message-icon.svg",
+                          height: ApplicationSizing.convert(25),
+                        ),
                       ),
-                    ),
-                   chatScreenVM.unReadChats.length == 0 ? Container() : Positioned(
-                      top: 10,
-                      child: RedDot(),
-                    )
-                  ],
+                      chatScreenVM.unReadChats.length == 0
+                          ? Container()
+                          : Positioned(
+                              top: 10,
+                              child: RedDot(),
+                            )
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-    );
+      );
   }
 }
 

@@ -56,6 +56,7 @@ class ViewPatientEmergencyContact extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
                   child: CustomTextField(
+                    checkFocus: (val){},
                     onchange: (val) {},
                     textEditingController: TextEditingController(text: name??""),
                     textInputType: TextInputType.text,
@@ -86,6 +87,7 @@ class ViewPatientEmergencyContact extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
                   child: CustomTextField(
+                    checkFocus: (val){},
                     inputFormatter: [MaskFormatter("000-000-0000")],
                     onchange: (val) {},
                     isEnable: false,
@@ -122,6 +124,7 @@ class ViewPatientEmergencyContact extends StatelessWidget {
                   child: Container(
                     padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
                     child: CustomTextField(
+                      checkFocus: (val){},
                       inputFormatter: [MaskFormatter("000-000-0000")],
                       onchange: (val) {},
                       isEnable: false,
@@ -156,6 +159,7 @@ class ViewPatientEmergencyContact extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
                   child: CustomTextField(
+                    checkFocus: (val){},
                     inputFormatter: [MaskFormatter("000-000-0000")],
                     onchange: (val) {},
                     isEnable: false,

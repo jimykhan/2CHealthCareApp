@@ -115,7 +115,7 @@ class RpmEncounterVM extends ChangeNotifier{
     }else{
       isFormValid = false;
     }
-
+    notifyListeners();
   }
 
   setLoading(check){

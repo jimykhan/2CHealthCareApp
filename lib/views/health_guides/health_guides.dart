@@ -23,11 +23,12 @@ class HealthGuides extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    ApplicationRouteService applicationRouteService = useProvider(applicationRouteServiceProvider);
+    ApplicationRouteService applicationRouteService =
+        useProvider(applicationRouteServiceProvider);
     HealthGuidesVM healthGuidesVM = useProvider(healthGuidesVMProviders);
 
     useEffect(
-          () {
+      () {
         healthGuidesVM.loadingHealthGuides = true;
 
         Future.microtask(() async {
@@ -40,13 +41,14 @@ class HealthGuides extends HookWidget {
       const [],
     );
     return Scaffold(
+        primary: false,
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(ApplicationSizing.convert(80)),
+          preferredSize: Size.fromHeight(ApplicationSizing.convert(90)),
           child: CustomAppBar(
             leadingIcon: CustomBackButton(),
             color1: Colors.white,
             color2: Colors.white,
-            hight: ApplicationSizing.convert(80),
+            hight: ApplicationSizing.convert(70),
             parentContext: context,
             centerWigets: AppBarTextStyle(
               text: "Health Guidelines",
@@ -64,91 +66,112 @@ class HealthGuides extends HookWidget {
             Column(
               children: [
                 ApplicationSizing.verticalSpacer(n: 20),
-                (!healthGuidesVM.loadingHealthGuides && healthGuidesVM.listOfHealthGuide.length ==0)
-                    ? NoData(paddingFormTop: 100,)
-                    :
-                Container(
-                  child: ListView.separated(
-                      shrinkWrap: true,
-                      physics: ScrollPhysics(),
-                      itemBuilder: (context, index) {
-                        return InkWell(
-                          onTap: () {
-                            String? isPdf = healthGuidesVM.listOfHealthGuide[index].url?.substring(
-                                healthGuidesVM.listOfHealthGuide[index].url!.length - 3);
-                            print(healthGuidesVM.listOfHealthGuide[index].url);
-                            print(isPdf?.toUpperCase());
-                            if(isPdf?.toUpperCase() == "PDF"){
-                              launchURL(url: healthGuidesVM.listOfHealthGuide[index].url!);
-                            }else{
-                              Navigator.push(context, PageTransition(
-                                  child: InAppBrowser(
-                                    url: healthGuidesVM.listOfHealthGuide[index].url??"",
-                                    title: healthGuidesVM.listOfHealthGuide[index].title??"",
-                                  ), type: PageTransitionType.fade));
-                            }
-
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 10,
-                              horizontal: 20
-                            ),
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: appColor,
-                                width: 1
-                              ),
-                              borderRadius: BorderRadius.circular(10)
-                            ),
-                            margin: EdgeInsets.symmetric(
-                                horizontal: ApplicationSizing.horizontalMargin()),
-                            child: Column(
-                              children: [
-                                Container(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(healthGuidesVM.listOfHealthGuide[index].title??"",
-                                  style: Styles.PoppinsRegular(
-                                      color:  Colors.black,
-                                      fontSize: ApplicationSizing.fontScale(16),
-                                    fontWeight: FontWeight.w700
-                                  ),
-                                    maxLines: 2,
+                (!healthGuidesVM.loadingHealthGuides &&
+                        healthGuidesVM.listOfHealthGuide.length == 0)
+                    ? NoData(
+                        paddingFormTop: 100,
+                      )
+                    : Container(
+                        child: ListView.separated(
+                            shrinkWrap: true,
+                            physics: ScrollPhysics(),
+                            itemBuilder: (context, index) {
+                              return InkWell(
+                                onTap: () {
+                                  String? isPdf = healthGuidesVM
+                                      .listOfHealthGuide[index].url
+                                      ?.substring(healthGuidesVM
+                                              .listOfHealthGuide[index]
+                                              .url!
+                                              .length -
+                                          3);
+                                  print(healthGuidesVM
+                                      .listOfHealthGuide[index].url);
+                                  print(isPdf?.toUpperCase());
+                                  if (isPdf?.toUpperCase() == "PDF") {
+                                    launchURL(
+                                        url: healthGuidesVM
+                                            .listOfHealthGuide[index].url!);
+                                  } else {
+                                    Navigator.push(
+                                        context,
+                                        PageTransition(
+                                            child: InAppBrowser(
+                                              url: healthGuidesVM
+                                                      .listOfHealthGuide[index]
+                                                      .url ??
+                                                  "",
+                                              title: healthGuidesVM
+                                                      .listOfHealthGuide[index]
+                                                      .title ??
+                                                  "",
+                                            ),
+                                            type: PageTransitionType.fade));
+                                  }
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 10, horizontal: 20),
+                                  decoration: BoxDecoration(
+                                      border:
+                                          Border.all(color: appColor, width: 1),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  margin: EdgeInsets.symmetric(
+                                      horizontal:
+                                          ApplicationSizing.horizontalMargin()),
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          healthGuidesVM
+                                                  .listOfHealthGuide[index]
+                                                  .title ??
+                                              "",
+                                          style: Styles.PoppinsRegular(
+                                              color: Colors.black,
+                                              fontSize:
+                                                  ApplicationSizing.fontScale(
+                                                      16),
+                                              fontWeight: FontWeight.w700),
+                                          maxLines: 2,
+                                        ),
+                                      ),
+                                      Container(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          healthGuidesVM
+                                                  .listOfHealthGuide[index]
+                                                  .createdOn ??
+                                              "",
+                                          style: Styles.PoppinsRegular(
+                                              color: appColor,
+                                              fontSize:
+                                                  ApplicationSizing.fontScale(
+                                                      8),
+                                              fontWeight: FontWeight.w400),
+                                          maxLines: 2,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                Container(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(healthGuidesVM.listOfHealthGuide[index].createdOn??"",
-                                  style: Styles.PoppinsRegular(
-                                      color:  appColor,
-                                      fontSize: ApplicationSizing.fontScale(8),
-                                    fontWeight: FontWeight.w400
-                                  ),
-                                    maxLines: 2,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                      separatorBuilder: (context, index) {
-                        return Container(
-                          height: 10,
-                        );
-                      },
-                      itemCount: healthGuidesVM.listOfHealthGuide.length),
-                ),
+                              );
+                            },
+                            separatorBuilder: (context, index) {
+                              return Container(
+                                height: 10,
+                              );
+                            },
+                            itemCount: healthGuidesVM.listOfHealthGuide.length),
+                      ),
                 ApplicationSizing.verticalSpacer(),
               ],
             ),
-            healthGuidesVM.loadingHealthGuides
-                ? AlertLoader()
-                : Container(),
+            healthGuidesVM.loadingHealthGuides ? AlertLoader() : Container(),
           ],
         ),
       ),
     );
-
   }
 }

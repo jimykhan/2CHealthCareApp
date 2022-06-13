@@ -16,6 +16,11 @@ class AllergyModel {
   bool? isActiveState;
   bool? isDeletedState;
 
+  /// will be filled from enum in service not in backend dto
+  String? typeString;
+  String? categoryString;
+  String? clinicStatusString;
+
   AllergyModel(
       {this.id,
         this.agent,
@@ -32,7 +37,11 @@ class AllergyModel {
         this.updatedOn,
         this.updatedUser,
         this.isActiveState,
-        this.isDeletedState});
+        this.isDeletedState,
+        this.categoryString,
+        this.clinicStatusString,
+        this.typeString,
+      });
 
   AllergyModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];

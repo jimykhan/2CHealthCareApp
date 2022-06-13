@@ -15,10 +15,12 @@ class NotificationList extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    ApplicationRouteService applicationRouteService = useProvider(applicationRouteServiceProvider);
+    ApplicationRouteService applicationRouteService =
+        useProvider(applicationRouteServiceProvider);
     return Scaffold(
+        primary: false,
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(ApplicationSizing.convert(80)),
+          preferredSize: Size.fromHeight(ApplicationSizing.convert(90)),
           child: CustomAppBar(
             leadingIcon: InkWell(
               onTap: () {
@@ -35,7 +37,7 @@ class NotificationList extends HookWidget {
             ),
             color1: Colors.white,
             color2: Colors.white,
-            hight: ApplicationSizing.convert(80),
+            hight: ApplicationSizing.convert(70),
             parentContext: context,
             centerWigets: AppBarTextStyle(
               text: "Notification",

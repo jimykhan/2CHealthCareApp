@@ -42,9 +42,13 @@ class AuthServices{
         if(currentUser.is2faRequired?? false){
           Navigator.push(applicationContext!.currentContext!,
               PageTransition(child: OtpVerification(userName: currentUser.userName??"",
-                from2FA: true,isForgetPassword: false,
+                from2FA: true,
+                isForgetPassword: false,
                 userId: currentUser.appUserId??"",
                 bearerToken: currentUser.bearerToken??"",
+                phone: currentUser.phoneNumber??"",
+                email: currentUser.email??"",
+
               ),
                   type: PageTransitionType.fade));
           return null;
@@ -54,11 +58,13 @@ class AuthServices{
         }
       }
       else{
+        // SnackBarMessage(message: response.data?.toString()??"");
         return null;
       }
     }
     catch(e){
-        return null;
+      rethrow;
+        // return null;
     }
   }
   Future<dynamic> changePassword({String? userName, String? password, String? confirmPassword,
@@ -167,9 +173,18 @@ class AuthServices{
 
   Future<dynamic> sendVerificationCodeToPhone({String? userName, String? phoneNumber}) async {
     try{
+      String? number = phoneNumber;
+      String? callingCode;
+      if(phoneNumber?.contains("(")??false){
+        callingCode = phoneNumber?.split(" ")[0];
+        number = phoneNumber?.split(" ")[1];
+      }
+
       Map<String,String> resquestBody = {
-        "phonenumber":phoneNumber??"",
-        "username":userName??""};
+        "phonenumber":number?.replaceAll("(", "").replaceAll(")", "").replaceAll(" ", "")??"",
+        "username":userName??"",
+        "countryCallingCode": callingCode?.replaceAll("(", "").replaceAll(")", "").replaceAll(" ", "")??"",
+      };
       final dio = _ref!.read(dioServicesProvider);
       Response response = await dio.dio!.post(ApiStrings.sendPhoneNoVerificationToken,
           data: resquestBody

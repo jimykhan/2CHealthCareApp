@@ -29,7 +29,7 @@ class PMenu extends StatelessWidget {
     return Container(
       child: Container(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
               padding: EdgeInsets.only(top: ApplicationSizing.convert(20)),
@@ -38,9 +38,10 @@ class PMenu extends StatelessWidget {
                   InkWell(
                     onTap: () {
                       Navigator.push(
-                          context,
-                          PageTransition(
-                              child: Profile(), type: PageTransitionType.fade));
+                        context,
+                        PageTransition(
+                            child: Profile(), type: PageTransitionType.fade),
+                      );
                     },
                     child: Container(
                       padding: MenuPadding(),

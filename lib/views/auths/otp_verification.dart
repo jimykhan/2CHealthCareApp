@@ -18,6 +18,7 @@ import 'package:twochealthcare/view_models/auth_vm/forget-password-vm.dart';
 import 'package:twochealthcare/views/auths/reset_password.dart';
 
 class OtpVerification extends HookWidget {
+  String? email;
   String userName;
   String userId;
   String? phone;
@@ -26,17 +27,18 @@ class OtpVerification extends HookWidget {
   bool isEmailVerification;
   bool isPhoneVerification;
   bool from2FA;
-  String sendBy;
+  String? sendBy;
   OtpVerification({
     required this.userName,
     this.phone,
     this.isForgetPassword = true,
-    this.sendBy = "phone",
+    this.sendBy,
     this.from2FA = false,
     required this.userId,
     this.bearerToken,
     this.isEmailVerification = false,
     this.isPhoneVerification = false,
+    this.email,
   });
 
   @override
@@ -48,8 +50,8 @@ class OtpVerification extends HookWidget {
       Future.microtask(() async {
         if (from2FA)
           await forgetPasswordVM.send2FACodeInStartUp(
-              userId: userId, method: 0, bearerToken: bearerToken ?? "");
-        if (isPhoneVerification)
+              userId: userId, method: 2, bearerToken: bearerToken ?? "");
+        if (isPhoneVerification && sendBy == null)
           await forgetPasswordVM.sendVerificationCodeToPhone(
               userName: userName, phoneNumber: phone ?? "");
       });
@@ -120,8 +122,8 @@ class OtpVerification extends HookWidget {
                                         text: isPhoneVerification
                                             ? phone ?? ""
                                             : isEmailVerification
-                                                ? userName
-                                                : "${phone} / ${userName}",
+                                                ? email
+                                                : "${phone??""} ${phone == null || phone == ""  ?"":"/"} ${email}",
                                         style: Styles.PoppinsRegular(
                                             fontSize:
                                                 ApplicationSizing.fontScale(14),
@@ -217,7 +219,7 @@ class OtpVerification extends HookWidget {
                                               } else if (from2FA) {
                                                 forgetPasswordVM.send2FACode(
                                                     userId: userId,
-                                                    method: 0,
+                                                    method: 2,
                                                     bearerToken:
                                                         bearerToken ?? "");
                                               } else {

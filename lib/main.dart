@@ -1,3 +1,4 @@
+
 import 'package:bot_toast/bot_toast.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -31,7 +32,7 @@ Future<void> main() async {
     // SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.top]);
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Colors.green,
-      statusBarBrightness: Brightness.dark,
+      statusBarBrightness: Brightness.light,
       statusBarIconBrightness: Brightness.dark,
     ));
     runApp(ProviderScope(child: MyApp()));

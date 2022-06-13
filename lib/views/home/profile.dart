@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/all.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:twochealthcare/common_widgets/alert_loader.dart';
 import 'package:twochealthcare/common_widgets/app_bar_components/appbar_text_style.dart';
+import 'package:twochealthcare/common_widgets/app_bar_components/back_button.dart';
 import 'package:twochealthcare/common_widgets/circular_image.dart';
 import 'package:twochealthcare/common_widgets/custom_appbar.dart';
 import 'package:twochealthcare/common_widgets/floating_button.dart';
@@ -34,12 +35,14 @@ class Profile extends HookWidget {
     LoginVM loginVM = useProvider(loginVMProvider);
     ProfileVm profileVm = useProvider(profileVMProvider);
     ForgetPasswordVM forgetPasswordVM = useProvider(forgetPasswordVMProvider);
-    ApplicationRouteService applicationRouteService = useProvider(applicationRouteServiceProvider);
+    ApplicationRouteService applicationRouteService =
+        useProvider(applicationRouteServiceProvider);
     // final modalitiesReadingVM = useProvider(modalitiesReadingVMProvider);
     useEffect(
-          () {
+      () {
         Future.microtask(() async {
-          profileVm.getUserInfo();
+          await profileVm.getUserInfo();
+          await profileVm.getAllCountry();
         });
         return () {
           applicationRouteService.removeScreen(screenName: "Profile");
@@ -50,28 +53,36 @@ class Profile extends HookWidget {
     );
 
     return Scaffold(
+      primary: false,
+      backgroundColor: Colors.white,
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(ApplicationSizing.convert(80)),
+        preferredSize: Size.fromHeight(ApplicationSizing.convert(90)),
         child: CustomAppBar(
           leadingIcon: Container(),
           color1: Colors.white,
           color2: Colors.white,
-          hight: ApplicationSizing.convert(80),
+          hight: ApplicationSizing.convert(70),
           parentContext: context,
           centerWigets: AppBarTextStyle(
-            text: "Profile",
+            text: "My Profile",
           ),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
       floatingActionButton: FloatingButton(),
-      body: _body(context,loginVM: loginVM, profileVm: profileVm,forgetPasswordVM: forgetPasswordVM),
+      body: _body(context,
+          loginVM: loginVM,
+          profileVm: profileVm,
+          forgetPasswordVM: forgetPasswordVM),
     );
   }
-  _body(context,{LoginVM? loginVM,ProfileVm? profileVm,
-    ForgetPasswordVM? forgetPasswordVM,
-  }){
 
+  _body(
+    context, {
+    LoginVM? loginVM,
+    ProfileVm? profileVm,
+    ForgetPasswordVM? forgetPasswordVM,
+  }) {
     return Container(
       child: SingleChildScrollView(
         child: Stack(
@@ -115,43 +126,42 @@ class Profile extends HookWidget {
                     ],
                   ),
                 ),
-                ApplicationSizing.verticalSpacer(n:10),
-                infoWidget
-                  (
-                    widgetTitle: 'Care Provider',
-                    child: ListView.separated(
-                        shrinkWrap: true,
-                        physics: ScrollPhysics(),
-                        itemBuilder: (context,index){
-                          return Column(
-                            children: [
-                              tile(
-                                  key: "Name",
-                                  value: profileVm!.patientCareProvider[index].name??""
-                              ),
-                              tile(
-                                  key: "Email",
-                                  // value: profileVm.currentUserInfo?.careProviders?[index].e??""
-                                  value: profileVm.patientCareProvider[index].email??""
-                              ),
-
-                              tile(
-                                  key: "Contact No",
-                                  // value: profileVm.currentUserInfo?.careProviders?[index].e??""
-                                  value: mask.getMaskedString(profileVm.patientCareProvider[index].contactNo??"")
-                              ),
-
-                            ],
-                          );
-                        },
-                        separatorBuilder: (context,index){
-                          return ApplicationSizing.verticalSpacer();
-                        },
-                        itemCount: profileVm!.patientCareProvider.length),
+                ApplicationSizing.verticalSpacer(n: 10),
+                infoWidget(
+                  widgetTitle: 'Care Provider',
+                  child: ListView.separated(
+                      shrinkWrap: true,
+                      physics: ScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        return Column(
+                          children: [
+                            tile(
+                                key: "Name",
+                                value: profileVm!
+                                        .patientCareProvider[index].name ??
+                                    ""),
+                            tile(
+                                key: "Email",
+                                // value: profileVm.currentUserInfo?.careProviders?[index].e??""
+                                value: profileVm
+                                        .patientCareProvider[index].email ??
+                                    ""),
+                            tile(
+                                key: "Contact No",
+                                // value: profileVm.currentUserInfo?.careProviders?[index].e??""
+                                value: profileVm
+                                        .patientCareProvider[index].phoneNoWithCountryCallingCode ??
+                                    ""),
+                          ],
+                        );
+                      },
+                      separatorBuilder: (context, index) {
+                        return ApplicationSizing.verticalSpacer();
+                      },
+                      itemCount: profileVm!.patientCareProvider.length),
                 ),
                 ApplicationSizing.verticalSpacer(n: 15),
-                infoWidget
-                  (
+                infoWidget(
                   widgetTitle: 'Personal Information',
                   child: Container(
                     child: Column(
@@ -159,27 +169,24 @@ class Profile extends HookWidget {
                         Row(
                           children: [
                             Expanded(
-                              flex: 1,
-                              child: Container(
-                                alignment: Alignment.centerLeft,
-                                child: tile(
-                                    key: "Name",
-                                    value: profileVm.patientInfo?.fullName??""
-                                ),
-                              )
-                            ),
-
+                                flex: 1,
+                                child: Container(
+                                  alignment: Alignment.centerLeft,
+                                  child: tile(
+                                      key: "Name",
+                                      value: profileVm.patientInfo?.fullName ??
+                                          ""),
+                                )),
                             Expanded(
-                              flex: 1,
-                              child: Container(
-                                alignment: Alignment.centerRight,
-                                child: tile(
-                                    key: "EmrId",
-                                    value: profileVm.patientInfo?.patientEmrId??""
-                                ),
-                              )
-                            ),
-
+                                flex: 1,
+                                child: Container(
+                                  alignment: Alignment.centerRight,
+                                  child: tile(
+                                      key: "EmrId",
+                                      value:
+                                          profileVm.patientInfo?.patientEmrId ??
+                                              ""),
+                                )),
                           ],
                         ),
                         ApplicationSizing.verticalSpacer(n: 5),
@@ -191,22 +198,18 @@ class Profile extends HookWidget {
                                   alignment: Alignment.centerLeft,
                                   child: tile(
                                       key: "Sex",
-                                      value: profileVm.patientInfo?.sex??""
-                                  ),
-                                )
-                            ),
-
+                                      value: profileVm.patientInfo?.sex ?? ""),
+                                )),
                             Expanded(
                                 flex: 1,
                                 child: Container(
                                   alignment: Alignment.centerRight,
                                   child: tile(
                                       key: "Date of Birth",
-                                      value: profileVm.patientInfo?.dateOfBirth?? ""
-                                  ),
-                                )
-                            ),
-
+                                      value:
+                                          profileVm.patientInfo?.dateOfBirth ??
+                                              ""),
+                                )),
                           ],
                         ),
                       ],
@@ -215,96 +218,119 @@ class Profile extends HookWidget {
                 ),
 
                 ApplicationSizing.verticalSpacer(n: 15),
-                infoWidget
-                  (
+                infoWidget(
                   widgetTitle: 'Contact Information',
                   trallingWidget: InkWell(
-                    onTap: (){
-                      Navigator.push(context, PageTransition(child: EditContactInfo(), type: PageTransitionType.bottomToTop));
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          PageTransition(
+                              child: EditContactInfo(),
+                              type: PageTransitionType.bottomToTop));
                     },
                     child: Container(
-                      alignment: Alignment.bottomLeft,
+                        alignment: Alignment.bottomLeft,
                         child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                         Icon(Icons.edit,
-                          color: Colors.white,
-                          size: ApplicationSizing.fontScale(15),
-                        ),
-                        ApplicationSizing.horizontalSpacer(n: 3),
-                        Container(
-                          alignment: Alignment.bottomLeft,
-                          child: Text("Edit",style: Styles.PoppinsRegular(
-                            color: Colors.white,
-                            fontSize: ApplicationSizing.fontScale(12)
-                          ),),
-                        )
-                      ],
-                    )),
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Icon(
+                              Icons.edit,
+                              color: Colors.white,
+                              size: ApplicationSizing.fontScale(15),
+                            ),
+                            ApplicationSizing.horizontalSpacer(n: 3),
+                            Container(
+                              alignment: Alignment.bottomLeft,
+                              child: Text(
+                                "Edit",
+                                style: Styles.PoppinsRegular(
+                                    color: Colors.white,
+                                    fontSize: ApplicationSizing.fontScale(12)),
+                              ),
+                            )
+                          ],
+                        )),
                   ),
                   child: Container(
                     child: Column(
                       children: [
                         Row(
                           children: [
-                            Expanded(flex: 1,
+                            Expanded(
+                                flex: 1,
                                 child: Column(
                                   children: [
                                     Container(
                                       alignment: Alignment.centerLeft,
                                       child: tile(
                                           key: "Primary Phone No.",
-                                          value: mask.getMaskedString(profileVm.patientInfo?.homePhone??"",)
-                                      ),
+                                          value: profileVm.patientInfo?.homePhoneCountryCallingCode ?? ""),
                                     ),
-
-                                    profileVm.patientInfo == null ? Container() :InkWell(
-                                      onTap: profileVm.patientInfo?.phoneNumberConfirmed?? false ?  null : (){
-                                        Navigator.push(context,
-                                          PageTransition(child: OtpVerification(userName: profileVm.patientInfo?.userName??"",
-                                              phone: profileVm.patientInfo?.homePhone,
-                                              isForgetPassword: false,
-                                            userId: profileVm.patientInfo?.userId??"",
-                                            isPhoneVerification : true,
-                                          ), type: PageTransitionType.leftToRight)
-                                        );
-
-
-                                      },
-                                      child: Container(
-                                        margin: EdgeInsets.only(top: 10),
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: ApplicationSizing.horizontalMargin()),
-                                        child: isContactVerified(isVerified: profileVm.patientInfo?.phoneNumberConfirmed?? false),
-                                      ),
-                                    ),
-
+                                    profileVm.patientInfo == null
+                                        ? Container()
+                                        : InkWell(
+                                            onTap: profileVm.patientInfo
+                                                        ?.phoneNumberConfirmed ??
+                                                    false
+                                                ? null
+                                                : () {
+                                                    Navigator.push(
+                                                        context,
+                                                        PageTransition(
+                                                            child:
+                                                                OtpVerification(
+                                                              userName: profileVm
+                                                                      .patientInfo
+                                                                      ?.userName ??
+                                                                  "",
+                                                              phone: profileVm
+                                                                  .patientInfo
+                                                                  ?.homePhoneCountryCallingCode,
+                                                              isForgetPassword:
+                                                                  false,
+                                                              userId: profileVm
+                                                                      .patientInfo
+                                                                      ?.userId ??
+                                                                  "",
+                                                              isPhoneVerification:
+                                                                  true,
+                                                            ),
+                                                            type: PageTransitionType
+                                                                .leftToRight));
+                                                  },
+                                            child: Container(
+                                              margin: EdgeInsets.only(top: 10),
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: ApplicationSizing
+                                                      .horizontalMargin()),
+                                              child: isContactVerified(
+                                                  isVerified: profileVm
+                                                          .patientInfo
+                                                          ?.phoneNumberConfirmed ??
+                                                      false),
+                                            ),
+                                          ),
                                   ],
-                                )
-                            ),
-
+                                )),
                             Expanded(
                                 flex: 1,
                                 child: Container(
                                   alignment: Alignment.centerRight,
                                   child: tile(
                                       key: "Secondary Contact No.",
-                                      value: mask.getMaskedString(profileVm.patientInfo?.personNumber??"")
-                                  ),
-                                )
-                            ),
-
+                                      value:
+                                          profileVm.patientInfo?.personNumber ??
+                                              ""),
+                                )),
                           ],
                         ),
                       ],
                     ),
                   ),
-
                 ),
 
                 ApplicationSizing.verticalSpacer(n: 15),
-                infoWidget
-                  (
+                infoWidget(
                   widgetTitle: 'Current Address',
                   child: Container(
                     child: Column(
@@ -317,22 +343,18 @@ class Profile extends HookWidget {
                                   alignment: Alignment.centerLeft,
                                   child: tile(
                                       key: "Current Address",
-                                      value: profileVm.patientInfo?.currentAddress??""
-                                  ),
-                                )
-                            ),
-
+                                      value: profileVm
+                                              .patientInfo?.currentAddress ??
+                                          ""),
+                                )),
                             Expanded(
                                 flex: 1,
                                 child: Container(
                                   alignment: Alignment.centerRight,
                                   child: tile(
                                       key: "City",
-                                      value: profileVm.patientInfo?.city??""
-                                  ),
-                                )
-                            ),
-
+                                      value: profileVm.patientInfo?.city ?? ""),
+                                )),
                           ],
                         ),
                         ApplicationSizing.verticalSpacer(n: 5),
@@ -344,22 +366,17 @@ class Profile extends HookWidget {
                                   alignment: Alignment.centerLeft,
                                   child: tile(
                                       key: "State",
-                                      value: profileVm.patientInfo?.state??""
-                                  ),
-                                )
-                            ),
-
+                                      value:
+                                          profileVm.patientInfo?.state ?? ""),
+                                )),
                             Expanded(
                                 flex: 1,
                                 child: Container(
                                   alignment: Alignment.centerRight,
                                   child: tile(
                                       key: "Zip Code",
-                                      value: profileVm.patientInfo?.zip??""
-                                  ),
-                                )
-                            ),
-
+                                      value: profileVm.patientInfo?.zip ?? ""),
+                                )),
                           ],
                         ),
                       ],
@@ -368,8 +385,7 @@ class Profile extends HookWidget {
                 ),
 
                 ApplicationSizing.verticalSpacer(n: 15),
-                infoWidget
-                  (
+                infoWidget(
                   widgetTitle: 'Mailing Address',
                   child: Container(
                     child: Column(
@@ -382,22 +398,20 @@ class Profile extends HookWidget {
                                   alignment: Alignment.centerLeft,
                                   child: tile(
                                       key: "Mailing Address",
-                                      value: profileVm.patientInfo?.mailingAddress??""
-                                  ),
-                                )
-                            ),
-
+                                      value: profileVm
+                                              .patientInfo?.mailingAddress ??
+                                          ""),
+                                )),
                             Expanded(
                                 flex: 1,
                                 child: Container(
                                   alignment: Alignment.centerRight,
                                   child: tile(
                                       key: "City",
-                                      value: profileVm.patientInfo?.maillingAddressCity??""
-                                  ),
-                                )
-                            ),
-
+                                      value: profileVm.patientInfo
+                                              ?.maillingAddressCity ??
+                                          ""),
+                                )),
                           ],
                         ),
                         ApplicationSizing.verticalSpacer(n: 5),
@@ -409,22 +423,20 @@ class Profile extends HookWidget {
                                   alignment: Alignment.centerLeft,
                                   child: tile(
                                       key: "State",
-                                      value: profileVm.patientInfo?.maillingAddressState??""
-                                  ),
-                                )
-                            ),
-
+                                      value: profileVm.patientInfo
+                                              ?.maillingAddressState ??
+                                          ""),
+                                )),
                             Expanded(
                                 flex: 1,
                                 child: Container(
                                   alignment: Alignment.centerRight,
                                   child: tile(
                                       key: "Zip Code",
-                                      value: profileVm.patientInfo?.maillingAddressZipCode??""
-                                  ),
-                                )
-                            ),
-
+                                      value: profileVm.patientInfo
+                                              ?.maillingAddressZipCode ??
+                                          ""),
+                                )),
                           ],
                         ),
                       ],
@@ -433,8 +445,7 @@ class Profile extends HookWidget {
                 ),
 
                 ApplicationSizing.verticalSpacer(n: 15),
-                infoWidget
-                  (
+                infoWidget(
                   widgetTitle: 'Preferences',
                   child: Container(
                     child: Column(
@@ -447,22 +458,20 @@ class Profile extends HookWidget {
                                   alignment: Alignment.centerLeft,
                                   child: tile(
                                       key: "Best time to call",
-                                      value: profileVm.patientInfo?.bestTimeToCall??""
-                                  ),
-                                )
-                            ),
-
+                                      value: profileVm
+                                              .patientInfo?.bestTimeToCall ??
+                                          ""),
+                                )),
                             Expanded(
                                 flex: 1,
                                 child: Container(
                                   alignment: Alignment.centerRight,
                                   child: tile(
                                       key: "Preferred Language",
-                                      value: profileVm.patientInfo?.preferredLanguage??""
-                                  ),
-                                )
-                            ),
-
+                                      value: profileVm
+                                              .patientInfo?.preferredLanguage ??
+                                          ""),
+                                )),
                           ],
                         ),
                       ],
@@ -470,31 +479,36 @@ class Profile extends HookWidget {
                   ),
                 ),
 
-
                 ApplicationSizing.verticalSpacer(n: 15),
-                infoWidget
-                  (
+                infoWidget(
                   widgetTitle: 'Emergency Contact',
                   trallingWidget: InkWell(
-                    onTap: (){
-                      Navigator.push(context, PageTransition(child: EditEmergencyContact(), type: PageTransitionType.bottomToTop));
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          PageTransition(
+                              child: EditEmergencyContact(),
+                              type: PageTransitionType.bottomToTop));
                     },
                     child: Container(
                         alignment: Alignment.bottomLeft,
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Icon(Icons.edit,
+                            Icon(
+                              Icons.edit,
                               color: Colors.white,
                               size: ApplicationSizing.fontScale(15),
                             ),
                             ApplicationSizing.horizontalSpacer(n: 3),
                             Container(
                               alignment: Alignment.bottomLeft,
-                              child: Text("Edit",style: Styles.PoppinsRegular(
-                                  color: Colors.white,
-                                  fontSize: ApplicationSizing.fontScale(12)
-                              ),),
+                              child: Text(
+                                "Edit",
+                                style: Styles.PoppinsRegular(
+                                    color: Colors.white,
+                                    fontSize: ApplicationSizing.fontScale(12)),
+                              ),
                             )
                           ],
                         )),
@@ -510,22 +524,20 @@ class Profile extends HookWidget {
                                   alignment: Alignment.centerLeft,
                                   child: tile(
                                       key: "Name",
-                                      value: profileVm.patientInfo?.emergencyContactName??""
-                                  ),
-                                )
-                            ),
-
+                                      value: profileVm.patientInfo
+                                              ?.emergencyContactName ??
+                                          ""),
+                                )),
                             Expanded(
                                 flex: 1,
                                 child: Container(
                                   alignment: Alignment.centerRight,
                                   child: tile(
                                       key: "Relationship",
-                                      value: profileVm.patientInfo?.emergencyContactRelationship??""
-                                  ),
-                                )
-                            ),
-
+                                      value: profileVm.patientInfo
+                                              ?.emergencyContactRelationship ??
+                                          ""),
+                                )),
                           ],
                         ),
                         ApplicationSizing.verticalSpacer(n: 5),
@@ -537,22 +549,20 @@ class Profile extends HookWidget {
                                   alignment: Alignment.centerLeft,
                                   child: tile(
                                       key: "Primary Phone",
-                                      value: profileVm.patientInfo?.emergencyContactPrimaryPhoneNo??""
-                                  ),
-                                )
-                            ),
-
+                                      value: profileVm.patientInfo
+                                              ?.emergencyContactPrimaryPhoneNo ??
+                                          ""),
+                                )),
                             Expanded(
                                 flex: 1,
                                 child: Container(
                                   alignment: Alignment.centerRight,
                                   child: tile(
                                       key: "Secondary Phone",
-                                      value: profileVm.patientInfo?.emergencyContactSecondaryPhoneNo??""
-                                  ),
-                                )
-                            ),
-
+                                      value: profileVm.patientInfo
+                                              ?.emergencyContactSecondaryPhoneNo ??
+                                          ""),
+                                )),
                           ],
                         ),
                       ],
@@ -561,8 +571,6 @@ class Profile extends HookWidget {
                 ),
 
                 ApplicationSizing.verticalSpacer(n: 70),
-
-
 
                 // infoWidget(widgetTitle: "Care Provider Details",
                 // key1: "Name",

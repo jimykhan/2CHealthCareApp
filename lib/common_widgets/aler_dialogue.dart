@@ -174,10 +174,10 @@ class ConfirmLogout extends HookWidget {
                         ),),
                     ),
                     Container(
-                      child: loginVM.loading ? Container(margin:EdgeInsets.only(bottom: 30),
-                          child: loader()) : Column(
+                      child:  Column(
                         children: [
-                           FilledButton(onTap: (){
+                          loginVM.loading ? Container(margin:EdgeInsets.only(bottom: 10),
+                              child: loader()) : FilledButton(onTap: (){
                             loginVM.userLogout();
                           },
                               txt: "Log out",
@@ -187,14 +187,15 @@ class ConfirmLogout extends HookWidget {
                               borderRadius: 30
                           ),
                           SizedBox(height: 10,),
-                          FilledButton(onTap: (){
+                          FilledButton(
+                            onTap: loginVM.loading ? null : (){
                             Navigator.pop(context);
                           },
                             color1: Colors.white,
                             w: 200,
                             borderRadius: 30,
-                            borderColor: Colors.red,
-                            txtcolor: Colors.red,
+                            borderColor: loginVM.loading ? fontGrayColor : Colors.red,
+                            txtcolor: loginVM.loading ? fontGrayColor : Colors.red,
                             txt: "Cancel",
                           ),
                         ],

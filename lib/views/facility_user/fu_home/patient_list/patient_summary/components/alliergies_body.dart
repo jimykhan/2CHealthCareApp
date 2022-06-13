@@ -103,8 +103,8 @@ class AllergiesBody extends HookWidget {
                         children: [
                           createRandomBox(
                               allergyModel.reaction ?? "", Color(0xffFF3E39)),
-                          createRandomBox("category", Color(0xffEF831F)),
-                          createRandomBox("type", Color(0xff18A9C9))
+                          createRandomBox(allergyModel.categoryString ?? "", Color(0xffEF831F)),
+                          createRandomBox(allergyModel.typeString ?? "", Color(0xff18A9C9))
                         ],
                         // children: ["Allergy", "Allergy", "Allergy"]
                         //     .map((e) => createRandomBox(e))
@@ -136,9 +136,7 @@ class AllergiesBody extends HookWidget {
                         borderRadius: BorderRadius.circular(12),
                         color: appColorSecondary),
                     child: Text(
-                      allergyModel.isActiveState ?? false
-                          ? "InActive"
-                          : "Active",
+                      allergyModel.clinicStatusString??"",
                       style: Styles.PoppinsRegular(
                           fontWeight: FontWeight.w500,
                           fontSize: ApplicationSizing.constSize(10),

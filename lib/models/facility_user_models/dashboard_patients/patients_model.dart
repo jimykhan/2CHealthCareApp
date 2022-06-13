@@ -10,6 +10,7 @@ class PatientsModel {
   String? serviceName;
   String? dateOfBirth;
   String? primaryPhoneNumber;
+  String? countryCallingCode;
   String? state;
   String? country;
   bool? isConsentTaken;
@@ -59,6 +60,7 @@ class PatientsModel {
   /// not in model
   bool? isActve;
   int? age;
+  String? primaryPhoneNoWithCountryCode;
 
 
   PatientsModel(
@@ -119,7 +121,9 @@ class PatientsModel {
         this.ccmFlagged,
         this.lastAppLaunchDate,
         this.isActve = false,
-        this.age
+        this.age,
+        this.countryCallingCode,
+        this.primaryPhoneNoWithCountryCode,
       });
 
   PatientsModel.fromJson(Map<String, dynamic> json) {
@@ -205,6 +209,7 @@ class PatientsModel {
     isRPMRevoked = json['isRPMRevoked'];
     ccmFlagged = json['ccmFlagged'];
     lastAppLaunchDate = json['lastAppLaunchDate'];
+    countryCallingCode = json['countryCallingCode'];
   }
 
   Map<String, dynamic> toJson() {
@@ -274,6 +279,7 @@ class PatientsModel {
     data['isRPMRevoked'] = this.isRPMRevoked;
     data['ccmFlagged'] = this.ccmFlagged;
     data['lastAppLaunchDate'] = this.lastAppLaunchDate;
+    data['countryCallingCode'] = this.countryCallingCode;
     return data;
   }
 }

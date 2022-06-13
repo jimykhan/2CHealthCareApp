@@ -28,16 +28,19 @@ import 'package:twochealthcare/views/readings/tab_and_calender.dart';
 class BGReading extends HookWidget {
   int selectedMonth;
   int selectedYear;
-   BGReading({Key? key,required this.selectedMonth,required this.selectedYear}) : super(key: key);
+  BGReading({Key? key, required this.selectedMonth, required this.selectedYear})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     BGReadingVM bgReadingVM = useProvider(bGReadingVMProvider);
-    ApplicationRouteService applicationRouteService = useProvider(applicationRouteServiceProvider);
+    ApplicationRouteService applicationRouteService =
+        useProvider(applicationRouteServiceProvider);
 
     useEffect(
       () {
-       bgReadingVM.initialState(readingMonth: selectedMonth, readingYear: selectedYear);
+        bgReadingVM.initialState(
+            readingMonth: selectedMonth, readingYear: selectedYear);
         Future.microtask(() async {});
         return () {
           // Dispose Objects here
@@ -46,14 +49,15 @@ class BGReading extends HookWidget {
       const [],
     );
     return Scaffold(
+        primary: false,
         backgroundColor: Colors.white,
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(ApplicationSizing.convert(80)),
+          preferredSize: Size.fromHeight(ApplicationSizing.convert(90)),
           child: CustomAppBar(
             leadingIcon: CustomBackButton(),
             color1: Colors.white,
             color2: Colors.white,
-            hight: ApplicationSizing.convert(80),
+            hight: ApplicationSizing.convert(70),
             parentContext: context,
             centerWigets: AppBarTextStyle(
               text: "Blood Glucose Reading",
@@ -161,25 +165,22 @@ class BGReading extends HookWidget {
                   stops: const <double>[0.2, 0.9],
                   end: Alignment.topCenter,
                   begin: Alignment.bottomCenter),
-
               gradient: LinearGradient(colors: <Color>[
                 AppBarStartColor.withOpacity(0.4),
-                AppBarEndColor.withOpacity(0.4)],
-                  stops: const <double>[0.2, 0.9],
-                  end: Alignment.topCenter, begin: Alignment.bottomCenter),
+                AppBarEndColor.withOpacity(0.4)
+              ], stops: const <double>[
+                0.2,
+                0.9
+              ], end: Alignment.topCenter, begin: Alignment.bottomCenter),
               name: "Blood Glucose",
               enableTooltip: true,
               dataSource: graphData,
               xValueMapper: (BGDataModel bg, _) =>
-              // bg.measurementDate.substring(0, 9),
-              bg.measurementDate,
+                  // bg.measurementDate.substring(0, 9),
+                  bg.measurementDate,
               yValueMapper: (BGDataModel bg, _) => bg.bg,
               markerSettings: const MarkerSettings(
-                color: Colors.white,
-                isVisible: true,
-                  width: 2,
-                  height: 2
-              ),
+                  color: Colors.white, isVisible: true, width: 2, height: 2),
               legendIconType: LegendIconType.circle,
               isVisibleInLegend: true,
               color: AppBarStartColor,

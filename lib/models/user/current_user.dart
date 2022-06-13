@@ -14,6 +14,8 @@ class CurrentUser {
   String? refreshTokenExpiration;
   int? userType;
   List<Claims>? claims;
+  String? phoneNumber;
+  String? email;
 
   CurrentUser(
       {this.id,
@@ -30,7 +32,10 @@ class CurrentUser {
         this.refreshToken,
         this.refreshTokenExpiration,
         this.userType,
-        this.claims});
+        this.claims,
+        this.phoneNumber,
+        this.email
+      });
 
   CurrentUser.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -53,6 +58,9 @@ class CurrentUser {
         claims!.add(new Claims.fromJson(v));
       });
     }
+    email = json['email'];
+    phoneNumber = json['phoneNumber'];
+
   }
 
   Map<String, dynamic> toJson() {
@@ -74,7 +82,10 @@ class CurrentUser {
     if (this.claims != null) {
       data['claims'] = this.claims!.map((v) => v.toJson()).toList();
     }
+    data['email'] = this.email;
+    data['phoneNumber'] = this.phoneNumber;
     return data;
+
   }
 }
 

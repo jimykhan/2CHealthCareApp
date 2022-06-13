@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:twochealthcare/constants/api_strings.dart';
+import 'package:twochealthcare/constants/strings.dart';
 import 'package:twochealthcare/models/care_plan/CarePlanModel.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
@@ -26,6 +28,11 @@ class CarePlanServices{
       Response response = await _dioServices!.dio!.get(ApiStrings.getCarePlanMasterByPatientId+"/${Id??patientId}");
       if(response.statusCode == 200){
         CarePlanModel carePlanModel = CarePlanModel.fromJson(response.data);
+        carePlanModel.satisfactionWithMedicalCare = ((carePlanModel.satisfactionWithMedicalCare ?? 0) /2).round();
+        carePlanModel.updatedOn = Jiffy(carePlanModel.updatedOn).format(Strings.dateFormatFullYear);
+        carePlanModel.ccmStartedDate = Jiffy(carePlanModel.ccmStartedDate).format(Strings.dateFormatFullYear);
+        carePlanModel.currentApprovalUpdatedOn = Jiffy(carePlanModel.currentApprovalUpdatedOn).format(Strings.dateFormatFullYear);
+        carePlanModel.lastApprovedDate = Jiffy(carePlanModel.lastApprovedDate).format(Strings.dateFormatFullYear);
         return carePlanModel;
       }else{
         return null;

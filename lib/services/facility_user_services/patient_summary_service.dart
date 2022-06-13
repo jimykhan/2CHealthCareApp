@@ -79,7 +79,17 @@ class PatientSummaryService{
             element.updatedOn =
                 Jiffy(element.updatedOn).format(Strings.dateFormatFullYear);
           }
+          element.categoryString = element.category == -1 ? "All" : element.category == 1 ? "Food" :
+          element.category == 2 ? "Medication" : element.category == 3 ? "Environment" : element.category == 4 ? "Biologic" : ""  ;
+
+          element.clinicStatusString = element.clinicalStatus == -1 ? "NA" : element.clinicalStatus == 1 ? "Active" :
+          element.clinicalStatus == 2 ? "InActive" : element.clinicalStatus == 3 ? "Resolved" : ""  ;
+
+          element.typeString = element.type == -1 ? "NA" : element.type == 1 ? "Allergy" :
+          element.type == 2 ? "Intolerance" : "";
+
         });
+
         return allergyList;
       }else{
         return null;

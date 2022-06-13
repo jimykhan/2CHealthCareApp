@@ -26,18 +26,22 @@ import 'package:twochealthcare/views/readings/tab_and_calender.dart';
 class BloodPressureReading extends HookWidget {
   int selectedMonth = DateTime.now().month;
   int selectedYear = DateTime.now().year;
-  BloodPressureReading({Key? key,required this.selectedYear,required this.selectedMonth}) : super(key: key);
+  BloodPressureReading(
+      {Key? key, required this.selectedYear, required this.selectedMonth})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     BloodPressureReadingVM bloodPressureReadingVM =
         useProvider(bloodPressureReadingVMProvider);
-    ApplicationRouteService applicationRouteService = useProvider(applicationRouteServiceProvider);
+    ApplicationRouteService applicationRouteService =
+        useProvider(applicationRouteServiceProvider);
 
     useEffect(
       () {
         bloodPressureReadingVM.bPReadingLoading = true;
-        bloodPressureReadingVM.initialState(readingMonth: selectedMonth, readingYear: selectedYear);
+        bloodPressureReadingVM.initialState(
+            readingMonth: selectedMonth, readingYear: selectedYear);
         Future.microtask(() async {});
 
         return () {
@@ -47,13 +51,14 @@ class BloodPressureReading extends HookWidget {
       const [],
     );
     return Scaffold(
+        primary: false,
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(ApplicationSizing.convert(80)),
+          preferredSize: Size.fromHeight(ApplicationSizing.convert(90)),
           child: CustomAppBar(
             leadingIcon: CustomBackButton(),
             color1: Colors.white,
             color2: Colors.white,
-            hight: ApplicationSizing.convert(80),
+            hight: ApplicationSizing.convert(70),
             parentContext: context,
             centerWigets: AppBarTextStyle(
               text: "Blood Pressure Reading",
@@ -142,16 +147,12 @@ class BloodPressureReading extends HookWidget {
               enableTooltip: true,
               dataSource: graphData,
               xValueMapper: (BloodPressureReadingModel bloodPressure, _) =>
-              // bloodPressure.measurementDate.substring(0, 9),
-              bloodPressure.measurementDate,
+                  // bloodPressure.measurementDate.substring(0, 9),
+                  bloodPressure.measurementDate,
               yValueMapper: (BloodPressureReadingModel bloodPressure, _) =>
-              bloodPressure.highPressure,
+                  bloodPressure.highPressure,
               markerSettings: const MarkerSettings(
-                color: Colors.white,
-                isVisible: true,
-                  width: 2,
-                  height: 2
-              ),
+                  color: Colors.white, isVisible: true, width: 2, height: 2),
               legendIconType: LegendIconType.circle,
               isVisibleInLegend: true,
               color: appColor,
@@ -161,19 +162,14 @@ class BloodPressureReading extends HookWidget {
               enableTooltip: true,
               dataSource: graphData,
               xValueMapper: (BloodPressureReadingModel bloodPressure, _) =>
-              // bloodPressure.measurementDate.substring(0, 9),
-              bloodPressure.measurementDate,
+                  // bloodPressure.measurementDate.substring(0, 9),
+                  bloodPressure.measurementDate,
               yValueMapper: (BloodPressureReadingModel bloodPressure, _) =>
-              bloodPressure.lowPressure,
+                  bloodPressure.lowPressure,
               markerSettings: const MarkerSettings(
-                color: Colors.white,
-                isVisible: true,
-                width: 2,
-                height: 2
-              ),
+                  color: Colors.white, isVisible: true, width: 2, height: 2),
               legendIconType: LegendIconType.circle,
               isVisibleInLegend: true,
-
               color: AppBarStartColor,
             ),
           ],

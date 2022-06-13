@@ -42,7 +42,7 @@ class CarePlanVM extends ChangeNotifier{
   TextEditingController challengesController = TextEditingController();
   TextEditingController dailyLivingController = TextEditingController();
   TextEditingController instrumentalDailyLivingController = TextEditingController();
-  TextEditingController requireTransportationController = TextEditingController();
+  TextEditingController helpwithTransportationController = TextEditingController();
   TextEditingController eSLController = TextEditingController();
   TextEditingController patientPhoneNo = TextEditingController();
   TextEditingController discussWithPhysicianController = TextEditingController();
@@ -60,6 +60,7 @@ class CarePlanVM extends ChangeNotifier{
   TextEditingController wantToImproveOnController = TextEditingController();
   TextEditingController concernedAboutOtherController = TextEditingController();
   TextEditingController feelingDownController = TextEditingController();
+  TextEditingController utilizingCommunityController = TextEditingController();
   CarePlanVM({ProviderReference? ref}){
     _ref = ref;
     initService();
@@ -117,10 +118,10 @@ class CarePlanVM extends ChangeNotifier{
   }
 
   setValueToTextArea(){
-    challengesController.text = carePlanModel?.challengesComments??"";
+    challengesController.text = carePlanModel?.physicalNote??"";
     dailyLivingController.text = carePlanModel?.dailyLivingActivitiesNote??"";
     instrumentalDailyLivingController.text = carePlanModel?.instrumentalDailyActivitiesNote??"";
-    requireTransportationController.text = carePlanModel?.healthCareAdvancedDirectivesComments??"";
+    helpwithTransportationController.text = carePlanModel?.helpWithTransportation??"";
     eSLController.text = carePlanModel?.esl??"";
     patientPhoneNo.text = carePlanModel?.cellPhoneNumber??"";
     discussWithPhysicianController.text = carePlanModel?.physicalNote??"";
@@ -135,7 +136,9 @@ class CarePlanVM extends ChangeNotifier{
     satisfactionController.text = carePlanModel?.satisfactionComment??"";
     wantToImproveOnController.text = carePlanModel?.wantToImproveOnComment??"";
     concernedAboutOtherController.text = carePlanModel?.concernedAboutOther??"";
+    utilizingCommunityController.text = carePlanModel?.utilizingCommunity??"";
   }
+
   setChronicConditionsValue(){
     chronicObstructiveController.text = "";
     asthmaController.text = "";

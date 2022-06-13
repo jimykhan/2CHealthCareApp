@@ -65,7 +65,7 @@ class CenterText extends StatelessWidget {
                       ),
                       Expanded(
                         child: Text(
-                          mask.getMaskedString(patientsList.primaryPhoneNumber ?? "") ,
+                          patientsList.primaryPhoneNumber ?? "" ,
                           maxLines: 1,
                           overflow: TextOverflow.fade,
                           style: Styles.PoppinsRegular(

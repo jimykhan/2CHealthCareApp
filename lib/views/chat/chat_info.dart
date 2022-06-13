@@ -37,6 +37,7 @@ class ChatInfo extends HookWidget {
       const [],
     );
     return Scaffold(
+      primary: false,
       backgroundColor: Color(0xffFBFBFB),
       // backgroundColor: Colors.black,
       // drawerScrimColor: Colors.black,
@@ -88,6 +89,7 @@ class ChatInfo extends HookWidget {
             margin: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin()),
             child: CustomTextField(
               // onchange: loginVM!.onChangeEmail,
+              checkFocus: (val){},
               textEditingController: chatScreenVM.searchController,
               hints: "Search...",
               color1: disableColor ,

@@ -23,6 +23,8 @@ class FUProfileModel {
   bool? isActive;
   FacilityDto? facilityDto;
   Organization? organization;
+  String? countryCallingCode;
+  String? phoneNoWithCountryCallingCode;
 
   FUProfileModel(
       {this.id,
@@ -45,7 +47,10 @@ class FUProfileModel {
         this.profileImagePublicUrl,
         this.isActive,
         this.facilityDto,
-        this.organization});
+        this.organization,
+        this.countryCallingCode,
+        this.phoneNoWithCountryCallingCode
+      });
 
   FUProfileModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -59,6 +64,7 @@ class FUProfileModel {
     hasAuthenticator = json['hasAuthenticator'];
     twoFactorEnabled = json['twoFactorEnabled'];
     phoneNo = json['phoneNo'];
+    countryCallingCode = json['countryCallingCode'];
     isPhoneNumberVerified = json['isPhoneNumberVerified'];
     email = json['email'];
     isEmailVerified = json['isEmailVerified'];
@@ -88,6 +94,7 @@ class FUProfileModel {
     data['hasAuthenticator'] = this.hasAuthenticator;
     data['twoFactorEnabled'] = this.twoFactorEnabled;
     data['phoneNo'] = this.phoneNo;
+    data['countryCallingCode'] = this.countryCallingCode;
     data['isPhoneNumberVerified'] = this.isPhoneNumberVerified;
     data['email'] = this.email;
     data['isEmailVerified'] = this.isEmailVerified;

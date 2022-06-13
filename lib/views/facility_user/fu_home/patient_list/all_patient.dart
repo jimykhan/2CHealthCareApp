@@ -48,15 +48,16 @@ class AllPatient extends HookWidget {
       const [],
     );
     return Scaffold(
+      primary: false,
       backgroundColor: Colors.white,
       key: _scaffoldkey,
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(ApplicationSizing.convert(80)),
+        preferredSize: Size.fromHeight(ApplicationSizing.convert(90)),
         child: CustomAppBar(
           leadingIcon: CustomBackButton(),
           color1: Colors.white,
           color2: Colors.white,
-          hight: ApplicationSizing.convert(80),
+          hight: ApplicationSizing.convert(70),
           parentContext: context,
         ),
       ),
@@ -77,6 +78,7 @@ class AllPatient extends HookWidget {
                 children: [
                   Expanded(
                     child: CustomTextField(
+                      checkFocus: (val){},
                       onchange: allPatientVM.onSearch,
                       onSubmit: (val) {},
                       hints: "Search Patients",

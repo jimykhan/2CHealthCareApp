@@ -119,6 +119,7 @@ class ChangeBillingProvider extends HookWidget {
               Container(
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
                 child: CustomTextField(
+                  checkFocus: (val){},
                   onchange: _rmpEncounterVM.onChangePassword,
                   textEditingController: _rmpEncounterVM.passwordController,
                   textInputType: TextInputType.text,

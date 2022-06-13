@@ -123,6 +123,7 @@ class ResetPassword extends HookWidget {
               Container(
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
                 child: CustomTextField(
+                  checkFocus: (val){},
                   onchange: loginVM.onChangePassword,
                   textEditingController: loginVM.passwordController,
                   textInputType: TextInputType.text,
@@ -177,6 +178,7 @@ class ResetPassword extends HookWidget {
               Container(
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
                 child: CustomTextField(
+                  checkFocus: (val){},
                   onchange: loginVM.onChangeConfirmPassword,
                   textEditingController: loginVM.confirmPasswordController,
                   textInputType: TextInputType.text,

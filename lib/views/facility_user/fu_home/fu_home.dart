@@ -46,10 +46,11 @@ class FUHome extends HookWidget {
       const [],
     );
     return Scaffold(
+      primary: false,
       backgroundColor: Colors.white,
       key: _scaffoldkey,
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(ApplicationSizing.convert(80)),
+        preferredSize: Size.fromHeight(ApplicationSizing.convert(90)),
         child: CustomAppBar(
           clickOnNotification: () {},
           notifcationIcon: false,
@@ -61,7 +62,7 @@ class FUHome extends HookWidget {
           ),
           color1: Colors.white,
           color2: Colors.white,
-          hight: ApplicationSizing.convert(80),
+          hight: ApplicationSizing.convert(70),
           parentContext: context,
           paddingLeft: 15,
         ),
@@ -108,6 +109,9 @@ class FUHome extends HookWidget {
         Container(
             child: Column(
           children: [
+            SizedBox(
+              height: 10,
+            ),
             ChangeFacilityTile(
               onClick: () {
                 openBottomModal(
@@ -120,7 +124,7 @@ class FUHome extends HookWidget {
               loginVM: loginVM,
             ),
             SizedBox(
-              height: 20,
+              height: 15,
             ),
             fuHomeViewModel.dashboardPatientSummary == null
                 ? Column(
@@ -149,7 +153,7 @@ class FUHome extends HookWidget {
                             0,
                       ),
                       SizedBox(
-                        height: 20,
+                        height: 15,
                       ),
                       ServiceTile(
                         onclick: () {

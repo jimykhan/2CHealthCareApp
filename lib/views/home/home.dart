@@ -78,24 +78,25 @@ class Home extends HookWidget {
       const [],
     );
     return Scaffold(
+      primary: false,
       backgroundColor: Colors.white,
       key: _scaffoldkey,
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(ApplicationSizing.convert(80)),
+        preferredSize: Size.fromHeight(ApplicationSizing.convert(90)),
         child: CustomAppBar(
           leadingIcon: InkWell(
             onTap: () {
               _scaffoldkey.currentState!.openDrawer();
             },
             child: Container(
-                alignment: Alignment.centerLeft,
-                padding: EdgeInsets.only(right: 20),
-                child:
-                    SvgPicture.asset("assets/icons/home/side-menu-icon.svg")),
+              alignment: Alignment.centerLeft,
+              padding: EdgeInsets.only(right: 20),
+              child: SvgPicture.asset("assets/icons/home/side-menu-icon.svg"),
+            ),
           ),
           color1: Colors.white,
           color2: Colors.white,
-          hight: ApplicationSizing.convert(80),
+          hight: ApplicationSizing.convert(70),
           parentContext: context,
           paddingLeft: 15,
         ),
@@ -319,7 +320,7 @@ class Home extends HookWidget {
     return Container(
       // width: 150,
       height: ApplicationSizing.convert(150),
-       padding: EdgeInsets.symmetric(horizontal: ApplicationSizing.convert(10)),
+      padding: EdgeInsets.symmetric(horizontal: ApplicationSizing.convert(10)),
       decoration: BoxDecoration(
         color: item["color"],
         // color: Colors.blueAccent,

@@ -5,10 +5,12 @@ import 'package:twochealthcare/common_widgets/snackber_message.dart';
 import 'package:twochealthcare/constants/strings.dart';
 import 'package:twochealthcare/constants/validator.dart';
 import 'package:twochealthcare/main.dart';
+import 'package:twochealthcare/models/app_data_models/country_model.dart';
 import 'package:twochealthcare/models/profile_models/current_user_info_model.dart';
 import 'package:twochealthcare/models/profile_models/paitent_care_providers_model.dart';
 import 'package:twochealthcare/models/profile_models/state_model.dart';
 import 'package:twochealthcare/providers/providers.dart';
+import 'package:twochealthcare/services/app_data_service.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
 import 'package:twochealthcare/services/patient_profile_service.dart';
 import 'package:twochealthcare/services/shared_pref_services.dart';
@@ -21,8 +23,10 @@ class ProfileVm extends ChangeNotifier{
   List<PatientCareProvider> patientCareProvider = [];
   AuthServices? _authService;
   PatientProfileService? _PatientProfileService;
+  AppDataService? _appDataService;
   SharedPrefServices? _sharedPrefServices;
   ProviderReference? _ref;
+
 
   /// Edit Contact Info Variable
   String primaryPhoneErrorText = "";
@@ -44,12 +48,15 @@ class ProfileVm extends ChangeNotifier{
   TextEditingController? mAStateEditController;
   List<StateModel> stateList = [];
   List<StateModel> filterStateList = [];
+  List<CountryModel> countryList = [];
+  CountryModel selectedCountry = CountryModel();
   /// Edit Contact Info Variable
   TextEditingController? emergencyNameEditController;
   TextEditingController? emergencyPrimaryPhoneEditController;
   TextEditingController? emergencySecondaryPhoneEditController;
   /// Edit Emergency Contact Variable
   String dropdownValue = "Spouse";
+  String countryCallingCode = "+1";
 
   /// Edit Emergency Contact Variable
 
@@ -64,6 +71,7 @@ class ProfileVm extends ChangeNotifier{
     _authService = _ref!.read(authServiceProvider);
     _PatientProfileService = _ref!.read(PatientProfileServiceProvider);
     _sharedPrefServices = _ref!.read(sharedPrefServiceProvider);
+    _appDataService = _ref!.read(appDataServiceProvider);
 
   }
   setLoading(bool f){
@@ -88,6 +96,7 @@ class ProfileVm extends ChangeNotifier{
       }
       if(res is PatientInfo){
         patientInfo = res;
+        selectedCountry.callingCode = patientInfo?.countryCallingCode;
         /// Here i need phone number verification flow
         _sharedPrefServices!.setPatientInfo(res);
         setLoading(false);
@@ -188,8 +197,8 @@ class ProfileVm extends ChangeNotifier{
     getStateList();
   }
   setExistingValue(){
-    primaryPhoneEditController?.text = phoneNumberFormatter(phoneNum: patientInfo?.homePhone??"");
-    secondaryPhoneEditController?.text = phoneNumberFormatter(phoneNum:patientInfo?.personNumber??"");
+    primaryPhoneEditController?.text =  patientInfo?.homePhone??"";
+    secondaryPhoneEditController?.text = patientInfo?.personNumber??"";
     currentAddressEditController?.text = patientInfo?.currentAddress??"";
     cACityEditController?.text = patientInfo?.city??"";
     cAStateEditController?.text = patientInfo?.state??"";
@@ -198,6 +207,7 @@ class ProfileVm extends ChangeNotifier{
     mACityEditController?.text = patientInfo?.maillingAddressCity??"";
     mAStateEditController?.text = patientInfo?.maillingAddressState??"";
     mAZipCodeEditController?.text = patientInfo?.maillingAddressZipCode??"";
+    selectedCountry.callingCode =  patientInfo?.countryCallingCode;
 
     cAStateEditController?.addListener(() {
       if (cAStateEditController!.text == "") {
@@ -243,6 +253,7 @@ class ProfileVm extends ChangeNotifier{
         "emergencyContactRelationship": patientInfo?.emergencyContactRelationship??"",
         "emergencyContactPrimaryPhoneNo": patientInfo?.emergencyContactPrimaryPhoneNo??"",
         "emergencyContactSecondaryPhoneNo": patientInfo?.emergencyContactSecondaryPhoneNo??"",
+        "countryCallingCode": countryCallingCode,
         "patientId": userId
       };
       setLoading(true);
@@ -275,6 +286,7 @@ class ProfileVm extends ChangeNotifier{
         return false;
       }
   }
+
   Future<dynamic> getStateList() async {
     try{
       var res = await _PatientProfileService!.getStatesList();
@@ -296,6 +308,11 @@ class ProfileVm extends ChangeNotifier{
   /// Edit Emergency Contact code portion
   onRelationShipChange(val){
     dropdownValue = val;
+    notifyListeners();
+  }
+
+  onCountryCodeChange(val){
+    selectedCountry = val;
     notifyListeners();
   }
   initEditEmergencyContactInfo(){
@@ -343,6 +360,31 @@ class ProfileVm extends ChangeNotifier{
     catch(e){
       setLoading(false);
       print(e.toString());
+    }
+  }
+
+  Future<dynamic>getAllCountry()async{
+    try{
+      print("get counry calling code");
+      var res = await _appDataService?.getAllCountry();
+      if(res is List<CountryModel>){
+
+        countryList = [];
+        res.forEach((element) {
+          if(selectedCountry.callingCode == null){
+            if(element.callingCode == "+1"){
+              selectedCountry = element;
+            }
+          }
+          countryList.add(element);
+        });
+        notifyListeners();
+        return countryList;
+      }else{
+        return null;
+      }
+    }catch(e){
+      return null;
     }
   }
   /// Edit Emergency Contact code portion

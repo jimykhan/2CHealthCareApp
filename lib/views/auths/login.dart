@@ -9,6 +9,7 @@ import 'package:twochealthcare/common_widgets/alert_loader.dart';
 import 'package:twochealthcare/common_widgets/input_field/custom_text_field.dart';
 import 'package:twochealthcare/common_widgets/error_text.dart';
 import 'package:twochealthcare/common_widgets/filled_button.dart';
+import 'package:twochealthcare/common_widgets/snackber_message.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/application_route_service.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
@@ -130,6 +131,7 @@ class Login extends HookWidget {
               Container(
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
                 child: CustomTextField(
+                  checkFocus: (val){},
                   onchange: loginVM!.onChangeEmail,
                   textEditingController: loginVM.emailController,
                   textInputType: TextInputType.emailAddress,
@@ -163,6 +165,7 @@ class Login extends HookWidget {
               Container(
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
                 child: CustomTextField(
+                  checkFocus: (val){},
                   onchange: loginVM.onChangePassword,
                   textEditingController: loginVM.passwordController,
                   textInputType: TextInputType.text,

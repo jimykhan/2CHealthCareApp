@@ -26,55 +26,58 @@ import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_
 class AddCCMEncounter extends HookWidget {
   int patientId;
   int ccmmonthlyStatus;
-  AddCCMEncounter({Key? key,required this.patientId,required this.ccmmonthlyStatus}) : super(key: key);
+  AddCCMEncounter(
+      {Key? key, required this.patientId, required this.ccmmonthlyStatus})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     CcmEncounterVM _ccmEncounterVM = useProvider(ccmEncounterVMProvider);
     useEffect(
-          () {
-            _ccmEncounterVM.ccmmonthlyStatus = ccmmonthlyStatus;
+      () {
+        _ccmEncounterVM.ccmmonthlyStatus = ccmmonthlyStatus;
         _ccmEncounterVM.initialState();
-        Future.microtask(() async {
-
-        });
+        Future.microtask(() async {});
         return () {};
       },
       const [],
     );
     return Scaffold(
+      primary: false,
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(ApplicationSizing.convert(80)),
+        preferredSize: Size.fromHeight(ApplicationSizing.convert(90)),
         child: CustomAppBar(
           centerWigets: AppBarTextStyle(
             text: "Add CCM Encounter",
           ),
           leadingIcon: CrossIconButton(
-            onClick: (){
+            onClick: () {
               Navigator.pop(context);
             },
           ),
           color1: Colors.white,
           color2: Colors.white,
-          hight: ApplicationSizing.convert(80),
+          hight: ApplicationSizing.convert(70),
           parentContext: context,
-          trailingIcon: _ccmEncounterVM.addEncounterLoader ? SimpleLoader() : TickIconButton(
-            color: _ccmEncounterVM.isFormValid? appColor : fontGrayColor,
-            onClick: _ccmEncounterVM.isFormValid ? ()  {
-              _ccmEncounterVM.addCcmEncounter(patientId: patientId);
-
-            } : null,
-          ),
+          trailingIcon: _ccmEncounterVM.addEncounterLoader
+              ? SimpleLoader()
+              : TickIconButton(
+                  color: _ccmEncounterVM.isFormValid ? appColor : fontGrayColor,
+                  onClick: _ccmEncounterVM.isFormValid
+                      ? () {
+                          _ccmEncounterVM.addCcmEncounter(patientId: patientId);
+                        }
+                      : null,
+                ),
           addLeftMargin: true,
         ),
       ),
       body: Container(
-        padding: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin()),
+        padding: EdgeInsets.symmetric(
+            horizontal: ApplicationSizing.horizontalMargin()),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(35),
-              topRight: Radius.circular(35)
-          ),
+              topLeft: Radius.circular(35), topRight: Radius.circular(35)),
           // color: Colors.pink
         ),
         width: MediaQuery.of(context).size.width,
@@ -89,8 +92,11 @@ class AddCCMEncounter extends HookWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    TextFieldTitle(title: 'Service Name',),
-                    Container(margin: EdgeInsets.only(top: 1),
+                    TextFieldTitle(
+                      title: 'Service Name',
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 1),
                       child: DropDownButton(
                         dropDownValue: _ccmEncounterVM.selecteServiceName,
                         onChange: _ccmEncounterVM.onServiceNameChange,
@@ -105,24 +111,33 @@ class AddCCMEncounter extends HookWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    TextFieldTitle(title: 'Date',),
-                    Container(margin: EdgeInsets.only(top: 1),
+                    TextFieldTitle(
+                      title: 'Date',
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 1),
                       child: Row(
                         children: [
                           Expanded(
                               child: CustomTextField(
-                                onchange: _ccmEncounterVM.formValidation,
-                                onSubmit: _ccmEncounterVM.formValidation,
-                                hints: 'Date',
-                                isEnable: false,
-                                textStyle: Styles.hintStyle(),
-                                textEditingController: _ccmEncounterVM.dateController,
-                              )
+                                checkFocus: (val){},
+                            onchange: _ccmEncounterVM.formValidation,
+                            onSubmit: _ccmEncounterVM.formValidation,
+                            hints: 'Date',
+                            isEnable: false,
+                            textStyle: Styles.hintStyle(),
+                            textEditingController:
+                                _ccmEncounterVM.dateController,
+                          )),
+                          SizedBox(
+                            width: 8,
                           ),
-                          SizedBox(width: 8,),
-                          SqureIconButton(onClick: () {_ccmEncounterVM.pickDateTime(context);},
-                            svgPictureUrl: "assets/icons/calendar.svg",),
-
+                          SqureIconButton(
+                            onClick: () {
+                              _ccmEncounterVM.pickDateTime(context);
+                            },
+                            svgPictureUrl: "assets/icons/calendar.svg",
+                          ),
                         ],
                       ),
                     ),
@@ -139,14 +154,19 @@ class AddCCMEncounter extends HookWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            TextFieldTitle(title: 'Start Time',),
-                            Container(margin: EdgeInsets.only(top: 1),
+                            TextFieldTitle(
+                              title: 'Start Time',
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(top: 1),
                               child: InkWell(
-                                onTap: (){
+                                onTap: () {
                                   _ccmEncounterVM.pickTime(context);
                                 },
                                 child: CustomTextField(
-                                  textEditingController: _ccmEncounterVM.startTimeController,
+                                  checkFocus: (val){},
+                                  textEditingController:
+                                      _ccmEncounterVM.startTimeController,
                                   textInputType: TextInputType.number,
                                   onchange: _ccmEncounterVM.formValidation,
                                   onSubmit: _ccmEncounterVM.formValidation,
@@ -160,7 +180,9 @@ class AddCCMEncounter extends HookWidget {
                         ),
                       ),
                     ),
-                    SizedBox(width: 10,),
+                    SizedBox(
+                      width: 10,
+                    ),
                     Expanded(
                       flex: 1,
                       child: Container(
@@ -168,10 +190,15 @@ class AddCCMEncounter extends HookWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            TextFieldTitle(title: 'End Time',),
-                            Container(margin: EdgeInsets.only(top: 1),
+                            TextFieldTitle(
+                              title: 'End Time',
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(top: 1),
                               child: CustomTextField(
-                                textEditingController: _ccmEncounterVM.endTimeController,
+                                checkFocus: (val){},
+                                textEditingController:
+                                    _ccmEncounterVM.endTimeController,
                                 textInputType: TextInputType.number,
                                 onchange: _ccmEncounterVM.formValidation,
                                 onSubmit: _ccmEncounterVM.formValidation,
@@ -193,15 +220,19 @@ class AddCCMEncounter extends HookWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    TextFieldTitle(title: 'Duration In Minutes',),
-                    Container(margin: EdgeInsets.only(top: 1),
+                    TextFieldTitle(
+                      title: 'Duration In Minutes',
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 1),
                       child: CustomTextField(
-                        textEditingController: _ccmEncounterVM.durationController,
+                        checkFocus: (val){},
+                        textEditingController:
+                            _ccmEncounterVM.durationController,
                         textInputType: TextInputType.number,
                         inputFormatter: [
                           FilteringTextInputFormatter.digitsOnly
                         ],
-
                         onchange: _ccmEncounterVM.onDurationChange,
                         onSubmit: _ccmEncounterVM.formValidation,
                         hints: '0',
@@ -216,8 +247,11 @@ class AddCCMEncounter extends HookWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    TextFieldTitle(title: 'Notes',),
-                    Container(margin: EdgeInsets.only(top: 1),
+                    TextFieldTitle(
+                      title: 'Notes',
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 1),
                       child: CustomTextArea(
                         textEditingController: _ccmEncounterVM.notesController,
                         onchange: _ccmEncounterVM.formValidation,
@@ -231,66 +265,74 @@ class AddCCMEncounter extends HookWidget {
                   ],
                 ),
               ),
-              Container(margin: EdgeInsets.only(top: 5),
+              Container(
+                margin: EdgeInsets.only(top: 5),
                 child: Row(
                   children: [
-                    Text("Current Provider:",style: Styles.PoppinsRegular(
-                      fontSize: ApplicationSizing.constSize(12),
-                      fontWeight: FontWeight.w700,
-                    ),),
-                    SizedBox(width: 5,),
-                    Text("${_ccmEncounterVM.currentUser?.fullName}"
-                      ,style: Styles.PoppinsRegular(
+                    Text(
+                      "Current Provider:",
+                      style: Styles.PoppinsRegular(
+                        fontSize: ApplicationSizing.constSize(12),
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Text(
+                      "${_ccmEncounterVM.currentUser?.fullName}",
+                      style: Styles.PoppinsRegular(
                           fontSize: ApplicationSizing.constSize(12),
                           fontWeight: FontWeight.w700,
-                          color: fontGrayColor
-                      ),),
-
+                          color: fontGrayColor),
+                    ),
                   ],
                 ),
               ),
-
               Container(
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
                   border: Border.all(
-                    color:  disableColor,
-                    width:  1,
+                    color: disableColor,
+                    width: 1,
                   ),
                   borderRadius: BorderRadius.circular(10),
                   color: Color(0xffFFF3CD),
-
                 ),
-                padding: EdgeInsets.symmetric(vertical: 20,horizontal: 10),
+                padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
                 margin: EdgeInsets.symmetric(vertical: 15),
-                child: Text("Acknowledge/update monthly status to save",
+                child: Text(
+                  "Acknowledge/update monthly status to save",
                   style: Styles.PoppinsRegular(
                       color: Color(0xffA47723),
                       fontSize: 12,
-                      fontWeight: FontWeight.w600
-                  ),
+                      fontWeight: FontWeight.w600),
                 ),
               ),
-              Container(margin: EdgeInsets.only(top: 5),
+              Container(
+                margin: EdgeInsets.only(top: 5),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("Monthly Status :"
-                      ,style: Styles.PoppinsRegular(
+                    Text(
+                      "Monthly Status :",
+                      style: Styles.PoppinsRegular(
                           fontSize: ApplicationSizing.constSize(13),
                           fontWeight: FontWeight.w700,
-                          color: fontGrayColor
-                      ),),
+                          color: fontGrayColor),
+                    ),
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 2,vertical: 2),
+                      padding: EdgeInsets.symmetric(horizontal: 2, vertical: 2),
                       margin: EdgeInsets.only(top: 1),
                       decoration: BoxDecoration(
                           border: Border.all(
-                            color: _ccmEncounterVM.selecteMonthlyStatus == "Not Started" ? Colors.red : appColor,
-                            width:  1,
+                            color: _ccmEncounterVM.selecteMonthlyStatus ==
+                                    "Not Started"
+                                ? Colors.red
+                                : appColor,
+                            width: 1,
                           ),
-                          borderRadius: BorderRadius.circular(10)
-                      ),
+                          borderRadius: BorderRadius.circular(10)),
 
                       // width: (_ccmEncounterVM.selecteMonthlyStatus == "Call not answered" || _ccmEncounterVM.selecteMonthlyStatus == "Partially Completed") ? 200 : 100,
                       width: 180,
@@ -305,11 +347,9 @@ class AddCCMEncounter extends HookWidget {
                         borderColor: appColor,
                       ),
                     ),
-
                   ],
                 ),
               ),
-
             ],
           ),
         ),

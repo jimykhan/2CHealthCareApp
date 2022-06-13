@@ -116,10 +116,11 @@ class FUMenu extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Icon(
-                      FluentSystemIcons.ic_fluent_power_regular,
-                      size: iconSize,
+                    SvgPicture.asset(
+                      "assets/icons/side_menu/logout-icon.svg",
                       color: appColor,
+                      width: ApplicationSizing.convert(18),
+                      height: ApplicationSizing.convert(18),
                     ),
                     MenuTextStyle(
                       text: "Logout",

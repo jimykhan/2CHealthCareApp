@@ -8,12 +8,18 @@ class VerifiedInfo extends StatelessWidget {
   String? textInfo;
   String? textInfoTitle;
   Function()? ontap;
-  VerifiedInfo({required this.isVerified,this.textInfo,this.textInfoTitle,this.ontap,Key? key}) : super(key: key);
+  VerifiedInfo(
+      {required this.isVerified,
+      this.textInfo,
+      this.textInfoTitle,
+      this.ontap,
+      Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(bottom: 10, top: 10),
+      padding: EdgeInsets.only(bottom: 5, top: 8),
       decoration: BoxDecoration(
           border: Border(
               bottom: BorderSide(color: fontGrayColor.withOpacity(0.3)))),
@@ -27,9 +33,9 @@ class VerifiedInfo extends StatelessWidget {
               borderRadius: BorderRadius.circular(6),
             ),
             child: Text(
-              textInfoTitle??"",
+              textInfoTitle ?? "",
               style:
-              Styles.PoppinsRegular(color: appColorSecondary, fontSize: 14),
+                  Styles.PoppinsRegular(color: appColorSecondary, fontSize: 14),
             ),
           ),
           Expanded(
@@ -45,11 +51,17 @@ class VerifiedInfo extends StatelessWidget {
                     child: Text(
                       textInfo ?? "",
                       style: Styles.PoppinsRegular(
-                          color: isVerified ? appColor : Colors.red, fontSize: 12, fontWeight: FontWeight.w400),
+                          color: isVerified ? appColor : Colors.red,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400),
                     ),
                   ),
-                  SizedBox(width: 5,),
-                  VerificationMark(isVerified: isVerified,),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  VerificationMark(
+                    isVerified: isVerified,
+                  ),
                 ],
               ),
             ),

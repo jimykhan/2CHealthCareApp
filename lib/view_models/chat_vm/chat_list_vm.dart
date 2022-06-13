@@ -22,18 +22,21 @@ class ChatListVM extends ChangeNotifier{
   AuthServices? _authServices;
   SignalRServices? _signalRServices;
   ApplicationRouteService? _applicationRouteService;
+  bool isTextFieldActive = false;
   // TextEditingController searchController = TextEditingController();
-  bool searchedGroup = false;
+
 
   ChatListVM({ProviderReference? ref}){
     _ref = ref;
     initService();
   }
 
-  onClickSearch(){
-    searchedGroup = !searchedGroup;
+  checkFocus(bool val){
+    isTextFieldActive = val;
     notifyListeners();
   }
+
+
   onGroupSearch(String val){
     print("${val.length} $val");
     groupIds = [];
@@ -53,10 +56,7 @@ class ChatListVM extends ChangeNotifier{
     }
     notifyListeners();
   }
-  onGroupSearchSubmit(String val){
-    searchedGroup = false;
-    notifyListeners();
-  }
+
 
   initService(){
     _authServices = _ref!.read(authServiceProvider);
@@ -119,13 +119,14 @@ class ChatListVM extends ChangeNotifier{
       if (response is List<GetGroupsModel>) {
         groupIds = [];
         allGroups = [];
+        unReadChats = [];
         response.forEach((element) {
           if(element.lastMessageTime != null){
             element.lastMessageTime = Jiffy(element.lastMessageTime).format(Strings.dateAndTimeFormat);
           }
           groupIds.add(element);
           allGroups.add(element);
-          unReadChats = [];
+
           if(element.unreadMsgCount!>0){
             unReadChats.add(
                 UnReadChat(unReadMessages: element.unreadMsgCount,
@@ -154,11 +155,13 @@ class ChatListVM extends ChangeNotifier{
       groupIds.forEach((element) {
         if(element.id.toString() == groupId){
           element.unreadMsgCount = 0;
-          notifyListeners();
+          // notifyListeners();
         }
       });
     }
     unReadChats.removeWhere((element) => element.chatGroupId == int.parse(groupId));
+    unReadChats.removeWhere((element) => element.unReadMessages! == 0);
+    notifyListeners();
   }
 
 }

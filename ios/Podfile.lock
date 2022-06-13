@@ -2,33 +2,33 @@ PODS:
   - connectivity_plus (0.0.1):
     - Flutter
     - ReachabilitySwift
-  - Firebase/CoreOnly (8.11.0):
-    - FirebaseCore (= 8.11.0)
-  - Firebase/Messaging (8.11.0):
+  - Firebase/CoreOnly (8.14.0):
+    - FirebaseCore (= 8.14.0)
+  - Firebase/Messaging (8.14.0):
     - Firebase/CoreOnly
-    - FirebaseMessaging (~> 8.11.0)
-  - firebase_core (1.13.1):
-    - Firebase/CoreOnly (= 8.11.0)
+    - FirebaseMessaging (~> 8.14.0)
+  - firebase_core (1.14.1):
+    - Firebase/CoreOnly (= 8.14.0)
     - Flutter
-  - firebase_messaging (10.0.9):
-    - Firebase/Messaging (= 8.11.0)
+  - firebase_messaging (11.2.13):
+    - Firebase/Messaging (= 8.14.0)
     - firebase_core
     - Flutter
-  - FirebaseCore (8.11.0):
+  - FirebaseCore (8.14.0):
     - FirebaseCoreDiagnostics (~> 8.0)
     - GoogleUtilities/Environment (~> 7.7)
     - GoogleUtilities/Logger (~> 7.7)
-  - FirebaseCoreDiagnostics (8.12.0):
+  - FirebaseCoreDiagnostics (8.15.0):
     - GoogleDataTransport (~> 9.1)
     - GoogleUtilities/Environment (~> 7.7)
     - GoogleUtilities/Logger (~> 7.7)
     - nanopb (~> 2.30908.0)
-  - FirebaseInstallations (8.12.0):
+  - FirebaseInstallations (8.15.0):
     - FirebaseCore (~> 8.0)
     - GoogleUtilities/Environment (~> 7.7)
     - GoogleUtilities/UserDefaults (~> 7.7)
     - PromisesObjC (< 3.0, >= 1.2)
-  - FirebaseMessaging (8.11.0):
+  - FirebaseMessaging (8.14.0):
     - FirebaseCore (~> 8.0)
     - FirebaseInstallations (~> 8.0)
     - GoogleDataTransport (~> 9.1)
@@ -40,9 +40,9 @@ PODS:
   - Flutter (1.0.0)
   - flutter_local_notifications (0.0.1):
     - Flutter
-  - GoogleDataTransport (9.1.2):
-    - GoogleUtilities/Environment (~> 7.2)
-    - nanopb (~> 2.30908.0)
+  - GoogleDataTransport (9.1.4):
+    - GoogleUtilities/Environment (~> 7.7)
+    - nanopb (< 2.30910.0, >= 2.30908.0)
     - PromisesObjC (< 3.0, >= 1.2)
   - GoogleUtilities/AppDelegateSwizzler (7.7.0):
     - GoogleUtilities/Environment
@@ -70,7 +70,7 @@ PODS:
     - Flutter
   - package_info_plus (0.4.5):
     - Flutter
-  - PromisesObjC (2.0.0)
+  - PromisesObjC (2.1.0)
   - ReachabilitySwift (5.0.0)
   - Sentry (7.9.0):
     - Sentry/Core (= 7.9.0)
@@ -144,27 +144,27 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   connectivity_plus: 413a8857dd5d9f1c399a39130850d02fe0feaf7e
-  Firebase: 44dd9724c84df18b486639e874f31436eaa9a20c
-  firebase_core: 08f6a85f62060111de5e98d6a214810d11365de9
-  firebase_messaging: c6608162e71bcfd78198a81eac9c2fa27fed3aae
-  FirebaseCore: 2f4f85b453cc8fea4bb2b37e370007d2bcafe3f0
-  FirebaseCoreDiagnostics: 3b40dfadef5b90433a60ae01f01e90fe87aa76aa
-  FirebaseInstallations: 25764cf322e77f99449395870a65b2bef88e1545
-  FirebaseMessaging: 02e248e8997f71fa8cc9d78e9d49ec1a701ba14a
+  Firebase: 7e8fe528c161b9271d365217a74c16aaf834578e
+  firebase_core: cdef02fcf55872191eb0568d4c31a7a700e38582
+  firebase_messaging: 57f89047ec0084a4049e253ce84cea39becadad4
+  FirebaseCore: b84a44ee7ba999e0f9f76d198a9c7f60a797b848
+  FirebaseCoreDiagnostics: 92e07a649aeb66352b319d43bdd2ee3942af84cb
+  FirebaseInstallations: 40bd9054049b2eae9a2c38ef1c3dd213df3605cd
+  FirebaseMessaging: 5ebc42d281567658a2cb72b9ef3506e4a1a1a6e4
   Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
   flutter_local_notifications: 0c0b1ae97e741e1521e4c1629a459d04b9aec743
-  GoogleDataTransport: 629c20a4d363167143f30ea78320d5a7eb8bd940
+  GoogleDataTransport: 5fffe35792f8b96ec8d6775f5eccd83c998d5a3b
   GoogleUtilities: e0913149f6b0625b553d70dae12b49fc62914fd1
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
   package_info: 873975fc26034f0b863a300ad47e7f1ac6c7ec62
   package_info_plus: 6c92f08e1f853dc01228d6f553146438dafcd14e
-  PromisesObjC: 68159ce6952d93e17b2dfe273b8c40907db5ba58
+  PromisesObjC: 99b6f43f9e1044bd87a95a60beff28c2c44ddb72
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
   Sentry: 2f7e91f247cfb05b05bd01e0b5d0692557a7687b
   sentry_flutter: 7c3cb050dc23563a4ea5db438c83afdb460a2ae6
-  shared_preferences_ios: 548a61f8053b9b8a49ac19c1ffbc8b92c50d68ad
+  shared_preferences_ios: aef470a42dc4675a1cdd50e3158b42e3d1232b32
   sms_autofill: c461043483362c3f1709ee76eaae6eb570b31686
-  url_launcher_ios: 839c58cdb4279282219f5e248c3321761ff3c4de
+  url_launcher_ios: 02f1989d4e14e998335b02b67a7590fa34f971af
   webview_flutter_wkwebview: 005fbd90c888a42c5690919a1527ecc6649e1162
 
 PODFILE CHECKSUM: fe0e1ee7f3d1f7d00b11b474b62dd62134535aea

@@ -5,6 +5,7 @@ class Strings {
   static const String dateFormat = "dd MMM yy";
   static const String dateFormatFullYear = "dd MMM yyyy";
   static const String dateAndTimeFormat = "dd MMM yy, h:mm a";
+  static const String MonthYear = "MMMM yyyy";
   static const String TimeFormat = "h:mm a";
   // Generic strings
   static const String ok = 'OK';

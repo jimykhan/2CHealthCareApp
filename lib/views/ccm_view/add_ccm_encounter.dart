@@ -15,6 +15,7 @@ import 'package:twochealthcare/common_widgets/filled_button.dart';
 import 'package:twochealthcare/common_widgets/input_field/custom_text_erea.dart';
 import 'package:twochealthcare/common_widgets/input_field/custom_text_field.dart';
 import 'package:twochealthcare/common_widgets/heading_text/text_field_title.dart';
+import 'package:twochealthcare/models/ccm_model/ccm_logs_model.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
@@ -26,8 +27,10 @@ import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_
 class AddCCMEncounter extends HookWidget {
   int patientId;
   int ccmmonthlyStatus;
+  CcmEncountersList? ccmEncounters;
+
   AddCCMEncounter(
-      {Key? key, required this.patientId, required this.ccmmonthlyStatus})
+      {Key? key, required this.patientId, required this.ccmmonthlyStatus,this.ccmEncounters})
       : super(key: key);
 
   @override
@@ -36,8 +39,10 @@ class AddCCMEncounter extends HookWidget {
     useEffect(
       () {
         _ccmEncounterVM.ccmmonthlyStatus = ccmmonthlyStatus;
-        _ccmEncounterVM.initialState();
-        Future.microtask(() async {});
+        _ccmEncounterVM.initialState(ccmEncounters: ccmEncounters);
+        Future.microtask(() async {
+
+        });
         return () {};
       },
       const [],
@@ -65,7 +70,7 @@ class AddCCMEncounter extends HookWidget {
                   color: _ccmEncounterVM.isFormValid ? appColor : fontGrayColor,
                   onClick: _ccmEncounterVM.isFormValid
                       ? () {
-                          _ccmEncounterVM.addCcmEncounter(patientId: patientId);
+                          ccmEncounters != null ? _ccmEncounterVM.EditCcmEncounter(patientId: patientId, ccmEncounterId: ccmEncounters!.id!) : _ccmEncounterVM.addCcmEncounter(patientId: patientId);
                         }
                       : null,
                 ),
@@ -289,67 +294,72 @@ class AddCCMEncounter extends HookWidget {
                   ],
                 ),
               ),
-              Container(
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: disableColor,
-                    width: 1,
-                  ),
-                  borderRadius: BorderRadius.circular(10),
-                  color: Color(0xffFFF3CD),
-                ),
-                padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-                margin: EdgeInsets.symmetric(vertical: 15),
-                child: Text(
-                  "Acknowledge/update monthly status to save",
-                  style: Styles.PoppinsRegular(
-                      color: Color(0xffA47723),
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600),
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(top: 5),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Monthly Status :",
-                      style: Styles.PoppinsRegular(
-                          fontSize: ApplicationSizing.constSize(13),
-                          fontWeight: FontWeight.w700,
-                          color: fontGrayColor),
-                    ),
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal: 2, vertical: 2),
-                      margin: EdgeInsets.only(top: 1),
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                            color: _ccmEncounterVM.selecteMonthlyStatus ==
-                                    "Not Started"
-                                ? Colors.red
-                                : appColor,
-                            width: 1,
-                          ),
-                          borderRadius: BorderRadius.circular(10)),
-
-                      // width: (_ccmEncounterVM.selecteMonthlyStatus == "Call not answered" || _ccmEncounterVM.selecteMonthlyStatus == "Partially Completed") ? 200 : 100,
-                      width: 180,
-                      height: 50,
-                      child: DropDownButton(
-                        dropDownValue: _ccmEncounterVM.selecteMonthlyStatus,
-                        hiddingIcon: true,
-                        isAlignCenter: true,
-                        onChange: _ccmEncounterVM.onMonthlyStatusChange,
-                        menuList: _ccmEncounterVM.monthlyStatuses,
-                        bgColor: appColor,
-                        borderColor: appColor,
+              ccmEncounters != null ? Container() :
+              Column(
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: disableColor,
+                        width: 1,
                       ),
+                      borderRadius: BorderRadius.circular(10),
+                      color: Color(0xffFFF3CD),
                     ),
-                  ],
-                ),
-              ),
+                    padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+                    margin: EdgeInsets.symmetric(vertical: 15),
+                    child: Text(
+                      "Acknowledge/update monthly status to save",
+                      style: Styles.PoppinsRegular(
+                          color: Color(0xffA47723),
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: 5),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Monthly Status :",
+                          style: Styles.PoppinsRegular(
+                              fontSize: ApplicationSizing.constSize(13),
+                              fontWeight: FontWeight.w700,
+                              color: fontGrayColor),
+                        ),
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: 2, vertical: 2),
+                          margin: EdgeInsets.only(top: 1),
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                color: _ccmEncounterVM.selecteMonthlyStatus ==
+                                        "Not Started"
+                                    ? Colors.red
+                                    : appColor,
+                                width: 1,
+                              ),
+                              borderRadius: BorderRadius.circular(10)),
+
+                          // width: (_ccmEncounterVM.selecteMonthlyStatus == "Call not answered" || _ccmEncounterVM.selecteMonthlyStatus == "Partially Completed") ? 200 : 100,
+                          width: 180,
+                          height: 50,
+                          child: DropDownButton(
+                            dropDownValue: _ccmEncounterVM.selecteMonthlyStatus,
+                            hiddingIcon: true,
+                            isAlignCenter: true,
+                            onChange: _ccmEncounterVM.onMonthlyStatusChange,
+                            menuList: _ccmEncounterVM.monthlyStatuses,
+                            bgColor: appColor,
+                            borderColor: appColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              )
             ],
           ),
         ),

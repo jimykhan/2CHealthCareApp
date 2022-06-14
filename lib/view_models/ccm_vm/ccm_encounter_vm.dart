@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:twochealthcare/common_widgets/snackber_message.dart';
+import 'package:twochealthcare/models/ccm_model/ccm_logs_model.dart';
 import 'package:twochealthcare/models/ccm_model/ccm_service_type.dart';
 import 'package:twochealthcare/models/facility_user_models/FacilityUserListModel.dart';
 import 'package:twochealthcare/models/user/current_user.dart';
@@ -50,16 +51,32 @@ class CcmEncounterVM extends ChangeNotifier{
     _ccmService = _ref!.read(ccmServiceProvider);
 
   }
-  initialState(){
-    getCcmServiceType();
+  initialState({CcmEncountersList? ccmEncounters}) async {
+    getCcmServiceType(isEdit : ccmEncounters != null ? true : false );
     dateController = TextEditingController();
     durationController = TextEditingController();
     notesController = TextEditingController();
     endTimeController = TextEditingController();
     startTimeController = TextEditingController();
-    getCurrentUser();
+    ccmEncounters != null ? null : getCurrentUser();
     resetField();
     selecteMonthlyStatus = monthlyStatuses[ccmmonthlyStatus];
+    if(ccmEncounters != null){
+
+      // List datePortion = ccmEncounters.encounterDate?.split("/")??[];
+      // dateTime = DateTime(datePortion[2],datePortion[0],datePortion[1]);
+      dateController?.text = ccmEncounters.encounterDate??"";
+      durationController?.text = ccmEncounters.durationInMints.toString();
+      notesController?.text = ccmEncounters.note??"";
+      endTimeController?.text = ccmEncounters.endTime??"";
+      startTimeController?.text = ccmEncounters.startTime??"";
+      selecteServiceName = ccmEncounters.ccmServiceType??"";
+      selectedBillingProvider = FacilityUserListModel(id: ccmEncounters.careProviderId, fullName: ccmEncounters.careProviderName, facilityId: ccmEncounters.careProviderId);
+      currentUser?.fullName = selectedBillingProvider?.fullName??"";
+      currentUser?.id = selectedBillingProvider?.id??0;
+      notifyListeners();
+
+    }
   }
 
   resetField(){
@@ -161,13 +178,45 @@ class CcmEncounterVM extends ChangeNotifier{
     }
     setLoading(false);
   }
+  EditCcmEncounter({required int patientId, required int ccmEncounterId})async{
+    setLoading(true);
+    int ccmServiceTypeId = 0;
+    ccmServiceType.forEach((element) {
+      if(element.name! == selecteServiceName){
+        ccmServiceTypeId = element.id!;
+      }
+    });
 
-  getCcmServiceType()async{
+    var data = {
+      "id": ccmEncounterId,
+      "startTime": startTimeController?.text??"",
+      "endTime": endTimeController?.text??"",
+      "encounterDate": dateTime.toString(),
+      "note": notesController?.text??"",
+      "ccmServiceTypeId": ccmServiceTypeId,
+      "patientId": patientId,
+      "careProviderId": selectedBillingProvider?.id??0,
+      "isMonthlyStatusValid": true
+    };
+    print(data);
+
+    // validateUser
+    var response =  await _ccmService?.EditCcmEncounter(data);
+
+    if(response is Response){
+      if(response.statusCode == 200){
+        resetField();
+      }
+    }
+    setLoading(false);
+  }
+
+  getCcmServiceType({bool isEdit = false})async{
     ccmServiceType = [];
     var response =  await _ccmService?.getCcmServiceName(isFav: false);
     if(response != null && response is List<CcmServiceType>){
       ccmserviceName = [];
-      selecteServiceName = response[0].name??"Other";
+      isEdit ? null : selecteServiceName = response[0].name??"Other";
       response.forEach((element) {
         ccmServiceType.add(element);
         if(element.name != null && element.name != ""){
@@ -193,6 +242,7 @@ class CcmEncounterVM extends ChangeNotifier{
     dateController?.text = dateTime.toString().split(" ")[0];
     notifyListeners();
   }
+
   Future<dynamic> pickDate(BuildContext context) async {
     final initialDate = DateTime.now();
     final newDate = await showDatePicker(

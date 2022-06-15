@@ -37,10 +37,6 @@ class CcmEncounterVM extends ChangeNotifier{
   TimeOfDay startTimeOfDay = TimeOfDay.now();
   TimeOfDay endTimeOfDay = TimeOfDay.now();
 
-
-
-
-
   CcmEncounterVM({ProviderReference? ref}){
 
     _ref = ref;
@@ -64,7 +60,7 @@ class CcmEncounterVM extends ChangeNotifier{
     if(ccmEncounters != null){
 
       // List datePortion = ccmEncounters.encounterDate?.split("/")??[];
-      // dateTime = DateTime(datePortion[2],datePortion[0],datePortion[1]);
+      dateTime = ccmEncounters.dateTime;
       dateController?.text = ccmEncounters.encounterDate??"";
       durationController?.text = ccmEncounters.durationInMints.toString();
       notesController?.text = ccmEncounters.note??"";
@@ -72,11 +68,12 @@ class CcmEncounterVM extends ChangeNotifier{
       startTimeController?.text = ccmEncounters.startTime??"";
       selecteServiceName = ccmEncounters.ccmServiceType??"";
       selectedBillingProvider = FacilityUserListModel(id: ccmEncounters.careProviderId, fullName: ccmEncounters.careProviderName, facilityId: ccmEncounters.careProviderId);
+      currentUser = CurrentUser();
       currentUser?.fullName = selectedBillingProvider?.fullName??"";
       currentUser?.id = selectedBillingProvider?.id??0;
       notifyListeners();
 
-    }
+      }
   }
 
   resetField(){
@@ -178,6 +175,7 @@ class CcmEncounterVM extends ChangeNotifier{
     }
     setLoading(false);
   }
+
   EditCcmEncounter({required int patientId, required int ccmEncounterId})async{
     setLoading(true);
     int ccmServiceTypeId = 0;

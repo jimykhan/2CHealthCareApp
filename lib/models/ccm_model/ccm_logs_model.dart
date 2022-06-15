@@ -50,6 +50,7 @@ class CcmEncountersList {
   int? patientId;
 
   int durationInMints = 0;
+  DateTime? dateTime;
 
   CcmEncountersList(
       {this.id,
@@ -65,6 +66,7 @@ class CcmEncountersList {
         this.careProviderName,
         this.patientId,
         this.durationInMints = 0,
+        this.dateTime,
       });
 
   CcmEncountersList.fromJson(Map<String, dynamic> json) {

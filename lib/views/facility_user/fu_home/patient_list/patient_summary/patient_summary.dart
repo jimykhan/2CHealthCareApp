@@ -19,6 +19,7 @@ import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_
 import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_summary/components/sliderMenu.dart';
 import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_summary/components/user_info_tile.dart';
 import 'package:twochealthcare/views/open_bottom_modal.dart';
+import 'package:twochealthcare/views/rpm_view/rpm_logs_view.dart';
 
 class PatientSummary extends HookWidget {
   PatientsModel patientsModel;
@@ -96,11 +97,15 @@ class PatientSummary extends HookWidget {
                     flex: 1,
                     child: CustomIconButton(
                       onClick: () {
-
-                        openBottomModal(
-                            child: AddRPMEncounter(
-                          patientId: fuPatientSummaryVM.patientInfo?.id ?? 0,
-                        ));
+                        Navigator.push(context, PageTransition(type: PageTransitionType.bottomToTop,
+                            child: RpmLogsView(
+                              patientId: fuPatientSummaryVM.patientInfo?.id ?? 0,
+                            )));
+                        // RpmLogsView
+                        // openBottomModal(
+                        //     child: AddRPMEncounter(
+                        //   patientId: fuPatientSummaryVM.patientInfo?.id ?? 0,
+                        // ));
                       },
                       text: "RPM",
                       bgColor: appColorSecondary,

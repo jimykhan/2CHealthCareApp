@@ -43,6 +43,7 @@ import 'package:twochealthcare/view_models/rpm_vm/bg_reading_vm.dart';
 import 'package:twochealthcare/view_models/rpm_vm/blood_pressure_reading_vm.dart';
 import 'package:twochealthcare/view_models/rpm_vm/modalities_reading_vm.dart';
 import 'package:twochealthcare/view_models/rpm_vm/rpm_encounter_vm.dart';
+import 'package:twochealthcare/view_models/rpm_vm/rpm_log_vm.dart';
 import 'package:twochealthcare/view_models/rpm_vm/tab_and_calender_vm.dart';
 import 'package:twochealthcare/view_models/profile_vm.dart';
 import 'package:twochealthcare/view_models/settings_view_models/fu_settings_view_model/fu_settings_view_models.dart';
@@ -76,6 +77,7 @@ final fuChronicCareVMProvider = ChangeNotifierProvider<ChronicCareVM>((ref)=>Chr
 final rpmEncounterVMProvider = ChangeNotifierProvider<RpmEncounterVM>((ref)=>RpmEncounterVM(ref: ref));
 final ccmEncounterVMProvider = ChangeNotifierProvider<CcmEncounterVM>((ref)=>CcmEncounterVM(ref: ref));
 final ccmLogsVMProvider = ChangeNotifierProvider<CcmLogsVM>((ref)=>CcmLogsVM(ref: ref));
+final rpmLogsVMProvider = ChangeNotifierProvider<RpmLogsVM>((ref)=>RpmLogsVM(ref: ref));
 /// ChangeNotifierProvider
 
 

@@ -15,6 +15,7 @@ import 'package:twochealthcare/common_widgets/filled_button.dart';
 import 'package:twochealthcare/common_widgets/input_field/custom_text_erea.dart';
 import 'package:twochealthcare/common_widgets/input_field/custom_text_field.dart';
 import 'package:twochealthcare/common_widgets/heading_text/text_field_title.dart';
+import 'package:twochealthcare/models/rpm_models/rpm_logs_model.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
@@ -24,14 +25,16 @@ import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_
 
 class AddRPMEncounter extends HookWidget {
   int patientId;
-  AddRPMEncounter({Key? key, required this.patientId}) : super(key: key);
+  RpmLogModel? rpmEncounter;
+  AddRPMEncounter({this.rpmEncounter,Key? key, required this.patientId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     RpmEncounterVM _rmpEncounterVM = useProvider(rpmEncounterVMProvider);
     useEffect(
       () {
-        _rmpEncounterVM.initialState();
+        _rmpEncounterVM.addEncounterLoader = false;
+        _rmpEncounterVM.initialState(rpmEncounter: rpmEncounter);
         Future.microtask(() async {});
         return () {};
       },
@@ -56,7 +59,7 @@ class AddRPMEncounter extends HookWidget {
             color: _rmpEncounterVM.isFormValid ? appColor : fontGrayColor,
             onClick: _rmpEncounterVM.isFormValid
                 ? () {
-              _rmpEncounterVM.addRpmEncounter(patientId: patientId);
+              rpmEncounter != null ? _rmpEncounterVM.editRpmEncounter(patientId: patientId, rpmEncounterId: rpmEncounter!.id!) : _rmpEncounterVM.addRpmEncounter(patientId: patientId);
             }
                 : null,
           ),

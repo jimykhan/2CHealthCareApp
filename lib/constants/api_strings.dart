@@ -117,6 +117,8 @@ class SurgicalController{
 
 class RPMController{
   static const String addRPMEncounter = baseUrl + "/api/Rpm/AddRPMEncounter";
+  static const String getRpmEncountersByPatientId = baseUrl + "/api/Rpm/GetRpmEncountersByPatientId";
+  static const String editRpmEncounter = baseUrl + "/api/Rpm/EditRpmEncounter";
 }
 class CcmController{
   static const String addCCMEncounter = baseUrl + "/api/CcmServices/AddCcmEncounter";

@@ -90,9 +90,18 @@ class CcmService{
             }
             index = index+1;
           });
-
-
-
+          List date = element.encounterDate?.split("/")??[];
+          int i = 0;
+          int month = 1;
+          int day = 1;
+          int year = 2022;
+          date.forEach((element1) {
+            if(i == 0)  month = int.parse(element1);
+            if(i == 1)  day = int.parse(element1);
+            if(i == 2)  year = int.parse(element1);
+            i = i+1;
+          });
+          element.dateTime = DateTime(year,month,day);
         });
         return ccmlogs;
       }

@@ -102,7 +102,15 @@ class CcmService{
             i = i+1;
           });
           element.dateTime = DateTime(year,month,day);
+          if(element.startTime != null){
+            String time = element.startTime!.split(" ")[0];
+            element.startTimeHour = int.parse(time.split(":")[0]);
+            element.startTimeMints = int.parse(time.split(":")[1]);
+          }
+
+
         });
+
         return ccmlogs;
       }
       return null;

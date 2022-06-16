@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:twochealthcare/common_widgets/snackber_message.dart';
+import 'package:twochealthcare/main.dart';
 import 'package:twochealthcare/models/ccm_model/ccm_logs_model.dart';
 import 'package:twochealthcare/models/ccm_model/ccm_service_type.dart';
 import 'package:twochealthcare/models/facility_user_models/FacilityUserListModel.dart';
@@ -11,11 +12,13 @@ import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
 import 'package:twochealthcare/services/ccm_services/ccm_services.dart';
 import 'package:twochealthcare/services/rpm_services/rpm_service.dart';
+import 'package:twochealthcare/view_models/ccm_vm/ccm_logs_vm.dart';
 
 class CcmEncounterVM extends ChangeNotifier{
   AuthServices? _authService;
   CcmService? _ccmService;
   ProviderReference? _ref;
+  CcmLogsVM? _ccmLogsVM;
   TextEditingController? dateController;
   TextEditingController? durationController;
   TextEditingController? notesController;
@@ -45,10 +48,11 @@ class CcmEncounterVM extends ChangeNotifier{
   initService(){
     _authService = _ref!.read(authServiceProvider);
     _ccmService = _ref!.read(ccmServiceProvider);
+    _ccmLogsVM = _ref!.read(ccmLogsVMProvider);
 
   }
   initialState({CcmEncountersList? ccmEncounters}) async {
-    getCcmServiceType(isEdit : ccmEncounters != null ? true : false );
+    await getCcmServiceType(isEdit : ccmEncounters != null ? true : false );
     dateController = TextEditingController();
     durationController = TextEditingController();
     notesController = TextEditingController();
@@ -61,6 +65,8 @@ class CcmEncounterVM extends ChangeNotifier{
 
       // List datePortion = ccmEncounters.encounterDate?.split("/")??[];
       dateTime = ccmEncounters.dateTime;
+      startTimeOfDay = TimeOfDay(hour: ccmEncounters.startTimeHour,minute: ccmEncounters.startTimeMints);
+
       dateController?.text = ccmEncounters.encounterDate??"";
       durationController?.text = ccmEncounters.durationInMints.toString();
       notesController?.text = ccmEncounters.note??"";
@@ -170,7 +176,9 @@ class CcmEncounterVM extends ChangeNotifier{
 
     if(response is Response){
       if(response.statusCode == 200){
-        resetField();
+       Navigator.pop(applicationContext!.currentContext!);
+       _ccmLogsVM?.getCcmLogsByPatientId(patientid: patientId);
+
       }
     }
     setLoading(false);
@@ -186,6 +194,7 @@ class CcmEncounterVM extends ChangeNotifier{
     });
 
     var data = {
+      "appAdminId":1,
       "id": ccmEncounterId,
       "startTime": startTimeController?.text??"",
       "endTime": endTimeController?.text??"",
@@ -203,7 +212,8 @@ class CcmEncounterVM extends ChangeNotifier{
 
     if(response is Response){
       if(response.statusCode == 200){
-        resetField();
+        Navigator.pop(applicationContext!.currentContext!);
+        _ccmLogsVM?.getCcmLogsByPatientId(patientid: patientId);
       }
     }
     setLoading(false);
@@ -316,12 +326,15 @@ class TimeFormat12{
   DayPeriod period;
   String dayperiod = " AM";
   TimeFormat12({required this.timeOfDay,required this.period}){
-    if(timeOfDay.hour>12){
+    if(timeOfDay.hour>12 ){
       dayperiod = " PM";
       timeOfDay = TimeOfDay(hour: timeOfDay.hour - 12, minute: timeOfDay.minute);
     }else{
-      if(period == DayPeriod.pm) dayperiod = " PM";
-      dayperiod = " AM";
+      if(period == DayPeriod.pm) {
+        dayperiod = " PM";
+      }else{
+        dayperiod = " AM";
+      }
     }
   }
 }

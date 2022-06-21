@@ -33,6 +33,20 @@ class CarePlanServices{
         carePlanModel.ccmStartedDate = Jiffy(carePlanModel.ccmStartedDate).format(Strings.dateFormatFullYear);
         carePlanModel.currentApprovalUpdatedOn = Jiffy(carePlanModel.currentApprovalUpdatedOn).format(Strings.dateFormatFullYear);
         carePlanModel.lastApprovedDate = Jiffy(carePlanModel.lastApprovedDate).format(Strings.dateFormatFullYear);
+
+        carePlanModel.careCoordinatorNameAbbreviation = [];
+
+        carePlanModel.careCoordinatorName?.forEach((element) {
+          int i = 0;
+          List name = element.split(" ");
+          String abbreviation = "";
+          name.forEach((e) {
+            if(i==0) abbreviation = "${e.toString().substring(0,1)}";
+            if(i==1) abbreviation = "${abbreviation}${e.toString().substring(0,1)}";
+            i = i+1;
+          });
+          carePlanModel.careCoordinatorNameAbbreviation?.add(abbreviation);
+        });
         return carePlanModel;
       }else{
         return null;

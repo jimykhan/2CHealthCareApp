@@ -141,31 +141,37 @@ class CarePlan extends HookWidget {
                         key: "Care Provider",
                         rightWidget: Wrap(
                             direction: Axis.horizontal,
-                            children: carePlanVM.carePlanModel?.billingProviderName
+                            children: carePlanVM.carePlanModel?.careCoordinatorNameAbbreviation
                                 !=
                                 null
                                 ? carePlanVM.carePlanModel!
-                                .careCoordinatorName !=
+                                .careCoordinatorNameAbbreviation !=
                                 null
                                 ? carePlanVM.carePlanModel!
-                                .careCoordinatorName!
+                                .careCoordinatorNameAbbreviation!
                                 .map((e) => Container(
-                              // padding:
-                              // EdgeInsets.all(2),
-                              // decoration: BoxDecoration(
-                              //     color:
-                              //     appColorSecondary,
-                              //     shape: BoxShape
-                              //         .circle),
+
+                              alignment: Alignment.center,
+                              height: 25,
+                              width: 25,
+                              margin:
+                              EdgeInsets.symmetric(horizontal: 0.3),
+                              decoration: BoxDecoration(
+                                  color:
+                                  appColorSecondary,
+                                  shape: BoxShape
+                                      .circle),
                               child: Text(
-                                "${e},",
+                                "${e}",
                                 style: Styles
                                     .PoppinsRegular(
-                                    color: Color(0xff4EAF48),
+                                    color: Colors
+                                        .white,
                                     fontSize:
-                                    14),
+                                    12),
                               ),
-                            ))
+                            )
+                            )
                                 .toList()
                                 : []
                                 : []),

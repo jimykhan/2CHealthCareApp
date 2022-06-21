@@ -158,6 +158,13 @@ class PatientSummaryService{
             element.createdOn =
                 Jiffy(element.createdOn).format(Strings.dateFormatFullYear);
           }
+          if(element.dateOperated != null){
+            List operatedDate = element.dateOperated!.split(" ");
+            int i = 0;
+            operatedDate.forEach((element) {
+              if(i == 0) element.dateOperated = element;
+            });
+          }
         });
         return surgicalHistoryList;
       }else{

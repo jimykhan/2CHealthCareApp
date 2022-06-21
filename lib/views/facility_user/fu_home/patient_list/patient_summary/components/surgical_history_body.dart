@@ -93,7 +93,7 @@ class SurgicalHistoryBody extends HookWidget {
                         Row(
                           children: [
                             Text(
-                              surgicalHistoryModel.surgeonName ?? "",
+                              "${surgicalHistoryModel.surgeonName ?? ""}",
                               style: Styles.PoppinsRegular(
                                   fontWeight: FontWeight.w500,
                                   fontSize: ApplicationSizing.constSize(18),
@@ -121,12 +121,14 @@ class SurgicalHistoryBody extends HookWidget {
                         color: appColorSecondary,
                       ),
                     ),
-                    Text(
-                      surgicalHistoryModel.dateOperated ?? "",
-                      style: Styles.PoppinsRegular(
-                        fontSize: ApplicationSizing.constSize(10),
-                        fontWeight: FontWeight.w500,
-                        color: appColor,
+                    Expanded(
+                      child: Text(
+                        surgicalHistoryModel.dateOperated ?? "",
+                        style: Styles.PoppinsRegular(
+                          fontSize: ApplicationSizing.constSize(10),
+                          fontWeight: FontWeight.w500,
+                          color: appColor,
+                        ),
                       ),
                     ),
                   ],

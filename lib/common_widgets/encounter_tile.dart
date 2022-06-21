@@ -106,6 +106,7 @@ class EncouterTile extends StatelessWidget {
               ),
               _sizedBox,
               Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                  Text("Service Type : ",
                      style: Styles.PoppinsRegular(
@@ -113,12 +114,14 @@ class EncouterTile extends StatelessWidget {
                          fontSize: ApplicationSizing.constSize(11),
                          color: Colors.black)
                  ),
-                 Text("${serviceType??""}",
-                     style: Styles.PoppinsRegular(
-                         fontWeight: FontWeight.w500,
-                         fontSize: ApplicationSizing.constSize(11),
-                         color: Colors.black)
+                 Expanded(
+                   child: Text("${serviceType??""}",
+                       style: Styles.PoppinsRegular(
+                           fontWeight: FontWeight.w500,
+                           fontSize: ApplicationSizing.constSize(11),
+                           color: Colors.black)
 
+                   ),
                  ),
 
                 ],

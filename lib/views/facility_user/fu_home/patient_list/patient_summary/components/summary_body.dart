@@ -179,7 +179,8 @@ class SummaryBody extends HookWidget {
                                                                     fontSize:
                                                                         12),
                                                           ),
-                                                        ))
+                                                        )
+                                        )
                                                     .toList()
                                                 : []
                                             : []),

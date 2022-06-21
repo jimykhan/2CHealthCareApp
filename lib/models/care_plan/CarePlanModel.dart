@@ -91,6 +91,9 @@ class CarePlanModel {
   List<String>? dailyLiving;
   List<String>? instrumentalDaily;
 
+  /// not in model
+  List<String>? careCoordinatorNameAbbreviation;
+
   CarePlanModel(
       {this.challengesWithTransportation,
         this.challengesWithEnglish,
@@ -182,7 +185,9 @@ class CarePlanModel {
         this.careCoordinatorName,
         this.carePlanStatusColor,
         this.dailyLiving,
-        this.instrumentalDaily});
+        this.instrumentalDaily,
+        this.careCoordinatorNameAbbreviation
+      });
 
   CarePlanModel.fromJson(Map<String, dynamic> json) {
     challengesWithTransportation = json['challengesWithTransportation'];

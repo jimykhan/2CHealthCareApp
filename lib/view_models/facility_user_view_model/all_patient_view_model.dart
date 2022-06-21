@@ -49,6 +49,7 @@ class AllPatientVM extends ChangeNotifier{
 
   getPatientsForDashboard({int? facilityId,int? filterBy,int? pageNumber,String? patientStatus,
     String? searchParam, String? payerIds,String? sortBy,int? sortOrder}) async{
+    if(newPageLoading) return;
     if(patientListPageNumber == 1 && !(isloading)) setLoading(true);
     if(patientListPageNumber>1) setNewPageLoading(true);
     var res = await facilityService?.getPatientsForDashboard(pageNumber: patientListPageNumber,

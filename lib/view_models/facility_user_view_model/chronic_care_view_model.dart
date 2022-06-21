@@ -9,7 +9,7 @@ import 'package:twochealthcare/services/facility_user_services/facility_service.
 
 class ChronicCareVM extends ChangeNotifier{
   /// all patient of all care providers
-  int careProviderId = 0;
+  int careProviderId = 1;
   ProviderReference? _ref;
   FacilityService? facilityService;
   int serviceMonth = DateTime.now().month;
@@ -64,9 +64,10 @@ class ChronicCareVM extends ChangeNotifier{
 
   getPatients2({int? facilityId,int? filterBy,int? pageNumber,String? patientStatus,
     String? searchParam, String? payerIds,String? sortBy,int? sortOrder}) async{
-
+    if(newPageLoading) return;
     if(patientListPageNumber == 1 && !(isloading)) setLoading(true);
     if(patientListPageNumber>1) setNewPageLoading(true);
+
 
     var res = await facilityService?.getPatients2(pageNumber: patientListPageNumber,
         searchParam: searchParam, serviceMonth: serviceMonth, serviceYear: serviceYear,
@@ -78,7 +79,7 @@ class ChronicCareVM extends ChangeNotifier{
           chronicCarePatients = newPList;
           patientListPageNumber++;
         }else{
-          chronicCarePatients!.patientsList!.addAll(newPList.patientsList??[])  ;
+          chronicCarePatients!.patientsList!.addAll(newPList.patientsList??[]);
           patientListPageNumber++;
         }
 

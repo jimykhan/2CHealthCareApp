@@ -17,9 +17,6 @@ class ApplicationPackageService{
         iOSId: "twochealthcare.io",
         androidId: "twochealthcare.io",
       );
-      // https://play.google.com/store/apps/details?id=twochealthcare.io
-      // var updater = UpdateManager(versionUrl: 'https://play.google.com/store/apps/details?id=twochealthcare.io');
-      // var result = await updater.fetchUpdates();
       VersionStatus? status = await newVersion.getVersionStatus();
       if (status?.canUpdate is bool && status!.canUpdate) {
         newVersion.showUpdateDialog(

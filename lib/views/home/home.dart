@@ -20,6 +20,7 @@ import 'package:twochealthcare/util/application_sizing.dart';
 import 'dart:math';
 
 import 'package:twochealthcare/util/styles.dart';
+import 'package:twochealthcare/view_models/application_package_vm.dart';
 import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
 import 'package:twochealthcare/view_models/home_vm.dart';
 import 'package:twochealthcare/views/health_guides/health_guides.dart';
@@ -64,13 +65,14 @@ class Home extends HookWidget {
   Widget build(BuildContext context) {
     LoginVM loginVM = useProvider(loginVMProvider);
     HomeVM homeVM = useProvider(homeVMProvider);
+    ApplicationPackageVM _applicationPackageVm = useProvider(applicationPackageVMProvider);
     ApplicationRouteService applicationRouteService =
         useProvider(applicationRouteServiceProvider);
     // FirebaseService firebaseService = useProvider(firebaseServiceProvider);
     useEffect(
       () {
         homeVM.homeScreenLoading = false;
-        homeVM.checkForUpdate();
+        _applicationPackageVm.checkForUpdate();
         homeVM.resetHome();
         Future.microtask(() async {});
         return () {};

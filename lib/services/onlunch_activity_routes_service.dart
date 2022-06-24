@@ -184,6 +184,7 @@ class OnLaunchActivityAndRoutesService{
     }else{
     }
   }
+
   settingsDecider()async{
     CurrentUser currentUser = await loginVM?.getCurrentUserFromSharedPref();
     Navigator.pop(applicationContext!.currentContext!);

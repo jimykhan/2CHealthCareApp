@@ -11,6 +11,7 @@ import 'package:twochealthcare/common_widgets/app_bar_components/drawer_menu_but
 import 'package:twochealthcare/common_widgets/no_data_inlist.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
+import 'package:twochealthcare/view_models/application_package_vm.dart';
 import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
 import 'package:twochealthcare/view_models/facility_user_view_model/home/fu_home_view_model.dart';
 import 'package:twochealthcare/view_models/home_vm.dart';
@@ -30,6 +31,7 @@ class FUHome extends HookWidget {
     LoginVM loginVM = useProvider(loginVMProvider);
     HomeVM homeVM = useProvider(homeVMProvider);
     FUHomeViewModel fuHomeViewModel = useProvider(fuHomeVMProvider);
+    ApplicationPackageVM _applicationPackageVM = useProvider(applicationPackageVMProvider);
     // SharedPrefServices sharedPrefServices = useProvider(sharedPrefServiceProvider);
 
     // ApplicationRouteService applicationRouteService =
@@ -37,6 +39,7 @@ class FUHome extends HookWidget {
     // FirebaseService firebaseService = useProvider(firebaseServiceProvider);
     useEffect(
       () {
+        _applicationPackageVM.checkForUpdate();
         homeVM.resetHome();
         fuHomeViewModel.isloading = true;
         fuHomeViewModel.patientServicesummary();

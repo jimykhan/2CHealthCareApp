@@ -10,6 +10,7 @@ import 'package:twochealthcare/views/chat/chat_list.dart';
 import 'package:twochealthcare/views/home/home.dart';
 import 'package:twochealthcare/views/readings/modalities_reading.dart';
 import 'package:twochealthcare/views/splash/splash.dart';
+import 'package:upgrader/upgrader.dart';
 
 BuildContext? homeContext;
 
@@ -27,6 +28,7 @@ GlobalKey<NavigatorState>? applicationContext = GlobalKey();
 Future<void> main() async {
   try {
     WidgetsFlutterBinding.ensureInitialized();
+    await Upgrader.clearSavedSettings();
     await Firebase.initializeApp();
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
     // SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.top]);

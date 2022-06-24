@@ -40,23 +40,6 @@ class HomeVM extends ChangeNotifier{
     notifyListeners();
   }
 
-  Future<void> checkForUpdate() async {
-    final newVersion = NewVersion(
-      iOSId: "twochealthcare.io",
-      androidId: "twochealthcare.io",
-    );
-    VersionStatus? status = await newVersion.getVersionStatus();
-    if (status?.canUpdate is bool && status!.canUpdate) {
-    newVersion.showUpdateDialog(
-      context: applicationContext!.currentContext!,
-      versionStatus: status,
-      dialogTitle: "Update App",
-      dialogText:
-      "Your version is ${status.localVersion} availabe version ${status.storeVersion}",
-      updateButtonText: "Update",
-    );
-    }
-  }
 
   Future<dynamic> checkChatStatus() async {
     try{

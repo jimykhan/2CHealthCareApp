@@ -9,7 +9,9 @@ import 'package:twochealthcare/util/styles.dart';
 import 'package:twochealthcare/view_models/facility_user_view_model/chronic_care_view_model.dart';
 
 class PatientsFilter extends HookWidget {
-  PatientsFilter({Key? key}) : super(key: key);
+  Function(int check) onChange;
+  int filterSelected = 0;
+  PatientsFilter({required this.filterSelected,required this.onChange,Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +48,7 @@ class PatientsFilter extends HookWidget {
                 children: [
                   InkWell(
                     onTap: () {
-                      chronicCareVM.setCareProviderFilter(1);
+                      onChange(1);
                     },
                     child: Container(
                       padding: EdgeInsets.symmetric(vertical: 11),
@@ -64,7 +66,7 @@ class PatientsFilter extends HookWidget {
                                 color: Colors.black),
                           ),
                           RadioButton(
-                            buttonSelected: chronicCareVM.careProviderId == 0
+                            buttonSelected: filterSelected == 0
                                 ? false
                                 : true,
                             noText: true,
@@ -80,7 +82,7 @@ class PatientsFilter extends HookWidget {
                   ),
                   InkWell(
                     onTap: () {
-                      chronicCareVM.setCareProviderFilter(0);
+                      onChange(0);
                     },
                     child: Container(
                       padding: EdgeInsets.symmetric(vertical: 11),
@@ -98,7 +100,7 @@ class PatientsFilter extends HookWidget {
                                 color: Colors.black),
                           ),
                           RadioButton(
-                            buttonSelected: chronicCareVM.careProviderId == 0
+                            buttonSelected: filterSelected == 0
                                 ? true
                                 : false,
                             noText: true,

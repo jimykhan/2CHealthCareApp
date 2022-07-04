@@ -31,6 +31,7 @@ import 'package:twochealthcare/view_models/auth_vm/forget-password-vm.dart';
 import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
 import 'package:twochealthcare/view_models/care_plan_vm/care_plan_vm.dart';
 import 'package:twochealthcare/view_models/ccm_vm/ccm_logs_vm.dart';
+import 'package:twochealthcare/view_models/ccm_vm/ccm_patients_vm.dart';
 import 'package:twochealthcare/view_models/chat_vm/chat_list_vm.dart';
 import 'package:twochealthcare/view_models/chat_vm/chat_screen_vm.dart';
 import 'package:twochealthcare/view_models/facility_user_view_model/all_patient_view_model.dart';
@@ -45,6 +46,7 @@ import 'package:twochealthcare/view_models/rpm_vm/blood_pressure_reading_vm.dart
 import 'package:twochealthcare/view_models/rpm_vm/modalities_reading_vm.dart';
 import 'package:twochealthcare/view_models/rpm_vm/rpm_encounter_vm.dart';
 import 'package:twochealthcare/view_models/rpm_vm/rpm_log_vm.dart';
+import 'package:twochealthcare/view_models/rpm_vm/rpm_patients_vm.dart';
 import 'package:twochealthcare/view_models/rpm_vm/tab_and_calender_vm.dart';
 import 'package:twochealthcare/view_models/profile_vm.dart';
 import 'package:twochealthcare/view_models/settings_view_models/fu_settings_view_model/fu_settings_view_models.dart';
@@ -79,6 +81,8 @@ final rpmEncounterVMProvider = ChangeNotifierProvider<RpmEncounterVM>((ref)=>Rpm
 final ccmEncounterVMProvider = ChangeNotifierProvider<CcmEncounterVM>((ref)=>CcmEncounterVM(ref: ref));
 final ccmLogsVMProvider = ChangeNotifierProvider<CcmLogsVM>((ref)=>CcmLogsVM(ref: ref));
 final rpmLogsVMProvider = ChangeNotifierProvider<RpmLogsVM>((ref)=>RpmLogsVM(ref: ref));
+final ccmPatientsVMProvider = ChangeNotifierProvider<CcmPatientsVM>((ref)=>CcmPatientsVM(ref: ref));
+final rpmPatientsVMProvider = ChangeNotifierProvider<RpmPatientsVM>((ref)=>RpmPatientsVM(ref: ref));
 /// ChangeNotifierProvider
 
 

@@ -7,11 +7,15 @@ import 'package:jiffy/jiffy.dart';
 import 'package:twochealthcare/common_widgets/snackber_message.dart';
 import 'package:twochealthcare/constants/api_strings.dart';
 import 'package:twochealthcare/constants/strings.dart';
+import 'package:twochealthcare/constants/validator.dart';
+import 'package:twochealthcare/models/facility_user_models/dashboard_patients/patients_for_dashboard.dart';
 import 'package:twochealthcare/models/modalities_models/blood_pressure_reading_model.dart';
 import 'package:twochealthcare/models/modalities_models/gb_reading_model.dart';
 import 'package:twochealthcare/models/modalities_models/modalities_model.dart';
 import 'package:twochealthcare/models/rpm_models/rpm_logs_model.dart';
 import 'package:twochealthcare/providers/providers.dart';
+import 'package:twochealthcare/services/dio_services/dio_services.dart';
+import 'package:twochealthcare/services/shared_pref_services.dart';
 import 'package:twochealthcare/util/data_format.dart';
 
 class RpmService{
@@ -21,9 +25,18 @@ class RpmService{
   int bGLastReadingYear = DateTime.now().year;
   double bGMaxLimit = 100;
   double bloodPressureMaxLimit = 100;
+  DioServices? dio;
+  SharedPrefServices? _sharedPrefServices;
+
   ProviderReference? _ref;
+
   RpmService({ProviderReference? ref}){
     _ref = ref;
+    initService();
+  }
+  initService(){
+    dio = _ref?.read(dioServicesProvider);
+    _sharedPrefServices = _ref?.read(sharedPrefServiceProvider);
   }
 
   Future<dynamic> getModalitiesByUserId({int? currentUserId}) async {
@@ -52,14 +65,14 @@ class RpmService{
             if(element.modality == "BG") {
               bGLastReadingMonth = month;
               bGLastReadingYear = year;
-              print("last month of BG = ${month}");
-              print("last year of BG = ${year}");
+              print("last month of BG = $month");
+              print("last year of BG = $year");
             }
             if(element.modality == "BP") {
               bPLastReadingMonth = month;
               bPLastReadingYear = year;
-              print("last month of BP = ${month}");
-              print("last year of BP = ${year}");
+              print("last month of BP = $month");
+              print("last year of BP = $year");
             }
           }
 
@@ -81,13 +94,13 @@ class RpmService{
 
   getBGReading({int? currentUserId,DateTime? startDate,DateTime? endDate}) async {
     try{
-      final dio = _ref!.read(dioServicesProvider);
-      Response response = await dio.dio!.get(ApiStrings.getBloodGlucoseDeviceDatabyPatientId+"/$currentUserId"+"?startDate=${startDate.toString()}&endDate=${endDate.toString()}",
+      // final dio = _ref!.read(dioServicesProvider);
+      Response? response = await dio?.dio?.get(ApiStrings.getBloodGlucoseDeviceDatabyPatientId+"/$currentUserId"+"?startDate=${startDate.toString()}&endDate=${endDate.toString()}",
       );
-      if(response.statusCode == 200){
+      if(response?.statusCode == 200){
         // sharePrf.setCurrentUser(response.data);
         List<BGDataModel> bGReadings = [];
-        response.data.forEach((element) {
+        response?.data.forEach((element) {
           bGReadings.add(BGDataModel.fromJson(element));
         });
         if (bGReadings.length > 0) {
@@ -138,13 +151,13 @@ class RpmService{
 
   getBloodPressureReading({int? currentUserId,DateTime? startDate,DateTime? endDate}) async {
     try{
-      final dio = _ref!.read(dioServicesProvider);
-      Response response = await dio.dio!.get(ApiStrings.getBPDeviceDataByPatientId+"/$currentUserId"+"?startDate=${startDate.toString()}&endDate=${endDate.toString()}",
+      // final dio = _ref!.read(dioServicesProvider);
+      Response? response = await dio?.dio?.get(ApiStrings.getBPDeviceDataByPatientId+"/$currentUserId"+"?startDate=${startDate.toString()}&endDate=${endDate.toString()}",
       );
-      if(response.statusCode == 200){
+      if(response?.statusCode == 200){
         // sharePrf.setCurrentUser(response.data);
         List<BloodPressureReadingModel> bPReadings = [];
-        response.data.forEach((element) {
+        response?.data.forEach((element) {
           bPReadings.add(BloodPressureReadingModel.fromJson(element));
         });
         if (bPReadings.length > 0) {
@@ -198,8 +211,8 @@ class RpmService{
   Future<dynamic> addRpmEncounter(var body) async {
 
     try{
-      final dio = _ref!.read(dioServicesProvider);
-      Response response = await dio.dio!.post(RPMController.addRPMEncounter,data: body);
+      // final dio = _ref!.read(dioServicesProvider);
+      Response? response = await dio?.dio?.post(RPMController.addRPMEncounter,data: body);
       return response;
 
     }catch(e){
@@ -212,8 +225,8 @@ class RpmService{
   Future<dynamic> editRpmEncounter(var body) async {
 
     try{
-      final dio = _ref!.read(dioServicesProvider);
-      Response response = await dio.dio!.put(RPMController.editRpmEncounter,data: body);
+      // final dio = _ref!.read(dioServicesProvider);
+      Response? response = await dio?.dio?.put(RPMController.editRpmEncounter,data: body);
       return response;
 
     }catch(e){
@@ -228,9 +241,9 @@ class RpmService{
   Future<bool> isValidUser(var body) async {
 
     try{
-      final dio = _ref!.read(dioServicesProvider);
-      Response response = await dio.dio!.post(AccountApi.validateUser,data: body);
-      if(response.statusCode == 200){
+      // final dio = _ref!.read(dioServicesProvider);
+      Response? response = await dio?.dio?.post(AccountApi.validateUser,data: body);
+      if(response?.statusCode == 200){
         return true;
       }
       else{
@@ -248,7 +261,7 @@ class RpmService{
     try{
       List<RpmLogModel> rpmlogs = [];
       final dio = _ref!.read(dioServicesProvider);
-      Response response = await dio.dio!.get(RPMController.getRpmEncountersByPatientId+"/${patientId}/${month}/${year}");
+      Response response = await dio.dio!.get(RPMController.getRpmEncountersByPatientId+"/$patientId/$month/$year");
       if(response.statusCode == 200){
         response.data.forEach((element) {
           rpmlogs.add(RpmLogModel.fromJson(element));
@@ -320,6 +333,85 @@ class RpmService{
   }
 
 
+
+
+
+
+
+  Future<dynamic>getRpmPatients({int filterBy = 1,required int pageNumber,int patientStatus = 1,
+    int rpmStatus = -1,
+    int careProviderId = 0,
+    int billingProviderId = 0,
+    int? careFacilitatorId,
+    String? diseaseIds,
+    String? sortBy,int sortOrder=0,
+    String? searchParam,
+    required int serviceMonth, required int serviceYear,
+    bool showAll = false,
+    int rpmCareCoordinatorId = 0,
+    String? dateAssignedFrom,String? dateAssignedTo,
+    int assigned = 0,
+    int fromTransmissionDays=0,int toTransmissionDays=0, int rpmTimeRange=0,int customeListId = 0,
+    String? lastReadingStartDate,
+    String? lastReadingEndDate,
+    String? lastLogStartDate,
+    String? lastLogEndDate,
+
+  })async{
+    String filteredMonth = "$serviceYear-$serviceMonth";
+    PatientsForDashboard? patientsForDashboard;
+    try{
+      int pageSize = 10;
+      int facilityId = await _sharedPrefServices!.getFacilityId();
+      int facilityUserId = await _sharedPrefServices!.getCurrentUserId();
+      int _careFacilitorId = careFacilitatorId?? facilityUserId;
+    String querisParam = "?PageNumber=$pageNumber&PageSize=$pageSize&CustomListId=$customeListId&FilterBy=$filterBy"
+        "&PatientStatus=$patientStatus&RpmStatus=$rpmStatus"
+        "&LastReadingStartDate=${lastReadingStartDate??""}&LastReadingEndDate=${lastReadingEndDate??""}"
+        "&LastLogStartDate=${lastLogStartDate??""}&LastLogEndDate=${lastLogEndDate??""}&CareProviderId=$careProviderId"
+        "&BillingProviderId=$billingProviderId&CareFacilitatorId=$_careFacilitorId&DiseaseIds=${diseaseIds??""}"
+        "&FacilityId=$facilityId&SortBy=${sortBy??""}&SortOrder=$sortOrder"
+        "&SearchParam=${searchParam??""}&ServiceMonth=$serviceMonth&ServiceYear=$serviceYear&ShowAll=$showAll"
+        "&RPMCareCoordinatorId=$rpmCareCoordinatorId"
+        "&FilteredMonth=$filteredMonth&Assigned=$assigned&DateAssignedFrom=${dateAssignedFrom??""}"
+        "&DateAssignedTo=${dateAssignedTo??""}&FromTransmissionDays=$fromTransmissionDays"
+        "&ToTransmissionDays=$toTransmissionDays&rpmTimeRange=$rpmTimeRange";
+
+      Response? res = await dio?.dio?.get(RPMController.getRpmPatients+querisParam);
+      if(res?.statusCode == 200){
+        patientsForDashboard = PatientsForDashboard.fromJson(res!.data);
+        patientsForDashboard.patientsList?.forEach((element) {
+          if(element.dateOfBirth != null ){
+            element.age = findAgeInYears(dateOfBirht: element.dateOfBirth!);
+          }
+          element.primaryPhoneNumber = mask.getMaskedString(element.primaryPhoneNumber??"");
+
+          if(element.patientStatus != null){
+            if(element.patientStatus == 3 || element.patientStatus == 7 || element.patientStatus == 8){
+              element.isDisable = true;
+            }
+          }
+          if(element.lastAppLaunchDate !=null){
+            DateTime currentDate = DateTime.now();
+            final lastLoginDate = DateTime.parse(element.lastAppLaunchDate!);
+            int difference = currentDate.difference(lastLoginDate).inDays;
+            if(difference<30){
+              element.isMobileUser = true;
+            }
+          }else{
+            element.isMobileUser = false;
+          }
+
+        });
+        return patientsForDashboard;
+      }else{
+        return null;
+      }
+    }catch(e){
+      return null;
+    }
+
+  }
 
 
 }

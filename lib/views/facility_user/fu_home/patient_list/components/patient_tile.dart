@@ -25,7 +25,9 @@ class PatientTile extends StatelessWidget {
           bottom: ApplicationSizing.constSize(7)),
       decoration: BoxDecoration(
           border: Border.all(color: fontGrayColor.withOpacity(0.3), width: 1),
-          borderRadius: BorderRadius.circular(15)),
+          borderRadius: BorderRadius.circular(15),
+        color: patientsList.isDisable??false ? fontGrayColor.withOpacity(0.3) : Colors.white,
+      ),
       child: Column(
         children: [
           Row(
@@ -45,7 +47,7 @@ class PatientTile extends StatelessWidget {
                     children: [
                       patientsList.lastAppLaunchDate == null
                           ? Container()
-                          : SvgPicture.asset(patientsList.isActve ?? false
+                          : SvgPicture.asset(patientsList.isMobileUser ?? false
                               ? "assets/icons/fu_icons/enablePhone.svg"
                               : "assets/icons/fu_icons/disablePhone.svg"),
                     ],

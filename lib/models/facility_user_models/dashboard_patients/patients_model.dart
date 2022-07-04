@@ -58,7 +58,8 @@ class PatientsModel {
   String? lastAppLaunchDate;
 
   /// not in model
-  bool? isActve;
+  bool? isMobileUser;
+  bool? isDisable;
   int? age;
   String? primaryPhoneNoWithCountryCode;
 
@@ -120,7 +121,8 @@ class PatientsModel {
         this.isRPMRevoked,
         this.ccmFlagged,
         this.lastAppLaunchDate,
-        this.isActve = false,
+        this.isMobileUser = false,
+        this.isDisable = false,
         this.age,
         this.countryCallingCode,
         this.primaryPhoneNoWithCountryCode,

@@ -1,17 +1,18 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/all.dart';
 import 'package:twochealthcare/main.dart';
 import 'package:twochealthcare/models/facility_user_models/dashboard_patients/patients_for_dashboard.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/facility_user_services/facility_service.dart';
+import 'package:twochealthcare/services/rpm_services/rpm_service.dart';
 
-class ChronicCareVM extends ChangeNotifier{
+class RpmPatientsVM extends ChangeNotifier{
   /// all patient of all care providers
-  int careProviderId = 1;
+  int careFacilitorId = 1;
   ProviderReference? _ref;
-  FacilityService? facilityService;
+  RpmService? _rpmService;
   int serviceMonth = DateTime.now().month;
   int serviceYear = DateTime.now().year;
   bool isloading = true;
@@ -21,26 +22,26 @@ class ChronicCareVM extends ChangeNotifier{
   ScrollController scrollController = ScrollController();
   Timer? _onSearchDelay;
 
-  ChronicCareVM({ProviderReference? ref}){
+  RpmPatientsVM({ProviderReference? ref}){
     _ref = ref;
     initService();
   }
 
   initService(){
-    facilityService = _ref!.read(facilityServiceProvider);
+    _rpmService = _ref!.read(rpmServiceProvider);
     scrollController.addListener(() {
       if(scrollController.position.pixels == scrollController.position.maxScrollExtent){
-        getPatients2();
+        getRpmPatients();
       }
     });
   }
 
   setCareProviderFilter(int Id){
-    if(Id != careProviderId){
+    if(Id != careFacilitorId){
       Navigator.pop(applicationContext!.currentContext!);
-      careProviderId = Id;
+      careFacilitorId = Id;
       patientListPageNumber = 1;
-      getPatients2();
+      getRpmPatients();
     }
 
   }
@@ -61,21 +62,22 @@ class ChronicCareVM extends ChangeNotifier{
       print("call when change finish for 2 seconds${val}");
       patientListPageNumber = 1;
       chronicCarePatients = null;
-      getPatients2(searchParam: val);
+      getRpmPatients(searchParam: val);
 
     });
   }
 
-  getPatients2({int? facilityId,int? filterBy,int? pageNumber,String? patientStatus,
+  getRpmPatients({int? facilityId,int? filterBy,int? pageNumber,String? patientStatus,
     String? searchParam, String? payerIds,String? sortBy,int? sortOrder}) async{
     if(newPageLoading) return;
     if(patientListPageNumber == 1 && !(isloading)) setLoading(true);
     if(patientListPageNumber>1) setNewPageLoading(true);
 
 
-    var res = await facilityService?.getPatients2(pageNumber: patientListPageNumber,
+    var res = await _rpmService?.getRpmPatients(pageNumber: patientListPageNumber,
         searchParam: searchParam, serviceMonth: serviceMonth, serviceYear: serviceYear,
-    careProviderId: careProviderId);
+      careFacilitatorId: careFacilitorId == 0 ? 0 : null
+    );
     if(res!=null){
       PatientsForDashboard newPList = res as PatientsForDashboard;
       if(newPList != null && newPList.patientsList!.isNotEmpty){
@@ -96,5 +98,4 @@ class ChronicCareVM extends ChangeNotifier{
       setNewPageLoading(false);
     }
   }
-
 }

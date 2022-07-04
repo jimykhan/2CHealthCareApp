@@ -20,6 +20,7 @@ import 'package:twochealthcare/views/facility_user/fu_home/components/all_facili
 import 'package:twochealthcare/views/facility_user/fu_home/components/service_tile.dart';
 import 'package:twochealthcare/views/facility_user/fu_home/patient_list/chronic_care.dart';
 import 'package:twochealthcare/views/open_bottom_modal.dart';
+import 'package:twochealthcare/views/rpm_view/rpm_patients.dart';
 
 import '../../../main.dart';
 
@@ -142,9 +143,7 @@ class FUHome extends HookWidget {
                           Navigator.push(
                               context,
                               PageTransition(
-                                  child: ChronicCare(
-                                    serviceType: 0,
-                                  ),
+                                  child: ChronicCare(),
                                   type: PageTransitionType.bottomToTop));
                         },
                         serviceName: "CCM",
@@ -163,9 +162,7 @@ class FUHome extends HookWidget {
                           Navigator.push(
                               context,
                               PageTransition(
-                                  child: ChronicCare(
-                                    serviceType: 1,
-                                  ),
+                                  child: RpmPatients(),
                                   type: PageTransitionType.bottomToTop));
                         },
                         serviceName: "RPM",

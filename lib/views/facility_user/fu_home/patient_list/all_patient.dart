@@ -98,10 +98,7 @@ class AllPatient extends HookWidget {
                   container: Column(
                 children: [
                   Expanded(
-                    child: (allPatientVM.patientsForDashboard?.patientsList!
-                                    .length ==
-                                0 ||
-                            allPatientVM.patientsForDashboard == null)
+                    child: ((allPatientVM.patientsForDashboard?.patientsList!.length == 0 || allPatientVM.patientsForDashboard == null) && !(allPatientVM.isloading))
                         ? NoData()
                         : PatientList(
                             scrollController: allPatientVM.scrollController,

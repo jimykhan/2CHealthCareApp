@@ -76,16 +76,27 @@ class FacilityService{
             element.primaryPhoneNoWithCountryCode = "${element.primaryPhoneNumber}";
           }
           element.primaryPhoneNumber = mask.getMaskedString(element.primaryPhoneNumber??"");
+          if(element.patientStatus != null){
+            if(element.patientStatus == 3 || element.patientStatus == 7 || element.patientStatus == 8){
+              element.isDisable = true;
+            }
+          }
+          if(element.patientStatus != null){
+            if(element.patientStatus == 3 || element.patientStatus == 7 || element.patientStatus == 8){
+              element.isDisable = true;
+            }
+          }
           if(element.lastAppLaunchDate !=null){
             DateTime currentDate = DateTime.now();
             final lastLoginDate = DateTime.parse(element.lastAppLaunchDate!);
             int difference = currentDate.difference(lastLoginDate).inDays;
             if(difference<30){
-              element.isActve = true;
+              element.isMobileUser = true;
             }
           }else{
-            element.isActve = false;
+            element.isMobileUser = false;
           }
+
 
         });
         return patientsForDashboard;
@@ -139,10 +150,10 @@ class FacilityService{
             final lastLoginDate = DateTime.parse(element.lastAppLaunchDate!);
             int difference = currentDate.difference(lastLoginDate).inDays;
             if(difference<30){
-              element.isActve = true;
+              element.isMobileUser = true;
             }
           }else{
-            element.isActve = false;
+            element.isMobileUser = false;
           }
 
         });

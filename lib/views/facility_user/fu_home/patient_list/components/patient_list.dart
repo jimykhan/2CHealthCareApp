@@ -31,7 +31,7 @@ class PatientList extends HookWidget {
           );
         }
           return InkWell(
-            onTap: (){
+            onTap: patientsList[index].isDisable??false ? null : (){
                 Navigator.push(context, PageTransition(child: PatientSummary(patientsModel: patientsList[index],), type: PageTransitionType.leftToRight));
             },
               child: PatientTile(patientsList: patientsList[index],));

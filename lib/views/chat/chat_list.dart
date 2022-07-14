@@ -48,7 +48,7 @@ class ChatList extends HookWidget {
       },
       const [],
     );
-    return Scaffold(
+    return (chatListVM.isTextFieldActive) ? simpleScaffold(context,chatListVM: chatListVM,loginVM: loginVM,applicationRouteService: applicationRouteService) : Scaffold(
         primary: false,
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(ApplicationSizing.convert(90)),
@@ -77,7 +77,7 @@ class ChatList extends HookWidget {
           ),
         ),
         floatingActionButtonLocation:  FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: (chatListVM.isTextFieldActive) ? Container() : FloatingActionButton(
+        floatingActionButton: FloatingActionButton(
           // backgroundColor: Colors.black,
           // child: SvgPicture.asset(
           //   "assets/icons/bottom_navbar/user-icon.svg",
@@ -115,6 +115,45 @@ class ChatList extends HookWidget {
             chatListVM: chatListVM,
             applicationRouteService: applicationRouteService,
         loginVM: loginVM));
+  }
+
+  simpleScaffold(context,{ ChatListVM? chatListVM,required LoginVM loginVM,required ApplicationRouteService applicationRouteService}){
+    return Scaffold(
+        primary: false,
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(ApplicationSizing.convert(90)),
+          child: CustomAppBar(
+            leadingIcon: Container(),
+            color1: Colors.white,
+            color2: Colors.white,
+            hight: ApplicationSizing.convert(70),
+            parentContext: context,
+            centerWigets: AppBarTextStyle(
+              text: "Chat List",
+            ),
+            // chatListVM.searchedGroup
+            //     ? _searchField(chatListVM: chatListVM)
+            //     : AppBarTextStyle(
+            //         text: "Chat List",
+            //       ),
+            // trailingIcon: InkWell(
+            //   onTap: chatListVM.onClickSearch,
+            //   child: Icon(
+            //     chatListVM.searchedGroup ? Icons.cancel : Icons.person_search,
+            //     color: appColor,
+            //     size: 27,
+            //   ),
+            // ),
+          ),
+        ),
+
+        bottomNavigationBar: BottomBar(
+          selectedIndex: 2,
+        ),
+        body: _body(
+            chatListVM: chatListVM,
+            applicationRouteService: applicationRouteService,
+            loginVM: loginVM));
   }
 
   _emptyChat() {

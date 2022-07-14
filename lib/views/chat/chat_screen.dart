@@ -40,7 +40,7 @@ class ChatScreen extends HookWidget {
   ChatScreen({this.getGroupsModel,this.backToHome = false});
   @override
   Widget build(BuildContext context) {
-    chatScrollController = useScrollController();
+    chatScrollController = useScrollController(initialScrollOffset: MediaQuery.of(context).size.height);
     ChatScreenVM chatScreenVM = useProvider(chatScreenVMProvider);
     ApplicationRouteService applicationRouteService = useProvider(applicationRouteServiceProvider);
     OnLaunchActivityAndRoutesService onLaunchActivityService = useProvider(onLaunchActivityServiceProvider);
@@ -71,6 +71,7 @@ class ChatScreen extends HookWidget {
     );
     return Scaffold(
       primary: false,
+      resizeToAvoidBottomInset : true,
       backgroundColor: Color(0xffFBFBFB),
       // backgroundColor: Colors.black,
       // drawerScrimColor: Colors.black,
@@ -126,8 +127,24 @@ class ChatScreen extends HookWidget {
           parentContext: context,
         ),
       ),
-      body:_body(context, chatScreenVM: chatScreenVM),
+      body: NotificationListener<ScrollNotification>(
+        onNotification: (scrollNotification) {
+          return _onScrollNotification(scrollNotification);
+        },
+        child: _body(context, chatScreenVM: chatScreenVM),
+      )
+      ,
     );
+  }
+  bool _onScrollNotification (ScrollNotification scrollNotification) {
+    // if (scrollNotification is ScrollUpdateNotification) {
+    //   if(chatScrollController!.offset != chatScrollController!.position.maxScrollExtent)
+    //   jumpToListIndex();
+    //   // detect scroll position here
+    //   // and set resizeToAvoidBottomInset to false if needed\
+    //   return true;
+    // }
+    return false;
   }
 
   _body(context, {required ChatScreenVM chatScreenVM}) {
@@ -280,10 +297,10 @@ class ChatScreen extends HookWidget {
   static jumpToListIndex({bool isDelayed = false}) {
     print("this is jump function");
     Future.delayed(Duration(seconds: isDelayed ? 1 : 0), () {
-      chatScrollController!.animateTo(
+      chatScrollController!.jumpTo(
         chatScrollController!.position.maxScrollExtent,
-        curve: Curves.linearToEaseOut,
-        duration: const Duration(milliseconds: 300),
+        // duration: Duration(microseconds: 3),
+        // curve: Curves.ease,
       );
     });
   }

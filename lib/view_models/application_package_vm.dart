@@ -26,4 +26,38 @@ class ApplicationPackageVM extends ChangeNotifier{
   checkForUpdate(){
     _applicationPackageService?.checkForUpdate();
   }
+//   getSpot(){
+//     List<FlSpot> k = [];
+//     int i = 1;
+//     [].forEach((element) {
+//       k.length == 5 ? null : k.add(FlSpot(x: i.toDouble(), y: element.hour));
+//       i++;
+//     });
+//
+//     switch(i) {
+//       case 1: {
+// // statements;
+//       }
+//       break;
+//
+//       case 2: {
+// //statements;
+//       }
+//       break;
+//
+//       default: {
+// //statements;
+//       }
+//       break;
+//     }
+//   }
 }
+
+
+
+// class FlSpot{
+//   double x;
+//   double y;
+//
+//   FlSpot({required this.x,required this.y});
+// }

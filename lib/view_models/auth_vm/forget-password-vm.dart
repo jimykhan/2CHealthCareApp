@@ -17,6 +17,7 @@ import 'package:sms_autofill/sms_autofill.dart';
 import 'package:twochealthcare/views/auths/reset_password.dart';
 import 'package:twochealthcare/views/home/profile.dart';
 
+// class ForgetPasswordVM extends ChangeNotifier with CodeAutoFill{
 class ForgetPasswordVM extends ChangeNotifier{
   ProviderReference? _ref;
   AuthServices? authService;
@@ -35,14 +36,7 @@ class ForgetPasswordVM extends ChangeNotifier{
     "password": [true, ""]
   };
 
-  listenForAutoSms() async {
-   var data = await SmsAutoFill().listenForCode();
-   SmsAutoFill().code.listen((event) {
-     otpTextEditingController?.text = event.toString();
-     notifyListeners();
-   });
 
-  }
 
   // autoFill(){
   //   return PinFieldAutoFill(
@@ -65,12 +59,22 @@ class ForgetPasswordVM extends ChangeNotifier{
   ForgetPasswordVM({ProviderReference? ref}){
     _ref = ref;
     initServices();
+    // listenForCode();
   }
   initServices(){
     authService = _ref?.read(authServiceProvider);
     applicationRouteService = _ref?.read(applicationRouteServiceProvider);
     onLaunchActivityService = _ref?.read(onLaunchActivityServiceProvider);
     firebaseService = _ref?.read(firebaseServiceProvider);
+  }
+
+  listenForAutoSms() async {
+    var data = await SmsAutoFill().listenForCode();
+    SmsAutoFill().code.listen((event) {
+      otpTextEditingController?.text = event.toString();
+      notifyListeners();
+      listenForAutoSms();
+    });
   }
 
   initForgetPasswordScreen({required String userName}){
@@ -206,6 +210,13 @@ class ForgetPasswordVM extends ChangeNotifier{
     otpLength = val;
     notifyListeners();
   }
+
+  // @override
+  // void codeUpdated() {
+  //   otpTextEditingController?.text = code!;
+  //   notifyListeners();
+  //   // TODO: implement codeUpdated
+  // }
   // hash: 9vXNm+dASeo
 
 }

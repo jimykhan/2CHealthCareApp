@@ -136,9 +136,11 @@ class OtpVerification extends HookWidget {
                                   length: 6,
                                   obscureText: false,
                                   animationType: AnimationType.fade,
+                                  autoFocus: true,
                                   pinTheme: PinTheme(
                                     shape: PinCodeFieldShape.circle,
                                     borderRadius: null,
+
                                     fieldHeight: ApplicationSizing.convert(50),
                                     fieldWidth: ApplicationSizing.convert(50),
 

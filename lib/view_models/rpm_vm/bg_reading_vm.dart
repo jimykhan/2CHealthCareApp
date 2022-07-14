@@ -65,6 +65,7 @@ class BGReadingVM extends ChangeNotifier{
     getBGReading(startDate: startDate,endDate: endDate);
   }
 
+
   // changeTimePeriodSelectIndex(int? index){
   //   if(index != timePeriodSelect){
   //     timePeriodSelect = index??0;

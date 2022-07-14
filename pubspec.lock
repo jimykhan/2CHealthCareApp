@@ -472,7 +472,7 @@ packages:
     source: hosted
     version: "0.14.0+5"
   html:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: html
       url: "https://pub.dartlang.org"
@@ -618,13 +618,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.1"
-  new_version:
-    dependency: "direct main"
-    description:
-      name: new_version
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.2.3"
   nm:
     dependency: transitive
     description:

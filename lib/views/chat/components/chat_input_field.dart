@@ -44,6 +44,7 @@ class ChatInputField extends HookWidget {
         ),
         decoration: BoxDecoration(
           color: Theme.of(context).scaffoldBackgroundColor,
+          // color: Colors.black,
           boxShadow: [
             BoxShadow(
               offset: Offset(0, 4),
@@ -57,79 +58,88 @@ class ChatInputField extends HookWidget {
                 // Icon(Icons.mic, color: kPrimaryColor),
                 // SizedBox(width: kDefaultPadding),
                 Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: kDefaultPadding * 0.75,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade300,
-                      borderRadius: BorderRadius.circular(40),
-                    ),
-                    child: Row(
-                      children: [
-                        // Icon(
-                        //   Icons.sentiment_satisfied_alt_outlined,
-                        //   color: Theme.of(context)
-                        //       .textTheme
-                        //       .bodyText1
-                        //       .color
-                        //       .withOpacity(0.64),
-                        // ),
-                        // SizedBox(width: kDefaultPadding / 4),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 15, top: 3),
-                            child: TextField(
-                              // expands: true,
-                              // maxLines: 4,
-                              // keyboardType: TextInputType.multiline,
-                              maxLines: 20,
-                              focusNode: chatScreenVM.myFocusNode,
-                              minLines: 1,
-                              maxLengthEnforcement: MaxLengthEnforcement.enforced,
-                              style: Styles.PoppinsRegular(
-                                color: drawerColor,
-                                fontSize: ApplicationSizing.convert(16),
-                              ),
-                              controller: _textEditingController,
-                              decoration: InputDecoration(
-                                hintText: "Type a message",
-                                border: InputBorder.none,
-                                hintStyle: Styles.PoppinsRegular(
-                                    color: drawerSelectMenuColor, fontSize: 16),
-                              ),
-                              onChanged: chatScreenVM.checkMessageField,
-                              // focusNode: myFocusNode,
+                  child:  Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: kDefaultPadding * 0.75,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade300,
+                        // color: Colors.green,
+                        borderRadius: BorderRadius.circular(40),
+                      ),
+                      child: Row(
+                        children: [
+                          // Icon(
+                          //   Icons.sentiment_satisfied_alt_outlined,
+                          //   color: Theme.of(context)
+                          //       .textTheme
+                          //       .bodyText1
+                          //       .color
+                          //       .withOpacity(0.64),
+                          // ),
+                          // SizedBox(width: kDefaultPadding / 4),
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 15, top: 3),
+                              child:  TextField(
+                                  // expands: true,
+                                  // maxLines: 4,
+                                  // keyboardType: TextInputType.multiline,
+
+                                  maxLines: 20,
+                                  // focusNode: chatScreenVM.myFocusNode,
+                                  minLines: 1,
+                                  maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                                  style: Styles.PoppinsRegular(
+                                    color: drawerColor,
+                                    fontSize: ApplicationSizing.convert(16),
+                                  ),
+                                  controller: _textEditingController,
+                                  decoration: InputDecoration(
+                                    hintText: "Type a message",
+                                    border: InputBorder.none,
+                                    hintStyle: Styles.PoppinsRegular(
+                                        color: drawerSelectMenuColor, fontSize: 16),
+                                  ),
+                                  onChanged: chatScreenVM.checkMessageField,
+                                onTap: (){
+                                  // if(val){
+                                  ChatScreen.jumpToListIndex(isDelayed: true);
+                                  // }
+                                },
+                                  // focusNode: myFocusNode,
+                                ),
+
                             ),
                           ),
-                        ),
-                        chatScreenVM.isMessageEmpty
-                            ? Container()
-                            : InkWell(
-                            onTap: () async {
-                              if (connectivityService.connectionStatus ==
-                                  ConnectivityResult.none) {
-                                SnackBarMessage(
-                                    message:
-                                        "No internet connection detected, please try again.");
-                              } else {
-                                FocusScope.of(context).unfocus();
-                                ChatScreen.jumpToListIndex();
-                                chatScreenVM.sendTextMessage(
-                                    message: _textEditingController?.text
-                                        .toString());
-                                _textEditingController?.clear();
-                                print("work");
-                              }
-                            },
-                            child: Icon(
-                              Icons.send,
-                              color: AppBarEndColor,
-                              size: ApplicationSizing.convert(30),
-                            ))
-                      ],
+                          chatScreenVM.isMessageEmpty
+                              ? Container()
+                              : InkWell(
+                              onTap: () async {
+                                if (connectivityService.connectionStatus ==
+                                    ConnectivityResult.none) {
+                                  SnackBarMessage(
+                                      message:
+                                          "No internet connection detected, please try again.");
+                                } else {
+                                  FocusScope.of(context).unfocus();
+                                  ChatScreen.jumpToListIndex();
+                                  chatScreenVM.sendTextMessage(
+                                      message: _textEditingController?.text
+                                          .toString());
+                                  _textEditingController?.clear();
+                                  print("work");
+                                }
+                              },
+                              child: Icon(
+                                Icons.send,
+                                color: AppBarEndColor,
+                                size: ApplicationSizing.convert(30),
+                              ))
+                        ],
+                      ),
                     ),
-                  ),
+
                 ),
                 // chatScreenVM.myFocusNode!.hasFocus ? Container() : Container(
                 //   child: Row(
@@ -141,7 +151,7 @@ class ChatInputField extends HookWidget {
                 // ),
               ],
             ),
-          
+
 
       ),
     );

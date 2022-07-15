@@ -46,6 +46,7 @@ class PatientSummary extends HookWidget {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(ApplicationSizing.convert(90)),
         child: CustomAppBar(
+          facilityIcon: true,
           centerWigets: AppBarTextStyle(
             text: "Patient Summary",
           ),

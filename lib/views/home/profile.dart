@@ -58,7 +58,8 @@ class Profile extends HookWidget {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(ApplicationSizing.convert(90)),
         child: CustomAppBar(
-          leadingIcon: Container(),
+          facilityIcon: false,
+          // leadingIcon: Container(),
           color1: Colors.white,
           color2: Colors.white,
           hight: ApplicationSizing.convert(70),

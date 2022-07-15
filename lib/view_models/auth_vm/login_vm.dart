@@ -233,4 +233,16 @@ class LoginVM extends ChangeNotifier{
     );
     setLoading(false);
   }
+
+
+  getCurrentFacilityName(){
+    String faciilityName = "";
+    currentUser?.claims?.forEach((clam) {
+      if(clam.claimType == "FacilityName"){
+        faciilityName = clam.claimValue??"";
+      }
+    });
+    return faciilityName;
+  }
+
 }

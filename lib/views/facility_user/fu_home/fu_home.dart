@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:hooks_riverpod/all.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:twochealthcare/common_widgets/alert_loader.dart';
+import 'package:twochealthcare/common_widgets/app_bar_components/appbar_text_style.dart';
 import 'package:twochealthcare/common_widgets/bottom_bar.dart';
 import 'package:twochealthcare/common_widgets/custom_appbar.dart';
 import 'package:twochealthcare/common_widgets/custom_drawer.dart';
@@ -56,6 +57,10 @@ class FUHome extends HookWidget {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(ApplicationSizing.convert(90)),
         child: CustomAppBar(
+          centerWigets: AppBarTextStyle(
+            text: "Dashboard",
+          ),
+            facilityIcon: false,
           clickOnNotification: () {},
           notifcationIcon: false,
           leadingIcon: InkWell(

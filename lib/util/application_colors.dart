@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 
 Color appColor = Color(0xff4EAF48);
+Color appColorWithOpacity = appColor.withOpacity(0.3);
 Color appColorLight = Color(0xff8dcc8a);
 Color appColorSecondary = Color(0xff134389);
 Color drawerColor = Color(0xff27373D);

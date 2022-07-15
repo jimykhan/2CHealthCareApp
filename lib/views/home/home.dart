@@ -6,6 +6,7 @@ import 'package:hooks_riverpod/all.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:twochealthcare/common_widgets/aler_dialogue.dart';
 import 'package:twochealthcare/common_widgets/alert_loader.dart';
+import 'package:twochealthcare/common_widgets/app_bar_components/drawer_menu_button.dart';
 import 'package:twochealthcare/common_widgets/bottom_bar.dart';
 import 'package:twochealthcare/common_widgets/circular_image.dart';
 import 'package:twochealthcare/common_widgets/custom_appbar.dart';
@@ -86,15 +87,12 @@ class Home extends HookWidget {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(ApplicationSizing.convert(90)),
         child: CustomAppBar(
+          facilityIcon: false,
           leadingIcon: InkWell(
             onTap: () {
               _scaffoldkey.currentState!.openDrawer();
             },
-            child: Container(
-              alignment: Alignment.centerLeft,
-              padding: EdgeInsets.only(right: 20),
-              child: SvgPicture.asset("assets/icons/home/side-menu-icon.svg"),
-            ),
+            child: DrawerMenuButton(),
           ),
           color1: Colors.white,
           color2: Colors.white,

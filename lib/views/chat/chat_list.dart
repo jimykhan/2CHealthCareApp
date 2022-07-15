@@ -53,7 +53,8 @@ class ChatList extends HookWidget {
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(ApplicationSizing.convert(90)),
           child: CustomAppBar(
-            leadingIcon: Container(),
+            facilityIcon: (loginVM.currentUser?.userType == 1) ? false : true,
+            // leadingIcon: Container(),
             color1: Colors.white,
             color2: Colors.white,
             hight: ApplicationSizing.convert(70),

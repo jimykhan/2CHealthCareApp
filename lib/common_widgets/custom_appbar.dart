@@ -1,6 +1,7 @@
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/all.dart';
 import 'package:twochealthcare/common_widgets/app_bar_components/notification_button.dart';
+import 'package:twochealthcare/common_widgets/facility_user_dev.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/signal_r_services.dart';
 import 'package:twochealthcare/util/application_colors.dart';
@@ -25,6 +26,7 @@ class CustomAppBar extends HookWidget {
   bool? isbottomLine;
   bool addLeftMargin;
   bool notifcationIcon;
+  bool facilityIcon;
   CustomAppBar(
       {@required this.parentContext,
       this.color1,
@@ -39,7 +41,9 @@ class CustomAppBar extends HookWidget {
       this.paddingLeft,
       this.notifcationIcon = false,
       this.addLeftMargin = false,
-      this.clickOnNotification});
+      this.clickOnNotification,
+        this.facilityIcon = false,
+      });
 
   @override
   Widget build(BuildContext context) {
@@ -77,31 +81,40 @@ class CustomAppBar extends HookWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  InkWell(
-                    onTap: clickOnDrawer,
-                    //     () async {
-                    //   // await FlutterBlue.instance.stopScan();
-                    //   Navigator.pushReplacement(context,
-                    //       PageTransition(
-                    //           child: HealthDevicesScreen(),
-                    //           type: PageTransitionType.fade
-                    //       ));
-                    // },
-                    child: leadingIcon ??
-                        Icon(
-                          Icons.menu,
-                          size: ApplicationSizing.convert(25),
+                children: [
+                  Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        leadingIcon == null ? SizedBox(width: 30,) : InkWell(
+                          onTap: clickOnDrawer,
+                          //     () async {
+                          //   // await FlutterBlue.instance.stopScan();
+                          //   Navigator.pushReplacement(context,
+                          //       PageTransition(
+                          //           child: HealthDevicesScreen(),
+                          //           type: PageTransitionType.fade
+                          //       ));
+                          // },
+                          child: leadingIcon ??
+                              Icon(
+                                Icons.menu,
+                                size: ApplicationSizing.convert(25),
+                              ),
                         ),
+                        SizedBox(width: 10,),
+                        Expanded(child: centerWigets ?? Container(child: Text(""),),)
+                      ],
+                    ),
                   ),
-                  centerWigets ?? Container(),
                   trailingIcon ??
                       Container(
                         child: notifcationIcon
                             ? NotificationButton(
-                                onclick: clickOnNotification,
-                              )
-                            : Container(),
+                          onclick: clickOnNotification,
+                        )
+                            : facilityIcon ? FacilityUserDev() : Container(),
                       ),
                 ],
               ),

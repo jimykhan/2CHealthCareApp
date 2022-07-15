@@ -41,6 +41,7 @@ class RpmPatients extends HookWidget {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(ApplicationSizing.convert(90)),
         child: CustomAppBar(
+          facilityIcon: true,
           leadingIcon: CustomBackButton(),
           color1: Colors.white,
           color2: Colors.white,

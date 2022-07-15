@@ -53,7 +53,9 @@ class AllPatient extends HookWidget {
       key: _scaffoldkey,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(ApplicationSizing.convert(90)),
+
         child: CustomAppBar(
+          facilityIcon: true,
           leadingIcon: CustomBackButton(),
           color1: Colors.white,
           color2: Colors.white,

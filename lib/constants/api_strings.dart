@@ -4,6 +4,10 @@ import 'package:flutter/foundation.dart' as Foundation;
  const String staging = "https://apistaging.healthforcehub.link";
  const String production = "https://api.2chealthsolutions.com";
  const String baseUrl = production;
+ String messageChannel = baseUrl == production ? "-Production-NewMsgReceived"
+     : baseUrl == staging ? "-Staging-NewMsgReceived" : "-Testing-NewMsgReceived";
+String dataChannel = baseUrl == production ? "-Production-NewDataReceived"
+    : baseUrl == staging ? "-Staging-NewDataReceived" : "-Testing-NewDataReceived";
 class ApiStrings {
   static const String signIn = baseUrl +"/api/Account/token2";
   static const String getPatientInfoById =

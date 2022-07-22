@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hooks_riverpod/all.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:twochealthcare/constants/api_strings.dart';
 import 'package:twochealthcare/main.dart';
 import 'package:twochealthcare/models/user/current_user.dart';
 import 'package:twochealthcare/providers/providers.dart';
@@ -164,11 +165,11 @@ class FirebaseService{
     CurrentUser? currentUser = await sharedPrefServices?.getCurrentUser();
     if (currentUser != null) {
       await _firebaseMessaging!
-          .subscribeToTopic("${currentUser.appUserId}-NewDataReceived")
-          .then((value) => print("${currentUser.appUserId}-NewDataReceived weather topic subscribe"));
+          .subscribeToTopic("${currentUser.appUserId}$dataChannel")
+          .then((value) => print("${currentUser.appUserId}$dataChannel weather topic subscribe"));
       await _firebaseMessaging!
-          .subscribeToTopic("${currentUser.appUserId}-NewMsgReceived")
-          .then((value) => print("${currentUser.appUserId}-NewMsgReceived weather topic subscribe"));
+          .subscribeToTopic("${currentUser.appUserId}$messageChannel")
+          .then((value) => print("${currentUser.appUserId}$messageChannel weather topic subscribe"));
     }
 
   }
@@ -179,8 +180,8 @@ class FirebaseService{
     if(currentUser!=null){
       await firebaseMessaging
           .unsubscribeFromTopic(
-          "${currentUser.appUserId}-NewMsgReceived")
-          .then((value) => print("Unsubscribe From Topic ${currentUser.appUserId}-NewMsgReceived"));
+          "${currentUser.appUserId}$messageChannel")
+          .then((value) => print("Unsubscribe From Topic ${currentUser.appUserId}$messageChannel"));
 
     }
 
@@ -192,8 +193,8 @@ class FirebaseService{
     if (currentUser != null){
       await firebaseMessaging
           .unsubscribeFromTopic(
-          "${currentUser.appUserId}-NewDataReceived")
-          .then((value) => print("UnSub Topic${currentUser.appUserId}-NewDataReceived"));
+          "${currentUser.appUserId}$dataChannel")
+          .then((value) => print("UnSub Topic${currentUser.appUserId}$dataChannel"));
     }
 
   }
@@ -204,7 +205,7 @@ class FirebaseService{
     if (currentUser != null){
       // firebaseMessaging
       //     .unsubscribeFromTopic(
-      //     "${currentUser.appUserId}-NewDataReceived")
+      //     "${currentUser.appUserId}$messageChannel")
       //     .then((value) => null);
     }
   }
@@ -215,7 +216,7 @@ class FirebaseService{
     if (currentUser != null){
       firebaseMessaging
           .subscribeToTopic(
-          "${currentUser.appUserId}-NewDataReceived")
+          "${currentUser.appUserId}$dataChannel")
           .then((value) => null);
     }
   }

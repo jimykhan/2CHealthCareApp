@@ -14,7 +14,7 @@ import 'package:twochealthcare/util/styles.dart';
 import 'package:twochealthcare/view_models/facility_user_view_model/fu_patient_summary_veiw_models/fu_patient_summary_view_model.dart';
 import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_summary/components/common_container.dart';
 import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_summary/components/headline_text_style.dart';
-import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_summary/components/matline_plus.dart';
+import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_summary/components/costom_url_launcher.dart';
 import 'package:twochealthcare/views/open_bottom_modal.dart';
 
 class DiagnosisBody extends HookWidget {
@@ -100,7 +100,7 @@ class DiagnosisBody extends HookWidget {
                             InkWell(
                               onTap: () {
                                 openBottomModalDisableDrag(
-                                    child: MadLinePlus(
+                                    child: CostomUrlLauncher(
                                   url: diagnoseModel.medlineUrl ?? "",
                                 ));
                               },

@@ -14,7 +14,7 @@ import 'package:twochealthcare/view_models/facility_user_view_model/fu_patient_s
 import 'package:twochealthcare/views/rpm_view/add_rpm_encounter.dart';
 import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_summary/components/common_container.dart';
 import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_summary/components/headline_text_style.dart';
-import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_summary/components/matline_plus.dart';
+import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_summary/components/costom_url_launcher.dart';
 import 'package:twochealthcare/views/home/components/widgets.dart';
 import 'package:twochealthcare/views/open_bottom_modal.dart';
 
@@ -106,7 +106,7 @@ class MedicationsBody extends HookWidget {
                         InkWell(
                           onTap: () {
                             openBottomModalDisableDrag(
-                                child: MadLinePlus(
+                                child: CostomUrlLauncher(
                               url:  medicationModel.medlineUrl??""
                                   "",
                             ));

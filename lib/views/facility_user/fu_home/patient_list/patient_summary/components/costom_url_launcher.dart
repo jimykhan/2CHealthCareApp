@@ -7,10 +7,11 @@ import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
 import 'package:twochealthcare/view_models/health_guides_vm/health_guides_vm.dart';
 
-class MadLinePlus extends HookWidget {
+class CostomUrlLauncher extends HookWidget {
   String url;
+  double? height;
 
-  MadLinePlus({Key? key,required this.url}) : super(key: key);
+  CostomUrlLauncher({Key? key,required this.url,this.height}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +29,7 @@ class MadLinePlus extends HookWidget {
       const [],
     );
     return Container(
-      height: MediaQuery.of(context).size.height/1.8,
+      height: height?? MediaQuery.of(context).size.height/1.8,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.only(
               topRight: Radius.circular(30),

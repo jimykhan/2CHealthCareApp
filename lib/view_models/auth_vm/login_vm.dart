@@ -35,6 +35,7 @@ class LoginVM extends ChangeNotifier{
   FirebaseService? firebaseService;
   SignalRServices? signalRServices;
   SharedPrefServices? sharedPrefServices;
+  bool isPrivacyPolicyChecked = false;
 
   LoginVM({ProviderReference? ref}){
     _ref = ref;
@@ -45,6 +46,11 @@ class LoginVM extends ChangeNotifier{
      firebaseService = _ref!.read(firebaseServiceProvider);
      sharedPrefServices = _ref!.read(sharedPrefServiceProvider);
      signalRServices = _ref!.read(signalRServiceProvider);
+  }
+
+  onCheckedPrevacyPolicy(bool val){
+    isPrivacyPolicyChecked = val;
+    notifyListeners();
   }
 
   onChangeEmail(String val){
@@ -122,6 +128,15 @@ class LoginVM extends ChangeNotifier{
   getCurrentUserFromSharedPref()async{
     currentUser = await authService?.getCurrentUserFromSharedPref();
     return currentUser;
+  }
+
+  isfromValid(){
+    bool checkMail = fieldValidation(
+        emailController.text,
+        fieldType: 0);
+    bool checkPassword = fieldValidation(
+        passwordController.text,
+        fieldType: 1);
   }
 
   bool fieldValidation(String val, {int fieldType = 0}){

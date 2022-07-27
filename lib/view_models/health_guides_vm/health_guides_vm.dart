@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:twochealthcare/common_widgets/loader.dart';
 import 'package:twochealthcare/models/health_guide_models/health_guide_model.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/health_guides_service/health_guides_service.dart';
@@ -11,7 +12,7 @@ class HealthGuidesVM extends ChangeNotifier{
   Completer<WebViewController> controller = Completer<WebViewController>();
   List<HealthGuideModel> listOfHealthGuide = [];
   double progressWebPageLoad = 0;
-  bool webPageLoading = true;
+  bool webPageLoading = false;
   bool loadingHealthGuides = true;
   ProviderReference? _ref;
   HealthGuidesService? _healthGuidesService;
@@ -30,20 +31,28 @@ class HealthGuidesVM extends ChangeNotifier{
       builder:
           (BuildContext context, AsyncSnapshot<WebViewController> snapshot) {
         if(snapshot.hasError){}
-          return WebView(
-            initialUrl: initailUrl,
-            javascriptMode: JavascriptMode.unrestricted,
-                onWebViewCreated: (WebViewController webViewController) {
-                  controller.complete(webViewController);
+          return Stack(
+            children: [
+              WebView(
+                initialUrl: initailUrl,
+                javascriptMode: JavascriptMode.unrestricted,
+                    onWebViewCreated: (WebViewController webViewController) {
+                      controller.complete(webViewController);
+                    },
+                onProgress: (progress){
+                  print("progrss $progress");
+                  if(progress == 100){
+                     webPageLoading = true;
+                    notifyListeners();
+                  }
+                    progressWebPageLoad = progress/100;
                 },
-            onProgress: (progress){
-              print("progrss $progress");
-              if(progress == 100){
-                // webPageLoading = false;
-                notifyListeners();
-              }
-                progressWebPageLoad = progress/100;
-            },
+                onPageFinished: (val){
+                    webPageLoading = false;
+                },
+              ),
+              webPageLoading ? loader(radius: 20,) : Container(),
+            ],
           );
       },
     );

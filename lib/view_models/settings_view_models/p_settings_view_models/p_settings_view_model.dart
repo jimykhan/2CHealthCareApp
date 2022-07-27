@@ -8,6 +8,7 @@ import 'package:twochealthcare/util/data_format.dart';
 class PSettingsViewModel extends ChangeNotifier{
   bool getBlueButtonUrlLoading = false;
   bool isBlueButtonConnected = false;
+  bool loadingSettings = false;
   ProviderReference? _ref;
   PSettingsService? _pSettingsService;
   PSettingsViewModel({ProviderReference? ref}){
@@ -21,19 +22,25 @@ class PSettingsViewModel extends ChangeNotifier{
     getBlueButtonUrlLoading = check;
     notifyListeners();
   }
+
+  setLoadingSetting(check){
+    loadingSettings = check;
+    notifyListeners();
+  }
   checkIsBlueBottonConnected()async{
-    isBlueButtonConnected = false;
     bool response  = await _pSettingsService?.checkIsBlueBottonConnected()?? false;
     if(response){
       isBlueButtonConnected = true;
     }else{
       isBlueButtonConnected = false;
     }
+    setLoadingSetting(false);
     notifyListeners();
   }
   initState(){
     isBlueButtonConnected = false;
     getBlueButtonUrlLoading = false;
+    loadingSettings  = true;
   }
   blueButtonAutherizations()async{
     setGetBlueButtonUrlLoading(true);

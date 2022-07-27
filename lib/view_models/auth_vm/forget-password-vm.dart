@@ -69,13 +69,17 @@ class ForgetPasswordVM extends ChangeNotifier{
   }
 
   listenForAutoSms() async {
-    var data = await SmsAutoFill().listenForCode();
+    String appsin = await SmsAutoFill().getAppSignature;
+    print("this is AppSignature $appsin");
+    await SmsAutoFill().listenForCode();
     SmsAutoFill().code.listen((event) {
       otpTextEditingController?.text = event.toString();
       notifyListeners();
       listenForAutoSms();
     });
   }
+
+
 
   initForgetPasswordScreen({required String userName}){
     emailController.text = userName;
@@ -217,6 +221,8 @@ class ForgetPasswordVM extends ChangeNotifier{
   //   notifyListeners();
   //   // TODO: implement codeUpdated
   // }
-  // hash: 9vXNm+dASeo
+
+  ///Old hash: 9vXNm+dASeo
+  ///New hash: oOYc1XZBQRl
 
 }

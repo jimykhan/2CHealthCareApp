@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
@@ -45,6 +46,20 @@ class Styles {
       fontSize: fontSize,
       fontFamily: fontFamily,
       color: color,
+    );
+  }
+
+  static TextStyle RobotoMediumUnderLine(
+      {double fontSize = 9,
+        String fontFamily = "RobotoMedium",
+        Color color = Colors.black}) {
+    return TextStyle(
+      fontSize: fontSize,
+      fontFamily: fontFamily,
+      color: color,
+      decoration: TextDecoration.underline,
+      // decorationThickness: 2
+
     );
   }
 

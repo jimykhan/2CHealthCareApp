@@ -96,7 +96,7 @@ class ResetPassword extends HookWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            margin: EdgeInsets.only(top: ApplicationSizing.convert(60)),
+            margin: EdgeInsets.only(top: ApplicationSizing.convert(40)),
             child: RichText(
               text: TextSpan(
                   text: "Enter your new password",

@@ -22,6 +22,7 @@ import 'package:twochealthcare/util/styles.dart';
 import 'package:twochealthcare/view_models/application_package_vm.dart';
 import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
 import 'package:twochealthcare/view_models/profile_vm.dart';
+import 'package:twochealthcare/views/auths/components/privacy_policy.dart';
 import 'package:twochealthcare/views/home/home.dart';
 
 class Login extends HookWidget {
@@ -39,7 +40,7 @@ class Login extends HookWidget {
 
     useEffect(
       () {
-
+        loginVM.isPrivacyPolicyChecked = false;
         Future.microtask(() async {});
 
         return () {
@@ -56,7 +57,7 @@ class Login extends HookWidget {
               Column(
                 children: [
                   Container(
-                    child: Image.asset("assets/icons/loginBg.png"),
+                    child: Image.asset("assets/icons/loginBg.png",),
                   ),
                   _loginform
                     (context, loginVM: loginVM,firebaseService: firebaseService,applicationPackageVM: applicationPackageVM,
@@ -65,6 +66,7 @@ class Login extends HookWidget {
                     profileVm: profileVm,
                       signalRServices: signalRServices
                   ),
+
                 ],
               ),
               loginVM.loading ? AlertLoader() : Container(),
@@ -94,7 +96,7 @@ class Login extends HookWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            margin: EdgeInsets.only(top: ApplicationSizing.convert(60)),
+            margin: EdgeInsets.only(top: ApplicationSizing.convert(40)),
             child: RichText(
               text: TextSpan(
                   text: "Welcome,",
@@ -241,6 +243,11 @@ class Login extends HookWidget {
                     ),
             ],
           ),
+          PrivacyPolicy(
+            isChecked: loginVM.isPrivacyPolicyChecked,
+            onChecked: loginVM.onCheckedPrevacyPolicy,
+          ),
+          SizedBox(height: 10,),
           false
               ? Container(
                   width: 10,
@@ -250,7 +257,8 @@ class Login extends HookWidget {
               : FilledButton(
                   h: ApplicationSizing.convert(50),
                   txt: "Login",
-                  onTap: () async {
+                  color1: !(loginVM.isPrivacyPolicyChecked) ? appColorLight : null,
+                  onTap: !(loginVM.isPrivacyPolicyChecked) ? null : () async {
                     // dd();
                     // loginVM.setLoading(true);
                     bool checkMail = loginVM.fieldValidation(
@@ -270,6 +278,7 @@ class Login extends HookWidget {
                     }
                   },
                 ),
+
           SizedBox(
             height: ApplicationSizing.convert(12),
           ),
@@ -300,4 +309,6 @@ class Login extends HookWidget {
       ),
     );
   }
+
+
 }

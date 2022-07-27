@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/all.dart';
+import 'package:twochealthcare/common_widgets/alert_loader.dart';
 import 'package:twochealthcare/common_widgets/app_bar_components/appbar_text_style.dart';
 import 'package:twochealthcare/common_widgets/app_bar_components/back_button.dart';
 import 'package:twochealthcare/common_widgets/custom_appbar.dart';
@@ -48,20 +49,16 @@ class PSettings extends HookWidget {
           ),
         ),
       ),
-      body: Container(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 15,
-            ),
-            Container(
-              padding: EdgeInsets.symmetric(
-                  horizontal: ApplicationSizing.horizontalMargin()),
-              child: BlueButton(
+      body: SingleChildScrollView(
+        child: Container(
+          child: Stack(
+            children: [
+              BlueButton(
                 pSettingsViewModel: pSettingsViewModel,
               ),
-            )
-          ],
+              pSettingsViewModel.loadingSettings ? AlertLoader() : Container()
+            ],
+          ),
         ),
       ),
     );

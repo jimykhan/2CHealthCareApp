@@ -31,7 +31,7 @@ class ChatListService{
               final lastMessageTime = DateTime.parse(element.lastMessageTime!);
               int difference = currentDate.difference(lastMessageTime).inDays;
               if(difference == 1){
-                element.timeStamp = "Yesterdays";
+                element.timeStamp = "Yesterday";
               }
               else if(difference>1){
                 element.timeStamp = Jiffy(element.lastMessageTime).format(Strings.dateFormatFullYear);

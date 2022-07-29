@@ -216,6 +216,11 @@ class Home extends HookWidget {
                                         child: Profile(),
                                         type: PageTransitionType.rightToLeft));
                               } else if (index == 2) {
+                                // Navigator.push(
+                                //     context,
+                                //     PageTransition(
+                                //         child: Test(title: "Test"),
+                                //         type: PageTransitionType.rightToLeft));
                                 // applicationRouteService.addScreen(screenName: "Profile");
                                 CustomAlertDialog(message: "Coming Soon...");
                               } else if (index == 3) {

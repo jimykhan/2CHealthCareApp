@@ -229,7 +229,7 @@ class AddRPMEncounter extends HookWidget {
                                       ),
                                       Expanded(
                                         child: Text(
-                                          "${_rmpEncounterVM.selectedBillingProvider?.fullName}",
+                                          "${_rmpEncounterVM.selectedBillingProvider?.firstName??""} ${_rmpEncounterVM.selectedBillingProvider?.lastName??""}",
                                           style: Styles.PoppinsRegular(
                                               fontSize: ApplicationSizing.constSize(12),
                                               fontWeight: FontWeight.w700,

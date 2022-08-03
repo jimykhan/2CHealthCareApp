@@ -35,9 +35,8 @@ class RpmEncounterVM extends ChangeNotifier{
   String selecteServiceType = 'Call';
   List<String> serviceType = ["Call","SMS","Physical Interaction"];
   FacilityUserListModel? selectedBillingProvider;
+  FacilityUserListModel? selectedDownDownBillingProvider;
   List<FacilityUserListModel> billingProviders = [];
-  String selectedProviderName = "";
-  List<String> billingProvidersName = [];
 
 
 
@@ -54,9 +53,10 @@ class RpmEncounterVM extends ChangeNotifier{
   }
   onChangeBillingProvider(dynamic val){
     print("${val}");
-    selectedProviderName = val??"";
+    selectedDownDownBillingProvider = val??"";
     notifyListeners();
   }
+
   initialState({RpmLogModel? rpmEncounter}){
     dateController = TextEditingController();
     durationController = TextEditingController();
@@ -70,6 +70,11 @@ class RpmEncounterVM extends ChangeNotifier{
       durationController?.text = rpmEncounter.durationInMints.toString();
       notesController?.text = rpmEncounter.note??"";
       selecteServiceType = rpmEncounter.rpmServiceTypeString ?? "Call";
+      billingProviders.forEach((element) {
+        if(rpmEncounter.billingProviderId == element.id){
+          selectedBillingProvider = element;
+        }
+      });
       notifyListeners();
     }
   }
@@ -103,18 +108,20 @@ class RpmEncounterVM extends ChangeNotifier{
     selectedBillingProvider = FacilityUserListModel(id: currentUser?.id??0,fullName: currentUser?.fullName??"",
       facilityId: currentUser?.id??0
     );
+    selectedDownDownBillingProvider = FacilityUserListModel(id: currentUser?.id??0,fullName: currentUser?.fullName??"",
+        facilityId: currentUser?.id??0
+    );
 
     var billingProvidersByFacilityId = await _facilityService?.getBillingProvidersByFacilityId();
     if(billingProvidersByFacilityId != null){
       billingProviders = billingProvidersByFacilityId;
-      billingProvidersName = [];
       billingProviders.forEach((provider) {
-        billingProvidersName.add("${provider.firstName} ${provider.lastName}");
-        // print("${provider.firstName} ${provider.lastName}");
+        if(provider.id == currentUser!.id){
+          selectedBillingProvider = provider;
+          selectedDownDownBillingProvider = provider;
+        }
       });
-
     }
-    selectedProviderName = currentUser?.fullName??"";
     notifyListeners();
   }
 
@@ -146,18 +153,18 @@ class RpmEncounterVM extends ChangeNotifier{
 
   isValidUser()async{
     setCheckProviderLoading(true);
-    FacilityUserListModel? checkBillingProvider;
-    billingProviders.forEach((provider) {
-      if(provider.lastName == selectedProviderName.split(" ")[1] && provider.lastName == selectedProviderName.split(" ")[1]){
-        checkBillingProvider = provider;
-      }
-    });
-    var data = {"appUserId": checkBillingProvider?.userId??"", "password": passwordController?.text??""};
+    // FacilityUserListModel? checkBillingProvider;
+    // billingProviders.forEach((provider) {
+    //   if(provider.lastName == selectedProviderName.split(" ")[1] && provider.lastName == selectedProviderName.split(" ")[1]){
+    //     checkBillingProvider = provider;
+    //   }
+    // });
+    var data = {"appUserId": selectedDownDownBillingProvider?.userId??"", "password": passwordController?.text??""};
     print(data);
     bool response =  await _rpmService?.isValidUser(data)??false;
     if(response){
-      selectedBillingProvider = checkBillingProvider;
-      selectedBillingProvider?.fullName = "${selectedBillingProvider?.firstName} ${selectedBillingProvider?.lastName}";
+      selectedBillingProvider = selectedDownDownBillingProvider;
+      // selectedBillingProvider?.fullName = "${selectedBillingProvider?.firstName} ${selectedBillingProvider?.lastName}";
       Navigator.pop(applicationContext!.currentContext!);
     }
     setCheckProviderLoading(false);
@@ -199,7 +206,7 @@ class RpmEncounterVM extends ChangeNotifier{
       "encounterDate": dateController?.text??"",
       "note": notesController?.text??"",
       "patientId": patientId,
-      "facilityUserId": selectedBillingProvider?.facilityId,
+      "facilityUserId": selectedBillingProvider?.id??0,
       "billingProviderId": selectedBillingProvider?.id??0,
       "rpmServiceType": serviceType[0] == selecteServiceType ? 0 : serviceType[1] == selecteServiceType ? 1 : 2,
       "isProviderRpm": isProviderRpm
@@ -255,7 +262,7 @@ class RpmEncounterVM extends ChangeNotifier{
       "encounterDate": dateController?.text??"",
       "note": notesController?.text??"",
       "patientId": patientId,
-      "facilityUserId": selectedBillingProvider?.facilityId,
+      "facilityUserId": selectedBillingProvider?.id??0,
       "rpmServiceType": serviceType[0] == selecteServiceType ?  0 : serviceType[1] == selecteServiceType ? 1 : 2,
       "isProviderRpm": isProviderRpm
     };

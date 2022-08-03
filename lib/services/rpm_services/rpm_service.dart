@@ -251,7 +251,7 @@ class RpmService{
       }
 
     }catch(e){
-      // SnackBarMessage(message: e.toString(),error: true);
+      SnackBarMessage(message: e.toString(),error: true);
       return false;
     }
 

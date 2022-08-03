@@ -13,6 +13,7 @@ import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
 import 'package:twochealthcare/view_models/rpm_vm/rpm_encounter_vm.dart';
+import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_summary/components/encounters_components/facility_drop_down.dart';
 class ChangeBillingProvider extends HookWidget {
   const ChangeBillingProvider({Key? key}) : super(key: key);
 
@@ -108,9 +109,10 @@ class ChangeBillingProvider extends HookWidget {
                   children: [
                     TextFieldTitle(title: 'Provider Name',),
                     Container(margin: EdgeInsets.only(top: 1),
-                      child: DropDownButton(dropDownValue: _rmpEncounterVM.selectedProviderName,
+                      child: FacilityDropDown(
+                        dropDownValue: _rmpEncounterVM.selectedDownDownBillingProvider!,
                         onChange: _rmpEncounterVM.onChangeBillingProvider,
-                        menuList: _rmpEncounterVM.billingProvidersName,),
+                        menuList: _rmpEncounterVM.billingProviders,),
                     ),
                   ],
                 ),

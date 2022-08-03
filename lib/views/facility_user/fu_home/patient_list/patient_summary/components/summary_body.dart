@@ -21,6 +21,7 @@ class SummaryBody extends HookWidget {
         useProvider(fUPatientSummaryVMProvider);
     useEffect(
       () {
+        // _fuPatientSummaryVM.isLoading = true;
         print("init call of Patient Summary");
         Future.microtask(() async {
           await _fuPatientSummaryVM.getPatientInfoById();

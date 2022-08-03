@@ -89,7 +89,10 @@ class FUPatientSummaryVM extends ChangeNotifier{
       }
       i++;
     });
-    notifyListeners();
+    Future.delayed(Duration(microseconds: 1),(){
+      notifyListeners();
+    });
+
   }
 
   getDiagnosisByPatientId()async{

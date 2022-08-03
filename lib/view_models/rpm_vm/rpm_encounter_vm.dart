@@ -37,6 +37,7 @@ class RpmEncounterVM extends ChangeNotifier{
   FacilityUserListModel? selectedBillingProvider;
   FacilityUserListModel? selectedDownDownBillingProvider;
   List<FacilityUserListModel> billingProviders = [];
+  CurrentUser? currentUser;
 
 
 
@@ -75,7 +76,10 @@ class RpmEncounterVM extends ChangeNotifier{
           selectedBillingProvider = element;
         }
       });
-      notifyListeners();
+      Future.delayed(Duration(seconds: 1),(){
+        notifyListeners();
+      });
+
     }
   }
 
@@ -101,10 +105,10 @@ class RpmEncounterVM extends ChangeNotifier{
 
   }
   getCurrentUser({RpmLogModel? rpmEncounter})async{
-    CurrentUser? currentUser = await _authService?.getCurrentUserFromSharedPref();
-    if(rpmEncounter != null){
-      currentUser = CurrentUser(id: rpmEncounter.facilityUserId??0, fullName: rpmEncounter.facilityUserName??"");
-    }
+     currentUser = await _authService?.getCurrentUserFromSharedPref();
+    // if(rpmEncounter != null){
+      // currentUser = CurrentUser(id: rpmEncounter.facilityUserId??0, fullName: rpmEncounter.facilityUserName??"");
+    // }
     selectedBillingProvider = FacilityUserListModel(id: currentUser?.id??0,fullName: currentUser?.fullName??"",
       facilityId: currentUser?.id??0
     );
@@ -206,7 +210,7 @@ class RpmEncounterVM extends ChangeNotifier{
       "encounterDate": dateController?.text??"",
       "note": notesController?.text??"",
       "patientId": patientId,
-      "facilityUserId": selectedBillingProvider?.id??0,
+      "facilityUserId": currentUser?.id??0,
       "billingProviderId": selectedBillingProvider?.id??0,
       "rpmServiceType": serviceType[0] == selecteServiceType ? 0 : serviceType[1] == selecteServiceType ? 1 : 2,
       "isProviderRpm": isProviderRpm
@@ -262,7 +266,7 @@ class RpmEncounterVM extends ChangeNotifier{
       "encounterDate": dateController?.text??"",
       "note": notesController?.text??"",
       "patientId": patientId,
-      "facilityUserId": selectedBillingProvider?.id??0,
+      "facilityUserId": currentUser?.id??0,
       "rpmServiceType": serviceType[0] == selecteServiceType ?  0 : serviceType[1] == selecteServiceType ? 1 : 2,
       "isProviderRpm": isProviderRpm
     };

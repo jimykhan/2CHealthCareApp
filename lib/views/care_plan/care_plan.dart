@@ -857,7 +857,7 @@ class CarePlan extends HookWidget {
                       : carePlanVM.carePlanModel?.iLive?.toUpperCase().trim() ==
                               "other".toUpperCase()
                           ? 4
-                          : 1,
+                          : -1,
           question: "Patient live",
           option1: "Alone",
           option2: "Partner/Spouse",

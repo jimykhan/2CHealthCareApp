@@ -241,6 +241,9 @@ class FacilityService{
           res?.data?.forEach((element) {
             facilityUserListModel.add(FacilityUserListModel.fromJson(element));
           });
+          facilityUserListModel.forEach((element) {
+            element.fullName = "${element.firstName??""} ${element.lastName??""}";
+          });
           return facilityUserListModel;
         }
         else{

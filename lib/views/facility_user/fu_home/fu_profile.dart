@@ -99,20 +99,20 @@ class FUProfile extends HookWidget {
                                 child: Column(
                                   children: [
                                     Text(
-                                      "${fuProfileVM.fuProfileModel?.firstName} ${fuProfileVM.fuProfileModel?.lastName}",
+                                      "${fuProfileVM.fuProfileModel?.firstName??""} ${fuProfileVM.fuProfileModel?.lastName??""}",
                                       style: Styles.PoppinsRegular(
                                           fontSize: 20,
                                           fontWeight: FontWeight.w600),
                                     ),
                                     Text(
-                                      "${fuProfileVM.fuProfileModel?.email}",
+                                      "${fuProfileVM.fuProfileModel?.email??""}",
                                       style: Styles.PoppinsRegular(
                                           fontSize: 10,
                                           fontWeight: FontWeight.w400,
                                           color: fontGrayColor),
                                     ),
                                     Text(
-                                      "${fuProfileVM.fuProfileModel?.phoneNoWithCountryCallingCode}",
+                                      "${fuProfileVM.fuProfileModel?.phoneNoWithCountryCallingCode??""}",
                                       style: Styles.PoppinsRegular(
                                           fontSize: 10,
                                           fontWeight: FontWeight.w400,
@@ -177,7 +177,7 @@ class FUProfile extends HookWidget {
                                                 ),
                                                 type: PageTransitionType
                                                     .leftToRight));
-                                      },
+                                      }, hints: "Not Entered",
                               ),
                               keyValue(
                                   key: "Facility Name",
@@ -220,7 +220,7 @@ class FUProfile extends HookWidget {
                                                 ),
                                                 type: PageTransitionType
                                                     .leftToRight));
-                                      },
+                                      }, hints: "Not Entered",
                               ),
                             ],
                           ),

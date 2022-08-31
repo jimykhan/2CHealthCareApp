@@ -66,23 +66,31 @@ class UserInfoTile extends StatelessWidget {
             child: Container(
               alignment: Alignment.centerRight,
               // color: Colors.black,
-              child: RichText(
-                text: TextSpan(children: [
-                  TextSpan(
-                      text: patientsModel.sex?? "",
-                      style: Styles.PoppinsRegular(
-                        fontSize: ApplicationSizing.constSize(12),
-                        color: Colors.white,
-                        fontWeight: FontWeight.w500,
-                      )),
-                  TextSpan(
-                      text: " ${patientsModel.age} Years",
-                      style: Styles.PoppinsRegular(
-                        fontSize: ApplicationSizing.constSize(12),
-                        color: Colors.white,
-                        fontWeight: FontWeight.w500,
-                      )),
-                ]),
+              child: Column(
+                children: [
+                  RichText(
+                    text: TextSpan(children: [
+                      TextSpan(
+                          text: patientsModel.sex?? "",
+                          style: Styles.PoppinsRegular(
+                            fontSize: ApplicationSizing.constSize(12),
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                          )),
+                    ]),
+                  ),
+                  RichText(
+                    text: TextSpan(children: [
+                      TextSpan(
+                          text: " ${patientsModel.age} Years",
+                          style: Styles.PoppinsRegular(
+                            fontSize: ApplicationSizing.constSize(12),
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                          )),
+                    ]),
+                  ),
+                ],
               ),
             ),
           ),

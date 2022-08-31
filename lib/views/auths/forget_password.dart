@@ -160,11 +160,13 @@ class forgetPassword extends HookWidget {
                                 SizedBox(width: ApplicationSizing.convertWidth(15),),
                                 RadioButton(
                                   buttonSelected: forgetPasswordVM.verificationWithEmail,
-                                  onchange: forgetPasswordVM.verificationWithEmail || !isEmailVerify ? (){} : (){
-                                    forgetPasswordVM.SetVerificationWithEmail(!forgetPasswordVM.verificationWithEmail);
+                                  // onchange: forgetPasswordVM.verificationWithEmail || !isEmailVerify ? (){} : (){
+                                  //   forgetPasswordVM.SetVerificationWithEmail(!forgetPasswordVM.verificationWithEmail);
+                                 onchange: forgetPasswordVM.verificationWithEmail ? (){} : (){
+                                       forgetPasswordVM.SetVerificationWithEmail(!forgetPasswordVM.verificationWithEmail);
                                   },
                                   text: "Email",
-                                  disableText: !isEmailVerify,
+                                  disableText: false,
                                   LineWidth: ApplicationSizing.convertWidth(45),
                                 ),
 

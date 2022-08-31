@@ -144,7 +144,7 @@ class LoginVM extends ChangeNotifier{
     /// fieldType 1 for password validator
     /// fieldType 2 for both validator
     /// fieldType 3 for confirm password validator
-    /// fieldType 4 for match password comfirm password validator
+    /// fieldType 4 for match password confirm password validator
     if(fieldType == 0){
       bool emailValid = LoginValidator.validUserName(val);
       if(!emailValid){
@@ -189,7 +189,7 @@ class LoginVM extends ChangeNotifier{
       fieldValidation(password,fieldType: 1);
       fieldValidation(confirmPassword,fieldType: 3);
       if(password != confirmPassword){
-        confirmPasswordErrorText = "Please enter your confirm password";
+        confirmPasswordErrorText = "Confirm password not matched";
         isConfirmPasswordFieldValid = false;
         notifyListeners();
         return isConfirmPasswordFieldValid;

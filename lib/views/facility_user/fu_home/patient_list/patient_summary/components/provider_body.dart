@@ -50,7 +50,7 @@ class ProviderBody extends HookWidget {
           HeadLineTextStyle(
             text: "Billing Provider",
           ),
-          BillingProviderTile(billingProvider: _fuPatientSummaryVM.billingProvider?? FUProfileModel(),),
+          BillingProviderTile(billingProvider: _fuPatientSummaryVM.billingProvider,),
           HeadLineTextStyle(
             text: "Other Providers",
           ),

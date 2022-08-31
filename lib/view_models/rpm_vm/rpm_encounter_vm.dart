@@ -74,6 +74,7 @@ class RpmEncounterVM extends ChangeNotifier{
       billingProviders.forEach((element) {
         if(rpmEncounter.billingProviderId == element.id){
           selectedBillingProvider = element;
+          selectedDownDownBillingProvider = element;
         }
       });
       Future.delayed(Duration(seconds: 1),(){
@@ -106,25 +107,27 @@ class RpmEncounterVM extends ChangeNotifier{
   }
   getCurrentUser({RpmLogModel? rpmEncounter})async{
      currentUser = await _authService?.getCurrentUserFromSharedPref();
-    // if(rpmEncounter != null){
-      // currentUser = CurrentUser(id: rpmEncounter.facilityUserId??0, fullName: rpmEncounter.facilityUserName??"");
-    // }
-    selectedBillingProvider = FacilityUserListModel(id: currentUser?.id??0,fullName: currentUser?.fullName??"",
-      facilityId: currentUser?.id??0
-    );
-    selectedDownDownBillingProvider = FacilityUserListModel(id: currentUser?.id??0,fullName: currentUser?.fullName??"",
-        facilityId: currentUser?.id??0
-    );
+    if(rpmEncounter == null){
+      selectedBillingProvider = FacilityUserListModel(id: currentUser?.id??0,fullName: currentUser?.fullName??"",
+          facilityId: currentUser?.id??0
+      );
+      selectedDownDownBillingProvider = FacilityUserListModel(id: currentUser?.id??0,fullName: currentUser?.fullName??"",
+          facilityId: currentUser?.id??0
+      );
+    }
+
 
     var billingProvidersByFacilityId = await _facilityService?.getBillingProvidersByFacilityId();
     if(billingProvidersByFacilityId != null){
       billingProviders = billingProvidersByFacilityId;
-      billingProviders.forEach((provider) {
-        if(provider.id == currentUser!.id){
-          selectedBillingProvider = provider;
-          selectedDownDownBillingProvider = provider;
-        }
-      });
+      if(rpmEncounter == null){
+        billingProviders.forEach((provider) {
+          if(provider.id == currentUser!.id){
+            selectedBillingProvider = provider;
+            selectedDownDownBillingProvider = provider;
+          }
+        });
+      }
     }
     notifyListeners();
   }

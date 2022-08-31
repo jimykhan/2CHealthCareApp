@@ -7,8 +7,8 @@ import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
 
 class BillingProviderTile extends StatelessWidget {
-  FUProfileModel billingProvider;
-  BillingProviderTile({required this.billingProvider, Key? key}) : super(key: key);
+  FUProfileModel? billingProvider;
+  BillingProviderTile({ this.billingProvider, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,21 @@ class BillingProviderTile extends StatelessWidget {
           borderRadius: BorderRadius.circular(15),
           color: Colors.white
       ),
-      child: Row(
+      child: billingProvider == null ? Row(
+        children: [
+          Expanded(
+            child: Container(
+              child:  Text("Billing Provider Not Assign",
+                style: Styles.PoppinsRegular(
+                  fontSize: ApplicationSizing.constSize(20),
+                  color: Colors.black,
+                  fontWeight: FontWeight.w100,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ) : Row(
         children: [
           CircularImage(
             h: 55,
@@ -41,7 +55,7 @@ class BillingProviderTile extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("${billingProvider.firstName} ${billingProvider.lastName}",
+                  Text("${billingProvider?.firstName??""} ${billingProvider?.lastName??""}",
                     style: Styles.PoppinsRegular(
                       fontSize: ApplicationSizing.constSize(20),
                       color: Colors.black,
@@ -49,7 +63,7 @@ class BillingProviderTile extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    "${billingProvider.email}",
+                    "${billingProvider?.email??""}",
                     style: Styles.PoppinsRegular(
                       fontSize: ApplicationSizing.constSize(12),
                       color: Colors.black,

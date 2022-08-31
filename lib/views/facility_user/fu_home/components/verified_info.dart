@@ -7,12 +7,14 @@ class VerifiedInfo extends StatelessWidget {
   bool isVerified;
   String? textInfo;
   String? textInfoTitle;
+  String hints;
   Function()? ontap;
   VerifiedInfo(
       {required this.isVerified,
       this.textInfo,
       this.textInfoTitle,
       this.ontap,
+        required this.hints,
       Key? key})
       : super(key: key);
 
@@ -39,7 +41,17 @@ class VerifiedInfo extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: GestureDetector(
+            child: (textInfo == null || textInfo == "") ? Container(
+              // color: Colors.amber,
+              padding: EdgeInsets.only(top: 3),
+              child: Text(
+                textInfo ?? "",
+                style: Styles.PoppinsRegular(
+                    color: appColor,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400),
+              ),
+            ) : GestureDetector(
               onTap: ontap,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,

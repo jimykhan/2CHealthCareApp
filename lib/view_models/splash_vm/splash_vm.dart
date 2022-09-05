@@ -6,6 +6,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:twochealthcare/main.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/application_route_service.dart';
+import 'package:twochealthcare/services/application_startup_service.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
 import 'package:twochealthcare/services/firebase_service.dart';
 import 'package:twochealthcare/services/onlunch_activity_routes_service.dart';
@@ -36,26 +37,29 @@ class SplashVM extends ChangeNotifier{
   }
 
   navigateToHome() async {
-     SharedPrefServices sharedPrefServices =  _ref!.read(sharedPrefServiceProvider);
-     AuthServices authServices =  _ref!.read(authServiceProvider);
-     ApplicationRouteService applicationRouteService =  _ref!.read(applicationRouteServiceProvider);
-     LoginVM loginVM =  _ref!.read(loginVMProvider);
-     FirebaseService firebaseService =  _ref!.read(firebaseServiceProvider);
-     SignalRServices signalRServices =  _ref!.read(signalRServiceProvider);
-     OnLaunchActivityAndRoutesService onLunchActivityService =  _ref!.read(onLaunchActivityServiceProvider);
-     _chatListVM =  _ref!.read(chatListVMProvider);
+     // SharedPrefServices sharedPrefServices =  _ref!.read(sharedPrefServiceProvider);
+     // AuthServices authServices =  _ref!.read(authServiceProvider);
+     // ApplicationRouteService applicationRouteService =  _ref!.read(applicationRouteServiceProvider);
+     // // LoginVM loginVM =  _ref!.read(loginVMProvider);
+     // // FirebaseService firebaseService =  _ref!.read(firebaseServiceProvider);
+     // // SignalRServices signalRServices =  _ref!.read(signalRServiceProvider);
+     // OnLaunchActivityAndRoutesService onLunchActivityService =  _ref!.read(onLaunchActivityServiceProvider);
+     // _chatListVM =  _ref!.read(chatListVMProvider);
+     ApplicationStartupService applicationStartupService =  _ref!.read(applicationStartupServiceProvider);
 
-     var bearerToken = await sharedPrefServices.getBearerToken();
-     int currenUserId = await authServices.getCurrentUserId();
-     if(bearerToken == null){
-       applicationRouteService.addAndRemoveScreen(screenName: "Login");
-       Navigator.pushReplacement(applicationContext!.currentContext!,
-           PageTransition(child:const Login() , type: PageTransitionType.leftToRight));
-     }else{
-       applicationRouteService.addAndRemoveScreen(screenName: "Home");
-       onLunchActivityService.decideUserFlow();
-       onLunchActivityService.syncLastApplicationUseDateAndTime();
-     }
+     applicationStartupService.applicationStart(fromSplash: true);
+
+     // var bearerToken = await sharedPrefServices.getBearerToken();
+     // int currenUserId = await authServices.getCurrentUserId();
+     // if(bearerToken == null){
+     //   applicationRouteService.addAndRemoveScreen(screenName: "Login");
+     //   Navigator.pushReplacement(applicationContext!.currentContext!,
+     //       PageTransition(child:const Login() , type: PageTransitionType.leftToRight));
+     // }else{
+     //   applicationRouteService.addAndRemoveScreen(screenName: "Home");
+     //   onLunchActivityService.decideUserFlow();
+     //   onLunchActivityService.syncLastApplicationUseDateAndTime();
+     // }
 
   }
 

@@ -11,6 +11,7 @@ import 'package:twochealthcare/common_widgets/error_text.dart';
 import 'package:twochealthcare/common_widgets/filled_button.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/application_route_service.dart';
+import 'package:twochealthcare/services/application_startup_service.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
 import 'package:twochealthcare/services/firebase_service.dart';
 import 'package:twochealthcare/services/onlunch_activity_routes_service.dart';
@@ -37,6 +38,7 @@ class ResetPassword extends HookWidget {
     ApplicationRouteService applicationRouteService = useProvider(applicationRouteServiceProvider);
     OnLaunchActivityAndRoutesService onLaunchActivityService = useProvider(onLaunchActivityServiceProvider);
     ProfileVm profileVm = useProvider(profileVMProvider);
+    ApplicationStartupService applicationStartupService = useProvider(applicationStartupServiceProvider);
 
     useEffect(
           () {
@@ -65,7 +67,8 @@ class ResetPassword extends HookWidget {
                       applicationRouteService: applicationRouteService,
                       onLaunchActivityService: onLaunchActivityService,
                       profileVm: profileVm,
-                      signalRServices: signalRServices
+                      signalRServices: signalRServices,
+                    applicationStartupService: applicationStartupService
                   ),
                 ],
               ),
@@ -82,7 +85,8 @@ class ResetPassword extends HookWidget {
     SignalRServices? signalRServices,
     required ApplicationRouteService applicationRouteService,
     required OnLaunchActivityAndRoutesService onLaunchActivityService,
-    required ProfileVm profileVm
+    required ProfileVm profileVm,
+    required ApplicationStartupService applicationStartupService,
   }) {
     return Container(
       decoration: BoxDecoration(
@@ -237,18 +241,19 @@ class ResetPassword extends HookWidget {
               if (checkPassword) {
                 bool isValid = await loginVM.changePassword(userName: userName,pinCode: pinCode);
                 if (isValid) {
-                  onLaunchActivityService.syncLastApplicationUseDateAndTime();
-                  applicationRouteService.addAndRemoveScreen(screenName: "Home");
-                  onLaunchActivityService.decideUserFlow();
-                  try{
-                    await firebaseService?.subNotification();
-                    await signalRServices?.initSignalR();
-                    if(loginVM.currentUser?.userType == 1){
-                      profileVm.getUserInfo();
-                    }
-                  }catch(e){
-                    print("$e");
-                  }
+                  applicationStartupService.applicationStart(fromResetPassword: true);
+                  // onLaunchActivityService.syncLastApplicationUseDateAndTime();
+                  // applicationRouteService.addAndRemoveScreen(screenName: "Home");
+                  // onLaunchActivityService.decideUserFlow();
+                  // try{
+                  //   await firebaseService?.subNotification();
+                  //   await signalRServices?.initSignalR();
+                  //   if(loginVM.currentUser?.userType == 1){
+                  //     profileVm.getUserInfo();
+                  //   }
+                  // }catch(e){
+                  //   print("$e");
+                  // }
 
                 }
               }

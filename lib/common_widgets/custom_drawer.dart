@@ -127,10 +127,8 @@ class CustomDrawer extends HookWidget {
                               loginVM.logedInUserModel?.lastLogedIn == null)
                           ? Container()
                           : MenuTextStyle(
-                              text: Jiffy(
-                                      loginVM.logedInUserModel?.lastLogedIn ??
-                                          "")
-                                  .format(Strings.dateAndTimeFormat),
+                              text: loginVM.logedInUserModel?.lastLogedIn ??
+                                  "",
                               fontSize: ApplicationSizing.fontScale(10),
                               isPadding: false,
                               color: appColor,

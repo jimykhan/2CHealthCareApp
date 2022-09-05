@@ -2,15 +2,19 @@ import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/all.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:twochealthcare/constants/api_strings.dart';
+import 'package:twochealthcare/constants/strings.dart';
 import 'package:twochealthcare/models/user/current_user.dart';
+import 'package:twochealthcare/models/user/loged_in_user.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/application_route_service.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
 import 'package:twochealthcare/services/dio_services/dio_services.dart';
 import 'package:twochealthcare/services/facility_user_services/facility_service.dart';
 import 'package:twochealthcare/services/firebase_service.dart';
+import 'package:twochealthcare/services/shared_pref_services.dart';
 import 'package:twochealthcare/services/signal_r_services.dart';
 import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
 import 'package:twochealthcare/view_models/chat_vm/chat_list_vm.dart';
@@ -25,7 +29,6 @@ import 'package:twochealthcare/views/home/profile.dart';
 import 'package:twochealthcare/views/readings/modalities_reading.dart';
 import 'package:twochealthcare/views/settings/fu_settings/fu_settings.dart';
 import 'package:twochealthcare/views/settings/p_settings/p_settings.dart';
-
 import '../main.dart';
 
 class OnLaunchActivityAndRoutesService{
@@ -40,13 +43,15 @@ class OnLaunchActivityAndRoutesService{
   FacilityService? _facilityService;
   FUHomeViewModel? _fuHomeViewModel;
   ApplicationRouteService? applicationRouteService;
+  SharedPrefServices? sharedPrefServices;
 
   OnLaunchActivityAndRoutesService({ProviderReference? ref}){
     _ref = ref;
     _initServices();
   }
+
   _initServices(){
-    AuthServices authServices =  _ref!.read(authServiceProvider);
+    // AuthServices authServices =  _ref!.read(authServiceProvider);
     _chatListVM =  _ref!.read(chatListVMProvider);
     profileVm =  _ref!.read(profileVMProvider);
     signalRServices =  _ref!.read(signalRServiceProvider);
@@ -57,6 +62,7 @@ class OnLaunchActivityAndRoutesService{
     _facilityService = _ref!.read(facilityServiceProvider);
     _fuHomeViewModel = _ref!.read(fuHomeVMProvider);
     applicationRouteService = _ref?.read(applicationRouteServiceProvider);
+    sharedPrefServices = _ref?.read(sharedPrefServiceProvider);
   }
 
   syncLastApplicationUseDateAndTime() async {
@@ -75,29 +81,27 @@ class OnLaunchActivityAndRoutesService{
     }
   }
 
-
   patientOnStartApplicationData()async{
-    int patientId = await _authService!.getCurrentUserId();
-    Response res = await dio!.dio!.post(ApiStrings.setLastAppLaunchDate+"/$patientId");
+    // int patientId = await _authService!.getCurrentUserId();
+    // Response res = await dio!.dio!.post(ApiStrings.setLastAppLaunchDate+"/$patientId");
     profileVm?.getUserInfo();
-    loginVM?.checkLastLoggedInUser(body: {
-      "id":loginVM?.currentUser?.id?.toString()??"",
-      "userName": loginVM?.currentUser?.fullName??"",
-      "lastLogedIn": DateTime.now().toString()
-    });
+    // loginVM?.checkLastLoggedInUser(body: {
+    //   "id":loginVM?.currentUser?.id?.toString()??"",
+    //   "userName": loginVM?.currentUser?.fullName??"",
+    //   "lastLogedIn": DateTime.now().toString()
+    // });
     _chatListVM?.getGroupsIds();
     // firebaseService?.initNotification();
     loginVM?.getCurrentUserFromSharedPref();
     signalRServices?.initSignalR();
-
   }
 
   facilityUserOnStartApplicationData()async{
-    loginVM?.checkLastLoggedInUser(body: {
-      "id":loginVM?.currentUser?.id?.toString()??"",
-      "userName": loginVM?.currentUser?.fullName??"",
-      "lastLogedIn": DateTime.now().toString()
-    });
+    // loginVM?.checkLastLoggedInUser(body: {
+    //   "id":loginVM?.currentUser?.id?.toString()??"",
+    //   "userName": loginVM?.currentUser?.fullName??"",
+    //   "lastLogedIn": DateTime.now().toString()
+    // });
     _chatListVM?.getGroupsIds();
     // firebaseService?.initNotification();
     _fuHomeViewModel?.getFacilitiesByUserId();
@@ -165,7 +169,6 @@ class OnLaunchActivityAndRoutesService{
 
   }
 
-
   profileDecider()async{
     CurrentUser currentUser = await loginVM?.getCurrentUserFromSharedPref();
     if(currentUser.userType == 1){
@@ -226,5 +229,26 @@ class OnLaunchActivityAndRoutesService{
       );
     }else{
     }
+  }
+
+  Future<LogedInUserModel> setAndGetLastLoginDateTime()async{
+    LogedInUserModel logedInUserModel = LogedInUserModel();
+    try{
+      int userId = await _authService!.getCurrentUserId();
+      Response res1 = await dio!.dio!.get(ApiStrings.getLastAppLaunchDate+"/$userId");
+      logedInUserModel.id = userId;
+      logedInUserModel.lastLogedIn = Jiffy(DateTime.now().toString()).format(Strings.dateAndTimeFormat);
+      if(res1.statusCode == 200){
+        if(res1.data["lastAppLaunchDate"] != null){
+          logedInUserModel.lastLogedIn = Jiffy(res1.data["lastAppLaunchDate"]).format(Strings.dateAndTimeFormat);
+        }
+      }
+      await sharedPrefServices?.lastLoggedInUser(data: logedInUserModel.toJson());
+      Response res = await dio!.dio!.post(ApiStrings.setLastAppLaunchDate+"/$userId");
+      return logedInUserModel;
+    }catch(ex){
+      return logedInUserModel;
+    }
+
   }
 }

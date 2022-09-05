@@ -2,6 +2,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:twochealthcare/services/app_data_service.dart';
 import 'package:twochealthcare/services/application_package_service.dart';
 import 'package:twochealthcare/services/application_route_service.dart';
+import 'package:twochealthcare/services/application_startup_service.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
 import 'package:twochealthcare/services/care_plan_services/care_plan_services.dart';
 import 'package:twochealthcare/services/ccm_services/ccm_services.dart';
@@ -113,4 +114,5 @@ final ccmServiceProvider = Provider<CcmService>((ref)=>CcmService(ref: ref));
 final diagnosisServiceProvider = Provider<DiagnosisService>((ref)=>DiagnosisService(ref: ref));
 final appDataServiceProvider = Provider<AppDataService>((ref)=>AppDataService(ref: ref));
 final applicationPackageServiceProvider = Provider<ApplicationPackageService>((ref)=>ApplicationPackageService(ref: ref));
+final applicationStartupServiceProvider = Provider<ApplicationStartupService>((ref)=>ApplicationStartupService(ref: ref));
 /// Simple Providers

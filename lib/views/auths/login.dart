@@ -12,6 +12,7 @@ import 'package:twochealthcare/common_widgets/filled_button.dart';
 import 'package:twochealthcare/common_widgets/snackber_message.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/application_route_service.dart';
+import 'package:twochealthcare/services/application_startup_service.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
 import 'package:twochealthcare/services/firebase_service.dart';
 import 'package:twochealthcare/services/onlunch_activity_routes_service.dart';
@@ -36,6 +37,7 @@ class Login extends HookWidget {
     SignalRServices signalRServices = useProvider(signalRServiceProvider);
     ApplicationRouteService applicationRouteService = useProvider(applicationRouteServiceProvider);
     OnLaunchActivityAndRoutesService onLaunchActivityService = useProvider(onLaunchActivityServiceProvider);
+    ApplicationStartupService applicationStartupService = useProvider(applicationStartupServiceProvider);
     ProfileVm profileVm = useProvider(profileVMProvider);
 
     useEffect(
@@ -64,7 +66,8 @@ class Login extends HookWidget {
                   applicationRouteService: applicationRouteService,
                   onLaunchActivityService: onLaunchActivityService,
                     profileVm: profileVm,
-                      signalRServices: signalRServices
+                      signalRServices: signalRServices,
+                    applicationStartupService: applicationStartupService
                   ),
 
                 ],
@@ -82,7 +85,8 @@ class Login extends HookWidget {
   SignalRServices? signalRServices,
     required ApplicationRouteService applicationRouteService,
     required OnLaunchActivityAndRoutesService onLaunchActivityService,
-    required ProfileVm profileVm
+    required ProfileVm profileVm,
+    required ApplicationStartupService applicationStartupService,
   }) {
     return Container(
       decoration: BoxDecoration(
@@ -270,10 +274,11 @@ class Login extends HookWidget {
                     if (checkMail && checkPassword) {
                       bool isValid = await loginVM.userLogin();
                       if (isValid) {
-                        applicationRouteService.addAndRemoveScreen(screenName: "Home");
-                        firebaseService?.subNotification();
-                        onLaunchActivityService.decideUserFlow();
-                        onLaunchActivityService.syncLastApplicationUseDateAndTime();
+                        applicationStartupService.applicationStart(fromLogin: true);
+                        // applicationRouteService.addAndRemoveScreen(screenName: "Home");
+                        // firebaseService?.subNotification();
+                        // onLaunchActivityService.decideUserFlow();
+                        // onLaunchActivityService.syncLastApplicationUseDateAndTime();
                       }
                     }
                   },

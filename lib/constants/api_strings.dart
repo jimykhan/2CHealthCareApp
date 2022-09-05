@@ -55,6 +55,7 @@ class ApiStrings {
   static const String sendError = baseUrl + "/api/Exceptions/PostMobileAppException";
   static const String checkChatStatus = baseUrl + "/api/Facility/IsChatServiceEnabled";
   static const String setLastAppLaunchDate = baseUrl + "/api/Patients/SetLastAppLaunchDate";
+  static const String getLastAppLaunchDate = baseUrl + "/api/Patients/GetLastAppLaunchDate";
   static const String healthGuideLines = baseUrl + "/api/HealthGuideLines";
   static const String editPatientProfile = baseUrl + "/api/Patients/EditPatientProfile";
   static const String getStatesList = baseUrl + "/api/AppData/GetStatesList";

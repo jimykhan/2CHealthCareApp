@@ -258,6 +258,7 @@ class PatientInfo {
     bestTimeToCall = json['bestTimeToCall'];
     preferredLanguage = json['preferredLanguage'];
     emergencyContactName = json['emergencyContactName'];
+
     emergencyContactRelationship = json['emergencyContactRelationship'];
     emergencyContactPrimaryPhoneNo = json['emergencyContactPrimaryPhoneNo'];
     emergencyContactSecondaryPhoneNo = json['emergencyContactSecondaryPhoneNo'];

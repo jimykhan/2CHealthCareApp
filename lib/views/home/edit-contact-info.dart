@@ -180,6 +180,7 @@ class EditContactInfo extends HookWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
+                        alignment: Alignment.center,
                         width: 80,
                         height: 50,
                         padding: EdgeInsets.only(right: 0, left: 5),
@@ -189,33 +190,41 @@ class EditContactInfo extends HookWidget {
                               width: 1.2,
                             ),
                             borderRadius: BorderRadius.circular(7)),
-                        child: DropdownButton(
-                          value: profileVm.countryCallingCode,
-                          isExpanded: true,
-                          icon: const Icon(
-                            Icons.keyboard_arrow_down,
-                            size: 30,
-                          ),
-                          // iconSize: 24,
-                          // elevation: 16,
+                        child: Text(
+                          "+1 US",
                           style: Styles.PoppinsRegular(
                             fontSize: ApplicationSizing.fontScale(14),
                           ),
-                          underline: Container(),
-                          onChanged: (val){},
-                          items: ["+1"]
-                              .map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(
-                                "${value} US",
-                                style: Styles.PoppinsRegular(
-                                  fontSize: ApplicationSizing.fontScale(14),
-                                ),
-                              ),
-                            );
-                          }).toList(),
                         ),
+                        // child: DropdownButton(
+                        //   value: profileVm.countryCallingCode,
+                        //   isExpanded: true,
+                        //   icon: const Icon(
+                        //     Icons.keyboard_arrow_down,
+                        //     size: 30,
+                        //   ),
+                        //   // iconSize: 24,
+                        //   // elevation: 16,
+                        //   style: Styles.PoppinsRegular(
+                        //     fontSize: ApplicationSizing.fontScale(14),
+                        //   ),
+                        //   underline: Container(),
+                        //   onChanged: (val){},
+                        //   items: ["+1"]
+                        //       .map<DropdownMenuItem<String>>((String value) {
+                        //     return DropdownMenuItem<String>(
+                        //       // enabled: false,
+                        //       // onTap: (){},
+                        //       value: value,
+                        //       child: Text(
+                        //         "${value} US",
+                        //         style: Styles.PoppinsRegular(
+                        //           fontSize: ApplicationSizing.fontScale(14),
+                        //         ),
+                        //       ),
+                        //     );
+                        //   }).toList(),
+                        // ),
                       ),
 
                       // Container(

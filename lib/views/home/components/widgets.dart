@@ -92,7 +92,7 @@ tile({String? key, String? value}){
           ),
         ),
         Text(
-          value ?? "",
+          value?? "",
           style: Styles.PoppinsRegular(
             fontWeight: FontWeight.w400,
             fontSize: ApplicationSizing.fontScale(12),

@@ -34,7 +34,6 @@ class PatientProfileService{
         patientInfo.emergencyContactSecondaryPhoneNo = mask.getMaskedString(patientInfo.emergencyContactSecondaryPhoneNo??"");
         patientInfo.emergencyContactSecondaryPhoneNo = mask.getMaskedString(patientInfo.emergencyContactSecondaryPhoneNo??"");
         patientInfo.emergencyContactPrimaryPhoneNo = mask.getMaskedString(patientInfo.emergencyContactPrimaryPhoneNo??"");
-        patientInfo.emergencyContactRelationship = mask.getMaskedString(patientInfo.emergencyContactRelationship??"");
         patientInfo.personNumber = mask.getMaskedString(patientInfo.personNumber??"");
         if(patientInfo.dateOfBirth != null){
           patientInfo.dateOfBirth = Jiffy(patientInfo.dateOfBirth).format(Strings.dateFormatFullYear);

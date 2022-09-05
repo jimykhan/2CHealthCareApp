@@ -9,6 +9,7 @@ import 'package:twochealthcare/main.dart';
 import 'package:twochealthcare/models/user/current_user.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/application_route_service.dart';
+import 'package:twochealthcare/services/application_startup_service.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
 import 'package:twochealthcare/services/firebase_service.dart';
 import 'package:twochealthcare/services/onlunch_activity_routes_service.dart';
@@ -28,6 +29,7 @@ class ForgetPasswordVM extends ChangeNotifier{
   ApplicationRouteService? applicationRouteService;
   FirebaseService? firebaseService;
   OnLaunchActivityAndRoutesService? onLaunchActivityService;
+  ApplicationStartupService? _applicationStartupService;
   TextEditingController emailController = TextEditingController(text: "");
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   bool isloading = false;
@@ -66,6 +68,7 @@ class ForgetPasswordVM extends ChangeNotifier{
     applicationRouteService = _ref?.read(applicationRouteServiceProvider);
     onLaunchActivityService = _ref?.read(onLaunchActivityServiceProvider);
     firebaseService = _ref?.read(firebaseServiceProvider);
+    _applicationStartupService = _ref?.read(applicationStartupServiceProvider);
   }
 
   listenForAutoSms() async {
@@ -159,10 +162,11 @@ class ForgetPasswordVM extends ChangeNotifier{
     if(res is CurrentUser){
       // currentUser = res;
       SetVerifyOtpLoadingState(false);
-      applicationRouteService?.addAndRemoveScreen(screenName: "Home");
-      firebaseService?.subNotification();
-      onLaunchActivityService?.decideUserFlow();
-      onLaunchActivityService?.syncLastApplicationUseDateAndTime();
+      _applicationStartupService?.applicationStart(from2FA: true);
+      // applicationRouteService?.addAndRemoveScreen(screenName: "Home");
+      // firebaseService?.subNotification();
+      // onLaunchActivityService?.decideUserFlow();
+      // onLaunchActivityService?.syncLastApplicationUseDateAndTime();
 
     }
     SetVerifyOtpLoadingState(false);

@@ -1,5 +1,5 @@
 class LogedInUserModel {
-  int? id;
+  String? id;
   String? userName;
   String? lastLogedIn;
 

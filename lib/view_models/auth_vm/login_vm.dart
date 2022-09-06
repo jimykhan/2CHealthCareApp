@@ -117,7 +117,7 @@ class LoginVM extends ChangeNotifier{
 
 
   getLastLoginDateTimeFromSharePref()async{
-    logedInUserModel = await sharedPrefServices!.lastLoggedInUser();
+     sharedPrefServices!.lastLoggedInUser().then((value) => logedInUserModel = value);
   }
 
   getCurrentUserFromSharedPref()async{

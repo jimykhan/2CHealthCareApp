@@ -234,13 +234,13 @@ class OnLaunchActivityAndRoutesService{
   Future<LogedInUserModel> setAndGetLastLoginDateTime()async{
     LogedInUserModel logedInUserModel = LogedInUserModel();
     try{
-      int userId = await _authService!.getCurrentUserId();
+      String userId = await _authService!.getCurrentAppUserId();
       Response res1 = await dio!.dio!.get(ApiStrings.getLastAppLaunchDate+"/$userId");
       logedInUserModel.id = userId;
       logedInUserModel.lastLogedIn = Jiffy(DateTime.now().toString()).format(Strings.dateAndTimeFormat);
       if(res1.statusCode == 200){
-        if(res1.data["lastAppLaunchDate"] != null){
-          logedInUserModel.lastLogedIn = Jiffy(res1.data["lastAppLaunchDate"]).format(Strings.dateAndTimeFormat);
+        if(res1.data["userLastLogin"] != null){
+          logedInUserModel.lastLogedIn = Jiffy(res1.data["userLastLogin"]).format(Strings.dateAndTimeFormat);
         }
       }
       await sharedPrefServices?.lastLoggedInUser(data: logedInUserModel.toJson());

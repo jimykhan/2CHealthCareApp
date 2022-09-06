@@ -54,8 +54,8 @@ class ApiStrings {
       "https://e62aa90a591644a1b3def848bcceeb57@o600993.ingest.sentry.io/5744159";
   static const String sendError = baseUrl + "/api/Exceptions/PostMobileAppException";
   static const String checkChatStatus = baseUrl + "/api/Facility/IsChatServiceEnabled";
-  static const String setLastAppLaunchDate = baseUrl + "/api/Patients/SetLastAppLaunchDate";
-  static const String getLastAppLaunchDate = baseUrl + "/api/Patients/GetLastAppLaunchDate";
+  static const String setLastAppLaunchDate = baseUrl + "/api/Facility/SetUserLastLogin";
+  static const String getLastAppLaunchDate = baseUrl + "/api/Facility/GetUserLastLogin";
   static const String healthGuideLines = baseUrl + "/api/HealthGuideLines";
   static const String editPatientProfile = baseUrl + "/api/Patients/EditPatientProfile";
   static const String getStatesList = baseUrl + "/api/AppData/GetStatesList";

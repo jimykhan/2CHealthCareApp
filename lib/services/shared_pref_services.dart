@@ -48,13 +48,19 @@ class SharedPrefServices{
   Future<LogedInUserModel?> lastLoggedInUser({var data}) async {
     await _initPref();
     LogedInUserModel? lastLoggedInUser;
-    if(data != null){
-      var data1 = _prefs?.setString("loggedInUsers", jsonEncode(data));
-      return LogedInUserModel.fromJson(data);
-    }else{
-      var User = _prefs?.getString("loggedInUsers");
-      return LogedInUserModel.fromJson(jsonDecode(User.toString()));
-    }
+   try{
+     if(data != null){
+       var data1 = _prefs?.setString("loggedInUsers", jsonEncode(data));
+       return LogedInUserModel.fromJson(data);
+     }else{
+       var User = _prefs?.getString("loggedInUsers");
+
+       lastLoggedInUser = LogedInUserModel.fromJson(jsonDecode(User.toString()));
+       return lastLoggedInUser;
+     }
+   }catch(ex){
+     return lastLoggedInUser;
+   }
   }
 
   setPatientInfo(var data) async {

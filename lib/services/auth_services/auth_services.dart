@@ -3,9 +3,11 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:twochealthcare/common_widgets/snackber_message.dart';
 import 'package:twochealthcare/constants/api_strings.dart';
+import 'package:twochealthcare/constants/strings.dart';
 import 'package:twochealthcare/main.dart';
 import 'package:twochealthcare/models/user/current_user.dart';
 import 'package:twochealthcare/models/user/is-sms-email-verified.dart';
@@ -38,6 +40,7 @@ class AuthServices{
         data: body,
       );
       if(response.statusCode == 200){
+        if(response.data['userLastLogin'] !=null) response.data['userLastLogin'] = Jiffy(response.data['userLastLogin']).format(Strings.dateAndTimeFormat);
         CurrentUser currentUser = CurrentUser.fromJson(response.data);
         if(currentUser.is2faRequired?? false){
           Navigator.push(applicationContext!.currentContext!,

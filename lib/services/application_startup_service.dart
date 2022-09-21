@@ -75,10 +75,10 @@ class ApplicationStartupService{
       }
     }
     if(fromLogin){
-       onLaunchActivityService?.setAndGetLastLoginDateTime().then((value)
-       {
-         loginVM?.getLastLoginDateTimeFromSharePref();
-       } );
+       // onLaunchActivityService?.setAndGetLastLoginDateTime().then((value)
+       // {
+       //   loginVM?.getLastLoginDateTimeFromSharePref();
+       // } );
     }
     if(from2FA){}
     if(fromResetPassword){

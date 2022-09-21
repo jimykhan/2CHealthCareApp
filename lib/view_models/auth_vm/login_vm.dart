@@ -77,6 +77,7 @@ class LoginVM extends ChangeNotifier{
       if(res is CurrentUser){
         currentUser = res;
         setLoading(false);
+
         return true;
       }
       setLoading(false);

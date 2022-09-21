@@ -117,12 +117,13 @@ class CustomDrawer extends HookWidget {
                         fontSize: ApplicationSizing.fontScale(10),
                         isPadding: false,
                       ),
-                      (loginVM.logedInUserModel?.lastLogedIn == "" ||
-                              loginVM.logedInUserModel?.lastLogedIn == null)
-                          ? Container()
-                          : MenuTextStyle(
-                              text: loginVM.logedInUserModel?.lastLogedIn ??
-                                  "",
+
+                      // (loginVM.currentUser?.userLastLogin == "" ||
+                      //         loginVM.currentUser?.userLastLogin == null)
+                      //     ? Container()
+                      //     :
+                      MenuTextStyle(
+                              text: loginVM.currentUser?.userLastLogin ?? "",
                               fontSize: ApplicationSizing.fontScale(10),
                               isPadding: false,
                               color: appColor,

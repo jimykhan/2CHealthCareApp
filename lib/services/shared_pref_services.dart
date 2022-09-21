@@ -88,6 +88,13 @@ class SharedPrefServices{
     });
     return facilityId;
   }
+  Future<String> getUserLastLoginDateTime() async {
+    await _initPref();
+    CurrentUser? currentUser = await getCurrentUser();
+    String lastLoginDateTime = "";
+    lastLoginDateTime = currentUser?.userLastLogin??"";
+    return lastLoginDateTime;
+  }
   Future<int> getCurrentUserId() async {
     await _initPref();
     CurrentUser? currentUser = await getCurrentUser();

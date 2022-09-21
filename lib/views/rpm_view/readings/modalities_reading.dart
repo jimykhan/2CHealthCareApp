@@ -18,46 +18,14 @@ import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
 import 'package:twochealthcare/view_models/rpm_vm/modalities_reading_vm.dart';
-import 'package:twochealthcare/views/readings/bg_reading.dart';
-import 'package:twochealthcare/views/readings/blood_pressure_reading.dart';
+import 'package:twochealthcare/views/rpm_view/readings/bg_reading.dart';
+import 'package:twochealthcare/views/rpm_view/readings/blood_pressure_reading.dart';
+import 'package:twochealthcare/views/rpm_view/readings/dex_com_reading.dart';
 
 class ModalitiesReading extends HookWidget {
-  ModalitiesReading({Key? key}) : super(key: key);
-  //
-  // List items = [
-  //   {
-  //     "modalityName": "Blood Pressure",
-  //     "reading": "180 sys 90 dia",
-  //     "context": "this is something",
-  //     "icon": "assets/icons/readings/blood-glucose-icon.svg",
-  //     "color": const Color(0xffFD5C58),
-  //     "date": "27-Jul-2021 11:30 PM"
-  //   },
-  //   {
-  //     "modalityName": "Blood Pressure",
-  //     "reading": "180 sys 90 dia",
-  //     "context": "this is something",
-  //     "icon": "assets/icons/readings/blood-glucose-icon.svg",
-  //     "color": const Color(0xffFFA654),
-  //     "date": "27-Jul-2021 11:30 PM"
-  //   },
-  //   {
-  //     "modalityName": "Blood Pressure",
-  //     "reading": "180 sys 90 dia",
-  //     "context": "this is something",
-  //     "icon": "assets/icons/readings/blood-glucose-icon.svg",
-  //     "color": const Color(0xff548EFF),
-  //     "date": "27-Jul-2021 11:30 PM"
-  //   },
-  //   {
-  //     "modalityName": "Blood Pressure",
-  //     "reading": "180 sys 90 dia",
-  //     "context": "this is something",
-  //     "icon": "assets/icons/readings/blood-glucose-icon.svg",
-  //     "color": const Color(0xffBE54FF),
-  //     "date": "27-Jul-2021 11:30 PM"
-  //   },
-  // ];
+  int paitentId;
+
+  ModalitiesReading({Key? key,this.paitentId = -1}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -123,8 +91,7 @@ class ModalitiesReading extends HookWidget {
                             itemBuilder: (context, index) {
                               ModalitiesModel modality =
                                   modalitiesReadingVM.modalitiesList[index];
-                              return (modality.id == 0 &&
-                                      modality.lastReading == null)
+                              return (modality.id == -1)
                                   ? Container()
                                   : InkWell(
                                       onTap: () {
@@ -141,7 +108,8 @@ class ModalitiesReading extends HookWidget {
                                                               .bPLastReadingYear),
                                                   type: PageTransitionType
                                                       .bottomToTop));
-                                        } else if (modality.modality == "BG") {
+                                        }
+                                        else if (modality.modality == "BG") {
                                           Navigator.push(
                                               context,
                                               PageTransition(
@@ -154,11 +122,19 @@ class ModalitiesReading extends HookWidget {
                                                               .bGLastReadingYear),
                                                   type: PageTransitionType
                                                       .bottomToTop));
-                                        } else if (modality.modality == "WT") {
+                                        }
+                                        else if (modality.modality == "WT") {
                                           // sharedPrefServices?.getBearerToken();
                                           // Navigator.push(context, PageTransition(
                                           //     child: const BloodPressureReading(), type: PageTransitionType.bottomToTop));
                                         }
+                                        else if (modality.modality == "CGM") {
+                                          sharedPrefServices?.getBearerToken();
+
+                                          Navigator.push(context, PageTransition(
+                                              child:  DexcomCGM(patientId: paitentId,), type: PageTransitionType.fade));
+                                        }
+
                                       },
                                       child: modality.modality ==
                                           "WT" ? Container() : Container(

@@ -12,9 +12,6 @@ import 'package:twochealthcare/services/firebase_service.dart';
 import 'package:twochealthcare/services/onlunch_activity_routes_service.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/view_models/splash_vm/splash_vm.dart';
-import 'package:twochealthcare/views/chat/chat_list.dart';
-import 'package:twochealthcare/views/home/home.dart';
-import 'package:twochealthcare/views/readings/modalities_reading.dart';
 class Splash extends HookWidget {
   const Splash({Key? key}) : super(key: key);
 

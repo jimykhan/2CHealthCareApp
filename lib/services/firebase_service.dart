@@ -15,10 +15,7 @@ import 'package:twochealthcare/services/application_route_service.dart';
 import 'package:twochealthcare/services/local_notification_service.dart';
 import 'package:twochealthcare/services/onlunch_activity_routes_service.dart';
 import 'package:twochealthcare/services/shared_pref_services.dart';
-import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
-import 'package:twochealthcare/views/chat/chat_list.dart';
-import 'package:twochealthcare/views/home/home.dart';
-import 'package:twochealthcare/views/readings/modalities_reading.dart';
+import 'package:twochealthcare/views/rpm_view/readings/modalities_reading.dart';
 
 class FirebaseService{
   ProviderReference? _ref;

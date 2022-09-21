@@ -100,6 +100,18 @@ class SharedPrefServices{
     return currentUserId;
   }
 
+  Future<String> getCurrentAppUserId() async {
+    await _initPref();
+    CurrentUser? currentUser = await getCurrentUser();
+    String currentAppUserId = "";
+    currentUser!.claims?.forEach((element) {
+      if(element.claimType?.toUpperCase() == "AppUserId".toUpperCase()){
+        currentAppUserId = element.claimValue??"";
+      }
+    });
+    return currentAppUserId;
+  }
+
   Future<int> getCurrentUserType() async {
     await _initPref();
     CurrentUser? currentUser = await getCurrentUser();

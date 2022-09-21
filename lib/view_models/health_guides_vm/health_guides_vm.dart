@@ -9,7 +9,7 @@ import 'package:twochealthcare/services/health_guides_service/health_guides_serv
 import 'package:webview_flutter/webview_flutter.dart';
 
 class HealthGuidesVM extends ChangeNotifier{
-  Completer<WebViewController> controller = Completer<WebViewController>();
+  Completer<WebViewController>? controller;
   List<HealthGuideModel> listOfHealthGuide = [];
   double progressWebPageLoad = 0;
   bool webPageLoading = false;
@@ -26,8 +26,9 @@ class HealthGuidesVM extends ChangeNotifier{
   }
 
   inAppWebView({required String initailUrl}) {
+    controller = Completer<WebViewController>();
     return FutureBuilder<WebViewController>(
-      future: controller.future,
+      future: controller?.future,
       builder:
           (BuildContext context, AsyncSnapshot<WebViewController> snapshot) {
         if(snapshot.hasError){}
@@ -37,7 +38,7 @@ class HealthGuidesVM extends ChangeNotifier{
                 initialUrl: initailUrl,
                 javascriptMode: JavascriptMode.unrestricted,
                     onWebViewCreated: (WebViewController webViewController) {
-                      controller.complete(webViewController);
+                      controller?.complete(webViewController);
                     },
                 onProgress: (progress){
                   print("progrss $progress");
@@ -60,7 +61,7 @@ class HealthGuidesVM extends ChangeNotifier{
 
   navigationControl() {
     return FutureBuilder<WebViewController>(
-      future: controller.future,
+      future: controller?.future,
       builder:
           (BuildContext context, AsyncSnapshot<WebViewController> snapshot) {
 
@@ -74,6 +75,9 @@ class HealthGuidesVM extends ChangeNotifier{
             child: Icon(Icons.arrow_back_ios));
       },
     );
+  }
+  disposeAppWebViewController(){
+    controller?.future.then((value) => value.clearCache());
   }
   navigate(BuildContext context, WebViewController controller,
       {bool goBack: false}) async {

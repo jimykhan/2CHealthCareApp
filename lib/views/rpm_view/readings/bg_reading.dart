@@ -12,38 +12,35 @@ import 'package:twochealthcare/common_widgets/custom_appbar.dart';
 import 'package:twochealthcare/common_widgets/floating_button.dart';
 import 'package:twochealthcare/common_widgets/line_chart.dart';
 import 'package:twochealthcare/common_widgets/no_data_inlist.dart';
-import 'package:twochealthcare/models/modalities_models/blood_pressure_reading_model.dart';
+import 'package:twochealthcare/models/modalities_models/gb_reading_model.dart';
 import 'package:twochealthcare/services/application_route_service.dart';
 import 'package:twochealthcare/util/styles.dart';
-import 'package:twochealthcare/views/readings/pb_reading_in_table.dart';
+import 'package:twochealthcare/view_models/rpm_vm/bg_reading_vm.dart';
 import 'package:twochealthcare/common_widgets/tap_bar.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/view_models/rpm_vm/blood_pressure_reading_vm.dart';
-import 'package:twochealthcare/views/readings/tab_and_calender.dart';
+import 'package:twochealthcare/views/rpm_view/readings/bg_reading_in_table.dart';
+import 'package:twochealthcare/views/rpm_view/readings/tab_and_calender.dart';
 
-class BloodPressureReading extends HookWidget {
-  int selectedMonth = DateTime.now().month;
-  int selectedYear = DateTime.now().year;
-  BloodPressureReading(
-      {Key? key, required this.selectedYear, required this.selectedMonth})
+class BGReading extends HookWidget {
+  int selectedMonth;
+  int selectedYear;
+  BGReading({Key? key, required this.selectedMonth, required this.selectedYear})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    BloodPressureReadingVM bloodPressureReadingVM =
-        useProvider(bloodPressureReadingVMProvider);
+    BGReadingVM bgReadingVM = useProvider(bGReadingVMProvider);
     ApplicationRouteService applicationRouteService =
         useProvider(applicationRouteServiceProvider);
 
     useEffect(
       () {
-        bloodPressureReadingVM.bPReadingLoading = true;
-        bloodPressureReadingVM.initialState(
+        bgReadingVM.initialState(
             readingMonth: selectedMonth, readingYear: selectedYear);
         Future.microtask(() async {});
-
         return () {
           // Dispose Objects here
         };
@@ -52,6 +49,7 @@ class BloodPressureReading extends HookWidget {
     );
     return Scaffold(
         primary: false,
+        backgroundColor: Colors.white,
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(ApplicationSizing.convert(90)),
           child: CustomAppBar(
@@ -61,62 +59,80 @@ class BloodPressureReading extends HookWidget {
             hight: ApplicationSizing.convert(70),
             parentContext: context,
             centerWigets: AppBarTextStyle(
-              text: "Blood Pressure Reading",
+              text: "Blood Glucose Reading",
             ),
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
         floatingActionButton: FloatingButton(),
-        body: _body(context, bloodPressureReadingVM: bloodPressureReadingVM));
+        body: _body(context, bgReadingVM: bgReadingVM));
   }
 
-  _body(context, {BloodPressureReadingVM? bloodPressureReadingVM}) {
+  _body(context, {required BGReadingVM bgReadingVM}) {
     return Container(
       child: SingleChildScrollView(
         child: Stack(
           children: [
             Column(
               children: [
+                ApplicationSizing.verticalSpacer(),
+                // TapBar(
+                //   selectedIndx: bgReadingVM.timePeriodSelect,
+                //   ontap: (val) {
+                //     bgReadingVM.changeTimePeriodSelectIndex(val);
+                //   },
+                // ),
+                // CustomCalendar(
+                //   selectedDayPredict: bgReadingVM.selectDayPredict,
+                //   onDaySelect: bgReadingVM.onDaySelected,
+                //   formatChange: bgReadingVM.onFormatChanged,
+                //   onRangeSelect: bgReadingVM.selectRange,
+                //   calendarFormat: bgReadingVM.calendarFormat,
+                //   headerDisable: bgReadingVM.headerDisable,
+                //   dayHeight: bgReadingVM.dayHeight,
+                //   daysOfWeekVisible: bgReadingVM.daysOfWeekVisible,
+                //   onPageChanged: bgReadingVM.onPageChanged,
+                //   selectedDay1: bgReadingVM.selectedDay1,
+                //   focusedDay1: bgReadingVM.focusedDay1,
+                //   rangeEnd: bgReadingVM.rangeEnd,
+                //   rangeStart: bgReadingVM.rangeStart,
+                // ),
                 TabAndCalender(),
-                bloodPressureReadingVM!.bPReadings.length == 0
+                bgReadingVM.bPReadings.length == 0
                     ? NoData()
                     : Column(
                         children: [
-                          LineGraph(
-                              bloodPressureReadingVM: bloodPressureReadingVM),
-                          bpReadingInTable(
-                            bPReadings: bloodPressureReadingVM.bPReadings,
+                          LineGraph(context, bgReadingVM: bgReadingVM),
+                          bGReadingInTable(
+                            bGReadings: bgReadingVM.bPReadings,
                           ),
                           ApplicationSizing.verticalSpacer(n: 70),
                         ],
                       )
               ],
             ),
-            bloodPressureReadingVM.bPReadingLoading
-                ? AlertLoader()
-                : Container(),
+            bgReadingVM.bGReadingLoading ? AlertLoader() : Container(),
           ],
         ),
       ),
     );
   }
 
-  LineGraph({BloodPressureReadingVM? bloodPressureReadingVM}) {
-    List<BloodPressureReadingModel> graphData = [];
-    bloodPressureReadingVM?.bPReadings.forEach((element) {
+  LineGraph(context, {BGReadingVM? bgReadingVM}) {
+    List<BGDataModel> graphData = [];
+    bgReadingVM?.bPReadings.forEach((element) {
       graphData.add(element);
     });
     graphData.sort((a, b) {
       return a.measurementDate!.compareTo(b.measurementDate!);
     });
-
     return Container(
         margin: EdgeInsets.symmetric(
             horizontal: ApplicationSizing.convertWidth(15)),
         child: SfCartesianChart(
           margin: EdgeInsets.all(10),
           title: ChartTitle(
-            text: "Blood Pressure",
+            text: "Blood Glucose",
             alignment: ChartAlignment.near,
             textStyle: Styles.PoppinsRegular(),
           ),
@@ -136,36 +152,32 @@ class BloodPressureReading extends HookWidget {
             isVisible: false,
           ),
           primaryYAxis: NumericAxis(
-            maximum: bloodPressureReadingVM!.bloodPressureMaxLimit + 100,
+            maximum: bgReadingVM!.bGMaxLimit + 100,
             minimum: 0,
             interval: 50,
             enableAutoIntervalOnZooming: true,
           ),
           series: <ChartSeries>[
-            FastLineSeries<BloodPressureReadingModel, String>(
-              name: "Systolic",
+            AreaSeries<BGDataModel, String>(
+              borderGradient: LinearGradient(
+                  colors: <Color>[AppBarStartColor, AppBarEndColor],
+                  stops: const <double>[0.2, 0.9],
+                  end: Alignment.topCenter,
+                  begin: Alignment.bottomCenter),
+              gradient: LinearGradient(colors: <Color>[
+                AppBarStartColor.withOpacity(0.4),
+                AppBarEndColor.withOpacity(0.4)
+              ], stops: const <double>[
+                0.2,
+                0.9
+              ], end: Alignment.topCenter, begin: Alignment.bottomCenter),
+              name: "Blood Glucose",
               enableTooltip: true,
               dataSource: graphData,
-              xValueMapper: (BloodPressureReadingModel bloodPressure, _) =>
-                  // bloodPressure.measurementDate.substring(0, 9),
-                  bloodPressure.measurementDate,
-              yValueMapper: (BloodPressureReadingModel bloodPressure, _) =>
-                  bloodPressure.highPressure,
-              markerSettings: const MarkerSettings(
-                  color: Colors.white, isVisible: true, width: 2, height: 2),
-              legendIconType: LegendIconType.circle,
-              isVisibleInLegend: true,
-              color: appColor,
-            ),
-            FastLineSeries<BloodPressureReadingModel, String>(
-              name: "Diastolic",
-              enableTooltip: true,
-              dataSource: graphData,
-              xValueMapper: (BloodPressureReadingModel bloodPressure, _) =>
-                  // bloodPressure.measurementDate.substring(0, 9),
-                  bloodPressure.measurementDate,
-              yValueMapper: (BloodPressureReadingModel bloodPressure, _) =>
-                  bloodPressure.lowPressure,
+              xValueMapper: (BGDataModel bg, _) =>
+                  // bg.measurementDate.substring(0, 9),
+                  bg.measurementDate,
+              yValueMapper: (BGDataModel bg, _) => bg.bg,
               markerSettings: const MarkerSettings(
                   color: Colors.white, isVisible: true, width: 2, height: 2),
               legendIconType: LegendIconType.circle,

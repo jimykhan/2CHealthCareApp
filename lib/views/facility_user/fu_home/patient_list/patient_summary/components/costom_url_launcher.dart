@@ -43,6 +43,7 @@ class CostomUrlLauncher extends HookWidget {
           InkWell(
             onTap: (){
               Navigator.pop(context);
+              healthGuidesVM.disposeAppWebViewController();
             },
             child: Container(
               // color: Colors.red,

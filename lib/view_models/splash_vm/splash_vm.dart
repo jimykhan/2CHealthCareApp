@@ -17,7 +17,6 @@ import 'package:twochealthcare/view_models/chat_vm/chat_list_vm.dart';
 import 'package:twochealthcare/views/auths/login.dart';
 import 'package:twochealthcare/views/chat/chat_list.dart';
 import 'package:twochealthcare/views/home/home.dart';
-import 'package:twochealthcare/views/readings/modalities_reading.dart';
 
 class SplashVM extends ChangeNotifier{
   ProviderReference? _ref;

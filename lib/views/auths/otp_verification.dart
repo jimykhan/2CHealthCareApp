@@ -136,7 +136,7 @@ class OtpVerification extends HookWidget {
                                   length: 6,
                                   obscureText: false,
                                   animationType: AnimationType.fade,
-                                  autoFocus: true,
+                                  // autoFocus: true,
                                   pinTheme: PinTheme(
                                     shape: PinCodeFieldShape.circle,
                                     borderRadius: null,
@@ -155,8 +155,7 @@ class OtpVerification extends HookWidget {
                                     selectedFillColor: Colors.white,
                                     activeFillColor: Colors.white,
                                   ),
-                                  animationDuration:
-                                      Duration(milliseconds: 300),
+                                  animationDuration: Duration(milliseconds: 300),
                                   enableActiveFill: true,
                                   errorAnimationController:
                                       forgetPasswordVM.errorController,

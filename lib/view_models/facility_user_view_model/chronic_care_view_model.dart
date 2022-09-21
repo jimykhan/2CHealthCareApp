@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/all.dart';
 import 'package:twochealthcare/main.dart';
 import 'package:twochealthcare/models/facility_user_models/dashboard_patients/patients_for_dashboard.dart';
+import 'package:twochealthcare/models/patient_summary/chronic_condition.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/facility_user_services/facility_service.dart';
 
@@ -39,6 +40,7 @@ class ChronicCareVM extends ChangeNotifier{
     if(Id != careProviderId){
       Navigator.pop(applicationContext!.currentContext!);
       careProviderId = Id;
+      chronicCarePatients = PatientsForDashboard(patientsList: []);
       patientListPageNumber = 1;
       getPatients2();
     }

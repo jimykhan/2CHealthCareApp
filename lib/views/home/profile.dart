@@ -25,8 +25,6 @@ import 'package:twochealthcare/views/auths/otp_verification.dart';
 import 'package:twochealthcare/views/home/components/widgets.dart';
 import 'package:twochealthcare/views/home/edit-contact-info.dart';
 import 'package:twochealthcare/views/home/edit_emergency_contact.dart';
-import 'package:twochealthcare/views/readings/bg_reading.dart';
-import 'package:twochealthcare/views/readings/blood_pressure_reading.dart';
 
 class Profile extends HookWidget {
   Profile({Key? key}) : super(key: key);

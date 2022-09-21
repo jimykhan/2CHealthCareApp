@@ -26,7 +26,7 @@ import 'package:twochealthcare/views/facility_user/fu_home/fu_home.dart';
 import 'package:twochealthcare/views/facility_user/fu_home/fu_profile.dart';
 import 'package:twochealthcare/views/home/home.dart';
 import 'package:twochealthcare/views/home/profile.dart';
-import 'package:twochealthcare/views/readings/modalities_reading.dart';
+import 'package:twochealthcare/views/rpm_view/readings/modalities_reading.dart';
 import 'package:twochealthcare/views/settings/fu_settings/fu_settings.dart';
 import 'package:twochealthcare/views/settings/p_settings/p_settings.dart';
 import '../main.dart';

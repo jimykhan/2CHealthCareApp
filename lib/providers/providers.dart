@@ -18,6 +18,7 @@ import 'package:twochealthcare/services/health_guides_service/health_guides_serv
 import 'package:twochealthcare/services/local_notification_service.dart';
 import 'package:twochealthcare/services/onlunch_activity_routes_service.dart';
 import 'package:twochealthcare/services/patient_profile_service.dart';
+import 'package:twochealthcare/services/rpm_services/cgm_services.dart';
 // import 'package:twochealthcare/services/rpm_services/bg_reading_service.dart';
 // import 'package:twochealthcare/services/rpm_services/blood_pressure_reading_service.dart';
 // import 'package:twochealthcare/services/rpm_services/modalities_reading_service.dart';
@@ -44,6 +45,7 @@ import 'package:twochealthcare/view_models/health_guides_vm/health_guides_vm.dar
 import 'package:twochealthcare/view_models/home_vm.dart';
 import 'package:twochealthcare/view_models/rpm_vm/bg_reading_vm.dart';
 import 'package:twochealthcare/view_models/rpm_vm/blood_pressure_reading_vm.dart';
+import 'package:twochealthcare/view_models/rpm_vm/dexCom_vm.dart';
 import 'package:twochealthcare/view_models/rpm_vm/modalities_reading_vm.dart';
 import 'package:twochealthcare/view_models/rpm_vm/rpm_encounter_vm.dart';
 import 'package:twochealthcare/view_models/rpm_vm/rpm_log_vm.dart';
@@ -84,6 +86,7 @@ final ccmLogsVMProvider = ChangeNotifierProvider<CcmLogsVM>((ref)=>CcmLogsVM(ref
 final rpmLogsVMProvider = ChangeNotifierProvider<RpmLogsVM>((ref)=>RpmLogsVM(ref: ref));
 final ccmPatientsVMProvider = ChangeNotifierProvider<CcmPatientsVM>((ref)=>CcmPatientsVM(ref: ref));
 final rpmPatientsVMProvider = ChangeNotifierProvider<RpmPatientsVM>((ref)=>RpmPatientsVM(ref: ref));
+final dexComVMProvider = ChangeNotifierProvider<DexComVM>((ref)=>DexComVM(ref: ref));
 /// ChangeNotifierProvider
 
 
@@ -115,4 +118,5 @@ final diagnosisServiceProvider = Provider<DiagnosisService>((ref)=>DiagnosisServ
 final appDataServiceProvider = Provider<AppDataService>((ref)=>AppDataService(ref: ref));
 final applicationPackageServiceProvider = Provider<ApplicationPackageService>((ref)=>ApplicationPackageService(ref: ref));
 final applicationStartupServiceProvider = Provider<ApplicationStartupService>((ref)=>ApplicationStartupService(ref: ref));
+final cgmServiceProvider = Provider<CGMService>((ref)=>CGMService(ref: ref));
 /// Simple Providers

@@ -9,7 +9,7 @@ import 'package:twochealthcare/main.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/application_route_service.dart';
 import 'package:twochealthcare/services/firebase_service.dart';
-import 'package:twochealthcare/views/readings/modalities_reading.dart';
+import 'package:twochealthcare/views/rpm_view/readings/modalities_reading.dart';
 
 import 'auth_services/auth_services.dart';
 

@@ -11,6 +11,7 @@ import 'package:twochealthcare/services/settings_services/p_settings_services/p_
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/view_models/settings_view_models/p_settings_view_models/p_settings_view_model.dart';
 import 'package:twochealthcare/views/settings/p_settings/components/blue_button.dart';
+import 'package:twochealthcare/views/settings/p_settings/components/dex_com.dart';
 
 class PSettings extends HookWidget {
   const PSettings({Key? key}) : super(key: key);
@@ -25,7 +26,7 @@ class PSettings extends HookWidget {
       () {
         pSettingsViewModel.initState();
         Future.microtask(() async {
-          await pSettingsViewModel.checkIsBlueBottonConnected();
+          await pSettingsViewModel.checkPatientDeviceState();
         });
         return () {
           // Dispose Objects here
@@ -53,8 +54,16 @@ class PSettings extends HookWidget {
         child: Container(
           child: Stack(
             children: [
-              BlueButton(
-                pSettingsViewModel: pSettingsViewModel,
+              Column(
+                children: [
+                  BlueButton(
+                    pSettingsViewModel: pSettingsViewModel,
+                  ),
+                  SizedBox(height: 10,),
+                  DexCom(
+                    pSettingsViewModel: pSettingsViewModel,
+                  ),
+                ],
               ),
               pSettingsViewModel.loadingSettings ? AlertLoader() : Container()
             ],

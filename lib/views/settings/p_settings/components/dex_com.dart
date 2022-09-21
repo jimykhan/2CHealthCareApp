@@ -9,9 +9,9 @@ import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
 import 'package:twochealthcare/view_models/settings_view_models/p_settings_view_models/p_settings_view_model.dart';
 
-class BlueButton extends StatelessWidget {
+class DexCom extends StatelessWidget {
   PSettingsViewModel pSettingsViewModel;
-  BlueButton({Key? key, required this.pSettingsViewModel}) : super(key: key);
+  DexCom({Key? key, required this.pSettingsViewModel}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,19 +22,19 @@ class BlueButton extends StatelessWidget {
           margin: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin(n: 25)),
           padding: EdgeInsets.symmetric(horizontal: 15,vertical: 15),
           decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(10),
-            border: Border.all(
-              color: Color(0xffDDDDDD),
-              width: 1.5
-            ),
-            boxShadow: const [
-              BoxShadow(
-                color: Color(0xff00000026),
-                offset: Offset(0,0.10),
-                blurRadius: 40
-              )
-            ]
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(
+                  color: Color(0xffDDDDDD),
+                  width: 1.5
+              ),
+              boxShadow: const [
+                BoxShadow(
+                    color: Color(0xff00000026),
+                    offset: Offset(0,0.10),
+                    blurRadius: 40
+                )
+              ]
           ),
           child: Column(
             children: [
@@ -44,10 +44,10 @@ class BlueButton extends StatelessWidget {
                   Container(
                     child: Row(
                       children: [
-                        BlueButtonIcon(),
+                        dexComIcon(),
                         SizedBox(width: 10,),
                         Text(
-                          "Blue Button",
+                          "CGM DexCom",
                           style: Styles.PoppinsRegular(
                               fontSize: 15, fontWeight: FontWeight.w600,
                               color: appColorSecondary
@@ -60,11 +60,11 @@ class BlueButton extends StatelessWidget {
                   Container(
                     child: Row(
                       children: [
-                        pSettingsViewModel.isBlueButtonConnected ? SvgPicture.asset(
+                        pSettingsViewModel.isDexComConnect ? SvgPicture.asset(
                           "assets/icons/blue_button_plugin.svg",
                           height: ApplicationSizing.convert(25),
                         )
-                        : SvgPicture.asset(
+                            : SvgPicture.asset(
                           "assets/icons/not_plug.svg",
                           height: ApplicationSizing.convert(25),
                         ),
@@ -81,8 +81,8 @@ class BlueButton extends StatelessWidget {
               Align(
                 alignment: Alignment.centerRight,
                 child: FlexibleButton(
-                  child: pSettingsViewModel.getBlueButtonUrlLoading ? loader(width: 30,) :
-                  pSettingsViewModel.isBlueButtonConnected ? Text("Medicare Claims Authorize",
+                  child: pSettingsViewModel.getDexComUrlLoading ? loader(width: 30,) :
+                  pSettingsViewModel.isDexComConnect ? Text("Medicare Claims Authorize",
                     style: Styles.PoppinsRegular(
                       color: Colors.white,
                       fontSize: 14,
@@ -94,10 +94,10 @@ class BlueButton extends StatelessWidget {
                     ),
                   ),
                   ontap: () {
-                    if(pSettingsViewModel.isBlueButtonConnected){
-                      SnackBarMessage(message: "BlueButton access is already Authorized",error: false);
+                    if(pSettingsViewModel.isDexComConnect){
+                      SnackBarMessage(message: "DexCom access is already Authorized",error: false);
                     }else{
-                      pSettingsViewModel.blueButtonAutherizations();
+                      pSettingsViewModel.dexComAutherizations();
                     }
                   },
                 ),
@@ -112,30 +112,17 @@ class BlueButton extends StatelessWidget {
 
 }
 
-class BlueButtonIcon extends StatelessWidget {
-  const BlueButtonIcon({Key? key}) : super(key: key);
+class dexComIcon extends StatelessWidget {
+  const dexComIcon({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(7),
-      decoration:  BoxDecoration(
-        gradient:  const RadialGradient(
-          colors: [
-            Color(0xff60A3CB),
-            Color(0xff0089D7),
-          ],
-          radius: 1.0,
-        ),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Container(
-        // color: Colors.red,
-        alignment: Alignment.center,
-        child: SvgPicture.asset(
-          "assets/icons/blue_button_icon.svg",
-          height: ApplicationSizing.convert(25),
-        ),
+      // color: Colors.red,
+      alignment: Alignment.center,
+      child: SvgPicture.asset(
+        "assets/icons/dexcomlogo.svg",
+        height: ApplicationSizing.constSize(43),
       ),
     );
   }

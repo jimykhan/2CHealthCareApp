@@ -40,6 +40,7 @@ class RpmPatientsVM extends ChangeNotifier{
     if(Id != careFacilitorId){
       Navigator.pop(applicationContext!.currentContext!);
       careFacilitorId = Id;
+      chronicCarePatients = PatientsForDashboard(patientsList: []);
       patientListPageNumber = 1;
       getRpmPatients();
     }

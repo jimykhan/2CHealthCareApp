@@ -26,8 +26,7 @@ import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
 import 'package:twochealthcare/view_models/home_vm.dart';
 import 'package:twochealthcare/views/health_guides/health_guides.dart';
 import 'package:twochealthcare/views/home/profile.dart';
-import 'package:twochealthcare/views/notifiction/notifiction_list.dart';
-import 'package:twochealthcare/views/readings/modalities_reading.dart';
+import 'package:twochealthcare/views/rpm_view/readings/modalities_reading.dart';
 
 class Home extends HookWidget {
   Home({Key? key}) : super(key: key);

@@ -131,3 +131,11 @@ class CcmController{
 class AppDataController{
   static const String getAllCountries = baseUrl + "/api/AppData/GetAllCountries";
 }
+
+class DexComController{
+  static const String GET_DEXCOM_CODE = baseUrl + "/api/Dexcom/GetCode";
+  static const String DEXCOM_GET_EGVS = baseUrl + "/api/Dexcom/GetEgvs";
+  static const String DEXCOM_GET_STATISTICS = baseUrl + "/api/Dexcom/GetStatistics";
+  static const String DEXCOM_GET_DEVICES = baseUrl + "/api/Dexcom/GetDevices";
+  static const String Check_Auth_Given = baseUrl + "/api/Dexcom/CheckAuthGiven/patientId";
+}

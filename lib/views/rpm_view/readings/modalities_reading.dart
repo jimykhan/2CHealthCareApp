@@ -136,8 +136,7 @@ class ModalitiesReading extends HookWidget {
                                         }
 
                                       },
-                                      child: modality.modality ==
-                                          "WT" ? Container() : Container(
+                                      child:  Container(
                                         margin: EdgeInsets.symmetric(
                                           horizontal: ApplicationSizing
                                               .horizontalMargin(),
@@ -173,30 +172,41 @@ class ModalitiesReading extends HookWidget {
                                                     MainAxisAlignment
                                                         .spaceBetween,
                                                 children: [
-                                                  Container(
-                                                    child: Text(
-                                                      modality.modalityName ??
-                                                          "",
-                                                      style: Styles.PoppinsBold(
-                                                          fontSize:
-                                                              ApplicationSizing
-                                                                  .fontScale(
-                                                                      16),
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          color: Colors.white),
+                                                  Expanded(
+                                                    flex: 2,
+                                                    child: Container(
+                                                      child: Text(
+
+                                                        modality.modalityName ??
+                                                            "",
+                                                        style: Styles.PoppinsBold(
+
+                                                            fontSize:
+                                                                ApplicationSizing
+                                                                    .fontScale(
+                                                                        16),
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            color: Colors.white),
+                                                      ),
                                                     ),
                                                   ),
-                                                  Container(
-                                                    child: Text(
-                                                        modality.lastReadingDate ??
-                                                            "",
-                                                        style: const TextStyle(
-                                                            fontSize: 14,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            color:
-                                                                Colors.white)),
+                                                  Expanded(
+                                                    flex: 1,
+                                                    child: Container(
+                                                      // color: Colors.green,
+                                                      alignment: Alignment.centerRight,
+                                                      child: Text(
+                                                          modality.lastReadingDate ?? "",
+                                                          textAlign: TextAlign.right,
+                                                          style:  TextStyle(
+                                                              letterSpacing: 0,
+                                                              fontSize: ApplicationSizing.fontScale(10),
+                                                              fontWeight:
+                                                                  FontWeight.w500,
+                                                              color:
+                                                                  Colors.white)),
+                                                    ),
                                                   ),
                                                 ],
                                               ),
@@ -255,8 +265,7 @@ class ModalitiesReading extends HookWidget {
                                                                           FontWeight
                                                                               .w800,
                                                                       fontSize:
-                                                                          ApplicationSizing.fontScale(
-                                                                              45),
+                                                                          ApplicationSizing.fontScale(25),
                                                                       color: Colors
                                                                           .white),
                                                                 ),
@@ -267,7 +276,7 @@ class ModalitiesReading extends HookWidget {
                                                                     style: TextStyle(
                                                                         fontSize:
                                                                             ApplicationSizing.fontScale(
-                                                                                14),
+                                                                                10),
                                                                         fontWeight:
                                                                             FontWeight
                                                                                 .w600,

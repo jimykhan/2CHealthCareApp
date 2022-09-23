@@ -5,12 +5,15 @@ import 'package:twochealthcare/util/application_sizing.dart';
 
 class Styles {
   static TextStyle PoppinsBold({
+
     double fontSize = 30,
     String fontFamily = "PoppinsBold",
     Color color = Colors.black,
     FontWeight fontWeight = FontWeight.bold,
   }) {
     return TextStyle(
+      height: 1.1,
+        letterSpacing: 0,
         fontSize: fontSize,
         fontFamily: fontFamily,
         color: color,

@@ -19,8 +19,9 @@ class ApplicationSizing {
     longDimension = width < height ? height : width;
   }
 
-  static double fontScale(double size) {
+  static double fontScale(double size,{bool minus = false}) {
     var f = size * textScale;
+    if(f> 30 && minus) f = 25;
     return f;
   }
   static double constSize(double size) {

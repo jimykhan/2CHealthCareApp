@@ -323,7 +323,7 @@ class Home extends HookWidget {
   Widget squareBox({var item, int index = 0}) {
     return Container(
       // width: 150,
-      height: ApplicationSizing.convert(150),
+      height: ApplicationSizing.convert(160),
       padding: EdgeInsets.symmetric(horizontal: ApplicationSizing.convert(10)),
       decoration: BoxDecoration(
         color: item["color"],
@@ -346,25 +346,34 @@ class Home extends HookWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SvgPicture.asset(item["icon"]),
-          Container(
-            margin:
+          SizedBox(height: 10,),
+          Column(
+            children: [
+              Container(
+                margin:
                 EdgeInsets.symmetric(vertical: ApplicationSizing.convert(5)),
-            child: Text(
-              item["title"],
-              style: Styles.PoppinsBold(
-                  fontSize: ApplicationSizing.fontScale(16),
-                  color: Colors.white),
-              textAlign: TextAlign.center,
-            ),
-          ),
-          item["hints"] == ""
-              ? Container()
-              : Text(
-                  item["hints"],
+                child: Text(
+                  item["title"],
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                   style: Styles.PoppinsBold(
-                      fontSize: ApplicationSizing.fontScale(8),
+                    // fontSize: 32,
+                      fontSize: ApplicationSizing.fontScale(16,minus: true),
                       color: Colors.white),
+                  textAlign: TextAlign.center,
                 ),
+              ),
+              item["hints"] == ""
+                  ? Container()
+                  : Text(
+                item["hints"],
+                overflow: TextOverflow.ellipsis,
+                style: Styles.PoppinsBold(
+                    fontSize: ApplicationSizing.fontScale(8,minus: true),
+                    color: Colors.white),
+              ),
+            ],
+          )
         ],
       ),
     );

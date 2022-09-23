@@ -63,7 +63,7 @@ class TabAndCalender extends HookWidget {
                 tabAndCalender.dayHeight == 0 ?
                 Container(
                   alignment: Alignment.center,
-                  color: Colors.white,
+                  // color: Colors.white,
                   padding: EdgeInsets.only(top: 5),
                   margin: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin(n: 70)),
                   child: Container(
@@ -71,11 +71,17 @@ class TabAndCalender extends HookWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(Jiffy(tabAndCalender.startDate).format(Strings.dateFormat).toString(),
-                        style: Styles.PoppinsRegular(
-                          fontSize: ApplicationSizing.fontScale(12),
-                          fontWeight: FontWeight.w700
-                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Container(
+                            alignment: Alignment.centerRight,
+                            child: Text(Jiffy(tabAndCalender.startDate).format(Strings.dateFormat).toString(),
+                            style: Styles.PoppinsRegular(
+                              fontSize: ApplicationSizing.fontScale(12),
+                              fontWeight: FontWeight.w700
+                            ),
+                            ),
+                          ),
                         ),
                         Container(
                           padding: EdgeInsets.symmetric(horizontal: 2),
@@ -83,10 +89,16 @@ class TabAndCalender extends HookWidget {
                                 fontSize: ApplicationSizing.fontScale(12),
                                 fontWeight: FontWeight.w700
                             ))),
-                        Text(Jiffy(tabAndCalender.endDate).format(Strings.dateFormat).toString(),style: Styles.PoppinsRegular(
-                            fontSize: ApplicationSizing.fontScale(12),
-                            fontWeight: FontWeight.w700
-                        )),
+                        Expanded(
+                          flex: 1,
+                          child: Container(
+                            alignment: Alignment.centerLeft,
+                            child: Text(Jiffy(tabAndCalender.endDate).format(Strings.dateFormat).toString(),style: Styles.PoppinsRegular(
+                                fontSize: ApplicationSizing.fontScale(12),
+                                fontWeight: FontWeight.w700
+                            )),
+                          ),
+                        ),
                       ],
                     ),
                   ),

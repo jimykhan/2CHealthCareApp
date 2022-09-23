@@ -53,9 +53,12 @@ class CustomCalendar extends StatelessWidget {
             formatButtonShowsNext: false,
             formatButtonVisible: false,
             titleCentered: true,
+
             headerPadding: EdgeInsets.all(0.0),
             titleTextStyle: Styles.PoppinsRegular(
-                fontSize: ApplicationSizing.fontScale(17)),
+                fontSize: ApplicationSizing.fontScale(1),
+              color: Colors.transparent
+            ),
             leftChevronIcon: Icon(
               Icons.chevron_left_sharp,
               size: ApplicationSizing.convert(25),
@@ -63,7 +66,10 @@ class CustomCalendar extends StatelessWidget {
             rightChevronIcon: Icon(
               Icons.chevron_right_sharp,
               size: ApplicationSizing.convert(25),
-            )),
+            ),
+
+
+        ),
         calendarStyle: const CalendarStyle(
           isTodayHighlighted: false,
           canMarkersOverflow: false,

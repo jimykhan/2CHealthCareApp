@@ -51,7 +51,7 @@ class bpReadingInTable extends HookWidget {
                       padding: const EdgeInsets.only(
                         top: 5,
                         bottom: 5,
-                        left: 20,
+                        left: 10,
                         right: 10,
                       ),
                       decoration: BoxDecoration(
@@ -90,35 +90,41 @@ class bpReadingInTable extends HookWidget {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
-                                    RichText(
-                                      text: TextSpan(children: [
-                                        TextSpan(
-                                            text: bPReadings[index]
-                                                .highPressure
-                                                ?.toStringAsFixed(0) ??
-                                                "",
-                                            style: Styles.PoppinsBold(
-                                              fontSize:
-                                              ApplicationSizing.fontScale(
-                                                  20),
-                                              fontWeight: FontWeight.bold,
-                                              color: appColor,
-                                            )),
-                                        TextSpan(
-                                            text: "Sys",
-                                            style: Styles.PoppinsRegular(
-                                              fontSize:
-                                              ApplicationSizing.fontScale(
-                                                  10),
-                                              color: appColor,
-                                            )),
-                                      ]),
-                                    ),
-                                    Container(
-                                      margin: EdgeInsets.symmetric(
-                                          horizontal: ApplicationSizing
-                                              .horizontalMargin(n: 5)),
+                                    Expanded(
+                                      flex: 1,
                                       child: RichText(
+                                        overflow: TextOverflow.ellipsis,
+                                        text: TextSpan(children: [
+                                          TextSpan(
+                                              text: bPReadings[index]
+                                                  .highPressure
+                                                  ?.toStringAsFixed(0) ??
+                                                  "",
+                                              style: Styles.PoppinsBold(
+                                                fontSize:
+                                                ApplicationSizing.fontScale(
+                                                    20),
+                                                fontWeight: FontWeight.bold,
+                                                color: appColor,
+                                              )),
+                                          TextSpan(
+                                              text: "Sys",
+                                              style: Styles.PoppinsRegular(
+                                                fontSize:
+                                                ApplicationSizing.fontScale(
+                                                    10),
+                                                color: appColor,
+                                              )),
+                                        ]),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 1,
+                                      // margin: EdgeInsets.symmetric(
+                                      //     horizontal: ApplicationSizing
+                                      //         .horizontalMargin(n: 5)),
+                                      child: RichText(
+                                        overflow: TextOverflow.ellipsis,
                                         text: TextSpan(children: [
                                           TextSpan(
                                               text: bPReadings[index]
@@ -145,29 +151,33 @@ class bpReadingInTable extends HookWidget {
                                     ),
 
 
-                                    RichText(
-                                      text: TextSpan(children: [
-                                        TextSpan(
-                                            text: bPReadings[index]
-                                                .heartRate
-                                                ?.toStringAsFixed(0) ??
-                                                "",
-                                            style: Styles.PoppinsBold(
-                                              fontSize:
-                                              ApplicationSizing.fontScale(
-                                                  20),
-                                              fontWeight: FontWeight.bold,
-                                              color: drawerColor,
-                                            )),
-                                        TextSpan(
-                                            text: "HR",
-                                            style: Styles.PoppinsRegular(
-                                              fontSize:
-                                              ApplicationSizing.fontScale(
-                                                  10),
-                                              color: drawerColor,
-                                            )),
-                                      ]),
+                                    Expanded(
+                                      flex: 1,
+                                      child: RichText(
+                                        overflow: TextOverflow.ellipsis,
+                                        text: TextSpan(children: [
+                                          TextSpan(
+                                              text: bPReadings[index]
+                                                  .heartRate
+                                                  ?.toStringAsFixed(0) ??
+                                                  "",
+                                              style: Styles.PoppinsBold(
+                                                fontSize:
+                                                ApplicationSizing.fontScale(
+                                                    20),
+                                                fontWeight: FontWeight.bold,
+                                                color: drawerColor,
+                                              )),
+                                          TextSpan(
+                                              text: "HR",
+                                              style: Styles.PoppinsRegular(
+                                                fontSize:
+                                                ApplicationSizing.fontScale(
+                                                    10),
+                                                color: drawerColor,
+                                              )),
+                                        ]),
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -185,7 +195,7 @@ class bpReadingInTable extends HookWidget {
               padding: const EdgeInsets.only(
                 top: 5,
                 bottom: 5,
-                left: 20,
+                left: 10,
                 right: 10,
               ),
               decoration: BoxDecoration(
@@ -223,35 +233,42 @@ class bpReadingInTable extends HookWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            RichText(
-                              text: TextSpan(children: [
-                                TextSpan(
-                                    text: bPReadings[index]
-                                        .highPressure
-                                        ?.toStringAsFixed(0) ??
-                                        "",
-                                    style: Styles.PoppinsBold(
-                                      fontSize:
-                                      ApplicationSizing.fontScale(
-                                          20),
-                                      fontWeight: FontWeight.bold,
-                                      color: appColor,
-                                    )),
-                                TextSpan(
-                                    text: "Sys",
-                                    style: Styles.PoppinsRegular(
-                                      fontSize:
-                                      ApplicationSizing.fontScale(
-                                          10),
-                                      color: appColor,
-                                    )),
-                              ]),
-                            ),
-                            Container(
-                              margin: EdgeInsets.symmetric(
-                                  horizontal: ApplicationSizing
-                                      .horizontalMargin(n: 5)),
+                            Expanded(
+                              flex: 1,
                               child: RichText(
+                                overflow: TextOverflow.ellipsis,
+                                text: TextSpan(children: [
+                                  TextSpan(
+                                      text: bPReadings[index]
+                                          .highPressure
+                                          ?.toStringAsFixed(0) ??
+                                          "",
+
+                                      style: Styles.PoppinsBold(
+                                        fontSize:
+                                        ApplicationSizing.fontScale(
+                                            20),
+                                        fontWeight: FontWeight.bold,
+                                        color: appColor,
+                                      )),
+                                  TextSpan(
+                                      text: "Sys",
+                                      style: Styles.PoppinsRegular(
+                                        fontSize:
+                                        ApplicationSizing.fontScale(
+                                            10),
+                                        color: appColor,
+                                      )),
+                                ]),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              // margin: EdgeInsets.symmetric(
+                              //     horizontal: ApplicationSizing
+                              //         .horizontalMargin(n: 5)),
+                              child: RichText(
+                                overflow: TextOverflow.ellipsis,
                                 text: TextSpan(children: [
                                   TextSpan(
                                       text: bPReadings[index]
@@ -276,31 +293,33 @@ class bpReadingInTable extends HookWidget {
                                 ]),
                               ),
                             ),
-
-
-                            RichText(
-                              text: TextSpan(children: [
-                                TextSpan(
-                                    text: bPReadings[index]
-                                        .heartRate
-                                        ?.toStringAsFixed(0) ??
-                                        "",
-                                    style: Styles.PoppinsBold(
-                                      fontSize:
-                                      ApplicationSizing.fontScale(
-                                          20),
-                                      fontWeight: FontWeight.bold,
-                                      color: drawerColor,
-                                    )),
-                                TextSpan(
-                                    text: "HR",
-                                    style: Styles.PoppinsRegular(
-                                      fontSize:
-                                      ApplicationSizing.fontScale(
-                                          10),
-                                      color: drawerColor,
-                                    )),
-                              ]),
+                            Expanded(
+                              flex: 1,
+                              child: RichText(
+                                overflow: TextOverflow.ellipsis,
+                                text: TextSpan(children: [
+                                  TextSpan(
+                                      text: bPReadings[index]
+                                          .heartRate
+                                          ?.toStringAsFixed(0) ??
+                                          "",
+                                      style: Styles.PoppinsBold(
+                                        fontSize:
+                                        ApplicationSizing.fontScale(
+                                            20),
+                                        fontWeight: FontWeight.bold,
+                                        color: drawerColor,
+                                      )),
+                                  TextSpan(
+                                      text: "HR",
+                                      style: Styles.PoppinsRegular(
+                                        fontSize:
+                                        ApplicationSizing.fontScale(
+                                            10),
+                                        color: drawerColor,
+                                      )),
+                                ]),
+                              ),
                             ),
                           ],
                         ),

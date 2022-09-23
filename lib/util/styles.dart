@@ -26,6 +26,7 @@ class Styles {
       Color color = Colors.black,
       FontWeight fontWeight = FontWeight.normal}) {
     return TextStyle(
+      height: 1.1,
         fontSize: fontSize,
         fontFamily: fontFamily,
         color: color,

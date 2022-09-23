@@ -45,38 +45,53 @@ CustomAlertDialog({String? message}) {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(10),
-                        width: 60,
-                        height: 60,
-                        decoration:  BoxDecoration(
-                          color: Color(0xff116DDA),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Container(
+                  Expanded(
+                    child: Container(
+                      // color: Colors.amber,
+                      child: Row(
+                        children: [
+                          Container(
                             padding: const EdgeInsets.all(10),
-                            decoration: const BoxDecoration(
-                                color: Colors.white,
-                                shape: BoxShape.circle
+                            width: 60,
+                            height: 60,
+                            decoration:  BoxDecoration(
+                              color: Color(0xff116DDA),
+                              borderRadius: BorderRadius.circular(20),
                             ),
-                            child: SvgPicture.asset("assets/icons/i.svg")),
+                            child: Container(
+                                padding: const EdgeInsets.all(10),
+                                decoration: const BoxDecoration(
+                                    color: Colors.white,
+                                    shape: BoxShape.circle
+                                ),
+                                child: SvgPicture.asset("assets/icons/i.svg")),
+                          ),
+                          ApplicationSizing.horizontalSpacer(),
+                          Expanded(
+                            child: Container(
+                              // color: Colors.red,
+                              child: Text(message??"",
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: Styles.PoppinsRegular(
+                                    color: Color(0xff4F5153),
+                                    fontSize: ApplicationSizing.fontScale(18,minus: true)
+                                ),),
+                            ),
+                          )
+                        ],
                       ),
-                      ApplicationSizing.horizontalSpacer(),
-                      Text(message??"",
-                        style: Styles.PoppinsRegular(
-                            color: Color(0xff4F5153),
-                            fontSize: ApplicationSizing.fontScale(20)
-                        ),)
-                    ],
+                    ),
                   ),
                   InkWell(
                     onTap: (){
                       Navigator.pop(context);
                     },
                     child: Container(
-                      padding: EdgeInsets.all(15),
+                      // color: Colors.blueAccent,
+                      // margin: EdgeInsets.only(right: 10),
+                      // width: 20,
+                      padding: EdgeInsets.symmetric(vertical: 15,horizontal: 10),
                       child: Icon(IcoFontIcons.close),
                     ),
                   )

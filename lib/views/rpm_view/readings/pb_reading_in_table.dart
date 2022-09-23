@@ -26,306 +26,177 @@ class bpReadingInTable extends HookWidget {
           shrinkWrap: true,
           physics: ScrollPhysics(),
           itemBuilder: (context, index) {
-            if (measureDate !=
-                bPReadings[index].measurementDate!.substring(0, 9)) {
+            bool showDate = false;
+            if (measureDate != bPReadings[index].measurementDate!.substring(0, 9)) {
               measureDate = bPReadings[index].measurementDate!.substring(0, 9);
-              return Container(
-                margin: EdgeInsets.symmetric(
-                    horizontal: ApplicationSizing.horizontalMargin()),
-                child: Column(
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(bottom: 5),
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        measureDate,
-                        style: Styles.PoppinsRegular(
-                          fontWeight: FontWeight.bold,
-                          fontSize: ApplicationSizing.fontScale(16),
-                          color: fontGrayColor,
-                        ),
-                      ),
-                    ),
-                    ApplicationSizing.horizontalSpacer(n: 5),
-                    Container(
-                      padding: const EdgeInsets.only(
-                        top: 5,
-                        bottom: 5,
-                        left: 10,
-                        right: 10,
-                      ),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                            width: 1, color: appColor.withOpacity(0.5)),
-                        borderRadius: BorderRadius.circular(5),
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Color(0Xff1d161712),
-                            blurRadius: 20,
-                            offset: Offset(4, 10), // Shadow position
-                          ),
-                        ],
-                        color: Colors.white,
-                      ),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            flex: 2,
-                            child: Container(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                bPReadings[index]
-                                    .measurementDate!
-                                    .substring(11),
-                                style: Styles.PoppinsRegular(
-                                    fontSize: ApplicationSizing.fontScale(16),
-                                    color: fontGrayColor),
-                              ),
+              showDate = true;
+            }
+
+            return Column(
+              children: [
+                Container(
+                  child: !showDate ? Container() :
+                  Container(
+                    margin: EdgeInsets.symmetric(
+                        horizontal: ApplicationSizing.horizontalMargin(n: 18)),
+                    child: Column(
+                      children: [
+                        Container(
+                          // margin: EdgeInsets.only(bottom: 5),
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            measureDate,
+                            style: Styles.PoppinsRegular(
+                              fontWeight: FontWeight.bold,
+                              fontSize: ApplicationSizing.fontScale(16),
+                              color: fontGrayColor,
                             ),
                           ),
-                          Expanded(
-                              flex: 4,
-                              child: Container(
-                                alignment: Alignment.centerRight,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Expanded(
-                                      flex: 1,
-                                      child: RichText(
-                                        overflow: TextOverflow.ellipsis,
-                                        text: TextSpan(children: [
-                                          TextSpan(
-                                              text: bPReadings[index]
-                                                  .highPressure
-                                                  ?.toStringAsFixed(0) ??
-                                                  "",
-                                              style: Styles.PoppinsBold(
-                                                fontSize:
-                                                ApplicationSizing.fontScale(
-                                                    20),
-                                                fontWeight: FontWeight.bold,
-                                                color: appColor,
-                                              )),
-                                          TextSpan(
-                                              text: "Sys",
-                                              style: Styles.PoppinsRegular(
-                                                fontSize:
-                                                ApplicationSizing.fontScale(
-                                                    10),
-                                                color: appColor,
-                                              )),
-                                        ]),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 1,
-                                      // margin: EdgeInsets.symmetric(
-                                      //     horizontal: ApplicationSizing
-                                      //         .horizontalMargin(n: 5)),
-                                      child: RichText(
-                                        overflow: TextOverflow.ellipsis,
-                                        text: TextSpan(children: [
-                                          TextSpan(
-                                              text: bPReadings[index]
-                                                  .lowPressure
-                                                  ?.toStringAsFixed(0) ??
-                                                  "",
-                                              style: Styles.PoppinsBold(
-                                                fontSize:
-                                                ApplicationSizing.fontScale(
-                                                    20),
-                                                fontWeight: FontWeight.bold,
-                                                color: Color(0xff1D3D71),
-                                              )),
-                                          TextSpan(
-                                              text: "Dia",
-                                              style: Styles.PoppinsRegular(
-                                                fontSize:
-                                                ApplicationSizing.fontScale(
-                                                    10),
-                                                color: Color(0xff1D3D71),
-                                              )),
-                                        ]),
-                                      ),
-                                    ),
-
-
-                                    Expanded(
-                                      flex: 1,
-                                      child: RichText(
-                                        overflow: TextOverflow.ellipsis,
-                                        text: TextSpan(children: [
-                                          TextSpan(
-                                              text: bPReadings[index]
-                                                  .heartRate
-                                                  ?.toStringAsFixed(0) ??
-                                                  "",
-                                              style: Styles.PoppinsBold(
-                                                fontSize:
-                                                ApplicationSizing.fontScale(
-                                                    20),
-                                                fontWeight: FontWeight.bold,
-                                                color: drawerColor,
-                                              )),
-                                          TextSpan(
-                                              text: "HR",
-                                              style: Styles.PoppinsRegular(
-                                                fontSize:
-                                                ApplicationSizing.fontScale(
-                                                    10),
-                                                color: drawerColor,
-                                              )),
-                                        ]),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ))
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-              );
-            }
-            return Container(
-              margin: EdgeInsets.symmetric(
-                  horizontal: ApplicationSizing.horizontalMargin()),
-              padding: const EdgeInsets.only(
-                top: 5,
-                bottom: 5,
-                left: 10,
-                right: 10,
-              ),
-              decoration: BoxDecoration(
-                  border:
-                      Border.all(width: 1, color: appColor.withOpacity(0.5)),
-                  borderRadius: BorderRadius.circular(5),
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Color(0Xff1d161712),
-                      blurRadius: 20,
-                      offset: Offset(4, 10), // Shadow position
-                    ),
-                  ],
-                  color: Colors.white),
-              child: Row(
-                children: [
-                  Expanded(
-                    flex: 2,
-                    child: Container(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        bPReadings[index]
-                            .measurementDate!
-                            .substring(11),
-                        style: Styles.PoppinsRegular(
-                            fontSize: ApplicationSizing.fontScale(16),
-                            color: fontGrayColor),
-                      ),
+                        ),
+                        ApplicationSizing.horizontalSpacer(),
+                      ],
                     ),
                   ),
-                  Expanded(
-                      flex: 4,
-                      child: Container(
-                        alignment: Alignment.centerRight,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Expanded(
-                              flex: 1,
-                              child: RichText(
-                                overflow: TextOverflow.ellipsis,
-                                text: TextSpan(children: [
-                                  TextSpan(
-                                      text: bPReadings[index]
-                                          .highPressure
-                                          ?.toStringAsFixed(0) ??
-                                          "",
-
-                                      style: Styles.PoppinsBold(
-                                        fontSize:
-                                        ApplicationSizing.fontScale(
-                                            20),
-                                        fontWeight: FontWeight.bold,
-                                        color: appColor,
-                                      )),
-                                  TextSpan(
-                                      text: "Sys",
-                                      style: Styles.PoppinsRegular(
-                                        fontSize:
-                                        ApplicationSizing.fontScale(
-                                            10),
-                                        color: appColor,
-                                      )),
-                                ]),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              // margin: EdgeInsets.symmetric(
-                              //     horizontal: ApplicationSizing
-                              //         .horizontalMargin(n: 5)),
-                              child: RichText(
-                                overflow: TextOverflow.ellipsis,
-                                text: TextSpan(children: [
-                                  TextSpan(
-                                      text: bPReadings[index]
-                                          .lowPressure
-                                          ?.toStringAsFixed(0) ??
-                                          "",
-                                      style: Styles.PoppinsBold(
-                                        fontSize:
-                                        ApplicationSizing.fontScale(
-                                            20),
-                                        fontWeight: FontWeight.bold,
-                                        color: Color(0xff1D3D71),
-                                      )),
-                                  TextSpan(
-                                      text: "Dia",
-                                      style: Styles.PoppinsRegular(
-                                        fontSize:
-                                        ApplicationSizing.fontScale(
-                                            10),
-                                        color: Color(0xff1D3D71),
-                                      )),
-                                ]),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: RichText(
-                                overflow: TextOverflow.ellipsis,
-                                text: TextSpan(children: [
-                                  TextSpan(
-                                      text: bPReadings[index]
-                                          .heartRate
-                                          ?.toStringAsFixed(0) ??
-                                          "",
-                                      style: Styles.PoppinsBold(
-                                        fontSize:
-                                        ApplicationSizing.fontScale(
-                                            20),
-                                        fontWeight: FontWeight.bold,
-                                        color: drawerColor,
-                                      )),
-                                  TextSpan(
-                                      text: "HR",
-                                      style: Styles.PoppinsRegular(
-                                        fontSize:
-                                        ApplicationSizing.fontScale(
-                                            10),
-                                        color: drawerColor,
-                                      )),
-                                ]),
-                              ),
-                            ),
-                          ],
+                ),
+                Container(
+                  margin: EdgeInsets.symmetric(
+                      horizontal: ApplicationSizing.horizontalMargin()),
+                  padding: const EdgeInsets.only(
+                    top: 5,
+                    bottom: 5,
+                    left: 10,
+                    right: 10,
+                  ),
+                  decoration: BoxDecoration(
+                      border:
+                          Border.all(width: 1, color: appColor.withOpacity(0.5)),
+                      borderRadius: BorderRadius.circular(5),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Color(0Xff1d161712),
+                          blurRadius: 20,
+                          offset: Offset(4, 10), // Shadow position
                         ),
-                      ))
-                ],
-              ),
+                      ],
+                      color: Colors.white),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: 2,
+                        child: Container(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            bPReadings[index]
+                                .measurementDate!
+                                .substring(11),
+                            style: Styles.PoppinsRegular(
+                                fontSize: ApplicationSizing.fontScale(16),
+                                color: fontGrayColor),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                          flex: 4,
+                          child: Container(
+                            alignment: Alignment.centerRight,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Expanded(
+                                  flex: 1,
+                                  child: RichText(
+                                    overflow: TextOverflow.ellipsis,
+                                    text: TextSpan(children: [
+                                      TextSpan(
+                                          text: bPReadings[index]
+                                              .highPressure
+                                              ?.toStringAsFixed(0) ??
+                                              "",
+
+                                          style: Styles.PoppinsBold(
+                                            fontSize:
+                                            ApplicationSizing.fontScale(
+                                                20),
+                                            fontWeight: FontWeight.bold,
+                                            color: appColor,
+                                          )),
+                                      TextSpan(
+                                          text: "Sys",
+                                          style: Styles.PoppinsRegular(
+                                            fontSize:
+                                            ApplicationSizing.fontScale(
+                                                10),
+                                            color: appColor,
+                                          )),
+                                    ]),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  // margin: EdgeInsets.symmetric(
+                                  //     horizontal: ApplicationSizing
+                                  //         .horizontalMargin(n: 5)),
+                                  child: RichText(
+                                    overflow: TextOverflow.ellipsis,
+                                    text: TextSpan(children: [
+                                      TextSpan(
+                                          text: bPReadings[index]
+                                              .lowPressure
+                                              ?.toStringAsFixed(0) ??
+                                              "",
+                                          style: Styles.PoppinsBold(
+                                            fontSize:
+                                            ApplicationSizing.fontScale(
+                                                20),
+                                            fontWeight: FontWeight.bold,
+                                            color: Color(0xff1D3D71),
+                                          )),
+                                      TextSpan(
+                                          text: "Dia",
+                                          style: Styles.PoppinsRegular(
+                                            fontSize:
+                                            ApplicationSizing.fontScale(
+                                                10),
+                                            color: Color(0xff1D3D71),
+                                          )),
+                                    ]),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  child: RichText(
+                                    overflow: TextOverflow.ellipsis,
+                                    text: TextSpan(children: [
+                                      TextSpan(
+                                          text: bPReadings[index]
+                                              .heartRate
+                                              ?.toStringAsFixed(0) ??
+                                              "",
+                                          style: Styles.PoppinsBold(
+                                            fontSize:
+                                            ApplicationSizing.fontScale(
+                                                20),
+                                            fontWeight: FontWeight.bold,
+                                            color: drawerColor,
+                                          )),
+                                      TextSpan(
+                                          text: "HR",
+                                          style: Styles.PoppinsRegular(
+                                            fontSize:
+                                            ApplicationSizing.fontScale(
+                                                10),
+                                            color: drawerColor,
+                                          )),
+                                    ]),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ))
+                    ],
+                  ),
+                ),
+              ],
             );
           },
           separatorBuilder: (context, index) {

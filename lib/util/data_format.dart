@@ -18,7 +18,8 @@ void launchURL({required String url}) async {
 }
 
 String phoneNumberFormatter({required String phoneNum}){
-  String phoneNumber = phoneNum.replaceAll("-", "");
+  String phoneNumber = phoneNum.replaceAll("-", "").replaceAll("(", "").replaceAll(")", "")
+  .replaceAll(" ", "").replaceAll("+1", "");
   String formattedNum = "";
   for(int i=0; i< phoneNumber.length; i++){
     formattedNum = formattedNum + phoneNumber.substring(i,i+1);

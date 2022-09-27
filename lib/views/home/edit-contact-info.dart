@@ -274,7 +274,7 @@ class EditContactInfo extends HookWidget {
                                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
                                 child: CustomTextField(
                                   checkFocus: (val){},
-                                  inputFormatter: [MaskFormatter("0000000000")],
+                                  inputFormatter: [MaskFormatter("000-000-0000")],
                                   onchange: profileVm.onPrimaryPhoneChange,
                                   textEditingController: profileVm.primaryPhoneEditController,
                                   textInputType: TextInputType.phone,

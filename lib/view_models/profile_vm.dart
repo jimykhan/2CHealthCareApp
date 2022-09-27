@@ -181,6 +181,7 @@ class ProfileVm extends ChangeNotifier{
     isMailingSame = !isMailingSame;
     notifyListeners();
   }
+
   initEditContactInfo(){
     primaryPhoneEditController = TextEditingController();
     secondaryPhoneEditController = TextEditingController();
@@ -196,9 +197,10 @@ class ProfileVm extends ChangeNotifier{
     setExistingValue();
     getStateList();
   }
+
   setExistingValue(){
-    primaryPhoneEditController?.text =  patientInfo?.homePhone??"";
-    secondaryPhoneEditController?.text = patientInfo?.personNumber??"";
+    primaryPhoneEditController?.text =  phoneNumberFormatter(phoneNum: patientInfo?.homePhone??"");
+    secondaryPhoneEditController?.text = phoneNumberFormatter(phoneNum: patientInfo?.personNumber??"");
     currentAddressEditController?.text = patientInfo?.currentAddress??"";
     cACityEditController?.text = patientInfo?.city??"";
     cAStateEditController?.text = patientInfo?.state??"";
@@ -245,10 +247,13 @@ class ProfileVm extends ChangeNotifier{
         "primaryPhoneNo": primaryPhoneEditController?.text.replaceAll("-", "")??"",
         "secondaryContactNo": secondaryPhoneEditController?.text.replaceAll("-", "")??"",
         "currentAddress": currentAddressEditController?.text??"",
-        "mailingAddress": mailingAddressEditController?.text??"",
         "city": cACityEditController?.text??"",
         "state": cAStateEditController?.text??"",
         "zip": cAZipCodeEditController?.text??"",
+        "mailingAddress": isMailingSame ? currentAddressEditController?.text : mailingAddressEditController?.text??"",
+        "maillingAddressState": isMailingSame ? cAStateEditController?.text  : mAStateEditController?.text ,
+        "maillingAddressCity": isMailingSame ? cACityEditController?.text  : mACityEditController?.text ,
+        "maillingAddressZipCode": isMailingSame ? cAZipCodeEditController?.text  : mAZipCodeEditController?.text ,
         "emergencyContactName": patientInfo?.emergencyContactName??"",
         "emergencyContactRelationship": patientInfo?.emergencyContactRelationship??"",
         "emergencyContactPrimaryPhoneNo": patientInfo?.emergencyContactPrimaryPhoneNo??"",

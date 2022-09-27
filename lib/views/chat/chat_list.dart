@@ -50,33 +50,7 @@ class ChatList extends HookWidget {
     );
     return (chatListVM.isTextFieldActive) ? simpleScaffold(context,chatListVM: chatListVM,loginVM: loginVM,applicationRouteService: applicationRouteService) : Scaffold(
         primary: false,
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(ApplicationSizing.convert(90)),
-          child: CustomAppBar(
-            facilityIcon: (loginVM.currentUser?.userType == 1) ? false : true,
-            // leadingIcon: Container(),
-            color1: Colors.white,
-            color2: Colors.white,
-            hight: ApplicationSizing.convert(70),
-            parentContext: context,
-            centerWigets: AppBarTextStyle(
-              text: "Chat List",
-            ),
-            // chatListVM.searchedGroup
-            //     ? _searchField(chatListVM: chatListVM)
-            //     : AppBarTextStyle(
-            //         text: "Chat List",
-            //       ),
-            // trailingIcon: InkWell(
-            //   onTap: chatListVM.onClickSearch,
-            //   child: Icon(
-            //     chatListVM.searchedGroup ? Icons.cancel : Icons.person_search,
-            //     color: appColor,
-            //     size: 27,
-            //   ),
-            // ),
-          ),
-        ),
+        appBar: appBar(context,loginVM,chatListVM: chatListVM),
         floatingActionButtonLocation:  FloatingActionButtonLocation.centerDocked,
         floatingActionButton: FloatingActionButton(
           // backgroundColor: Colors.black,
@@ -118,35 +92,65 @@ class ChatList extends HookWidget {
         loginVM: loginVM));
   }
 
-  simpleScaffold(context,{ ChatListVM? chatListVM,required LoginVM loginVM,required ApplicationRouteService applicationRouteService}){
-    return Scaffold(
-        primary: false,
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(ApplicationSizing.convert(90)),
-          child: CustomAppBar(
-            leadingIcon: Container(),
-            color1: Colors.white,
-            color2: Colors.white,
-            hight: ApplicationSizing.convert(70),
-            parentContext: context,
-            centerWigets: AppBarTextStyle(
-              text: "Chat List",
-            ),
-            // chatListVM.searchedGroup
-            //     ? _searchField(chatListVM: chatListVM)
-            //     : AppBarTextStyle(
-            //         text: "Chat List",
-            //       ),
-            // trailingIcon: InkWell(
-            //   onTap: chatListVM.onClickSearch,
-            //   child: Icon(
-            //     chatListVM.searchedGroup ? Icons.cancel : Icons.person_search,
-            //     color: appColor,
-            //     size: 27,
-            //   ),
-            // ),
+  appBar(context,LoginVM loginVM,{required ChatListVM chatListVM}){
+    return PreferredSize(
+      preferredSize: Size.fromHeight(ApplicationSizing.convert(90)),
+      child: CustomAppBar(
+        facilityIcon: (loginVM.currentUser?.userType == 1) ? false : true,
+        // leadingIcon: Container(),
+        color1: Colors.white,
+        color2: Colors.white,
+        hight: ApplicationSizing.convert(70),
+        parentContext: context,
+        centerWigets: Container(
+          // color: Colors.red,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              AppBarTextStyle(
+                  text: "Chat List",
+                ),
+                SizedBox(width: 5,),
+              chatListVM.unReadChats.length < 1 ? Container() : Container(
+
+                alignment: Alignment.center,
+                padding: EdgeInsets.all(3),
+                margin: EdgeInsets.only(bottom: 5),
+                child: Text(
+                  "${chatListVM.unReadChats.length}",
+                  style: Styles.PoppinsRegular(
+                      fontWeight: FontWeight.w400,
+                      fontSize: ApplicationSizing.fontScale(10),
+                      color: Colors.white),
+                  maxLines: 1,
+                ),
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle, color: appColor),
+              )
+            ],
           ),
         ),
+        // chatListVM.searchedGroup
+        //     ? _searchField(chatListVM: chatListVM)
+        //     : AppBarTextStyle(
+        //         text: "Chat List",
+        //       ),
+        // trailingIcon: InkWell(
+        //   onTap: chatListVM.onClickSearch,
+        //   child: Icon(
+        //     chatListVM.searchedGroup ? Icons.cancel : Icons.person_search,
+        //     color: appColor,
+        //     size: 27,
+        //   ),
+        // ),
+      ),
+    );
+  }
+
+  simpleScaffold(context,{ required ChatListVM chatListVM,required LoginVM loginVM,required ApplicationRouteService applicationRouteService}){
+    return Scaffold(
+        primary: false,
+        appBar: appBar(context,loginVM,chatListVM: chatListVM),
 
         bottomNavigationBar: BottomBar(
           selectedIndex: 2,
@@ -346,7 +350,8 @@ class ChatList extends HookWidget {
                                 ),
                                 decoration: BoxDecoration(
                                     shape: BoxShape.circle, color: appColor),
-                              )),
+                              )
+                      ),
                     ],
                   ),
                 ],

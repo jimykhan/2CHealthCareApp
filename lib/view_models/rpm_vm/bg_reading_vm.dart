@@ -49,12 +49,14 @@ class BGReadingVM extends ChangeNotifier{
     _rpmService = _ref!.read(rpmServiceProvider);
     _tabAndCalenderVM = _ref!.read(tabAndCalenderVMProvider);
     _tabAndCalenderVM!.newDateRange.listen((value) {
-      getBGReading(startDate: value.startDate, endDate: value.endDate);
+      if(value.modality == "BG"){
+        getBGReading(startDate: value.startDate, endDate: value.endDate);
+      }
     });
 
   }
   initialState({required int readingMonth, required int readingYear}){
-    _tabAndCalenderVM!.initialState(readingMonth: readingMonth, readingYear: readingYear);
+    _tabAndCalenderVM!.initialState(readingMonth: readingMonth, readingYear: readingYear,modality: "BG");
     DateTime startDate = DateTime(readingYear,readingMonth,1);
     DateTime endDate = DateTime(readingYear,readingMonth,countMonthDays(year: readingYear,month: readingMonth));
     // timePeriodSelect = 2;

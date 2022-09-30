@@ -18,7 +18,6 @@ import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
 import 'package:twochealthcare/view_models/rpm_vm/components/pie_chart_widget.dart';
 import 'package:twochealthcare/view_models/rpm_vm/dexCom_vm.dart';
-import 'package:twochealthcare/views/rpm_view/readings/compnents/blood_glocus_tile.dart';
 
 class DexcomCGM extends HookWidget {
   String? modality;

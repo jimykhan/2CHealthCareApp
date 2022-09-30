@@ -6,10 +6,12 @@ import 'package:rxdart/rxdart.dart';
 class CalenderDate{
    DateTime? startDate;
    DateTime?  endDate;
-   CalenderDate({this.startDate,this.endDate});
+   String modality = "";
+   CalenderDate({this.startDate,this.endDate,this.modality = ""});
 }
 class TabAndCalenderVM extends ChangeNotifier{
   PublishSubject<CalenderDate> newDateRange = PublishSubject<CalenderDate>(sync: true);
+  String notifyModality = "";
 
   DateTime startDate = DateTime.now();
   DateTime endDate = DateTime.now();
@@ -39,9 +41,10 @@ class TabAndCalenderVM extends ChangeNotifier{
   initService(){
 
   }
-  initialState({required int readingMonth, required int readingYear}){
+  initialState({required int readingMonth, required int readingYear,required String modality}){
     startDate = DateTime(readingYear,readingMonth,1);
     endDate = DateTime(readingYear,readingMonth,countMonthDays(year: readingYear,month: readingMonth));
+    notifyModality = modality;
     timePeriodSelect = 2;
     focusedDay1 = DateTime(readingYear ,readingMonth);
     selectedDay1 = DateTime(readingYear,readingMonth);
@@ -74,7 +77,7 @@ class TabAndCalenderVM extends ChangeNotifier{
       startDate = DateTime.now().subtract(Duration(days: 30));
       endDate = DateTime.now();
     }
-    newDateRange.add(CalenderDate(startDate: startDate,endDate: endDate));
+    newDateRange.add(CalenderDate(startDate: startDate,endDate: endDate,modality: notifyModality));
   }
   CalendarFormatWeek(){
     calendarFormat = CalendarFormat.week;
@@ -86,7 +89,7 @@ class TabAndCalenderVM extends ChangeNotifier{
     endDate = DateTime.now();
     selectedDay1 = DateTime.now();
     focusedDay1 = DateTime.now();
-    newDateRange.add(CalenderDate(startDate: startDate,endDate: endDate));
+    newDateRange.add(CalenderDate(startDate: startDate,endDate: endDate,modality: notifyModality));
     // getBGReading();
   }
   CalendarFormatCustomRange(){
@@ -113,13 +116,13 @@ class TabAndCalenderVM extends ChangeNotifier{
     if(timePeriodSelect == 2){
       startDate = selectedDay1!;
       endDate = DateTime(selectedDay1!.year,selectedDay1!.month,countMonthDays(year: selectedDay1!.year, month: selectedDay1!.month));
-      newDateRange.add(CalenderDate(startDate: startDate,endDate: endDate));
+      newDateRange.add(CalenderDate(startDate: startDate,endDate: endDate,modality: notifyModality));
       // getBGReading();
     }
     if(timePeriodSelect == 1){
       endDate = focusedDay;
       startDate = focusedDay?.subtract(const Duration(days: 7));
-      newDateRange.add(CalenderDate(startDate: startDate,endDate: endDate));
+      newDateRange.add(CalenderDate(startDate: startDate,endDate: endDate,modality: notifyModality));
     }
 
 
@@ -146,7 +149,7 @@ class TabAndCalenderVM extends ChangeNotifier{
       rangeEnd = end;
       startDate = start;
       endDate = end;
-      newDateRange.add(CalenderDate(startDate: start,endDate: end));
+      newDateRange.add(CalenderDate(startDate: start,endDate: end,modality: notifyModality));
     }
 
     // rangeSelectionMode = RangeSelectionMode.toggledOn;

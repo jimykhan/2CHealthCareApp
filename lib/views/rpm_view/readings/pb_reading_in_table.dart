@@ -31,7 +31,6 @@ class bpReadingInTable extends HookWidget {
               measureDate = bPReadings[index].measurementDate!.substring(0, 9);
               showDate = true;
             }
-
             return Column(
               children: [
                 Container(

@@ -85,7 +85,7 @@ class CustomAppBar extends HookWidget {
                   Expanded(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         leadingIcon == null ? SizedBox(width: 30,) : InkWell(
                           onTap: clickOnDrawer,

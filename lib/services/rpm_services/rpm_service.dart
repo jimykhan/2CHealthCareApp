@@ -12,17 +12,15 @@ import 'package:twochealthcare/models/facility_user_models/dashboard_patients/pa
 import 'package:twochealthcare/models/modalities_models/blood_pressure_reading_model.dart';
 import 'package:twochealthcare/models/modalities_models/gb_reading_model.dart';
 import 'package:twochealthcare/models/modalities_models/modalities_model.dart';
+import 'package:twochealthcare/models/rpm_models/pulse_ox_reading_model.dart';
 import 'package:twochealthcare/models/rpm_models/rpm_logs_model.dart';
+import 'package:twochealthcare/models/rpm_models/weight_reading_model.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/dio_services/dio_services.dart';
 import 'package:twochealthcare/services/shared_pref_services.dart';
 import 'package:twochealthcare/util/data_format.dart';
 
 class RpmService{
-  int bPLastReadingMonth = DateTime.now().month;
-  int bPLastReadingYear = DateTime.now().year;
-  int bGLastReadingMonth = DateTime.now().month;
-  int bGLastReadingYear = DateTime.now().year;
   double bGMaxLimit = 100;
   double bloodPressureMaxLimit = 100;
   DioServices? dio;
@@ -62,18 +60,24 @@ class RpmService{
 
             int month = int.parse(element.lastReadingDate!.split("/")[0]);
             int year = int.parse(element.lastReadingDate!.split("/")[2].split(" ")[0]);
-            if(element.modality == "BG") {
-              bGLastReadingMonth = month;
-              bGLastReadingYear = year;
-              print("last month of BG = $month");
-              print("last year of BG = $year");
-            }
-            if(element.modality == "BP") {
-              bPLastReadingMonth = month;
-              bPLastReadingYear = year;
-              print("last month of BP = $month");
-              print("last year of BP = $year");
-            }
+            element.month = month;
+            element.year = year;
+            // if(element.modality == "BG") {
+            //   bGLastReadingMonth = month;
+            //   bGLastReadingYear = year;
+            //   print("last month of BG = $month");
+            //   print("last year of BG = $year");
+            // }
+            // if(element.modality == "BP") {
+            //   bPLastReadingMonth = month;
+            //   bPLastReadingYear = year;
+            //   print("last month of BP = $month");
+            //   print("last year of BP = $year");
+            // }
+          }
+          else{
+            element.month = DateTime.now().month;
+            element.year = DateTime.now().year;
           }
 
         });
@@ -95,7 +99,7 @@ class RpmService{
   getBGReading({int? currentUserId,DateTime? startDate,DateTime? endDate}) async {
     try{
       // final dio = _ref!.read(dioServicesProvider);
-      Response? response = await dio?.dio?.get(ApiStrings.getBloodGlucoseDeviceDatabyPatientId+"/$currentUserId"+"?startDate=${startDate.toString()}&endDate=${endDate.toString()}",
+      Response? response = await dio?.dio?.get(HealthCareDevicesController.getBloodGlucoseDeviceDatabyPatientId+"/$currentUserId"+"?startDate=${startDate.toString()}&endDate=${endDate.toString()}",
       );
       if(response?.statusCode == 200){
         // sharePrf.setCurrentUser(response.data);
@@ -146,13 +150,64 @@ class RpmService{
       print(e.toString());
     }
   }
+  getWeightReading({int? currentUserId,DateTime? startDate,DateTime? endDate}) async {
+    try{
+      // final dio = _ref!.read(dioServicesProvider);
+      Response? response = await dio?.dio?.get(HealthCareDevicesController.GetWeightDeviceDatabyPatientId+"/$currentUserId"+"?startDate=${startDate.toString()}&endDate=${endDate.toString()}",
+      );
+      if(response?.statusCode == 200){
+        // sharePrf.setCurrentUser(response.data);
+        List<WeightReadingModel> bGReadings = [];
+        response?.data.forEach((element) {
+          bGReadings.add(WeightReadingModel.fromJson(element));
+        });
+        if (bGReadings.length > 0) {
+          // bGReadings.forEach((element) {
+          //   element.measurementDate = convertLocalToUtc(element.measurementDate!.replaceAll("Z", ""));
+          // });
+          bGReadings.sort((a, b) {
+            return double.parse(a.measurementDate!
+                .trim()
+                .replaceAll("-", "")
+                .replaceAll("T", "")
+                .replaceAll(":", "")
+                .replaceAll("Z", "")
+                .replaceAll(" ", "")
+            )
+                .compareTo(double.parse(b.measurementDate!
+                .trim()
+                .replaceAll("-", "")
+                .replaceAll("T", "")
+                .replaceAll(":", "")
+                .replaceAll("Z", "")
+                .replaceAll(" ", "")
+            ));
+          });
+          bGReadings.forEach((element) {
+            // element.datetime = DateTime.parse(element.measurementDate.trim().replaceAll("-", "").replaceAll(":", ""));
+            element.measurementDate =
+                Jiffy(element.measurementDate).format(Strings.dateAndTimeFormat);
+            // element.measurementDate = Jiffy((DateFormat("yyyy-MM-dd HH:mm:ss").parse(DateTime.parse(element.measurementDate).toString(),true)).toLocal().toString()).format("dd MMM yy, h:mm a");
+          });
+        }
+
+        return bGReadings;
+
+      }else{
+        return null;
+      }
+    }
+    catch(e){
+      print(e.toString());
+    }
+  }
 
 
 
   getBloodPressureReading({int? currentUserId,DateTime? startDate,DateTime? endDate}) async {
     try{
       // final dio = _ref!.read(dioServicesProvider);
-      Response? response = await dio?.dio?.get(ApiStrings.getBPDeviceDataByPatientId+"/$currentUserId"+"?startDate=${startDate.toString()}&endDate=${endDate.toString()}",
+      Response? response = await dio?.dio?.get(HealthCareDevicesController.getBPDeviceDataByPatientId+"/$currentUserId"+"?startDate=${startDate.toString()}&endDate=${endDate.toString()}",
       );
       if(response?.statusCode == 200){
         // sharePrf.setCurrentUser(response.data);
@@ -194,6 +249,54 @@ class RpmService{
             if (bloodPressureMaxLimit < element.highPressure!) {
               bloodPressureMaxLimit = element.highPressure!;
             }
+          });
+        }
+
+        return bPReadings;
+
+      }else{
+        return null;
+      }
+    }
+    catch(e){
+      print(e.toString());
+    }
+  }
+
+  getPulseOxReading({int? currentUserId,DateTime? startDate,DateTime? endDate}) async {
+    try{
+      // final dio = _ref!.read(dioServicesProvider);
+      Response? response = await dio?.dio?.get(HealthCareDevicesController.getPulseDeviceDatabyPatientId+"/$currentUserId"+"?startDate=${startDate.toString()}&endDate=${endDate.toString()}",
+      );
+      if(response?.statusCode == 200){
+        // sharePrf.setCurrentUser(response.data);
+        List<PulseOxReadingModel> bPReadings = [];
+        response?.data.forEach((element) {
+          bPReadings.add(PulseOxReadingModel.fromJson(element));
+        });
+        if (bPReadings.length > 0) {
+          bPReadings.sort((a, b) {
+            return double.parse(a.measurementDate!
+                .trim()
+                .replaceAll("-", "")
+                .replaceAll("T", "")
+                .replaceAll(":", "")
+                .replaceAll("Z", "")
+                .replaceAll(" ", "")
+            )
+                .compareTo(double.parse(b.measurementDate!
+                .trim()
+                .replaceAll("-", "")
+                .replaceAll("T", "")
+                .replaceAll(":", "")
+                .replaceAll("Z", "")
+                .replaceAll(" ", "")
+            ));
+          });
+          bPReadings.forEach((element) {
+
+            element.measurementDate =
+                Jiffy(element.measurementDate).format(Strings.dateAndTimeFormat);
           });
         }
 

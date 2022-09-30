@@ -70,6 +70,7 @@ flutter:
     - assets/icons/
     - assets/icons/side_menu/
     - assets/icons/Notifications/
+    - assets/icons/readings/
     - assets/icons/fu_icons/
     - assets/icons/logo.svg
     - assets/icons/loginBg.png

@@ -21,6 +21,8 @@ import 'package:twochealthcare/view_models/rpm_vm/modalities_reading_vm.dart';
 import 'package:twochealthcare/views/rpm_view/readings/bg_reading.dart';
 import 'package:twochealthcare/views/rpm_view/readings/blood_pressure_reading.dart';
 import 'package:twochealthcare/views/rpm_view/readings/dex_com_reading.dart';
+import 'package:twochealthcare/views/rpm_view/readings/pulse_ox_reading.dart';
+import 'package:twochealthcare/views/rpm_view/readings/weight_reading.dart';
 
 class ModalitiesReading extends HookWidget {
   int paitentId;
@@ -100,37 +102,36 @@ class ModalitiesReading extends HookWidget {
                                               context,
                                               PageTransition(
                                                   child: BloodPressureReading(
-                                                      selectedMonth:
-                                                          modalitiesReadingVM
-                                                              .bPLastReadingMonth,
-                                                      selectedYear:
-                                                          modalitiesReadingVM
-                                                              .bPLastReadingYear),
+                                                      selectedMonth: modality.month!,
+                                                      selectedYear: modality.year!),
                                                   type: PageTransitionType
-                                                      .bottomToTop));
+                                                      .fade));
                                         }
                                         else if (modality.modality == "BG") {
                                           Navigator.push(
                                               context,
                                               PageTransition(
                                                   child: BGReading(
-                                                      selectedMonth:
-                                                          modalitiesReadingVM
-                                                              .bGLastReadingMonth,
-                                                      selectedYear:
-                                                          modalitiesReadingVM
-                                                              .bGLastReadingYear),
+                                                      selectedMonth: modality.month!,
+                                                      selectedYear: modality.year!),
                                                   type: PageTransitionType
-                                                      .bottomToTop));
+                                                      .fade));
                                         }
                                         else if (modality.modality == "WT") {
-                                          // sharedPrefServices?.getBearerToken();
-                                          // Navigator.push(context, PageTransition(
-                                          //     child: const BloodPressureReading(), type: PageTransitionType.bottomToTop));
+                                          Navigator.push(context, PageTransition(
+                                              child:  WeightReading(
+                                                selectedMonth: modality.month!,
+                                                selectedYear: modality.year!,
+                                              ), type: PageTransitionType.fade));
+                                        }
+                                        else if (modality.modality == "PO") {
+                                          Navigator.push(context, PageTransition(
+                                              child:  PulseOxReading(
+                                                selectedMonth: modality.month!,
+                                                selectedYear: modality.year!,
+                                              ), type: PageTransitionType.fade));
                                         }
                                         else if (modality.modality == "CGM") {
-                                          sharedPrefServices?.getBearerToken();
-
                                           Navigator.push(context, PageTransition(
                                               child:  DexcomCGM(patientId: paitentId,), type: PageTransitionType.fade));
                                         }
@@ -159,7 +160,7 @@ class ModalitiesReading extends HookWidget {
                                                           ? const Color(
                                                               0xffBE54FF)
                                                           : const Color(
-                                                              0xff4EAF48),
+                                                              0xff23B8B8),
                                           borderRadius:
                                               BorderRadius.circular(20),
                                         ),
@@ -241,6 +242,8 @@ class ModalitiesReading extends HookWidget {
                                                                     : modality.modality ==
                                                                             "CGM"
                                                                         ? "assets/icons/readings/blood-glucose-icon.svg"
+                                                                    : modality.modality ==
+                                                                          "PO" ? "assets/icons/readings/pulse-oximeter.svg"
                                                                         : "assets/icons/readings/blood-glucose-icon.svg",
                                                       ),
                                                     ),
@@ -381,7 +384,7 @@ class ModalitiesReading extends HookWidget {
                             itemCount:
                                 modalitiesReadingVM.modalitiesList.length),
                       ),
-                ApplicationSizing.verticalSpacer(),
+                ApplicationSizing.verticalSpacer(n: 70),
               ],
             ),
             modalitiesReadingVM.modalitiesLoading ? AlertLoader() : Container(),

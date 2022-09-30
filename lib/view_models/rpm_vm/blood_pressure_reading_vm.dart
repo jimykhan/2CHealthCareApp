@@ -40,7 +40,7 @@ class BloodPressureReadingVM extends ChangeNotifier{
     initService();
   }
   initialState({required int readingMonth, required int readingYear}){
-    _tabAndCalenderVM!.initialState(readingMonth: readingMonth, readingYear: readingYear);
+    _tabAndCalenderVM!.initialState(readingMonth: readingMonth, readingYear: readingYear,modality: "BP");
     DateTime startDate = DateTime(readingYear,readingMonth,1);
     DateTime endDate = DateTime(readingYear,readingMonth,countMonthDays(year: readingYear,month: readingMonth));
     // timePeriodSelect = 2;
@@ -55,7 +55,9 @@ class BloodPressureReadingVM extends ChangeNotifier{
     _rpmService = _ref!.read(rpmServiceProvider);
     _tabAndCalenderVM = _ref!.read(tabAndCalenderVMProvider);
     _tabAndCalenderVM!.newDateRange.listen((value) {
-      getBloodPressureReading(startDate: value.startDate, endDate: value.endDate);
+      if(value.modality == "BP"){
+        getBloodPressureReading(startDate: value.startDate, endDate: value.endDate);
+      }
     });
 
   }

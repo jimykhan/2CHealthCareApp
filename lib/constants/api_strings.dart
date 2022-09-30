@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart' as Foundation;
  const String test = "https://api.healthforcehub.link";
  const String staging = "https://apistaging.healthforcehub.link";
  const String production = "https://api.2chealthsolutions.com";
- const String baseUrl = production;
+ const String baseUrl = test;
  String messageChannel = baseUrl == production ? "-Production-NewMsgReceived"
      : baseUrl == staging ? "-Staging-NewMsgReceived" : "-Testing-NewMsgReceived";
 String dataChannel = baseUrl == production ? "-Production-NewDataReceived"
@@ -30,8 +30,6 @@ class ApiStrings {
   static const String verifyResetPasswordCode =
       baseUrl + "/api/Account/VerifyResetPasswordCode";
   static const String resetPassword = baseUrl + "/api/Account/ResetPassword";
-  static const String getBPDeviceDataByPatientId =
-      baseUrl + "/api/HealthCareDevices/GetBPDeviceDataByPatientId";
   static const String getPatientById =
       baseUrl + "/api/Patients/GetPatientById";
   static const String getPatientsChronicDiseases =
@@ -41,8 +39,6 @@ class ApiStrings {
   static const String getDexcomEgvs = baseUrl + "/api/Dexcom/GetEgvs";
   static const String getStatistics = baseUrl + "/api/Dexcom/GetStatistics";
   static const String getDexcomDevices = baseUrl + "/api/Dexcom/GetDevices";
-  static const String getBloodGlucoseDeviceDatabyPatientId =
-      baseUrl + "/api/HealthCareDevices/GetBloodGlucoseDeviceDatabyPatientId";
   static const String getChatGroupsByUserId =
       baseUrl + "/api/Chat/GetChatGroupsByUserId";
   static const String getPagedPrivateChatHistory =
@@ -138,4 +134,10 @@ class DexComController{
   static const String DEXCOM_GET_STATISTICS = baseUrl + "/api/Dexcom/GetStatistics";
   static const String DEXCOM_GET_DEVICES = baseUrl + "/api/Dexcom/GetDevices";
   static const String Check_Auth_Given = baseUrl + "/api/Dexcom/CheckAuthGiven/patientId";
+}
+class HealthCareDevicesController{
+  static const String GetWeightDeviceDatabyPatientId = "/api/HealthCareDevices/GetWeightDeviceDatabyPatientId";
+  static const String getBloodGlucoseDeviceDatabyPatientId = "/api/HealthCareDevices/GetBloodGlucoseDeviceDatabyPatientId";
+  static const String getBPDeviceDataByPatientId = "/api/HealthCareDevices/GetBPDeviceDataByPatientId";
+  static const String getPulseDeviceDatabyPatientId = "/api/HealthCareDevices/GetPulseDeviceDatabyPatientId";
 }

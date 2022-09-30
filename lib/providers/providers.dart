@@ -47,11 +47,13 @@ import 'package:twochealthcare/view_models/rpm_vm/bg_reading_vm.dart';
 import 'package:twochealthcare/view_models/rpm_vm/blood_pressure_reading_vm.dart';
 import 'package:twochealthcare/view_models/rpm_vm/dexCom_vm.dart';
 import 'package:twochealthcare/view_models/rpm_vm/modalities_reading_vm.dart';
+import 'package:twochealthcare/view_models/rpm_vm/pulse_ox_reading_vm.dart';
 import 'package:twochealthcare/view_models/rpm_vm/rpm_encounter_vm.dart';
 import 'package:twochealthcare/view_models/rpm_vm/rpm_log_vm.dart';
 import 'package:twochealthcare/view_models/rpm_vm/rpm_patients_vm.dart';
 import 'package:twochealthcare/view_models/rpm_vm/tab_and_calender_vm.dart';
 import 'package:twochealthcare/view_models/profile_vm.dart';
+import 'package:twochealthcare/view_models/rpm_vm/weight_reading_vm.dart';
 import 'package:twochealthcare/view_models/settings_view_models/fu_settings_view_model/fu_settings_view_models.dart';
 import 'package:twochealthcare/view_models/settings_view_models/p_settings_view_models/p_settings_view_model.dart';
 import 'package:twochealthcare/view_models/splash_vm/splash_vm.dart';
@@ -87,6 +89,8 @@ final rpmLogsVMProvider = ChangeNotifierProvider<RpmLogsVM>((ref)=>RpmLogsVM(ref
 final ccmPatientsVMProvider = ChangeNotifierProvider<CcmPatientsVM>((ref)=>CcmPatientsVM(ref: ref));
 final rpmPatientsVMProvider = ChangeNotifierProvider<RpmPatientsVM>((ref)=>RpmPatientsVM(ref: ref));
 final dexComVMProvider = ChangeNotifierProvider<DexComVM>((ref)=>DexComVM(ref: ref));
+final weightReadingVMProvider = ChangeNotifierProvider<WeightReadingVM>((ref)=>WeightReadingVM(ref: ref));
+final pulseOxReadingVMProvider = ChangeNotifierProvider<PulseOxReadingVM>((ref)=>PulseOxReadingVM(ref: ref));
 /// ChangeNotifierProvider
 
 

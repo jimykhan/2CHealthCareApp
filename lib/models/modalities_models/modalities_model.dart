@@ -24,6 +24,10 @@ class ModalitiesModel {
   int? phDeviceModelId;
   String? patientName;
 
+  /// not in model
+  int? month;
+  int? year;
+
   ModalitiesModel(
       {this.id,
         this.manufacturer,
@@ -45,6 +49,8 @@ class ModalitiesModel {
         this.facilityId,
         this.phDeviceModelId,
       this.patientName,
+        this.month,
+        this.year
       });
   factory ModalitiesModel.fromJson(Map<String, dynamic> data) => _$ModalitiesModelFromJson(data);
   Map<String, dynamic> toJson() => _$ModalitiesModelToJson(this);

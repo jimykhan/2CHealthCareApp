@@ -7,10 +7,10 @@ import 'package:twochealthcare/services/rpm_services/modalities_reading_service.
 import 'package:twochealthcare/services/rpm_services/rpm_service.dart';
 
 class ModalitiesReadingVM extends ChangeNotifier{
-  int bPLastReadingMonth = DateTime.now().month;
-  int bPLastReadingYear = DateTime.now().year;
-  int bGLastReadingMonth = DateTime.now().month;
-  int bGLastReadingYear = DateTime.now().year;
+  // int bPLastReadingMonth = DateTime.now().month;
+  // int bPLastReadingYear = DateTime.now().year;
+  // int bGLastReadingMonth = DateTime.now().month;
+  // int bGLastReadingYear = DateTime.now().year;
   ProviderReference? _ref;
   bool modalitiesLoading = true;
   bool isActiveModality = false;
@@ -43,10 +43,10 @@ class ModalitiesReadingVM extends ChangeNotifier{
       res.forEach((element){
         modalitiesList.add(element);
       });
-       bPLastReadingMonth = _rpmService!.bPLastReadingMonth;
-       bPLastReadingYear = _rpmService!.bPLastReadingYear;
-       bGLastReadingMonth = _rpmService!.bGLastReadingMonth;
-       bGLastReadingYear = _rpmService!.bGLastReadingYear;
+       // bPLastReadingMonth = _rpmService!.bPLastReadingMonth;
+       // bPLastReadingYear = _rpmService!.bPLastReadingYear;
+       // bGLastReadingMonth = _rpmService!.bGLastReadingMonth;
+       // bGLastReadingYear = _rpmService!.bGLastReadingYear;
       modalitiesList.forEach((element) {
         if(element.id != 0 || element.lastReading != null) isActiveModality = true;
         // if(element.id != 0) isActiveModality = true;

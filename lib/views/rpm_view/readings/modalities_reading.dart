@@ -93,7 +93,7 @@ class ModalitiesReading extends HookWidget {
                             itemBuilder: (context, index) {
                               ModalitiesModel modality =
                                   modalitiesReadingVM.modalitiesList[index];
-                              return (modality.id == -1)
+                              return (modality.id == 0 && modality.lastReading == null)
                                   ? Container()
                                   : InkWell(
                                       onTap: () {

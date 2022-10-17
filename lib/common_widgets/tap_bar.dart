@@ -4,8 +4,9 @@ import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
 class TapBar extends StatelessWidget {
   int selectedIndx;
+  bool isMonth;
   Function(int? val) ontap;
-   TapBar({Key? key,this.selectedIndx = 0,required this.ontap}) : super(key: key);
+   TapBar({Key? key,this.selectedIndx = 0,required this.ontap,this.isMonth = true}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +49,8 @@ class TapBar extends StatelessWidget {
                     fontSize: ApplicationSizing.convert(12),
                     fontWeight: selectedIndx == 0 ? FontWeight.bold : FontWeight.normal
                   ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
             ),
@@ -76,6 +79,8 @@ class TapBar extends StatelessWidget {
                       fontSize: ApplicationSizing.convert(12),
                       fontWeight: selectedIndx == 1 ? FontWeight.bold : FontWeight.normal
                   ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
             ),
@@ -98,12 +103,14 @@ class TapBar extends StatelessWidget {
                 ),
                 alignment: Alignment.center,
                 child: Text(
-                  "Month",
+                  isMonth ? "Month" : "15 days",
                   style: Styles.PoppinsRegular(
                       color: selectedIndx == 2 ? Colors.white : appColor,
                       fontSize: ApplicationSizing.convert(12),
                       fontWeight: selectedIndx == 2 ? FontWeight.bold : FontWeight.normal
                   ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
             ),

@@ -28,8 +28,8 @@ class AlertLoader extends StatelessWidget {
                 color: Colors.grey.withOpacity(0.5),
               )
             ]),
-        width: 80,
-        height: 80,
+        width: ApplicationSizing.fontScale(80),
+        height: ApplicationSizing.fontScale(80),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,

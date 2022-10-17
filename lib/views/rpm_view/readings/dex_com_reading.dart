@@ -5,11 +5,13 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:twochealthcare/common_widgets/alert_loader.dart';
 import 'package:twochealthcare/common_widgets/app_bar_components/appbar_text_style.dart';
 import 'package:twochealthcare/common_widgets/app_bar_components/back_button.dart';
 import 'package:twochealthcare/common_widgets/custom_appbar.dart';
 import 'package:twochealthcare/common_widgets/floating_button.dart';
 import 'package:twochealthcare/common_widgets/loader.dart';
+import 'package:twochealthcare/common_widgets/tap_bar.dart';
 import 'package:twochealthcare/models/rpm_models/dex_com_models/AlertSettings.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/rpm_services/cgm_services.dart';
@@ -64,113 +66,126 @@ class DexcomCGM extends HookWidget {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
-              width: MediaQuery.of(context).size.width,
-              margin: EdgeInsets.symmetric(
-                  horizontal: ApplicationSizing.constSize( 24)),
-              height: ApplicationSizing.constSize( 30),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(ApplicationSizing.constSize( 5)),
-                border: Border.all(
-                  color: appColor,
-                  width: 2,
-                ),
-              ),
-              child: Row(
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: InkWell(
-                      onTap: () {
-                        dexComVM.SetDexcomCGMSelectedRangeType(0,patientId: patientId, modality: modality);
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: dexComVM.DexcomCGMSelectedRangeType == 0
-                              ? appColor
-                              : Colors.white,
-                        ),
-                        alignment: Alignment.center,
-                        child: Text(
-                          "WEEKLY",
-                          style: Styles.RobotoMedium(
-                            color:
-                            dexComVM.DexcomCGMSelectedRangeType == 0
-                                ? Colors.white
-                                : appColor,
-                            fontSize: ApplicationSizing.constSize( 12),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: InkWell(
-                      onTap: () {
-                        dexComVM.SetDexcomCGMSelectedRangeType(
-                          1,
-                          modality: modality,
-                          patientId: patientId
-                        );
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color:
-                            dexComVM.DexcomCGMSelectedRangeType == 1
-                                ? appColor
-                                : Colors.white,
-                            border: Border(
-                              right: BorderSide(color: appColor, width: 2),
-                              left: BorderSide(color: appColor, width: 2),
-                            )),
-                        alignment: Alignment.center,
-                        child: Text(
-                          "14 days".toUpperCase(),
-                          style: Styles.RobotoMedium(
-                            color:
-                            dexComVM.DexcomCGMSelectedRangeType == 1
-                                ? Colors.white
-                                : appColor,
-                            fontSize: ApplicationSizing.constSize( 12),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: InkWell(
-                      onTap: () {
-                        dexComVM.SetDexcomCGMSelectedRangeType(
-                          2,
-                          modality: modality,
-                          patientId: patientId
-                        );
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: dexComVM.DexcomCGMSelectedRangeType == 2
-                              ? appColor
-                              : Colors.white,
-                        ),
-                        alignment: Alignment.center,
-                        child: Text(
-                          "Custom Range".toUpperCase(),
-                          style: Styles.RobotoMedium(
-                            color:
-                            dexComVM.DexcomCGMSelectedRangeType == 2
-                                ? Colors.white
-                                : appColor,
-                            fontSize: ApplicationSizing.constSize( 12),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            TapBar(ontap: (int? val) {
+              if(val == 0){
+                dexComVM.SetDexcomCGMSelectedRangeType(0,patientId: patientId, modality: modality);
+              }
+              else if(val == 1){
+                dexComVM.SetDexcomCGMSelectedRangeType(1, modality: modality, patientId: patientId);
+              }
+              else if(val == 2){
+                dexComVM.SetDexcomCGMSelectedRangeType(2,modality: modality,patientId: patientId);
+              }
+            },selectedIndx: dexComVM.DexcomCGMSelectedRangeType,
+                isMonth : false),
+            // Container(
+            //   width: MediaQuery.of(context).size.width,
+            //   margin: EdgeInsets.symmetric(
+            //       horizontal: ApplicationSizing.constSize( 24)),
+            //   height: ApplicationSizing.constSize( 30),
+            //   decoration: BoxDecoration(
+            //     borderRadius: BorderRadius.circular(ApplicationSizing.constSize( 5)),
+            //     border: Border.all(
+            //       color: appColor,
+            //       width: 2,
+            //     ),
+            //   ),
+            //   child:
+              // child: Row(
+              //   children: [
+              //     Expanded(
+              //       flex: 1,
+              //       child: InkWell(
+              //         onTap: () {
+              //           dexComVM.SetDexcomCGMSelectedRangeType(0,patientId: patientId, modality: modality);
+              //         },
+              //         child: Container(
+              //           decoration: BoxDecoration(
+              //             color: dexComVM.DexcomCGMSelectedRangeType == 0
+              //                 ? appColor
+              //                 : Colors.white,
+              //           ),
+              //           alignment: Alignment.center,
+              //           child: Text(
+              //             "WEEKLY",
+              //             style: Styles.RobotoMedium(
+              //               color:
+              //               dexComVM.DexcomCGMSelectedRangeType == 0
+              //                   ? Colors.white
+              //                   : appColor,
+              //               fontSize: ApplicationSizing.constSize( 12),
+              //             ),
+              //           ),
+              //         ),
+              //       ),
+              //     ),
+              //     Expanded(
+              //       flex: 1,
+              //       child: InkWell(
+              //         onTap: () {
+              //           dexComVM.SetDexcomCGMSelectedRangeType(
+              //             1,
+              //             modality: modality,
+              //             patientId: patientId
+              //           );
+              //         },
+              //         child: Container(
+              //           decoration: BoxDecoration(
+              //               color:
+              //               dexComVM.DexcomCGMSelectedRangeType == 1
+              //                   ? appColor
+              //                   : Colors.white,
+              //               border: Border(
+              //                 right: BorderSide(color: appColor, width: 2),
+              //                 left: BorderSide(color: appColor, width: 2),
+              //               )),
+              //           alignment: Alignment.center,
+              //           child: Text(
+              //             "14 days".toUpperCase(),
+              //             style: Styles.RobotoMedium(
+              //               color:
+              //               dexComVM.DexcomCGMSelectedRangeType == 1
+              //                   ? Colors.white
+              //                   : appColor,
+              //               fontSize: ApplicationSizing.constSize( 12),
+              //             ),
+              //           ),
+              //         ),
+              //       ),
+              //     ),
+              //     Expanded(
+              //       flex: 1,
+              //       child: InkWell(
+              //         onTap: () {
+              //           dexComVM.SetDexcomCGMSelectedRangeType(
+              //             2,
+              //             modality: modality,
+              //             patientId: patientId
+              //           );
+              //         },
+              //         child: Container(
+              //           decoration: BoxDecoration(
+              //             color: dexComVM.DexcomCGMSelectedRangeType == 2
+              //                 ? appColor
+              //                 : Colors.white,
+              //           ),
+              //           alignment: Alignment.center,
+              //           child: Text(
+              //             "Custom Range".toUpperCase(),
+              //             style: Styles.RobotoMedium(
+              //               color:
+              //               dexComVM.DexcomCGMSelectedRangeType == 2
+              //                   ? Colors.white
+              //                   : appColor,
+              //               fontSize: ApplicationSizing.constSize( 12),
+              //             ),
+              //           ),
+              //         ),
+              //       ),
+              //     ),
+              //   ],
+              // ),
+            // ),
             InkWell(
               onTap: () {
                 // rpmDeviceData.MultiDatePicker(context,modality: modality,
@@ -208,7 +223,7 @@ class DexcomCGM extends HookWidget {
   PieChart(context,
       {required DexComVM dexComVM}) {
     return dexComVM.LoadingDexcomGetStatistics
-        ? loader()
+        ? AlertLoader()
         : Container(
       padding:
       EdgeInsets.symmetric(vertical: ApplicationSizing.constSize( 10)),
@@ -557,7 +572,7 @@ class DexcomCGM extends HookWidget {
   LineGraph(context,
       {required DexComVM dexComVM}) {
     return dexComVM.LoadingDexcomGetDevices
-        ? loader()
+        ? AlertLoader()
         : Column(
           children: [
             Container(
@@ -645,7 +660,7 @@ class DexcomCGM extends HookWidget {
 
   DeviceAlertSetting(context, {required DexComVM dexComVM}) {
     return dexComVM.LoadingDexcomGetDevices
-        ? loader()
+        ? AlertLoader()
         : Container(
       margin: EdgeInsets.symmetric(
           horizontal: ApplicationSizing.constSize( 24)),

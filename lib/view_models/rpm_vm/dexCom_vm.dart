@@ -61,7 +61,7 @@ class DexComVM extends ChangeNotifier{
         required int patientId,
       }) async {
     int currentPatientId = patientId;
-    if (index == 0) {
+    if (index == 1) {
       DexcomCGMDataSelectedDate = [
         DateTime(
           DateTime.now().year,
@@ -71,7 +71,7 @@ class DexComVM extends ChangeNotifier{
         DateTime.now()
       ];
     }
-    if (index == 1) {
+    if (index == 2) {
       DexcomCGMDataSelectedDate = [
         DateTime(
           DateTime.now().year,
@@ -81,13 +81,13 @@ class DexComVM extends ChangeNotifier{
         DateTime.now()
       ];
     }
-    if (index == 2) {
+    if (index == 0) {
 
     }
     if(currentPatientId == -1){
       currentPatientId = await sharedPrefServices?.getCurrentUserId()?? 0;
     }
-    if(index == 2){
+    if(index == 0){
       MultiDatePicker(index,currentPatientId);
     }else{
       getDexComData(index,currentPatientId);

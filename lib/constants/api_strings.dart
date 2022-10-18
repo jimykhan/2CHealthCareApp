@@ -140,4 +140,5 @@ class HealthCareDevicesController{
   static const String getBloodGlucoseDeviceDatabyPatientId = "/api/HealthCareDevices/GetBloodGlucoseDeviceDatabyPatientId";
   static const String getBPDeviceDataByPatientId = "/api/HealthCareDevices/GetBPDeviceDataByPatientId";
   static const String getPulseDeviceDatabyPatientId = "/api/HealthCareDevices/GetPulseDeviceDatabyPatientId";
+  static const String wwwwwTestgetPulseDeviceDatabyPatientId = "/api/HealthCareDevices/GetPulseDeviceDatabyPatientId";
 }

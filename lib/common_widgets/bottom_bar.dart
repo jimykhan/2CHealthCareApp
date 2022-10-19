@@ -59,7 +59,6 @@ class BottomBar extends HookWidget {
         child: Container(
           margin: EdgeInsets.symmetric(
               horizontal: ApplicationSizing.horizontalMargin()),
-
           height: Platform.isIOS
               ? ApplicationSizing.convert(60)
               : ApplicationSizing.convert(60),

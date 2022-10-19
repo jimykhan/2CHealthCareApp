@@ -86,10 +86,10 @@ class HealthGuidesVM extends ChangeNotifier{
     if (canNavigate) {
       goBack ? controller.goBack() : controller.goForward();
     } else {
-      Scaffold.of(context).showSnackBar(
-        SnackBar(
-            content: Text("No ${goBack ? 'back' : 'forward'} history item")),
-      );
+      // Scaffold.of(context).showSnackBar(
+      //   SnackBar(
+      //       content: Text("No ${goBack ? 'back' : 'forward'} history item")),
+      // );
     }
   }
 

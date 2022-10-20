@@ -275,7 +275,7 @@ List<DateTime> daysInRange(DateTime first, DateTime last) {
 }
 
 final kToday = DateTime.now();
-final kFirstDay = DateTime(kToday.year - 1, 1, 1);
+final kFirstDay = DateTime(kToday.year - 5, 1, 1);
 final kLastDay = DateTime(kToday.year, kToday.month, kToday.day);
 
 class TableComplexExample extends StatefulWidget {

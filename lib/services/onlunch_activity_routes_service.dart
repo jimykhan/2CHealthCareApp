@@ -82,8 +82,7 @@ class OnLaunchActivityAndRoutesService{
   }
 
   patientOnStartApplicationData()async{
-    // int patientId = await _authService!.getCurrentUserId();
-    // Response res = await dio!.dio!.post(ApiStrings.setLastAppLaunchDate+"/$patientId");
+    int patientId = await _authService!.getCurrentUserId();
     profileVm?.getUserInfo();
     // loginVM?.checkLastLoggedInUser(body: {
     //   "id":loginVM?.currentUser?.id?.toString()??"",
@@ -94,6 +93,7 @@ class OnLaunchActivityAndRoutesService{
     // firebaseService?.initNotification();
     loginVM?.getCurrentUserFromSharedPref();
     signalRServices?.initSignalR();
+    Response res = await dio!.dio!.post(PatientsController.setLastAppLaunchDate+"/$patientId");
   }
 
   facilityUserOnStartApplicationData()async{

@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart' as Foundation;
  const String test = "https://api.healthforcehub.link";
  const String staging = "https://apistaging.healthforcehub.link";
  const String production = "https://api.2chealthsolutions.com";
- const String baseUrl = test;
+ const String baseUrl = production;
  String messageChannel = baseUrl == production ? "-Production-NewMsgReceived"
      : baseUrl == staging ? "-Staging-NewMsgReceived" : "-Testing-NewMsgReceived";
 String dataChannel = baseUrl == production ? "-Production-NewDataReceived"
@@ -64,6 +64,7 @@ class PatientsController{
   static const String getPatientsForDashboard = baseUrl + "/api/Patients/GetPatientsForDashboard";
   static const String patientServiceSummary = baseUrl + "/api/Patients/PatientServicesSummary";
   static const String getPatients2 = baseUrl + "/api/Patients/GetPatients2";
+  static const String setLastAppLaunchDate = baseUrl + "/api/Patients/SetLastAppLaunchDate";
 }
 class FacilityController{
   static const String getFacilityUser = baseUrl + "/api/Facility/GetFacilityUser";
@@ -140,5 +141,4 @@ class HealthCareDevicesController{
   static const String getBloodGlucoseDeviceDatabyPatientId = "/api/HealthCareDevices/GetBloodGlucoseDeviceDatabyPatientId";
   static const String getBPDeviceDataByPatientId = "/api/HealthCareDevices/GetBPDeviceDataByPatientId";
   static const String getPulseDeviceDatabyPatientId = "/api/HealthCareDevices/GetPulseDeviceDatabyPatientId";
-  static const String wwwwwTestgetPulseDeviceDatabyPatientId = "/api/HealthCareDevices/GetPulseDeviceDatabyPatientId";
 }

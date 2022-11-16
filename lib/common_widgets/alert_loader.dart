@@ -53,13 +53,15 @@ class AlertLoader extends StatelessWidget {
 }
 
 class SimpleLoader extends StatelessWidget {
-  const SimpleLoader({Key? key}) : super(key: key);
+  Color? color;
+   SimpleLoader({this.color,Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       child: CupertinoActivityIndicator(
         radius: 12,
+        color: color?? whiteColor,
       ),
     );
   }

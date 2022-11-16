@@ -1,6 +1,8 @@
+import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/services.dart';
 import 'package:twochealthcare/common_widgets/snackber_message.dart';
+import 'package:twochealthcare/models/chat_model/ChatMessage.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -31,13 +33,15 @@ class ChatInputField extends HookWidget {
         //
         // myFocusNode = FocusNode();
         return () {
-          // Dispose Objects here
+          chatScreenVM.recorderController?.dispose();
+          chatScreenVM.recorderController = null;
         };
       },
       const [],
     );
     return SingleChildScrollView(
       child: Container(
+        alignment: Alignment.center,
         padding: const EdgeInsets.symmetric(
           horizontal: kDefaultPadding,
           vertical: kDefaultPadding / 2,
@@ -54,92 +58,158 @@ class ChatInputField extends HookWidget {
           ],
         ),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 // Icon(Icons.mic, color: kPrimaryColor),
                 // SizedBox(width: kDefaultPadding),
                 Expanded(
-                  child:  Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: kDefaultPadding * 0.75,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade300,
-                        // color: Colors.green,
-                        borderRadius: BorderRadius.circular(40),
-                      ),
-                      child: Row(
-                        children: [
-                          // Icon(
-                          //   Icons.sentiment_satisfied_alt_outlined,
-                          //   color: Theme.of(context)
-                          //       .textTheme
-                          //       .bodyText1
-                          //       .color
-                          //       .withOpacity(0.64),
-                          // ),
-                          // SizedBox(width: kDefaultPadding / 4),
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 15, top: 3),
-                              child:  TextField(
-                                  // expands: true,
-                                  // maxLines: 4,
-                                  // keyboardType: TextInputType.multiline,
-
-                                  maxLines: 20,
-                                  // focusNode: chatScreenVM.myFocusNode,
-                                  minLines: 1,
-                                  maxLengthEnforcement: MaxLengthEnforcement.enforced,
-                                  style: Styles.PoppinsRegular(
-                                    color: drawerColor,
-                                    fontSize: ApplicationSizing.convert(16),
-                                  ),
-                                  controller: _textEditingController,
-                                  decoration: InputDecoration(
-                                    hintText: "Type a message",
-                                    border: InputBorder.none,
-                                    hintStyle: Styles.PoppinsRegular(
-                                        color: drawerSelectMenuColor, fontSize: 16),
-                                  ),
-                                  onChanged: chatScreenVM.checkMessageField,
-                                onTap: (){
-                                  // if(val){
-                                  ChatScreen.jumpToListIndex(isDelayed: true);
-                                  // }
-                                },
-                                  // focusNode: myFocusNode,
-                                ),
-
-                            ),
+                  child:  Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: kDefaultPadding * 0.75,
                           ),
-                          chatScreenVM.isMessageEmpty
-                              ? Container()
-                              : InkWell(
-                              onTap: () async {
-                                if (connectivityService.connectionStatus ==
-                                    ConnectivityResult.none) {
-                                  SnackBarMessage(
-                                      message:
-                                          "No internet connection detected, please try again.");
-                                } else {
-                                  FocusScope.of(context).unfocus();
-                                  ChatScreen.jumpToListIndex();
-                                  chatScreenVM.sendTextMessage(
-                                      message: _textEditingController?.text
-                                          .toString());
-                                  _textEditingController?.clear();
-                                  print("work");
-                                }
-                              },
-                              child: Icon(
-                                Icons.send,
-                                color: AppBarEndColor,
-                                size: ApplicationSizing.convert(30),
-                              ))
-                        ],
-                      ),
-                    ),
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade300,
+                            // color: Colors.green,
+                            borderRadius: BorderRadius.circular(40),
+                          ),
+                          child: Row(
+                            children: [
+                              // Icon(
+                              //   Icons.sentiment_satisfied_alt_outlined,
+                              //   color: Theme.of(context)
+                              //       .textTheme
+                              //       .bodyText1
+                              //       .color
+                              //       .withOpacity(0.64),
+                              // ),
+                              // SizedBox(width: kDefaultPadding / 4),
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 15, top: 3),
+                                  child:  TextField(
+                                      // expands: true,
+                                      // maxLines: 4,
+                                      // keyboardType: TextInputType.multiline,
 
+                                      maxLines: 20,
+                                      // focusNode: chatScreenVM.myFocusNode,
+                                      minLines: 1,
+                                      maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                                      style: Styles.PoppinsRegular(
+                                        color: drawerColor,
+                                        fontSize: ApplicationSizing.convert(16),
+                                      ),
+                                      controller: _textEditingController,
+                                      decoration: InputDecoration(
+                                        hintText: "Type a message",
+                                        border: InputBorder.none,
+                                        hintStyle: Styles.PoppinsRegular(
+                                            color: drawerSelectMenuColor, fontSize: 16),
+                                      ),
+                                      onChanged: chatScreenVM.checkMessageField,
+                                    onTap: (){
+                                      // if(val){
+                                      ChatScreen.jumpToListIndex(isDelayed: true);
+                                      // }
+                                    },
+                                      // focusNode: myFocusNode,
+                                    ),
+
+                                ),
+                              ),
+                              chatScreenVM.isMessageEmpty
+                                  ? Container()
+                                  : InkWell(
+                                  onTap: () async {
+                                    if (connectivityService.connectionStatus ==
+                                        ConnectivityResult.none) {
+                                      SnackBarMessage(
+                                          message:
+                                              "No internet connection detected, please try again.");
+                                    } else {
+                                      FocusScope.of(context).unfocus();
+                                      ChatScreen.jumpToListIndex();
+                                      chatScreenVM.sendTextMessage(
+                                          message: _textEditingController?.text
+                                              .toString(),
+                                        chatMessageType: ChatMessageType.text
+                                      );
+                                      _textEditingController?.clear();
+                                      print("work");
+                                    }
+                                  },
+                                  child: Icon(
+                                    Icons.send,
+                                    color: AppBarEndColor,
+                                    size: ApplicationSizing.convert(30),
+                                  ))
+                            ],
+                          ),
+                        ),
+                     chatScreenVM.isRecording ? Container(
+                       padding: const EdgeInsets.symmetric(
+                         horizontal: kDefaultPadding * 0.75,
+                       ),
+                       decoration: BoxDecoration(
+                         color: Colors.grey.shade300,
+                         // color: Colors.green,
+                         borderRadius: BorderRadius.circular(40),
+                       ),
+                       // color: Colors.amber,
+                       child: AudioWaveforms(
+                          size: Size(MediaQuery.of(context).size.width, 30.0),
+                          shouldCalculateScrolledPosition: true,
+                          padding: EdgeInsets.zero,
+                          margin: EdgeInsets.zero,
+                          recorderController: chatScreenVM.recorderController!,
+                         waveStyle: const WaveStyle(
+                           waveCap: StrokeCap.square,
+                           // showDurationLabel: true,
+                           showMiddleLine: false,
+                           // durationTextPadding: 10,
+                           // showHourInDuration: true,
+                           showTop: true,
+                           spacing: 4.0,
+                           extendWaveform: true,
+                           // labelSpacing: -10,
+                         ),
+                        ),
+                     ) : Container(),
+                    ],
+                  ),
+
+                ),
+                SizedBox(width: 5,),
+                GestureDetector(
+                  onLongPressStart: (long){
+                    chatScreenVM.startRecording();
+                  },
+                  onLongPressEnd: (end) async{
+                    String fileUrl = await chatScreenVM.endRecording();
+                    if (connectivityService.connectionStatus == ConnectivityResult.none) {
+                      SnackBarMessage(message: "No internet connection detected, please try again.");
+                    } else {
+                      await chatScreenVM.sendTextMessage(
+                          fileUrl: fileUrl,
+                          chatMessageType: ChatMessageType.audio
+                      );
+                      ChatScreen.jumpToListIndex();
+                      print("work");
+                    }
+                  },
+                  // onTap: chatScreenVM.startRecording,
+                  // onFocusChange: chatScreenVM.endRecording,
+                  child: Container(
+                    padding: EdgeInsets.all(6),
+                    decoration: BoxDecoration(
+                      color: appColor,
+                      shape: BoxShape.circle
+                    ),
+                    child: Icon(Icons.mic_none,color: Colors.white,),
+                  ),
                 ),
                 // chatScreenVM.myFocusNode!.hasFocus ? Container() : Container(
                 //   child: Row(

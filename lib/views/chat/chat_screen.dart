@@ -28,6 +28,8 @@ import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
 import 'package:twochealthcare/view_models/chat_vm/chat_screen_vm.dart';
 import 'package:twochealthcare/views/chat/chat_info.dart';
+import 'package:twochealthcare/views/chat/components/animation_mic.dart';
+import 'package:twochealthcare/views/chat/components/audio_message.dart';
 import 'package:twochealthcare/views/chat/components/chat_input_field.dart';
 import 'package:twochealthcare/views/chat/components/message.dart';
 import 'package:marquee/marquee.dart';
@@ -93,7 +95,7 @@ class ChatScreen extends HookWidget {
               ),
               InkWell(
                 onTap: (){
-                  Navigator.push(context, PageTransition(child: ChatInfo(title: getGroupsModel?.title ?? "Text"), type: PageTransitionType.leftToRight));
+                  Navigator.push(context, PageTransition(child: ChatInfo(title: getGroupsModel?.title ?? ""), type: PageTransitionType.leftToRight));
                 },
                 child: Row(
                   children: [
@@ -155,13 +157,10 @@ class ChatScreen extends HookWidget {
                 children: [
                   Container(
                     height: ApplicationSizing.constSize(24),
-                    alignment: Alignment.centerLeft,
                     decoration: BoxDecoration(
-                      // color: Colors.red.withOpacity(0.3),
                       color: Colors.red,
                     ),
-                    child: Center(
-                      child: Marquee(
+                    child:  Marquee(
                         text: 'This chat can not be used for emergency purposes. You may not get a response for extended period of time. Use 911 in case of emergency.',
                         style: Styles.PoppinsRegular(
                           fontSize: ApplicationSizing.constSize(15),
@@ -169,7 +168,7 @@ class ChatScreen extends HookWidget {
                           color: Colors.white
                         ),
                         scrollAxis: Axis.horizontal,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         blankSpace: 20.0,
                         velocity: 20.0,
                         pauseAfterRound: Duration(seconds: 1),
@@ -180,7 +179,7 @@ class ChatScreen extends HookWidget {
                         decelerationCurve: Curves.easeOut,
                       ),
                     ),
-                  ),
+
                   Expanded(
                     child:RefreshIndicator(
                       displacement: 10,
@@ -235,6 +234,7 @@ class ChatScreen extends HookWidget {
                                     message:
                                     chatScreenVM.chatMessageList.chats![index],
                                     participients: chatScreenVM.chatMessageList.participients,
+                                    index: index,
                                   ),
                                 ],
                               ),
@@ -250,9 +250,9 @@ class ChatScreen extends HookWidget {
                               child: Column(
                                 children: [
                                   Message(
-                                    message:
-                                    chatScreenVM.chatMessageList.chats![index],
+                                    message: chatScreenVM.chatMessageList.chats![index],
                                     participients: chatScreenVM.chatMessageList.participients,
+                                    index: index,
                                   ),
                                 ],
                               ),
@@ -261,8 +261,6 @@ class ChatScreen extends HookWidget {
                         }, separatorBuilder: (BuildContext context, int index) { return ApplicationSizing.verticalSpacer(n: 0); },
                       ),
                     ),
-
-
                   ),
                   Container(
                       child: ChatInputField(),

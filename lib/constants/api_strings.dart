@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart' as Foundation;
  const String test = "https://api.healthforcehub.link";
  const String staging = "https://apistaging.healthforcehub.link";
  const String production = "https://api.2chealthsolutions.com";
- const String baseUrl = production;
+ const String baseUrl = test;
  String messageChannel = baseUrl == production ? "-Production-NewMsgReceived"
      : baseUrl == staging ? "-Staging-NewMsgReceived" : "-Testing-NewMsgReceived";
 String dataChannel = baseUrl == production ? "-Production-NewDataReceived"
@@ -142,3 +142,9 @@ class HealthCareDevicesController{
   static const String getBPDeviceDataByPatientId = "/api/HealthCareDevices/GetBPDeviceDataByPatientId";
   static const String getPulseDeviceDatabyPatientId = "/api/HealthCareDevices/GetPulseDeviceDatabyPatientId";
 }
+
+class S3Controller{
+  static const String GetPublicUrl = "/api/S3/GetPublicUrl";
+}
+
+

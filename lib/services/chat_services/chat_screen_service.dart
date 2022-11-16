@@ -28,6 +28,12 @@ class ChatScreenService{
           }else{
             element.isSender = false;
           }
+          if(element.chatType != null){
+            if(element.chatType == 0) element.messageType = ChatMessageType.text;
+            if(element.chatType == 1) element.messageType = ChatMessageType.document;
+            if(element.chatType == 2) element.messageType = ChatMessageType.image;
+            if(element.chatType == 3) element.messageType = ChatMessageType.audio;
+          }
         });
         chatlist.chats = chatlist.chats?.reversed.toList();
         return chatlist;
@@ -56,6 +62,12 @@ class ChatScreenService{
           newMessage.isSender = true;
         } else {
           newMessage.isSender = false;
+        }
+        if(newMessage.chatType != null){
+          if(newMessage.chatType == 0) newMessage.messageType = ChatMessageType.text;
+          if(newMessage.chatType == 1) newMessage.messageType = ChatMessageType.document;
+          if(newMessage.chatType == 2) newMessage.messageType = ChatMessageType.image;
+          if(newMessage.chatType == 3) newMessage.messageType = ChatMessageType.audio;
         }
         return newMessage;
       }else{

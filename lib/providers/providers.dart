@@ -23,6 +23,7 @@ import 'package:twochealthcare/services/rpm_services/cgm_services.dart';
 // import 'package:twochealthcare/services/rpm_services/blood_pressure_reading_service.dart';
 // import 'package:twochealthcare/services/rpm_services/modalities_reading_service.dart';
 import 'package:twochealthcare/services/rpm_services/rpm_service.dart';
+import 'package:twochealthcare/services/s3-services/src/s3-crud-service.dart';
 import 'package:twochealthcare/services/settings_services/fu_settings_services/fu_settings_service.dart';
 import 'package:twochealthcare/services/settings_services/p_settings_services/p_settings_service.dart';
 import 'package:twochealthcare/services/shared_pref_services.dart';
@@ -123,4 +124,5 @@ final appDataServiceProvider = Provider<AppDataService>((ref)=>AppDataService(re
 final applicationPackageServiceProvider = Provider<ApplicationPackageService>((ref)=>ApplicationPackageService(ref: ref));
 final applicationStartupServiceProvider = Provider<ApplicationStartupService>((ref)=>ApplicationStartupService(ref: ref));
 final cgmServiceProvider = Provider<CGMService>((ref)=>CGMService(ref: ref));
+final s3CrudServiceProvider = Provider<S3CrudService>((ref)=>S3CrudService(ref: ref));
 /// Simple Providers

@@ -1,66 +1,165 @@
+import 'package:audioplayers/audioplayers.dart' as audioPlay;
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:jiffy/jiffy.dart';
+import 'package:twochealthcare/common_widgets/alert_loader.dart';
 import 'package:twochealthcare/models/chat_model/ChatMessage.dart';
+import 'package:twochealthcare/providers/providers.dart';
+import 'package:twochealthcare/util/application_colors.dart';
+import 'package:twochealthcare/util/application_sizing.dart';
+import 'package:twochealthcare/util/styles.dart';
+import 'package:twochealthcare/view_models/chat_vm/chat_screen_vm.dart';
 import 'package:twochealthcare/views/chat/constants.dart';
+class AudioMessage extends HookWidget {
+  final ChatMessage? message;
+  int index;
+   AudioMessage({this.message,required this.index,Key? key}) : super(key: key);
 
-class AudioMessage extends StatelessWidget {
-  final ChatMessage message;
-
-  const AudioMessage({Key? key, required this.message}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.55,
-      padding: EdgeInsets.symmetric(
-        horizontal: kDefaultPadding * 0.75,
-        vertical: kDefaultPadding / 2.5,
-      ),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(30),
-        color: kPrimaryColor.withOpacity(message.isSender! ? 1 : 0.1),
-      ),
-      child: Row(
-        children: [
-          Icon(
-            Icons.play_arrow,
-            color: message.isSender! ? Colors.white : kPrimaryColor,
-          ),
-          Expanded(
-            child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: kDefaultPadding / 2),
-              child: Stack(
-                clipBehavior: Clip.none,
-                alignment: Alignment.center,
-                children: [
-                  Container(
-                    width: double.infinity,
-                    height: 2,
-                    color: message.isSender!
-                        ? Colors.white
-                        : kPrimaryColor.withOpacity(0.4),
-                  ),
-                  Positioned(
-                    left: 0,
-                    child: Container(
-                      height: 8,
-                      width: 8,
-                      decoration: BoxDecoration(
-                        color: message.isSender! ? Colors.white : kPrimaryColor,
-                        shape: BoxShape.circle,
-                      ),
-                    ),
-                  )
-                ],
-              ),
+    ChatScreenVM chatScreenVM = useProvider(chatScreenVMProvider);
+    return Column(
+      crossAxisAlignment: !(message!.isSender!)
+          ? CrossAxisAlignment.start
+          : CrossAxisAlignment.end,
+      children: [
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 0, vertical: 2),
+          margin: EdgeInsets.only(bottom: 2),
+          decoration: BoxDecoration(
+            // color: message.isSender ? drawerColor : appColor,
+            borderRadius: !(message!.isSender!)
+                ? BorderRadius.only(
+                topLeft: Radius.circular(8),
+                topRight: Radius.circular(8),
+                bottomLeft: Radius.circular(8),
+                bottomRight: Radius.circular(8))
+                : BorderRadius.only(
+              topLeft: Radius.circular(8),
+              topRight: Radius.circular(8),
+              bottomLeft: Radius.circular(8),
+              bottomRight: Radius.circular(8),
             ),
           ),
-          Text(
-            "0.37",
-            style: TextStyle(
-                fontSize: 12, color: message.isSender! ? Colors.white : null),
+          child: Text(
+            message?.senderName ?? "",
+            style: Styles.PoppinsRegular(
+              fontSize: ApplicationSizing.convert(12),
+              color: drawerColor,
+            ),
           ),
-        ],
-      ),
+        ),
+        Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+            margin:  !(message!.isSender!) ? EdgeInsets.only(right: 20) : EdgeInsets.only(left: 20),
+            decoration: BoxDecoration(
+              color: !(message!.isSender!) ? Colors.white : Color(0xffDEEFDD),
+              borderRadius: !(message!.isSender!)
+                  ? BorderRadius.only(
+                topLeft: Radius.circular(8),
+                topRight: Radius.circular(8),
+                bottomLeft: Radius.circular(8),
+                bottomRight: Radius.circular(8),
+              )
+                  : BorderRadius.only(
+                topLeft: Radius.circular(8),
+                topRight: Radius.circular(8),
+                bottomLeft: Radius.circular(8),
+                bottomRight: Radius.circular(8),
+              ),
+              // borderRadius: BorderRadius.circular(10),
+              boxShadow: const [
+                BoxShadow(
+                  color: Colors.black12,
+                  spreadRadius: 1,
+                  blurRadius: 1,
+                ),
+              ],
+            ),
+            child: Column(
+              crossAxisAlignment: message!.isSender!
+                  ? CrossAxisAlignment.end
+                  : CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    GestureDetector(
+                      onTap: (){
+                        // widget.onPlay(widget.id);
+                        // _playPause();
+                        chatScreenVM.playPause(message!.id!, message!.linkUrl!);
+                      },
+                      child: Container(
+                        // width: 40,
+                        padding: EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: kPrimaryColor
+                        ),
+                        child: message!.downloading ? SimpleLoader() : Icon(!(chatScreenVM.playerState == audioPlay.PlayerState.playing && chatScreenVM.currentIndex == message!.id!) ? Icons.play_arrow_outlined : Icons.pause,
+                          color: Colors.white,),
+                      ),
+                    ),
+                    Expanded(
+                      child: Slider(
+                        value: chatScreenVM.currentIndex ==  message!.id! ? double.parse(chatScreenVM.currentpos.toString()) : 0.0,
+                        min: 0,
+                        max: chatScreenVM.currentIndex ==  message!.id! ? double.parse(chatScreenVM.maxduration.toString()) : 0.0,
+                        divisions: chatScreenVM.currentIndex ==  message!.id! ? chatScreenVM.maxduration : null,
+                        label: chatScreenVM.currentIndex ==  message!.id! ? chatScreenVM.currentpostlabel : null,
+                        activeColor: chatScreenVM.currentIndex ==  message!.id! ? appColor : disableColor,
+                        inactiveColor: kPrimaryColor.withOpacity(0.2),
+                        thumbColor: kPrimaryColor,
+                        onChanged: chatScreenVM.audioPlayer == null ? null : (double value) async {
+                          int seekval = value.round();
+
+                          if(seekval < chatScreenVM.maxduration){
+                            chatScreenVM.audioPlayer?.seek(Duration(milliseconds: seekval)).whenComplete(() {
+
+                                chatScreenVM.currentpos = seekval;
+                                chatScreenVM.notifyListeners();
+                                // if(_playerState == PlayerState.completed){
+                                //   _playerState = PlayerState.playing;
+                                // }
+                            });
+                          }
+                          if(seekval == chatScreenVM.maxduration){
+                            chatScreenVM.audioPlayer?.stop();
+                            chatScreenVM.playerState = audioPlay.PlayerState.completed;
+
+                          }
+                        },
+                      ),
+                    ),
+                    message!.isError ? Icon(Icons.error_outline, color: errorColor,) : SizedBox()
+                  ],
+                ),
+                SizedBox(
+                  height: ApplicationSizing.convertWidth(5),
+                ),
+                Column(
+                  children: [
+                    Text(
+                      "${Jiffy(message?.timeStamp).format("h:mm a")}",
+                      // "${message?.timeStamp}",
+                      style: Styles.RobotoMedium(
+                        fontSize: ApplicationSizing.convert(12),
+                        color: Colors.green,
+                      ),
+                      textAlign: TextAlign.right,
+                      // ),
+                    ),
+                  ],
+                ),
+              ],
+            )
+        ),
+        SizedBox(
+          height: ApplicationSizing.convertWidth(3),
+        ),
+      ],
     );
   }
 }
+

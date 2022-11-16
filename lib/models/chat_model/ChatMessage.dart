@@ -1,5 +1,6 @@
-enum ChatMessageType { text, audio, image, video }
+enum ChatMessageType { text, document, image, audio, video }
 enum MessageStatus { not_sent, not_view, viewed }
+
 
 
 class ChatHistoryModel {
@@ -76,10 +77,14 @@ class ChatMessage {
   String? senderName;
   int? chatGroupId;
   String? channelName;
+  int? chatType;
+
 
   bool? isSender;
   ChatMessageType? messageType;
   MessageStatus? messageStatus;
+  bool isError = false;
+  bool downloading = false;
 
   ChatMessage(
       {this.id,
@@ -95,7 +100,10 @@ class ChatMessage {
         this.channelName,
         this.messageType,
         this.messageStatus,
-        this.isSender
+        this.isSender,
+        this.chatType,
+        this.isError = false,
+        this.downloading = false,
       });
 
   ChatMessage.fromJson(Map<String, dynamic> json) {
@@ -110,6 +118,7 @@ class ChatMessage {
     senderName = json['senderName'];
     chatGroupId = json['chatGroupId'];
     channelName = json['channelName'];
+    chatType = json['chatType'];
   }
 
   Map<String, dynamic> toJson() {
@@ -125,6 +134,7 @@ class ChatMessage {
     data['senderName'] = this.senderName;
     data['chatGroupId'] = this.chatGroupId;
     data['channelName'] = this.channelName;
+    data['chatType'] = this.chatType;
     return data;
   }
 }

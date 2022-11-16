@@ -19,10 +19,12 @@ class Message extends HookWidget {
    Message({
     Key? key,
     this.message,
-    this.participients
+    this.participients,
+     required this.index
   }) : super(key: key);
 
   final ChatMessage? message;
+  int index;
   List<Participients>? participients;
 
   @override
@@ -37,17 +39,17 @@ class Message extends HookWidget {
       const [],
     );
 
-    Widget messageContaint(ChatMessage? message) {
+    Widget messageContaint(ChatMessage? message,{required int index}) {
       switch (message!.messageType) {
         case ChatMessageType.text:
           return TextMessage(message: message);
         case ChatMessageType.audio:
-          return AudioMessage(message: message);
+          return AudioMessage(message: message,index: index);
         case ChatMessageType.video:
           return VideoMessage();
         default:
-          return TextMessage(message: message);
-        // return SizedBox();
+          // return TextMessage(message: message);
+        return SizedBox();
       }
     }
 
@@ -60,7 +62,7 @@ class Message extends HookWidget {
                 !(message!.isSender!) ? MainAxisAlignment.start : MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Expanded(child: messageContaint(message)),
+              Expanded(child: messageContaint(message,index: index!)),
             ],
           ),
           Row(

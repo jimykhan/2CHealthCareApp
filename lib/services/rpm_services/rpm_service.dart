@@ -316,12 +316,11 @@ class RpmService{
     try{
       // final dio = _ref!.read(dioServicesProvider);
       Response? response = await dio?.dio?.post(RPMController.addRPMEncounter,data: body);
-      SnackBarMessage(message: "Rpm encounter successfully added",error: false);
       return response;
 
     }catch(e){
-      SnackBarMessage(message: e.toString(),error: true);
-      return null;
+      // SnackBarMessage(message: e.toString(),error: true);
+      rethrow;
     }
 
   }
@@ -331,12 +330,10 @@ class RpmService{
     try{
       // final dio = _ref!.read(dioServicesProvider);
       Response? response = await dio?.dio?.put(RPMController.editRpmEncounter,data: body);
-      SnackBarMessage(message: "Rpm encounter successfully updated",error: false);
       return response;
-
     }catch(e){
-      SnackBarMessage(message: e.toString(),error: true);
-      return null;
+      // SnackBarMessage(message: e.toString(),error: true);
+      rethrow;
     }
 
   }

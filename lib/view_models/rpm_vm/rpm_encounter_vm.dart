@@ -220,10 +220,10 @@ class RpmEncounterVM extends ChangeNotifier{
     };
     print(data);
 
-    try{
-      // validateUser
-      var response =  await _rpmService?.addRpmEncounter(data);
-      if(response is Response){
+    // validateUser
+    var response =  await _rpmService?.addRpmEncounter(data);
+
+    if(response is Response){
         if(response.statusCode == 200){
           SnackBarMessage(message: "Rpm encounter successfully added",error: false);
           Future.delayed(Duration(seconds: 1),(){
@@ -231,12 +231,8 @@ class RpmEncounterVM extends ChangeNotifier{
             _rpmLogsVM?.getRpmLogsByPatientId(patientid: patientId);
           });
         }
-      }
-      setLoading(false);
-    }catch(ex){
-      SnackBarMessage(message: ex.toString(),error: true);
-      setLoading(false);
     }
+    setLoading(false);
   }
 
   editRpmEncounter({required int patientId, required int rpmEncounterId})async{
@@ -276,23 +272,20 @@ class RpmEncounterVM extends ChangeNotifier{
       "isProviderRpm": isProviderRpm
     };
     print(data);
-    try{
-      // validateUser
-      var response =  await _rpmService?.editRpmEncounter(data);
-      if(response is Response){
-        if(response.statusCode == 200){
-          SnackBarMessage(message: "Rpm encounter successfully updated",error: false);
-          Future.delayed(Duration(seconds: 1),(){
-            Navigator.pop(applicationContext!.currentContext!);
-            _rpmLogsVM?.getRpmLogsByPatientId(patientid: patientId);
-          });
-        }
+
+    // validateUser
+    var response =  await _rpmService?.editRpmEncounter(data);
+
+    if(response is Response){
+      if(response.statusCode == 200){
+        SnackBarMessage(message: "Rpm encounter successfully updated",error: false);
+        Future.delayed(Duration(seconds: 1),(){
+          Navigator.pop(applicationContext!.currentContext!);
+          _rpmLogsVM?.getRpmLogsByPatientId(patientid: patientId);
+        });
       }
-      setLoading(false);
-    }catch(ex){
-      SnackBarMessage(message: ex.toString(),error: true);
-      setLoading(false);
     }
+    setLoading(false);
   }
 
 

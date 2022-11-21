@@ -319,8 +319,8 @@ class RpmService{
       return response;
 
     }catch(e){
-      // SnackBarMessage(message: e.toString(),error: true);
-      rethrow;
+      SnackBarMessage(message: e.toString(),error: true);
+      return null;
     }
 
   }
@@ -331,9 +331,10 @@ class RpmService{
       // final dio = _ref!.read(dioServicesProvider);
       Response? response = await dio?.dio?.put(RPMController.editRpmEncounter,data: body);
       return response;
+
     }catch(e){
-      // SnackBarMessage(message: e.toString(),error: true);
-      rethrow;
+      SnackBarMessage(message: e.toString(),error: true);
+      return null;
     }
 
   }

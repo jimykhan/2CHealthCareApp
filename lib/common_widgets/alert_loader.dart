@@ -61,7 +61,7 @@ class SimpleLoader extends StatelessWidget {
     return Container(
       child: CupertinoActivityIndicator(
         radius: 12,
-        color: color?? whiteColor,
+        color: color?? appColor,
       ),
     );
   }

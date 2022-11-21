@@ -170,18 +170,23 @@ class CcmEncounterVM extends ChangeNotifier{
       "isMonthlyStatusValid": true
     };
     print(data);
-
-    // validateUser
-    var response =  await _ccmService?.addCcmEncounter(data);
-
-    if(response is Response){
-      if(response.statusCode == 200){
-       Navigator.pop(applicationContext!.currentContext!);
-       _ccmLogsVM?.getCcmLogsByPatientId(patientid: patientId);
-
+    try{
+      var response =  await _ccmService?.addCcmEncounter(data);
+      if(response is Response){
+        if(response.statusCode == 200){
+          SnackBarMessage(message: "Ccm encounter successfully added",error: false);
+          Future.delayed(Duration(seconds: 1),(){
+            Navigator.pop(applicationContext!.currentContext!);
+            _ccmLogsVM?.getCcmLogsByPatientId(patientid: patientId);
+          });
+        }
       }
+      setLoading(false);
+    }catch(ex){
+      SnackBarMessage(message: ex.toString(),error: true);
+      setLoading(false);
     }
-    setLoading(false);
+    // validateUser
   }
 
   EditCcmEncounter({required int patientId, required int ccmEncounterId})async{
@@ -206,17 +211,22 @@ class CcmEncounterVM extends ChangeNotifier{
       "isMonthlyStatusValid": true
     };
     print(data);
-
-    // validateUser
-    var response =  await _ccmService?.EditCcmEncounter(data);
-
-    if(response is Response){
-      if(response.statusCode == 200){
-        Navigator.pop(applicationContext!.currentContext!);
-        _ccmLogsVM?.getCcmLogsByPatientId(patientid: patientId);
+      try{
+        var response =  await _ccmService?.EditCcmEncounter(data);
+        if(response is Response){
+          if(response.statusCode == 200){
+            SnackBarMessage(message: "Ccm encounter successfully updated",error: false);
+            Navigator.pop(applicationContext!.currentContext!);
+            _ccmLogsVM?.getCcmLogsByPatientId(patientid: patientId);
+          }
+        }
+        setLoading(false);
+      }catch(ex){
+        SnackBarMessage(message: ex.toString(),error: true);
+        setLoading(false);
       }
-    }
-    setLoading(false);
+    // validateUser
+
   }
 
   getCcmServiceType({bool isEdit = false})async{

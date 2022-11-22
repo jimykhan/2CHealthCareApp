@@ -145,8 +145,8 @@ class CarePlanVM extends ChangeNotifier{
     depressionController.text = "";
     chronicConditions.forEach((element) {
       if(element.chronicConditionId == 11) chronicObstructiveController.text = element.note??"";
-      if(element.chronicConditionId == 6) depressionController.text = element.note??"";
-      if(element.chronicConditionId == 12) asthmaController.text = element.note??"";
+      if(element.chronicConditionId == 12) depressionController.text = element.note??"";
+      if(element.chronicConditionId == 6) asthmaController.text = element.note??"";
     });
   }
   }

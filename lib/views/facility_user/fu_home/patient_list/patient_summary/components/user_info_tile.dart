@@ -82,7 +82,7 @@ class UserInfoTile extends StatelessWidget {
                   RichText(
                     text: TextSpan(children: [
                       TextSpan(
-                          text: " ${patientsModel.age} Years",
+                          text: " ${patientsModel.age} ${patientsModel.age! > 1 ? "Years" : "Year"}",
                           style: Styles.PoppinsRegular(
                             fontSize: ApplicationSizing.constSize(12),
                             color: Colors.white,

@@ -97,7 +97,7 @@ class AudioMessage extends HookWidget {
                             shape: BoxShape.circle,
                             color: kPrimaryColor
                         ),
-                        child: message!.downloading ? SimpleLoader() : Icon(!(chatScreenVM.playerState == audioPlay.PlayerState.playing && chatScreenVM.currentIndex == message!.id!) ? Icons.play_arrow_outlined : Icons.pause,
+                        child: message!.downloading ? SimpleLoader(color: whiteColor,) : Icon(!(chatScreenVM.playerState == audioPlay.PlayerState.playing && chatScreenVM.currentIndex == message!.id!) ? Icons.play_arrow_outlined : Icons.pause,
                           color: Colors.white,),
                       ),
                     ),

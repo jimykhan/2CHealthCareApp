@@ -466,7 +466,7 @@ class ChatScreenVM extends ChangeNotifier {
         disposeAudioResouces(chatId,true);
         notifyListeners();
         print("$error");
-      }).timeout(Duration(seconds: 5),onTimeout: (){
+      }).timeout(Duration(seconds: 7),onTimeout: (){
         disposeAudioResouces(chatId,true);
         notifyListeners();
       });

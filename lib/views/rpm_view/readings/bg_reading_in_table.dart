@@ -35,7 +35,7 @@ class bGReadingInTable extends HookWidget {
             }
             return ReadingTile(
               time: bGReadings[index].measurementDate!,
-              reading1: bGReadings[index].bg?.toStringAsFixed(1),
+              reading1: bGReadings[index].bg?.toStringAsFixed(0),
               unit1: bGReadings[index].bgUnit??"",
               date: showDate ? measureDate : null,
             );

@@ -100,7 +100,7 @@ class CarePlan extends HookWidget {
         ),
         Stack(
           children: [
-            _body(context, carePlanVM: carePlanVM),
+            _body(context, carePlanVM: carePlanVM,withOutScaffold: true),
             carePlanVM.loadingCarePlan ? AlertLoader() : Container(),
           ],
         ),
@@ -108,7 +108,7 @@ class CarePlan extends HookWidget {
     );
   }
 
-  _body(context, {required CarePlanVM carePlanVM}) {
+  _body(context, {required CarePlanVM carePlanVM,bool withOutScaffold = false}) {
     return Container(
       child: Stack(
         children: [
@@ -190,7 +190,7 @@ class CarePlan extends HookWidget {
                   ),
                 ),
 
-                ListView.separated(
+                withOutScaffold ? ListView.separated(
                     shrinkWrap: true,
                     physics: ScrollPhysics(),
                     itemBuilder: (context, index) {
@@ -207,8 +207,8 @@ class CarePlan extends HookWidget {
                         height: 15,
                       );
                     },
-                    itemCount: carePlanVM.carePlanHistory.length),
-                ApplicationSizing.verticalSpacer(n: 15),
+                    itemCount: carePlanVM.carePlanHistory.length) : Container(),
+                withOutScaffold ? ApplicationSizing.verticalSpacer(n: 15) : ApplicationSizing.verticalSpacer(n: 15),
                 _carePlans(context, carePlanVM: carePlanVM),
                 ApplicationSizing.verticalSpacer(n: 15),
               ],

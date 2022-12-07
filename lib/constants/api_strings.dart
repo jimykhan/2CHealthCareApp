@@ -8,6 +8,9 @@ import 'package:flutter/foundation.dart' as Foundation;
      : baseUrl == staging ? "-Staging-NewMsgReceived" : "-Testing-NewMsgReceived";
 String dataChannel = baseUrl == production ? "-Production-NewDataReceived"
     : baseUrl == staging ? "-Staging-NewDataReceived" : "-Testing-NewDataReceived";
+String bucket = baseUrl == production ? "healthforce-media-staging"
+    : baseUrl == staging ? "healthforce-media-staging" : "healthforce-media-testing";
+
 class ApiStrings {
   static const String signIn = baseUrl +"/api/Account/token2";
   static const String getPatientInfoById =
@@ -145,6 +148,10 @@ class HealthCareDevicesController{
 
 class S3Controller{
   static const String GetPublicUrl = "/api/S3/GetPublicUrl";
+}
+
+class GeneralController{
+  static const String GetNewAppVersion = "/api/S3/GetAppState";
 }
 
 

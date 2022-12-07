@@ -4,18 +4,21 @@ import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 import 'package:amazon_cognito_identity_dart_2/sig_v4.dart';
 import 'package:dio/dio.dart';
 import 'package:hooks_riverpod/all.dart';
+import 'package:twochealthcare/common_widgets/snackber_message.dart';
 import 'package:twochealthcare/constants/api_strings.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/dio_services/dio_services.dart';
 import 'package:twochealthcare/services/s3-services/src/emum.dart';
 import 'package:twochealthcare/services/s3-services/src/policy.dart';
 import 'package:twochealthcare/services/s3-services/src/utils.dart';
+import 'package:twochealthcare/constants/api_strings.dart';
 import 'package:path/path.dart' as path;
 
 class S3CrudService{
   String accessKey = 'AKIAYVREBNGIADT7AAHB';
   String secretKey = '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';
-  String bucket = 'healthforce-data-dev';
+  // String currentBucket = "healthforce-data-dev";
+  String currentBucket = bucket;
   Dio? _dio;
   DioServices? _dioServices;
   ProviderReference? _ref;
@@ -58,7 +61,7 @@ class S3CrudService{
     /// The content-type of file to upload. defaults to binary/octet-stream.
     String contentType = 'binary/octet-stream',
   }) async {
-    final endpoint = 'https://$bucket.s3.$region.amazonaws.com';
+    final endpoint = 'https://$currentBucket.s3.$region.amazonaws.com';
     final uploadKey = key ?? '$destDir/${filename ?? path.basename(file.path)}';
 
     // final stream = http.ByteStream(Stream.castFrom(file.openRead()));
@@ -72,7 +75,7 @@ class S3CrudService{
     // final multipartFile = http.MultipartFile('file', stream, length,
     //     filename: path.basename(file.path));
     final policy = Policy.fromS3PresignedPost(
-        uploadKey, bucket, accessKey, 15, length, acl,
+        uploadKey, currentBucket, accessKey, 15, length, acl,
         region: region);
     final signingKey =
     SigV4.calculateSigningKey(secretKey, policy.datetime, region, 's3');
@@ -108,6 +111,7 @@ class S3CrudService{
       }
     } catch (e) {
       print('Failed to upload to AWS, with exception:');
+      SnackBarMessage(message: "something went wrong. please try again");
       print(e);
       return null;
     }
@@ -145,7 +149,7 @@ class S3CrudService{
     /// The content-type of file to upload. defaults to binary/octet-stream.
     String contentType = 'binary/octet-stream',
   }) async {
-    final endpoint = 'https://$bucket.s3.$region.amazonaws.com';
+    final endpoint = 'https://$currentBucket.s3.$region.amazonaws.com';
     final uploadKey = key ?? '$destDir/${filename ?? path.basename(file.path)}';
 
     // final stream = http.ByteStream(Stream.castFrom(file.openRead()));
@@ -159,7 +163,7 @@ class S3CrudService{
     // final multipartFile = http.MultipartFile('file', stream, length,
     //     filename: path.basename(file.path));
     final policy = Policy.fromS3PresignedPost(
-        destDir, bucket, accessKey, 15, length, acl,
+        destDir, currentBucket, accessKey, 15, length, acl,
         region: region);
     final signingKey =
     SigV4.calculateSigningKey(secretKey, policy.datetime, region, 's3');

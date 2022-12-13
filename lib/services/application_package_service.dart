@@ -38,12 +38,19 @@ class ApplicationPackageService{
     }
   }
 
-  compareVersionWithOld({String? currentVersion})async{
+  Future<String?> compareVersionWithOld({String? currentVersion})async{
     String? newAppVersion ;
-    var response = await dioServices?.dio?.get(GeneralController.GetNewAppVersion+"?key=mobileAppVersion");
-    if(response?.statusCode == 200){
-      newAppVersion = response?.data["value"];
+    try{
+      var response = await dioServices?.dio?.get(GeneralController.GetNewAppVersion+"?key=mobileAppVersion");
+      if(response?.statusCode == 200){
+        return newAppVersion = response?.data["value"];
+      }else{
+        return null;
+      }
+    }catch(ex){
+      return null;
     }
+
   }
 
   showAlert(){

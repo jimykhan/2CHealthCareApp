@@ -140,18 +140,18 @@ class DexComController{
   static const String Check_Auth_Given = baseUrl + "/api/Dexcom/CheckAuthGiven/patientId";
 }
 class HealthCareDevicesController{
-  static const String GetWeightDeviceDatabyPatientId = "/api/HealthCareDevices/GetWeightDeviceDatabyPatientId";
-  static const String getBloodGlucoseDeviceDatabyPatientId = "/api/HealthCareDevices/GetBloodGlucoseDeviceDatabyPatientId";
-  static const String getBPDeviceDataByPatientId = "/api/HealthCareDevices/GetBPDeviceDataByPatientId";
-  static const String getPulseDeviceDatabyPatientId = "/api/HealthCareDevices/GetPulseDeviceDatabyPatientId";
+  static const String GetWeightDeviceDatabyPatientId = baseUrl +"/api/HealthCareDevices/GetWeightDeviceDatabyPatientId";
+  static const String getBloodGlucoseDeviceDatabyPatientId = baseUrl +"/api/HealthCareDevices/GetBloodGlucoseDeviceDatabyPatientId";
+  static const String getBPDeviceDataByPatientId = baseUrl +"/api/HealthCareDevices/GetBPDeviceDataByPatientId";
+  static const String getPulseDeviceDatabyPatientId = baseUrl +"/api/HealthCareDevices/GetPulseDeviceDatabyPatientId";
 }
 
 class S3Controller{
-  static const String GetPublicUrl = "/api/S3/GetPublicUrl";
+  static const String GetPublicUrl = baseUrl +"/api/S3/GetPublicUrl";
 }
 
 class GeneralController{
-  static const String GetNewAppVersion = "/api/S3/GetAppState";
+  static const String GetNewAppVersion = baseUrl +"/api/General/GetAppState";
 }
 
 

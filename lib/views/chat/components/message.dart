@@ -62,7 +62,7 @@ class Message extends HookWidget {
                 !(message!.isSender!) ? MainAxisAlignment.start : MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Expanded(child: messageContaint(message,index: index!)),
+              Expanded(child: messageContaint(message,index: index)),
             ],
           ),
           Row(

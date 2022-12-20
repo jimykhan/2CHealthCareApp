@@ -75,7 +75,7 @@ class S3CrudService{
     // final multipartFile = http.MultipartFile('file', stream, length,
     //     filename: path.basename(file.path));
     final policy = Policy.fromS3PresignedPost(
-        uploadKey, currentBucket, accessKey, 15, length, acl,
+        uploadKey, currentBucket, accessKey, 432000, length, acl,
         region: region);
     final signingKey =
     SigV4.calculateSigningKey(secretKey, policy.datetime, region, 's3');

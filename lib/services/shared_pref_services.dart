@@ -107,6 +107,8 @@ class SharedPrefServices{
     return currentUserId;
   }
 
+
+
   Future<String> getCurrentAppUserId() async {
     await _initPref();
     CurrentUser? currentUser = await getCurrentUser();

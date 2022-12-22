@@ -20,6 +20,7 @@ import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
 import 'package:twochealthcare/view_models/chat_vm/chat_list_vm.dart';
 import 'package:twochealthcare/view_models/facility_user_view_model/home/fu_home_view_model.dart';
 import 'package:twochealthcare/view_models/profile_vm.dart';
+import 'package:twochealthcare/views/admin_view/home_view/admin_home_view.dart';
 import 'package:twochealthcare/views/auths/login.dart';
 import 'package:twochealthcare/views/chat/chat_list.dart';
 import 'package:twochealthcare/views/facility_user/fu_home/fu_home.dart';
@@ -118,6 +119,17 @@ class OnLaunchActivityAndRoutesService{
         MaterialPageRoute(
           builder: (BuildContext context) =>
            Home(),
+        ),
+            (route) => false,
+      );
+      return;
+    }
+    if(currentUser.userType == 3){
+      Navigator.pushAndRemoveUntil(
+        applicationContext!.currentContext!,
+        MaterialPageRoute(
+          builder: (BuildContext context) =>
+              AdminHome(),
         ),
             (route) => false,
       );
@@ -227,7 +239,17 @@ class OnLaunchActivityAndRoutesService{
         ),
             (route) => false,
       );
-    }else{
+    }
+    if(currentUser.userType == 3){
+      Navigator.pushAndRemoveUntil(
+        applicationContext!.currentContext!,
+        MaterialPageRoute(
+          builder: (BuildContext context) => AdminHome(),
+        ),
+            (route) => false,
+      );
+    }
+    else{
     }
   }
 

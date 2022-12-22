@@ -8,7 +8,7 @@ import 'package:flutter/foundation.dart' as Foundation;
      : baseUrl == staging ? "-Staging-NewMsgReceived" : "-Testing-NewMsgReceived";
 String dataChannel = baseUrl == production ? "-Production-NewDataReceived"
     : baseUrl == staging ? "-Staging-NewDataReceived" : "-Testing-NewDataReceived";
-String bucket = baseUrl == production ? "healthforce-media-staging"
+String bucket = baseUrl == production ? "healthforce-media-prod"
     : baseUrl == staging ? "healthforce-media-staging" : "healthforce-media-testing";
 
 class ApiStrings {

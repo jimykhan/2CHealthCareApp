@@ -228,3 +228,15 @@ class ConfirmLogout extends HookWidget {
   }
 }
 
+
+CenterAlertDialog({String? title, required Widget child}){
+  showDialog(
+    context: applicationContext!.currentContext!,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text(title??"My title"),
+        content: child,
+      );
+    },
+  );
+}

@@ -58,6 +58,8 @@ import 'package:twochealthcare/view_models/rpm_vm/weight_reading_vm.dart';
 import 'package:twochealthcare/view_models/settings_view_models/fu_settings_view_model/fu_settings_view_models.dart';
 import 'package:twochealthcare/view_models/settings_view_models/p_settings_view_models/p_settings_view_model.dart';
 import 'package:twochealthcare/view_models/splash_vm/splash_vm.dart';
+import 'package:twochealthcare/views/admin_view/barcode_scan/barcode_view_model.dart';
+import 'package:twochealthcare/views/admin_view/home_view/admin_home_view_model.dart';
 
 import '../view_models/ccm_vm/ccm_encounter_vm.dart';
 /// ChangeNotifierProvider
@@ -92,6 +94,9 @@ final rpmPatientsVMProvider = ChangeNotifierProvider<RpmPatientsVM>((ref)=>RpmPa
 final dexComVMProvider = ChangeNotifierProvider<DexComVM>((ref)=>DexComVM(ref: ref));
 final weightReadingVMProvider = ChangeNotifierProvider<WeightReadingVM>((ref)=>WeightReadingVM(ref: ref));
 final pulseOxReadingVMProvider = ChangeNotifierProvider<PulseOxReadingVM>((ref)=>PulseOxReadingVM(ref: ref));
+final adminHomeVMProvider = ChangeNotifierProvider<AdminHomeVM>((ref)=>AdminHomeVM(ref: ref));
+final barcodeVMProvider = ChangeNotifierProvider<BarcodeVM>((ref)=>BarcodeVM(ref: ref));
+
 /// ChangeNotifierProvider
 
 

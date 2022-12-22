@@ -12,6 +12,7 @@ import 'package:jiffy/jiffy.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:twochealthcare/common_widgets/aler_dialogue.dart';
 import 'package:twochealthcare/common_widgets/circular_image.dart';
+import 'package:twochealthcare/common_widgets/drawer_components/admin_menu.dart';
 import 'package:twochealthcare/common_widgets/drawer_components/fu_menu.dart';
 import 'package:twochealthcare/common_widgets/drawer_components/head_profile.dart';
 import 'package:twochealthcare/common_widgets/drawer_components/p_menu.dart';
@@ -70,7 +71,7 @@ class CustomDrawer extends HookWidget {
                             onLaunchActivityAndRoutesService:
                                 onLaunchActivityAndRoutesService,
                           )
-                        : FUMenu(
+                        : loginVM.currentUser!.userType == 3 ? AdminMenu(loginVM: loginVM) :FUMenu(
                             loginVM: loginVM,
                           ),
                   ],

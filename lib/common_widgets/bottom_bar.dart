@@ -95,12 +95,17 @@ class BottomBar extends HookWidget {
                       if (connectivityService.connectionStatus ==
                           ConnectivityResult.none) {
                         SnackBarMessage(
-                            message:
-                                "No internet connection detected, please try again.");
-                      } else {
+                            message: "No internet connection detected, please try again.");
+                      }
+                      else {
                         var check = await homeVM.checkChatStatus();
                         print(
                             "this is application mode = ${Foundation.kDebugMode}");
+                        if(check == -2){
+                          SnackBarMessage(
+                              message: "Chat disable for this user!");
+                          return;
+                        }
                         if (check is bool) {
                           if (check) {
                             if (chatListVM.groupIds.length == 1) {

@@ -207,7 +207,7 @@ class S3CrudService{
 
   Future<String> getPublicUrl(privateUrl)async{
      String pubUrl = "";
-     var res = await _dioServices?.dio?.get(S3Controller.GetPublicUrl+"?path="+privateUrl);
+     var res = await _dioServices?.dio?.get(S3Controller.GetPublicUrl+"?path="+privateUrl+"&isDefault=${true}");
      if(res?.statusCode == 200){
        pubUrl = res?.data;
      }

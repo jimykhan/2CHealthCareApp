@@ -12,7 +12,7 @@ class Assets {
   static const String ReadingsLeftArrowIcon = 'assets/icons/Readings/Left-Arrow-icon.svg';
   static const String ReadingsPulseOximeter = 'assets/icons/Readings/pulse-oximeter.svg';
   static const String ReadingsWeightIcon = 'assets/icons/Readings/weight-icon.svg';
-  static const String SIgnINEye = 'assets/icons/SIgn IN/eye.svg';
+  static const String SIgnNEye = 'assets/icons/SIgn IN/eye.svg';
   static const String assetsLoader = 'assets/loader.gif';
   static const String assetsTrashContainer = 'assets/trash_container.png';
   static const String assetsTrashCover = 'assets/trash_cover.png';
@@ -21,6 +21,7 @@ class Assets {
   static const String bottomNavbarUserIcon = 'assets/icons/bottom_navbar/user-icon.svg';
   static const String fuIconsDisablePhone = 'assets/icons/fu_icons/disablePhone.svg';
   static const String fuIconsEnablePhone = 'assets/icons/fu_icons/enablePhone.svg';
+  static const String homeBarcode = 'assets/icons/home/barcode.svg';
   static const String homeHealthGuideIcon = 'assets/icons/home/health-guide-icon.svg';
   static const String homeReadingIcon = 'assets/icons/home/reading-icon.svg';
   static const String homeRightArrowIcon = 'assets/icons/home/right-arrow-icon.svg';

@@ -8,6 +8,8 @@ import 'package:flutter/foundation.dart' as Foundation;
      : baseUrl == staging ? "-Staging-NewMsgReceived" : "-Testing-NewMsgReceived";
 String dataChannel = baseUrl == production ? "-Production-NewDataReceived"
     : baseUrl == staging ? "-Staging-NewDataReceived" : "-Testing-NewDataReceived";
+String callingChannel = baseUrl == production ? "-Production-Calling"
+    : baseUrl == staging ? "-Staging-Calling" : "-Testing-Calling";
 String bucket = baseUrl == production ? "healthforce-media-prod"
     : baseUrl == staging ? "healthforce-media-staging" : "healthforce-media-testing";
 
@@ -153,5 +155,7 @@ class S3Controller{
 class GeneralController{
   static const String GetNewAppVersion = baseUrl +"/api/General/GetAppState";
 }
-
+class PustNotificationController{
+  static const String SendCustomPushNotification = baseUrl + "/api/PushNotification/SendCustomPushNotification";
+}
 

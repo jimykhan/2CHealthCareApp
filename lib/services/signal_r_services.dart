@@ -187,10 +187,20 @@ class SignalRServices{
 
   MarkChatGroupViewed({required int chatGroupId, required String userId}) async {
     print("MarkChatGroupViewed call");
-
     await this.connection?.invoke("MarkChatGroupViewed",args: [chatGroupId,userId.trim()])
         .onError((error, stackTrace) => print("error ${error.toString()}"))
         .then((value) => print("than ${value.toString()}"));
+  }
+
+  SendBarcode({required String barcode}) async {
+    print("MarkChatGroupViewed call");
+    await this.connection?.invoke("SendBarcode",args: [barcode])
+        .onError((error, stackTrace) {
+      print("error ${error.toString()}");
+    })
+        .then((value) {
+      print("than ${value.toString()}");
+    });
   }
 
 

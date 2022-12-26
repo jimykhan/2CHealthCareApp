@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/all.dart';
 import 'package:twochealthcare/common_widgets/filled_button.dart';
 import 'package:twochealthcare/common_widgets/input_field/custom_text_field.dart';
+import 'package:twochealthcare/common_widgets/loader.dart';
+import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/views/admin_view/barcode_scan/barcode_view_model.dart';
-class VerifyBarcode extends StatelessWidget {
-  BarcodeVM? barcodeVM;
-  VerifyBarcode({this.barcodeVM,Key? key}) : super(key: key);
+class VerifyBarcode extends HookWidget {
+  VerifyBarcode({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    BarcodeVM barcodeVM = useProvider(barcodeVMProvider);
     return Container(
       // padding: EdgeInsets.symmetric(horizontal: 20,vertical: 30),
       // margin: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height/2.8),
@@ -24,13 +28,20 @@ class VerifyBarcode extends StatelessWidget {
               checkFocus: (c){},
               textEditingController: barcodeVM?.verifyBarcodeText,
           ),
+          Container(
+                 child: Row(
+                   children:  [
+                     Expanded(child: Text("Sync barcode automatic in ${barcodeVM?.syncTime} second")),
+                   ],
+                 ),
+               ),
           SizedBox(height: 40,),
           Container(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 FilledButton(
-                    onTap: barcodeVM?.onCancel,
+                    onTap: barcodeVM?.closeAlert,
                   h: 30,
                   w: 80,
                   txt: "Close",
@@ -39,13 +50,13 @@ class VerifyBarcode extends StatelessWidget {
                   paddingLeftRight: 0,
                 ),
                 SizedBox(width: 10,),
-                FilledButton(
+                barcodeVM.sendingBarCode ? FilledButton(
                   onTap: (){},
                   h: 30,
                   w: 80,
-                  txt: "Send",
+                  txt: "Retry",
                   paddingLeftRight: 0,
-                ),
+                ) : loader(),
               ],
             ),
           ),

@@ -35,11 +35,13 @@ class ApplicationPackageVM extends ChangeNotifier{
     if(appVersion != null){
       bool canUpdateApp = canUpdate(info!.version, appVersion);
       print(canUpdateApp);
-      AlertMessage(applicationContext!.currentContext!,
-      message: "Your version is ${info!.version} availabe version ${appVersion}",
-      onConfirm:  (Platform.isAndroid) ? AndroidUpdateLouncher : IosUpdateLouncher,
-        confirmText: "Update Now"
-      );
+      if(canUpdateApp){
+        AlertMessage(applicationContext!.currentContext!,
+            message: "Your version is ${info!.version} availabe version ${appVersion}",
+            onConfirm:  (Platform.isAndroid) ? AndroidUpdateLouncher : IosUpdateLouncher,
+            confirmText: "Update Now"
+        );
+      }
 
     }
   }

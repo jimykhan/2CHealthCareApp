@@ -74,7 +74,11 @@ class OnLaunchActivityAndRoutesService{
       }
       else if(userType == 5){
         facilityUserOnStartApplicationData();
-      }else{
+      }
+      else if(userType == 3){
+        adminUserOnStartApplicationData();
+      }
+      else{
 
       }
     }catch(e){
@@ -106,6 +110,12 @@ class OnLaunchActivityAndRoutesService{
     _chatListVM?.getGroupsIds();
     // firebaseService?.initNotification();
     _fuHomeViewModel?.getFacilitiesByUserId();
+    loginVM?.getCurrentUserFromSharedPref();
+    await _facilityService?.getHangfireToken();
+    signalRServices?.initSignalR();
+  }
+
+  adminUserOnStartApplicationData() async {
     loginVM?.getCurrentUserFromSharedPref();
     await _facilityService?.getHangfireToken();
     signalRServices?.initSignalR();

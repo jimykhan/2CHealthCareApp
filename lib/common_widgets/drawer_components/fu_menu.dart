@@ -12,6 +12,7 @@ import 'package:twochealthcare/main.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
+import 'package:twochealthcare/views/admin_view/barcode_scan/barcode_scan.dart';
 import 'package:twochealthcare/views/facility_user/fu_home/fu_profile.dart';
 import 'package:twochealthcare/views/facility_user/fu_home/patient_list/all_patient.dart';
 
@@ -105,6 +106,35 @@ class FUMenu extends StatelessWidget {
                 ),
               ),
             ),
+
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    PageTransition(
+                        child: BarcodeScan(),
+                        type: PageTransitionType.rightToLeft));
+              },
+              child: Container(
+                padding: MenuPadding(),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SvgPicture.asset(
+                      "assets/icons/home/barcode.svg",
+                      color: appColor,
+                      width: ApplicationSizing.convert(18),
+                      height: ApplicationSizing.convert(18),
+                    ),
+                    MenuTextStyle(
+                      text: "Scan device",
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
             InkWell(
               onTap: () {
                 Navigator.pop(context);

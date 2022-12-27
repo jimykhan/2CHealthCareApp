@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_beep/flutter_beep.dart';
 import 'package:hooks_riverpod/all.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:twochealthcare/common_widgets/aler_dialogue.dart';
@@ -57,6 +58,7 @@ class BarcodeVM extends ChangeNotifier{
               scanBarcodeRCount = 0;
             }
             print("$scanBarcodeRCount $code");
+
             if(scanBarcodeRCount > 8 && showAlert) {
               showBarcodeConfimation(code);
             }
@@ -72,11 +74,19 @@ class BarcodeVM extends ChangeNotifier{
     showAlert = false;
     verifyBarcodeText.text = code;
     cameraController.stop();
-    CenterAlertDialog(child:
-    VerifyBarcode(),
-        title: "Confirm IMEI"
+    FlutterBeep.beep();
+    showSucessIcon();
+    // startTimer();
+  }
+
+  showSucessIcon(){
+    showDialog(
+      context: applicationContext!.currentContext!,
+      builder: (BuildContext context) {
+        sendBarcode();
+        return SucessIcon();
+      },
     );
-    startTimer();
   }
 
 
@@ -121,7 +131,7 @@ class BarcodeVM extends ChangeNotifier{
   closeAlert(){
     scanBarcode = "";
     scanBarcodeRCount = 0;
-    showAlert = true;
+    Future.delayed(Duration(seconds: 2),() => showAlert = true);
     cameraController.start();
     Navigator.pop(applicationContext!.currentContext!);
   }

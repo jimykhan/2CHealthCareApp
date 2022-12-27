@@ -447,6 +447,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_beep:
+    dependency: "direct main"
+    description:
+      name: flutter_beep
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0"
   flutter_callkit_incoming:
     dependency: "direct main"
     description:
@@ -996,6 +1003,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.1"
+  rive:
+    dependency: "direct main"
+    description:
+      name: rive
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.9.1"
   riverpod:
     dependency: transitive
     description:

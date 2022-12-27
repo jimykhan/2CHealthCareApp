@@ -194,7 +194,8 @@ class SignalRServices{
 
   SendBarcode({required String barcode}) async {
     print("MarkChatGroupViewed call");
-    await this.connection?.invoke("SendBarcode",args: [barcode])
+    String userId  = await _authServices!.getCurrentAppUserId();
+    await this.connection?.invoke("SendBarcode",args: [barcode,userId])
         .onError((error, stackTrace) {
       print("error ${error.toString()}");
     })

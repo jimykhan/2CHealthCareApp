@@ -12,7 +12,7 @@ class Assets {
   static const String ReadingsLeftArrowIcon = 'assets/icons/Readings/Left-Arrow-icon.svg';
   static const String ReadingsPulseOximeter = 'assets/icons/Readings/pulse-oximeter.svg';
   static const String ReadingsWeightIcon = 'assets/icons/Readings/weight-icon.svg';
-  static const String SIgnNEye = 'assets/icons/SIgn IN/eye.svg';
+  static const String SIgnINEye = 'assets/icons/SIgn IN/eye.svg';
   static const String assetsLoader = 'assets/loader.gif';
   static const String assetsTrashContainer = 'assets/trash_container.png';
   static const String assetsTrashCover = 'assets/trash_cover.png';
@@ -26,6 +26,7 @@ class Assets {
   static const String homeReadingIcon = 'assets/icons/home/reading-icon.svg';
   static const String homeRightArrowIcon = 'assets/icons/home/right-arrow-icon.svg';
   static const String homeSideMenuIcon = 'assets/icons/home/side-menu-icon.svg';
+  static const String homeTerms = 'assets/icons/home/Terms & Conditions (Developer).pdf';
   static const String homeTrophyIcon = 'assets/icons/home/trophy-Icon.svg';
   static const String homeUserIcon = 'assets/icons/home/user-icon.svg';
   static const String iconsArrowDown = 'assets/icons/arrow_down.svg';
@@ -69,6 +70,7 @@ class Assets {
   static const String poppinsPoppinsSemiBoldItalic = 'assets/fonts_family/poppins/Poppins-SemiBoldItalic.ttf';
   static const String poppinsPoppinsThin = 'assets/fonts_family/poppins/Poppins-Thin.ttf';
   static const String poppinsPoppinsThinItalic = 'assets/fonts_family/poppins/Poppins-ThinItalic.ttf';
+  static const String riveAnimationFileDone = 'assets/rive_animation_file/done.riv';
   static const String sideMenuCrossIcon = 'assets/icons/side_menu/cross-icon.svg';
   static const String sideMenuHealthGuideIcon = 'assets/icons/side_menu/health-guide-icon.svg';
   static const String sideMenuHomeIcon = 'assets/icons/side_menu/home-icon.svg';

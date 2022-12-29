@@ -322,7 +322,7 @@ packages:
       name: dart_webrtc
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.11"
+    version: "1.0.12"
   dbus:
     dependency: transitive
     description:
@@ -460,7 +460,7 @@ packages:
       name: flutter_callkit_incoming
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.2+2"
+    version: "1.0.3+1"
   flutter_datetime_picker:
     dependency: "direct main"
     description:
@@ -561,7 +561,7 @@ packages:
       name: flutter_webrtc
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.9.16"
+    version: "0.9.18"
   freezed_annotation:
     dependency: transitive
     description:
@@ -968,6 +968,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.1.0"
+  platform_detect:
+    dependency: transitive
+    description:
+      name: platform_detect
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.7"
   plugin_platform_interface:
     dependency: transitive
     description:

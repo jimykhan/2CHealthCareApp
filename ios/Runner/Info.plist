@@ -42,9 +42,11 @@
 		<string>_dartobservatory._tcp</string>
 	</array>
 	<key>NSCameraUsageDescription</key>
-	<string>2C Health Care use camera for video calling</string>
+	<string>2C Health Care use camera for video calling and use for scan barcode</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>2C Health Care use microphone for calling</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>we want to scan barcode for this reason we need photolibrary access</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>

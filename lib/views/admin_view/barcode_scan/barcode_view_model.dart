@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_beep/flutter_beep.dart';
@@ -48,9 +49,11 @@ class BarcodeVM extends ChangeNotifier{
       Offset endposition = box.localToGlobal(Offset.zero);
       Offset startposition = box.localToGlobal(Offset(0, -(box.constraints.maxHeight)));
       final String code = barcode.rawValue!;
-      Future.delayed(Duration(seconds: 1),(){{
+      double w = MediaQuery.of(applicationContext!.currentContext!).size.width;
+      double h = MediaQuery.of(applicationContext!.currentContext!).size.height;
+      if(Platform.isIOS){
         barcode.corners?.forEach((element) {
-          if((element.dy >= startposition.dy && element.dy <= endposition.dy))
+          if((element.dy >= (startposition.dy * 2) && element.dy <= (endposition.dy * 2)))
           {
             scanBarcodeRCount++;
             if(code != scanBarcode){
@@ -65,7 +68,27 @@ class BarcodeVM extends ChangeNotifier{
             debugPrint('Barcode found! $code');
           }
         });
-      }});
+      }else{
+        Future.delayed(Duration(seconds: 1),(){{
+          barcode.corners?.forEach((element) {
+            if((element.dy >= startposition.dy && element.dy <= endposition.dy))
+            {
+              scanBarcodeRCount++;
+              if(code != scanBarcode){
+                scanBarcode = barcode.rawValue!;
+                scanBarcodeRCount = 0;
+              }
+              print("$scanBarcodeRCount $code");
+
+              if(scanBarcodeRCount > 8 && showAlert) {
+                showBarcodeConfimation(code);
+              }
+              debugPrint('Barcode found! $code');
+            }
+          });
+        }});
+      }
+
     }
   }
 

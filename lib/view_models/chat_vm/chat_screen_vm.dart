@@ -381,8 +381,11 @@ class ChatScreenVM extends ChangeNotifier {
     });
 
     audioPlayer?.onDurationChanged.listen((event) {
-      maxduration = event.inMilliseconds;
-      notifyListeners();
+      if(event.inMicroseconds>= 0){
+        maxduration = event.inMilliseconds;
+        notifyListeners();
+      }
+
     });
 
 

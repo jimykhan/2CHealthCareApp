@@ -381,7 +381,7 @@ class ChatScreenVM extends ChangeNotifier {
     });
 
     audioPlayer?.onDurationChanged.listen((event) {
-      if(event.inMicroseconds>= 0){
+      if(event.inMicroseconds > 0){
         maxduration = event.inMilliseconds;
         notifyListeners();
       }
@@ -459,6 +459,7 @@ class ChatScreenVM extends ChangeNotifier {
         notifyListeners();
         return;
       }
+      audioPlayer?.setReleaseMode(audioPlay.ReleaseMode.loop);
       final playerResult = await audioPlayer?.play(audioPlay.UrlSource(publicUrl)).whenComplete(() {
         playerState = audioPlay.PlayerState.playing;
         isFileDownloadError(chatId,false);

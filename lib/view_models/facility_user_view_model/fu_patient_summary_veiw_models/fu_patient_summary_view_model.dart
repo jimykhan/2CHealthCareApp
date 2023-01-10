@@ -18,6 +18,7 @@ import 'package:twochealthcare/services/diagnosis_service.dart';
 import 'package:twochealthcare/services/facility_user_services/facility_service.dart';
 import 'package:twochealthcare/services/facility_user_services/patient_summary_service.dart';
 import 'package:twochealthcare/services/patient_profile_service.dart';
+import 'package:twochealthcare/services/shared_pref_services.dart';
 import 'package:twochealthcare/views/care_plan/care_plan.dart';
 import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_summary/components/alliergies_body.dart';
 import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_summary/components/diagnosis_body.dart';
@@ -28,6 +29,7 @@ import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_
 import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_summary/components/summary_body.dart';
 import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_summary/components/surgical_history_body.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import 'package:twochealthcare/views/rpm_view/readings/modalities_reading.dart';
 
 class FUPatientSummaryVM extends ChangeNotifier{
   FUProfileModel? billingProvider;
@@ -38,7 +40,7 @@ class FUPatientSummaryVM extends ChangeNotifier{
   DiagnosisService? _diagnosisService;
   PatientProfileService? _patientProfileService;
   ItemScrollController? categoryScrollController;
-
+  SharedPrefServices? sharedPrefServices;
   PatientInfo? patientInfo;
   List<DiagnoseModel> diagnoseList = [];
   List<MedicationModel> medicationList = [];
@@ -49,6 +51,7 @@ class FUPatientSummaryVM extends ChangeNotifier{
   List<Specialists> providerList = [];
   List<PatientSummaryMenu> patientSummaryMenuList =  [
     PatientSummaryMenu(isSelected: true,menuText: "Summary", body: SummaryBody()),
+    PatientSummaryMenu(isSelected: false,menuText: "Modalities", body: ModalitiesReading(paitentId: -1,)),
     PatientSummaryMenu(isSelected: false,menuText: "Diagnosis",body: DiagnosisBody()),
     PatientSummaryMenu(isSelected: false,menuText: "Medications",body: MedicationsBody()),
     PatientSummaryMenu(isSelected: false,menuText: "Allergies",body: AllergiesBody()),
@@ -63,14 +66,15 @@ class FUPatientSummaryVM extends ChangeNotifier{
     _ref = ref;
     initService();
   }
-   int? _patientId(){
-    return patientInfo?.id;
+   int _patientId(){
+    return patientInfo?.id??-1;
   }
   initService(){
      _patientSummaryService = _ref!.read(patientSummaryServiceProvider);
      _patientProfileService = _ref!.read(PatientProfileServiceProvider);
      _facilityService = _ref!.read(facilityServiceProvider);
      _diagnosisService = _ref!.read(diagnosisServiceProvider);
+     sharedPrefServices = _ref!.read(sharedPrefServiceProvider);
      categoryScrollController = ItemScrollController();
   }
 
@@ -99,6 +103,7 @@ class FUPatientSummaryVM extends ChangeNotifier{
     try{
       setIsLoading(true);
       var res = await _diagnosisService?.getDiagnosisByPatientId(Id: summaryPatientsModel?.id??-1);
+
       if(res !=null && res is List<DiagnoseModel>){
         diagnoseList = [];
         diagnoseList.addAll(res);
@@ -202,7 +207,9 @@ class FUPatientSummaryVM extends ChangeNotifier{
     try{
       setIsLoading(true);
       patientInfo = null;
+
       var res = await _patientProfileService?.getUserInfo(currentUserId : summaryPatientsModel?.id??-1);
+       await sharedPrefServices?.setCurrentViewPatientId(summaryPatientsModel?.id??-1);
       if(res !=null && res is PatientInfo){
         patientInfo = res;
         setIsLoading(false);
@@ -225,6 +232,7 @@ class FUPatientSummaryVM extends ChangeNotifier{
     });
     setIsLoading(false);
   }
+
   changeCategoryScrollPosition(index)async{
     if(categoryScrollController!.isAttached){
       await categoryScrollController?.scrollTo(index: index, duration: Duration(seconds: 1),alignment: 0.3);

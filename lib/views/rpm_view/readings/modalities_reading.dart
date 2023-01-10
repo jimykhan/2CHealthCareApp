@@ -27,7 +27,7 @@ import 'package:twochealthcare/views/rpm_view/readings/weight_reading.dart';
 class ModalitiesReading extends HookWidget {
   int paitentId;
 
-  ModalitiesReading({Key? key,this.paitentId = -1}) : super(key: key);
+  ModalitiesReading({Key? key,this.paitentId = 0}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +40,7 @@ class ModalitiesReading extends HookWidget {
         Future.microtask(() async {});
         modalitiesReadingVM.isActiveModality = false;
         modalitiesReadingVM.modalitiesLoading = true;
-        modalitiesReadingVM.getModalitiesByUserId();
+        modalitiesReadingVM.getModalitiesByUserId(paitentId);
         return () {
           // Dispose Objects here
         };
@@ -48,7 +48,12 @@ class ModalitiesReading extends HookWidget {
       const [],
     );
 
-    return Scaffold(
+    return paitentId == -1 ? _body(
+        sharedPrefServices: sharedPrefService,
+        modalitiesReadingVM: modalitiesReadingVM,
+      patientId: paitentId
+      )
+     : Scaffold(
       primary: false,
       backgroundColor: Colors.white,
       appBar: PreferredSize(
@@ -69,13 +74,14 @@ class ModalitiesReading extends HookWidget {
       body: _body(
         sharedPrefServices: sharedPrefService,
         modalitiesReadingVM: modalitiesReadingVM,
+        patientId: paitentId
       ),
     );
   }
 
   _body(
       {SharedPrefServices? sharedPrefServices,
-      ModalitiesReadingVM? modalitiesReadingVM}) {
+      ModalitiesReadingVM? modalitiesReadingVM, required int patientId}) {
     return Container(
       child: SingleChildScrollView(
         child: Stack(
@@ -96,7 +102,7 @@ class ModalitiesReading extends HookWidget {
                               return (modality.id == 0 && modality.lastReading == null)
                                   ? Container()
                                   : InkWell(
-                                      onTap: () {
+                                      onTap:  patientId == -1 ? null : () {
                                         if (modality.modality == "BP") {
                                           Navigator.push(
                                               context,

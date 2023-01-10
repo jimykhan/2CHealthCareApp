@@ -5,6 +5,7 @@ import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
 import 'package:twochealthcare/services/rpm_services/modalities_reading_service.dart';
 import 'package:twochealthcare/services/rpm_services/rpm_service.dart';
+import 'package:twochealthcare/services/shared_pref_services.dart';
 
 class ModalitiesReadingVM extends ChangeNotifier{
   // int bPLastReadingMonth = DateTime.now().month;
@@ -18,6 +19,7 @@ class ModalitiesReadingVM extends ChangeNotifier{
   AuthServices? _authService;
   // ModalitiesReadingService? _modalitiesReadingService;
   RpmService? _rpmService;
+  SharedPrefServices? sharedPrefServices;
   ModalitiesReadingVM({ProviderReference? ref}){
     _ref = ref;
     initService();
@@ -26,6 +28,7 @@ class ModalitiesReadingVM extends ChangeNotifier{
   initService(){
     _authService = _ref!.read(authServiceProvider);
     _rpmService = _ref!.read(rpmServiceProvider);
+    sharedPrefServices = _ref!.read(sharedPrefServiceProvider);
 
   }
 
@@ -34,9 +37,9 @@ class ModalitiesReadingVM extends ChangeNotifier{
     notifyListeners();
   }
 
-  getModalitiesByUserId()async{
+  getModalitiesByUserId(int currentViewPatientId)async{
     // setModalitiesLoading(true);
-    int id  = await _authService!.getCurrentUserId();
+    int id  = currentViewPatientId == -1 ? await sharedPrefServices?.getCurrentViewPatientId()??-1 : await _authService!.getCurrentUserId();
     var res = await _rpmService?.getModalitiesByUserId(currentUserId: id);
     if(res is List){
       modalitiesList = [];

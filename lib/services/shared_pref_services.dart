@@ -68,6 +68,18 @@ class SharedPrefServices{
     _prefs?.setString("patientInfo", jsonEncode(data));
   }
 
+  setCurrentViewPatientId(int Id) async {
+    await _initPref();
+    _prefs?.setInt("currentViewPatientId", Id);
+  }
+
+  Future<int> getCurrentViewPatientId() async {
+    await _initPref();
+    int Id = -1;
+    Id = _prefs?.getInt("currentViewPatientId")??-1;
+    return Id;
+  }
+
   Future<dynamic> getPatientInfo() async {
     await _initPref();
     var p_info = _prefs?.get("patientInfo");

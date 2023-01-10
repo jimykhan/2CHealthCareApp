@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:jiffy/jiffy.dart';
@@ -12,6 +13,7 @@ import 'package:twochealthcare/common_widgets/circular_svg_icon.dart';
 import 'package:twochealthcare/common_widgets/custom_appbar.dart';
 import 'package:twochealthcare/common_widgets/loader.dart';
 import 'package:twochealthcare/common_widgets/no_data_inlist.dart';
+import 'package:twochealthcare/common_widgets/snackber_message.dart';
 import 'package:twochealthcare/constants/api_strings.dart';
 import 'package:twochealthcare/models/chat_model/ChatMessage.dart';
 import 'package:twochealthcare/models/chat_model/GetGroups.dart';
@@ -22,6 +24,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:twochealthcare/services/application_route_service.dart';
+import 'package:twochealthcare/services/connectivity_service.dart';
 import 'package:twochealthcare/services/onlunch_activity_routes_service.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
@@ -33,6 +36,7 @@ import 'package:twochealthcare/views/chat/components/audio_message.dart';
 import 'package:twochealthcare/views/chat/components/chat_input_field.dart';
 import 'package:twochealthcare/views/chat/components/message.dart';
 import 'package:marquee/marquee.dart';
+import 'package:twochealthcare/views/chat/components/recording_button.dart';
 
 ScrollController? chatScrollController;
 
@@ -46,6 +50,8 @@ class ChatScreen extends HookWidget {
     ChatScreenVM chatScreenVM = useProvider(chatScreenVMProvider);
     ApplicationRouteService applicationRouteService = useProvider(applicationRouteServiceProvider);
     OnLaunchActivityAndRoutesService onLaunchActivityService = useProvider(onLaunchActivityServiceProvider);
+    ConnectivityService connectivityService =
+    useProvider(connectivityServiceProvider);
     useEffect(
 
       () {
@@ -133,7 +139,7 @@ class ChatScreen extends HookWidget {
         onNotification: (scrollNotification) {
           return _onScrollNotification(scrollNotification);
         },
-        child: _body(context, chatScreenVM: chatScreenVM),
+        child: _body(context, chatScreenVM: chatScreenVM,connectivityService: connectivityService),
       )
       ,
     );
@@ -149,7 +155,7 @@ class ChatScreen extends HookWidget {
     return false;
   }
 
-  _body(context, {required ChatScreenVM chatScreenVM}) {
+  _body(context, {required ChatScreenVM chatScreenVM, required ConnectivityService connectivityService}) {
     String date = "";
     return Stack(
             children: [
@@ -262,9 +268,46 @@ class ChatScreen extends HookWidget {
                       ),
                     ),
                   ),
-                  Container(
-                      child: ChatInputField(),
-                    padding: EdgeInsets.only(bottom: Platform.isIOS ? 15 : 0),
+
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                            child: ChatInputField(),
+                          padding: EdgeInsets.only(bottom: Platform.isIOS ? 15 : 0),
+                        ),
+
+                      ),
+                      RecordButton(chatScreenVM: chatScreenVM,),
+                      // GestureDetector(
+                      //   onLongPressStart: (long){
+                      //     chatScreenVM.startRecording();
+                      //   },
+                      //   onLongPressEnd: (end) async{
+                      //     String fileUrl = await chatScreenVM.endRecording();
+                      //     if (connectivityService.connectionStatus == ConnectivityResult.none) {
+                      //       SnackBarMessage(message: "No internet connection detected, please try again.");
+                      //     } else {
+                      //       await chatScreenVM.sendTextMessage(
+                      //           fileUrl: fileUrl,
+                      //           chatMessageType: ChatMessageType.audio
+                      //       );
+                      //       ChatScreen.jumpToListIndex();
+                      //       print("work");
+                      //     }
+                      //   },
+                      //   // onTap: chatScreenVM.startRecording,
+                      //   // onFocusChange: chatScreenVM.endRecording,
+                      //   child: Container(
+                      //     padding: EdgeInsets.all(6),
+                      //     decoration: BoxDecoration(
+                      //         color: appColor,
+                      //         shape: BoxShape.circle
+                      //     ),
+                      //     child: Icon(Icons.mic_none,color: Colors.white,),
+                      //   ),
+                      // ),
+                    ],
                   ),
                 ],
               ),

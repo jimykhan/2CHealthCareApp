@@ -78,6 +78,7 @@ class ChatMessage {
   int? chatGroupId;
   String? channelName;
   int? chatType;
+  String? data;
 
 
   bool? isSender;
@@ -104,6 +105,7 @@ class ChatMessage {
         this.chatType,
         this.isError = false,
         this.downloading = false,
+        this.data,
       });
 
   ChatMessage.fromJson(Map<String, dynamic> json) {
@@ -119,6 +121,7 @@ class ChatMessage {
     chatGroupId = json['chatGroupId'];
     channelName = json['channelName'];
     chatType = json['chatType'];
+    data = json['data'];
   }
 
   Map<String, dynamic> toJson() {

@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 class ApplicationSizing {
   static var guidelineBaseWidth = 360;
   static var guidelineBaseHeight = 752;
+  static const double defaultPadding = 8;
+  static const double borderRadius = 27;
 
   static var shortDimension;
   static var longDimension;

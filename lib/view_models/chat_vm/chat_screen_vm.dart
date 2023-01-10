@@ -43,6 +43,8 @@ class ChatScreenVM extends ChangeNotifier {
   /// audio recording
   RecorderController? recorderController;
   bool isRecording = false;
+  late int recordingDuration;
+  late AnimationController controller;
   /// audio recording
 
   ChatScreenVM({ProviderReference? ref}) {
@@ -94,6 +96,7 @@ class ChatScreenVM extends ChangeNotifier {
 
   initChatScreen() async {
     myFocusNode = FocusNode();
+
     myFocusNode?.addListener(() {
       print("addListener has focus ${myFocusNode?.hasFocus}");
       if (myFocusNode?.hasFocus ?? false) {
@@ -244,6 +247,7 @@ class ChatScreenVM extends ChangeNotifier {
         messageType: chatMessageType,
         // timeStamp: DateTime(2021,DateTime.now().month,DateTime.now().month,03,33).toString(),
         timeStamp: DateTime.now().toString(),
+        data: recordingDuration.toString(),
       ));
       notifyListeners();
       var body = {
@@ -251,7 +255,8 @@ class ChatScreenVM extends ChangeNotifier {
         "chatGroupId": chatGroupId,
         "message": message,
         "linkUrl": fileUrl??"",
-        "chatType": chatType
+        "chatType": chatType,
+        "data": recordingDuration.toString(),
       };
       var response = await _chatScreenService?.sendTextMessage(
           body: body, currentUserAppUserId: currentUserAppUserId);
@@ -299,6 +304,8 @@ class ChatScreenVM extends ChangeNotifier {
 
   endRecording() async {
     final path = await recorderController?.stop();
+    print("end value ${recorderController?.currentScrolledDuration.value}");
+    recordingDuration = (recorderController!.currentScrolledDuration.value / 1000).round();
     String? res;
     if(path != null){
       File file = File(path);
@@ -312,6 +319,7 @@ class ChatScreenVM extends ChangeNotifier {
     notifyListeners();
     // return res;
   }
+
 
   pauseRecording() async {
     await recorderController?.pause();
@@ -356,11 +364,11 @@ class ChatScreenVM extends ChangeNotifier {
       isFileDownloadError(chatId,false);
       isFileDownloading(chatId, true);
       currentIndex = chatId;
+      // maxduration = chatMessageList[che]
     }
-
-
-
   }
+
+
   _audioDuration(){
     audioPlayer?.onPlayerStateChanged.listen((msg) {
       print('audioPlayer error : $msg');
@@ -381,10 +389,10 @@ class ChatScreenVM extends ChangeNotifier {
     });
 
     audioPlayer?.onDurationChanged.listen((event) {
-      if(event.inMicroseconds > 0){
-        maxduration = event.inMilliseconds;
-        notifyListeners();
-      }
+      // if(event.inMicroseconds > 0){
+      //   maxduration = event.inMilliseconds;
+      //   notifyListeners();
+      // }
 
     });
 
@@ -393,34 +401,56 @@ class ChatScreenVM extends ChangeNotifier {
       // if(!(widget.isPlay)){
       //   disposeAudioResouces();
       // }
-      currentpos = p.inMilliseconds; //get the current position of playing audio
+      if(p.inMilliseconds>maxduration){
+        maxduration = maxduration + 1000;
+        print("Add one second in max ${maxduration}");
+      }
+      currentpos = p.inMilliseconds;
+      //get the current position of playing audio
       //generating the duration label
-      int shours = Duration(milliseconds:currentpos).inHours;
-      int sminutes = Duration(milliseconds:currentpos).inMinutes;
-      int sseconds = Duration(milliseconds:currentpos).inSeconds;
-
-      int rhours = shours;
-      int rminutes = sminutes - (shours * 60);
-      int rseconds = sseconds - (sminutes * 60 + shours * 60 * 60);
-
-      currentpostlabel = "$rhours:$rminutes:$rseconds";
+      print("current postion ${currentpos}");
+      if(currentpos == maxduration){
+        print("${currentpos} == ${maxduration}");
+      }
+      calculateCurrentPostionLable(currentpos);
       if(currentpos<maxduration){
 
           //refresh the UI
 
       }
+      notifyListeners();
 
     });
 
     audioPlayer?.onPlayerComplete.listen((event) {
       audioPlayer?.seek(Duration());
       playerState = audioPlay.PlayerState.completed;
+      print("onPlayerComplete call");
       notifyListeners();
     });
   }
-  playPause(int chatId, String audioUrl) async {
+
+  calculateCurrentPostionLable(int durationInMilliseconds){
+    int shours = Duration(milliseconds:currentpos).inHours;
+    int sminutes = Duration(milliseconds:currentpos).inMinutes;
+    int sseconds = Duration(milliseconds:currentpos).inSeconds;
+
+    int rhours = shours;
+    int rminutes = sminutes - (shours * 60);
+    int rseconds = sseconds - (sminutes * 60 + shours * 60 * 60);
+
+    currentpostlabel = "$rhours:$rminutes:$rseconds";
+  }
+
+  playPause(int index,int chatId, String audioUrl) async {
     if(currentIndex != chatId){
       disposeAudioResouces(chatId,false);
+      if(chatMessageList.chats?[index].data != null){
+        /// duration in millisecond
+        maxduration = (int.parse(chatMessageList.chats?[index].data??"1"))*1000;
+        print("Audoi MaxDuration ${maxduration}");
+      }
+
       notifyListeners();
     }
     startAudio(audioUrl);
@@ -459,7 +489,7 @@ class ChatScreenVM extends ChangeNotifier {
         notifyListeners();
         return;
       }
-      audioPlayer?.setReleaseMode(audioPlay.ReleaseMode.loop);
+      // audioPlayer?.setReleaseMode();
       final playerResult = await audioPlayer?.play(audioPlay.UrlSource(publicUrl)).whenComplete(() {
         playerState = audioPlay.PlayerState.playing;
         isFileDownloadError(chatId,false);

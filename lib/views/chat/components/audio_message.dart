@@ -88,7 +88,7 @@ class AudioMessage extends HookWidget {
                       onTap: (){
                         // widget.onPlay(widget.id);
                         // _playPause();
-                        chatScreenVM.playPause(message!.id!, message!.linkUrl!);
+                        chatScreenVM.playPause(index,message!.id!, message!.linkUrl!);
                       },
                       child: Container(
                         // width: 40,
@@ -113,11 +113,13 @@ class AudioMessage extends HookWidget {
                         thumbColor: kPrimaryColor,
                         onChanged: chatScreenVM.audioPlayer == null ? null : (double value) async {
                           int seekval = value.round();
-
+                          print("seekbval ${seekval}");
                           if(seekval < chatScreenVM.maxduration){
                             chatScreenVM.audioPlayer?.seek(Duration(milliseconds: seekval)).whenComplete(() {
+                                print("yes Seek work ${seekval}");
 
                                 chatScreenVM.currentpos = seekval;
+                                chatScreenVM.calculateCurrentPostionLable(chatScreenVM.currentpos);
                                 chatScreenVM.notifyListeners();
                                 // if(_playerState == PlayerState.completed){
                                 //   _playerState = PlayerState.playing;
@@ -142,6 +144,16 @@ class AudioMessage extends HookWidget {
                   children: [
                     Text(
                       "${Jiffy(message?.timeStamp).format("h:mm a")}",
+                      // "${message?.timeStamp}",
+                      style: Styles.RobotoMedium(
+                        fontSize: ApplicationSizing.convert(12),
+                        color: Colors.green,
+                      ),
+                      textAlign: TextAlign.right,
+                      // ),
+                    ),
+                    Text(
+                      "${chatScreenVM.currentIndex ==  message!.id! ? chatScreenVM.currentpostlabel : ""}",
                       // "${message?.timeStamp}",
                       style: Styles.RobotoMedium(
                         fontSize: ApplicationSizing.convert(12),

@@ -71,7 +71,7 @@ class ChatInputField extends HookWidget {
                             horizontal: kDefaultPadding * 0.75,
                           ),
                           decoration: BoxDecoration(
-                            color: Colors.grey.shade300,
+                            color: fontGrayColor.withOpacity(0.2),
                             // color: Colors.green,
                             borderRadius: BorderRadius.circular(40),
                           ),
@@ -182,35 +182,7 @@ class ChatInputField extends HookWidget {
                   ),
 
                 ),
-                SizedBox(width: 5,),
-                GestureDetector(
-                  onLongPressStart: (long){
-                    chatScreenVM.startRecording();
-                  },
-                  onLongPressEnd: (end) async{
-                    String fileUrl = await chatScreenVM.endRecording();
-                    if (connectivityService.connectionStatus == ConnectivityResult.none) {
-                      SnackBarMessage(message: "No internet connection detected, please try again.");
-                    } else {
-                      await chatScreenVM.sendTextMessage(
-                          fileUrl: fileUrl,
-                          chatMessageType: ChatMessageType.audio
-                      );
-                      ChatScreen.jumpToListIndex();
-                      print("work");
-                    }
-                  },
-                  // onTap: chatScreenVM.startRecording,
-                  // onFocusChange: chatScreenVM.endRecording,
-                  child: Container(
-                    padding: EdgeInsets.all(6),
-                    decoration: BoxDecoration(
-                      color: appColor,
-                      shape: BoxShape.circle
-                    ),
-                    child: Icon(Icons.mic_none,color: Colors.white,),
-                  ),
-                ),
+
                 // chatScreenVM.myFocusNode!.hasFocus ? Container() : Container(
                 //   child: Row(
                 //     children: [

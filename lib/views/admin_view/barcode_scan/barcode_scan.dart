@@ -11,7 +11,8 @@ import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/views/admin_view/barcode_scan/barcode_view_model.dart';
 
 class BarcodeScan extends HookWidget {
-   BarcodeScan({Key? key}) : super(key: key);
+  bool fromPatinetSummary;
+   BarcodeScan({Key? key,this.fromPatinetSummary = false}) : super(key: key);
 
 
   @override
@@ -19,7 +20,7 @@ class BarcodeScan extends HookWidget {
     BarcodeVM barcodeVM = useProvider(barcodeVMProvider);
     useEffect(
           () {
-            barcodeVM.initBarcode();
+            barcodeVM.initBarcode(fromPatientSummary: fromPatinetSummary);
         Future.microtask(() async {
 
         });
@@ -52,7 +53,7 @@ class BarcodeScan extends HookWidget {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
-      floatingActionButton: FloatingButton(),
+      floatingActionButton: FloatingButton(back: fromPatinetSummary,),
       body: Container(
         height: MediaQuery.of(context).size.height,
         child: Stack(

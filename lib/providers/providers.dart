@@ -18,6 +18,7 @@ import 'package:twochealthcare/services/health_guides_service/health_guides_serv
 import 'package:twochealthcare/services/local_notification_service.dart';
 import 'package:twochealthcare/services/onlunch_activity_routes_service.dart';
 import 'package:twochealthcare/services/patient_profile_service.dart';
+import 'package:twochealthcare/services/phdevice_service/phdevice_service.dart';
 import 'package:twochealthcare/services/rpm_services/cgm_services.dart';
 // import 'package:twochealthcare/services/rpm_services/bg_reading_service.dart';
 // import 'package:twochealthcare/services/rpm_services/blood_pressure_reading_service.dart';
@@ -60,6 +61,7 @@ import 'package:twochealthcare/view_models/settings_view_models/p_settings_view_
 import 'package:twochealthcare/view_models/splash_vm/splash_vm.dart';
 import 'package:twochealthcare/views/admin_view/barcode_scan/barcode_view_model.dart';
 import 'package:twochealthcare/views/admin_view/home_view/admin_home_view_model.dart';
+import 'package:twochealthcare/views/rpm_view/issue_device/issue_device_vm.dart';
 
 import '../view_models/ccm_vm/ccm_encounter_vm.dart';
 /// ChangeNotifierProvider
@@ -96,6 +98,7 @@ final weightReadingVMProvider = ChangeNotifierProvider<WeightReadingVM>((ref)=>W
 final pulseOxReadingVMProvider = ChangeNotifierProvider<PulseOxReadingVM>((ref)=>PulseOxReadingVM(ref: ref));
 final adminHomeVMProvider = ChangeNotifierProvider<AdminHomeVM>((ref)=>AdminHomeVM(ref: ref));
 final barcodeVMProvider = ChangeNotifierProvider<BarcodeVM>((ref)=>BarcodeVM(ref: ref));
+final issuedDeviceVMProvider = ChangeNotifierProvider<IssuedDeviceVM>((ref)=>IssuedDeviceVM(ref: ref));
 
 /// ChangeNotifierProvider
 
@@ -130,4 +133,5 @@ final applicationPackageServiceProvider = Provider<ApplicationPackageService>((r
 final applicationStartupServiceProvider = Provider<ApplicationStartupService>((ref)=>ApplicationStartupService(ref: ref));
 final cgmServiceProvider = Provider<CGMService>((ref)=>CGMService(ref: ref));
 final s3CrudServiceProvider = Provider<S3CrudService>((ref)=>S3CrudService(ref: ref));
+final phDeviceServiceProvider = Provider<PhDeviceService>((ref)=>PhDeviceService(ref: ref));
 /// Simple Providers

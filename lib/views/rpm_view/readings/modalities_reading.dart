@@ -6,10 +6,13 @@ import 'package:page_transition/page_transition.dart';
 import 'package:twochealthcare/common_widgets/alert_loader.dart';
 import 'package:twochealthcare/common_widgets/app_bar_components/appbar_text_style.dart';
 import 'package:twochealthcare/common_widgets/app_bar_components/back_button.dart';
+import 'package:twochealthcare/common_widgets/app_bar_components/tick_icon_button.dart';
+import 'package:twochealthcare/common_widgets/buttons/add_button.dart';
 import 'package:twochealthcare/common_widgets/custom_appbar.dart';
 import 'package:twochealthcare/common_widgets/floating_button.dart';
 import 'package:twochealthcare/common_widgets/no_data_inlist.dart';
 import 'package:twochealthcare/common_widgets/toggle_button.dart';
+import 'package:twochealthcare/main.dart';
 import 'package:twochealthcare/models/modalities_models/modalities_model.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/application_route_service.dart';
@@ -18,6 +21,10 @@ import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
 import 'package:twochealthcare/view_models/rpm_vm/modalities_reading_vm.dart';
+import 'package:twochealthcare/views/admin_view/barcode_scan/barcode_scan.dart';
+import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_summary/components/headline_text_style.dart';
+import 'package:twochealthcare/views/open_bottom_modal.dart';
+import 'package:twochealthcare/views/rpm_view/issue_device/issue_device_view.dart';
 import 'package:twochealthcare/views/rpm_view/readings/bg_reading.dart';
 import 'package:twochealthcare/views/rpm_view/readings/blood_pressure_reading.dart';
 import 'package:twochealthcare/views/rpm_view/readings/dex_com_reading.dart';
@@ -88,7 +95,43 @@ class ModalitiesReading extends HookWidget {
           children: [
             Column(
               children: [
-                ApplicationSizing.verticalSpacer(n: 20),
+                paitentId == -1 ?
+                    Container(
+                      margin: EdgeInsets.symmetric(
+                        horizontal: ApplicationSizing
+                            .horizontalMargin(),
+                      ),
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              HeadLineTextStyle(
+                                text: "Modalities",
+                              ),
+                              AddButton(
+                                onClick: (){
+                                  openBottomModal(
+                                      child: IssuedDeviceView());
+                                  // Navigator.push(
+                                  //     applicationContext!.currentContext!,
+                                  //     PageTransition(
+                                  //         child: BarcodeScan(fromPatinetSummary: true,),
+                                  //         type: PageTransitionType.rightToLeft));
+                                },
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                        ],
+                      ),
+                    )
+                    : ApplicationSizing.verticalSpacer(n: 20),
                 (!modalitiesReadingVM!.modalitiesLoading &&
                         !modalitiesReadingVM.isActiveModality)
                     ? NoData()

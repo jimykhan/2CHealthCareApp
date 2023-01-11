@@ -10,7 +10,8 @@ import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/views/home/home.dart';
 
 class FloatingButton extends HookWidget {
-  FloatingButton({Key? key}) : super(key: key);
+  bool back;
+  FloatingButton({Key? key,this.back = false}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +33,7 @@ class FloatingButton extends HookWidget {
       ),
       onPressed: () {
         applicationRouteService.removeAllAndAdd(screenName: "Home");
-        onLaunchActivityService.HomeDecider();
+        back ? Navigator.pop(context) : onLaunchActivityService.HomeDecider();
       },
     );
   }

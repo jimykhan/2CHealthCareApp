@@ -8,12 +8,14 @@ import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:twochealthcare/common_widgets/aler_dialogue.dart';
 import 'package:twochealthcare/main.dart';
 import 'package:twochealthcare/providers/providers.dart';
+import 'package:twochealthcare/services/phdevice_service/phdevice_service.dart';
 import 'package:twochealthcare/services/signal_r_services.dart';
 import 'package:twochealthcare/views/admin_view/barcode_scan/verify_barcode.dart';
 
 class BarcodeVM extends ChangeNotifier{
   ProviderReference? _ref;
   SignalRServices? signalRServices;
+  PhDeviceService? _phDeviceService;
   late MobileScannerController cameraController;
   TextEditingController verifyBarcodeText = TextEditingController();
   String scanBarcode = "";
@@ -22,7 +24,9 @@ class BarcodeVM extends ChangeNotifier{
   bool showAlert = true;
   List<String> barcodeList = [];
   GlobalKey focusContainer = GlobalKey();
-
+  /// Add Device for patient from facility end
+  bool fromPatientSummary = false;
+  /// Add Device for patient from facility end
 
   Timer? _timer;
   int syncTime = 5;
@@ -30,10 +34,12 @@ class BarcodeVM extends ChangeNotifier{
   BarcodeVM({ProviderReference? ref}){
     _ref = ref;
     signalRServices = ref?.read(signalRServiceProvider);
+    _phDeviceService = ref?.read(phDeviceServiceProvider);
   }
 
-  initBarcode(){
+  initBarcode({bool fromPatientSummary = false}){
     cameraController  = MobileScannerController()..stop();
+    this.fromPatientSummary = fromPatientSummary;
     barcodeList = [];
     scanBarcode = "";
     scanBarcodeRCount = 0;
@@ -98,7 +104,7 @@ class BarcodeVM extends ChangeNotifier{
     verifyBarcodeText.text = code;
     cameraController.stop();
     FlutterBeep.beep();
-    showSucessIcon();
+    fromPatientSummary ? pushBarToPhDeviceService() : showSucessIcon();
     // startTimer();
   }
 
@@ -106,10 +112,18 @@ class BarcodeVM extends ChangeNotifier{
     showDialog(
       context: applicationContext!.currentContext!,
       builder: (BuildContext context) {
-        sendBarcode();
+         sendBarcode();
         return SucessIcon();
       },
     );
+  }
+
+  pushBarToPhDeviceService()async{
+    scanBarcode = "";
+    scanBarcodeRCount = 0;
+    Navigator.pop(applicationContext!.currentContext!);
+    await Future.delayed(Duration(seconds: 2),() => showAlert = true);
+    _phDeviceService?.scanBarcode.add(verifyBarcodeText.text);
   }
 
 

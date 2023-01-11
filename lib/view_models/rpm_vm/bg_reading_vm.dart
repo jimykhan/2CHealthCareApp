@@ -175,7 +175,6 @@ class BGReadingVM extends ChangeNotifier{
       setBGReadingLoading(false);
     }
     setBGReadingLoading(false);
-
   }
 
   setBGReadingLoading(bool f){

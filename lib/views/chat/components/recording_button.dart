@@ -4,8 +4,11 @@ import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:twochealthcare/common_widgets/buttons/delete_button.dart';
+import 'package:twochealthcare/common_widgets/buttons/sent_button.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
+import 'package:twochealthcare/util/styles.dart';
 import 'package:twochealthcare/view_models/chat_vm/chat_screen_vm.dart';
 import 'package:twochealthcare/views/chat/components/flow_shader.dart';
 import 'package:twochealthcare/views/chat/components/lottie_animation.dart';
@@ -38,7 +41,6 @@ class _RecordButtonState extends State<RecordButton> with SingleTickerProviderSt
   DateTime? startTime;
   Timer? timer;
   String recordDuration = "00:00";
-  // late Record record;
 
   bool isLocked = false;
   bool showLottie = false;
@@ -47,6 +49,7 @@ class _RecordButtonState extends State<RecordButton> with SingleTickerProviderSt
   void initState() {
     super.initState();
     print("recording initState call");
+    widget.chatScreenVM.RecordingPermission();
     controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 600),
@@ -97,14 +100,18 @@ class _RecordButtonState extends State<RecordButton> with SingleTickerProviderSt
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin(n: 5)),
+      // margin: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin(n: 5)),
       child: Stack(
         clipBehavior: Clip.none,
+        alignment: Alignment.bottomCenter,
         children: [
           lockSlider(chatScreenVM: widget.chatScreenVM),
           cancelSlider(chatScreenVM: widget.chatScreenVM),
           audioButton(chatScreenVM: widget.chatScreenVM),
-          if (isLocked) timerLocked(chatScreenVM: widget.chatScreenVM),
+
+          // timerLocked(chatScreenVM: widget.chatScreenVM),
+          // if (isLocked) Positioned(right :0 , child: Container(height: 40,width: 300,color: Colors.black,)),
+          if (isLocked) timerLocked(context,chatScreenVM: widget.chatScreenVM),
         ],
       ),
     );
@@ -178,15 +185,18 @@ class _RecordButtonState extends State<RecordButton> with SingleTickerProviderSt
     );
   }
 
-  Widget timerLocked({required ChatScreenVM chatScreenVM}) {
+
+
+  Widget timerLocked(context,{required ChatScreenVM chatScreenVM}) {
     return Positioned(
       right: 0,
       child: Container(
-        height: size,
-        width: timerWidth,
+        height: size + 40,
+        width: MediaQuery.of(context).size.width ,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(ApplicationSizing.borderRadius),
+          // borderRadius: BorderRadius.circular(ApplicationSizing.borderRadius),
           color: whiteColor,
+          // color: Colors.blue,
         ),
         child: Container(
           alignment: Alignment.center,
@@ -194,78 +204,88 @@ class _RecordButtonState extends State<RecordButton> with SingleTickerProviderSt
             horizontal: kDefaultPadding,
             vertical: kDefaultPadding / 2,
           ),
-          child: GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: () async {
-              Vibrate.feedback(FeedbackType.success);
-              timer?.cancel();
-              timer = null;
-              startTime = null;
-              recordDuration = "00:00";
-
-              // var filePath = await Record().stop();
-              // AudioState.files.add(filePath!);
-              // ApplicationSizing.audioListKey.currentState!
-              //     .insertItem(AudioState.files.length - 1);
-              // debugPrint(filePath);
-              setState(() {
-                isLocked = false;
-              });
-            },
-            child: Column(
-              children: [
-                chatScreenVM.isRecording ? Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: kDefaultPadding * 0.75,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade300,
-                    // color: Colors.green,
-                    borderRadius: BorderRadius.circular(40),
-                  ),
-                  // color: Colors.amber,
-                  child: AudioWaveforms(
-                    size: Size(MediaQuery.of(context).size.width, 30.0),
-                    shouldCalculateScrolledPosition: true,
-                    padding: EdgeInsets.zero,
-                    margin: EdgeInsets.zero,
-                    recorderController: chatScreenVM.recorderController!,
-                    waveStyle: const WaveStyle(
-                      waveCap: StrokeCap.square,
-                      // showDurationLabel: true,
-                      showMiddleLine: false,
-                      // durationTextPadding: 10,
-                      // showHourInDuration: true,
-                      showTop: true,
-                      spacing: 4.0,
-                      extendWaveform: true,
-                      // labelSpacing: -10,
-                    ),
-                  ),
-                ) : Container(),
-                Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Text(recordDuration),
-                      FlowShader(
-                        child: const Text("Tap lock to stop"),
-                        duration: const Duration(seconds: 3),
-                        flowColors: const [Colors.white, Colors.grey],
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              chatScreenVM.isRecording ? Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(recordDuration,style: Styles.PoppinsRegular(fontSize: ApplicationSizing.fontScale(14),fontWeight: FontWeight.w500),),
+                  Expanded(
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: kDefaultPadding * 0.75,
                       ),
-                      const Center(
-                        child: FaIcon(
-                          FontAwesomeIcons.lock,
-                          size: 18,
-                          color: Colors.green,
+                      decoration: BoxDecoration(
+                        // color: Colors.grey.shade300,
+                        // color: Colors.green,
+                        // borderRadius: BorderRadius.circular(40),
+                      ),
+                      // color: Colors.amber,
+                      child: !(chatScreenVM.isRecording) ? Container() :AudioWaveforms(
+                        size: Size(MediaQuery.of(context).size.width, 30.0),
+                        shouldCalculateScrolledPosition: true,
+                        padding: EdgeInsets.zero,
+                        margin: EdgeInsets.zero,
+                        recorderController: chatScreenVM.recorderController!,
+                        waveStyle: const WaveStyle(
+                          waveCap: StrokeCap.square,
+                          // showDurationLabel: true,
+                          showMiddleLine: false,
+                          // durationTextPadding: 10,
+                          // showHourInDuration: true,
+                          showTop: true,
+                          spacing: 4.0,
+                          extendWaveform: true,
+                          // labelSpacing: -10,
                         ),
                       ),
-                    ],
+                    ),
                   ),
+                ],
+              ) : Container(),
+              Container(
+                // color: Colors.red,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Container(),
+                    // DeleteButton(
+                    //   ontap: (){
+                    //     print("dsafdsfasdf");
+                    //     cancelRecording(chatScreenVM);
+                    //   },
+                    //   withBackground: true,
+                    // ),
+                    // FlowShader(
+                    //   child: const Text("Tap lock to stop"),
+                    //   duration: const Duration(seconds: 3),
+                    //   flowColors: const [Colors.white, Colors.grey],
+                    // ),
+                    SendButton(
+                      withBackground: true,
+                      ontap: ()async {
+                        Vibrate.feedback(FeedbackType.success);
+                        timer?.cancel();
+                        timer = null;
+                        startTime = null;
+                        recordDuration = "00:00";
+                        /// stop and save recording
+                        setState(() {
+                          isLocked = false;
+                        });
+                        await chatScreenVM.saveRecording();
+                        // chatScreenVM.cancelRecording();
+                        // setState(() {
+                        //   isLocked = false;
+                        // });
+                      },
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
@@ -295,26 +315,8 @@ class _RecordButtonState extends State<RecordButton> with SingleTickerProviderSt
         debugPrint("onLongPressEnd");
 
         if (isCancelled(details.localPosition, context)) {
-          Vibrate.feedback(FeedbackType.heavy);
+          cancelRecording(chatScreenVM);
 
-          timer?.cancel();
-          timer = null;
-          startTime = null;
-          recordDuration = "00:00";
-
-          setState(() {
-            showLottie = true;
-          });
-
-          Timer(const Duration(milliseconds: 1440), () async {
-            controller.reverse();
-            debugPrint("Cancelled recording");
-            // var filePath = await record.stop();
-            // debugPrint(filePath);
-            // File(filePath!).delete();
-            // debugPrint("Deleted $filePath");
-            showLottie = false;
-          });
         } else if (checkIsLocked(details.localPosition)) {
           controller.reverse();
 
@@ -324,21 +326,16 @@ class _RecordButtonState extends State<RecordButton> with SingleTickerProviderSt
           setState(() {
             isLocked = true;
           });
-        } else {
+        }
+        else {
           controller.reverse();
-
           Vibrate.feedback(FeedbackType.success);
-
           timer?.cancel();
           timer = null;
           startTime = null;
           recordDuration = "00:00";
-
-          // var filePath = await Record().stop();
-          // AudioState.files.add(filePath!);
-          // ApplicationSizing.audioListKey.currentState!
-          //     .insertItem(AudioState.files.length - 1);
-          // debugPrint(filePath);
+          /// stop and save recording
+          chatScreenVM.saveRecording();
         }
       },
       onLongPressCancel: () {
@@ -348,28 +345,44 @@ class _RecordButtonState extends State<RecordButton> with SingleTickerProviderSt
       onLongPress: () async {
         debugPrint("onLongPress");
         Vibrate.feedback(FeedbackType.success);
-        // if (await Record().hasPermission()) {
-        //   record = Record();
-        //   await record.start(
-        //     path: ApplicationSizing.documentPath +
-        //         "audio_${DateTime.now().millisecondsSinceEpoch}.m4a",
-        //     encoder: AudioEncoder.AAC,
-        //     bitRate: 128000,
-        //     samplingRate: 44100,
-        //   );
-        //   startTime = DateTime.now();
-        //   timer = Timer.periodic(const Duration(seconds: 1), (_) {
-        //     final minDur = DateTime.now().difference(startTime!).inMinutes;
-        //     final secDur = DateTime.now().difference(startTime!).inSeconds % 60;
-        //     String min = minDur < 10 ? "0$minDur" : minDur.toString();
-        //     String sec = secDur < 10 ? "0$secDur" : secDur.toString();
-        //     setState(() {
-        //       recordDuration = "$min:$sec";
-        //     });
-        //   });
-        // }
+
+        /// Start recording and timer
+        bool hasRecordingPermission = await chatScreenVM.RecordingPermission();
+        if (hasRecordingPermission) {
+          chatScreenVM.startRecording();
+          startTime = DateTime.now();
+          timer = Timer.periodic(const Duration(seconds: 1), (_) {
+            final minDur = DateTime.now().difference(startTime!).inMinutes;
+            final secDur = DateTime.now().difference(startTime!).inSeconds % 60;
+            String min = minDur < 10 ? "0$minDur" : minDur.toString();
+            String sec = secDur < 10 ? "0$secDur" : secDur.toString();
+            setState(() {
+              recordDuration = "$min:$sec";
+            });
+          });
+        }
       },
     );
+  }
+
+  cancelRecording(ChatScreenVM chatScreenVM){
+    print("cancel recording call");
+    Vibrate.feedback(FeedbackType.heavy);
+
+    timer?.cancel();
+    timer = null;
+    startTime = null;
+    recordDuration = "00:00";
+    setState(() {
+      showLottie = true;
+    });
+
+    Timer(const Duration(milliseconds: 1440), () async {
+      controller.reverse();
+      debugPrint("Stop and Cancelled recording");
+      chatScreenVM.cancelRecording();
+      showLottie = false;
+    });
   }
 
   bool checkIsLocked(Offset offset) {

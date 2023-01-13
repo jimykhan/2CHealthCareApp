@@ -106,34 +106,34 @@ class FUMenu extends StatelessWidget {
                 ),
               ),
             ),
-
-            InkWell(
-              onTap: () {
-                Navigator.push(
-                    context,
-                    PageTransition(
-                        child: BarcodeScan(),
-                        type: PageTransitionType.rightToLeft));
-              },
-              child: Container(
-                padding: MenuPadding(),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SvgPicture.asset(
-                      "assets/icons/home/barcode.svg",
-                      color: appColor,
-                      width: ApplicationSizing.convert(18),
-                      height: ApplicationSizing.convert(18),
-                    ),
-                    MenuTextStyle(
-                      text: "Scan device",
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            //
+            // InkWell(
+            //   onTap: () {
+            //     Navigator.push(
+            //         context,
+            //         PageTransition(
+            //             child: BarcodeScan(),
+            //             type: PageTransitionType.rightToLeft));
+            //   },
+            //   child: Container(
+            //     padding: MenuPadding(),
+            //     child: Row(
+            //       mainAxisAlignment: MainAxisAlignment.start,
+            //       crossAxisAlignment: CrossAxisAlignment.center,
+            //       children: [
+            //         SvgPicture.asset(
+            //           "assets/icons/home/barcode.svg",
+            //           color: appColor,
+            //           width: ApplicationSizing.convert(18),
+            //           height: ApplicationSizing.convert(18),
+            //         ),
+            //         MenuTextStyle(
+            //           text: "Scan device",
+            //         ),
+            //       ],
+            //     ),
+            //   ),
+            // ),
 
             InkWell(
               onTap: () {

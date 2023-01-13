@@ -3,16 +3,19 @@ import 'dart:io';
 
 import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:audioplayers/audioplayers.dart' as audioPlay;
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:twochealthcare/common_widgets/snackber_message.dart';
 import 'package:twochealthcare/models/chat_model/ChatMessage.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/application_route_service.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
 import 'package:twochealthcare/services/chat_services/chat_screen_service.dart';
+import 'package:twochealthcare/services/connectivity_service.dart';
 import 'package:twochealthcare/services/s3-services/src/s3-crud-service.dart';
 import 'package:twochealthcare/services/signal_r_services.dart';
 import 'package:twochealthcare/util/data_format.dart';
@@ -35,6 +38,7 @@ class ChatScreenVM extends ChangeNotifier {
   ChatScreenService? _chatScreenService;
   ChatListVM? _chatListVM;
   ApplicationRouteService? _applicationRouteService;
+  late ConnectivityService connectivityService;
   SignalRServices? _signalRServices;
   bool isMessageEmpty = true;
   FocusNode? myFocusNode;
@@ -43,7 +47,7 @@ class ChatScreenVM extends ChangeNotifier {
   /// audio recording
   RecorderController? recorderController;
   bool isRecording = false;
-  late int recordingDuration;
+  int recordingDuration = 100;
   late AnimationController controller;
   /// audio recording
 
@@ -119,7 +123,7 @@ class ChatScreenVM extends ChangeNotifier {
     _signalRServices = _ref!.read(signalRServiceProvider);
     _applicationRouteService = _ref!.read(applicationRouteServiceProvider);
     _s3crudService = _ref!.read(s3CrudServiceProvider);
-
+    connectivityService = _ref!.read(connectivityServiceProvider);
     _signalRServices?.newMessage.stream.listen((event) {
       print("new message reached to Rx dart..");
       print(event.timeStamp.toString());
@@ -297,15 +301,15 @@ class ChatScreenVM extends ChangeNotifier {
 
   /// recording functionality
   startRecording() async {
-    await recorderController?.record();
-    isRecording = true;
-    notifyListeners();
+      await recorderController?.record();
+      isRecording = true;
+      notifyListeners();
   }
 
   endRecording() async {
     final path = await recorderController?.stop();
     print("end value ${recorderController?.currentScrolledDuration.value}");
-    recordingDuration = (recorderController!.currentScrolledDuration.value / 1000).round();
+    recordingDuration = recorderController!.currentScrolledDuration.value;
     String? res;
     if(path != null){
       File file = File(path);
@@ -320,15 +324,38 @@ class ChatScreenVM extends ChangeNotifier {
     // return res;
   }
 
+  saveRecording() async {
+    String fileUrl = await endRecording();
+    if (connectivityService.connectionStatus == ConnectivityResult.none) {
+      SnackBarMessage(message: "No internet connection detected, please try again.");
+    } else {
+      await sendTextMessage(
+          fileUrl: fileUrl,
+          chatMessageType: ChatMessageType.audio
+      );
+      ChatScreen.jumpToListIndex(isDelayed: true);
+      print("work");
+    }
+  }
+
 
   pauseRecording() async {
     await recorderController?.pause();
   }
+  cancelRecording() async {
+    await recorderController?.stop();
+    isRecording = false;
+    notifyListeners();
+  }
 
-  Future<void> RecordingPermission() async {
+
+
+  Future<bool> RecordingPermission() async {
       var status = await Permission.microphone.request();
-      if (status != PermissionStatus.granted) {
-
+      if (status == PermissionStatus.granted) {
+        return true;
+      }else{
+        return false;
       }
 
   }
@@ -402,7 +429,7 @@ class ChatScreenVM extends ChangeNotifier {
       //   disposeAudioResouces();
       // }
       if(p.inMilliseconds>maxduration){
-        maxduration = maxduration + 1000;
+        maxduration = p.inMilliseconds;
         print("Add one second in max ${maxduration}");
       }
       currentpos = p.inMilliseconds;
@@ -447,7 +474,7 @@ class ChatScreenVM extends ChangeNotifier {
       disposeAudioResouces(chatId,false);
       if(chatMessageList.chats?[index].data != null){
         /// duration in millisecond
-        maxduration = (int.parse(chatMessageList.chats?[index].data??"1"))*1000;
+        maxduration = (int.parse(chatMessageList.chats?[index].data??"1"));
         print("Audoi MaxDuration ${maxduration}");
       }
 

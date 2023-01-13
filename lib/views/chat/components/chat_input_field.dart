@@ -1,6 +1,7 @@
 import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/services.dart';
+import 'package:twochealthcare/common_widgets/buttons/sent_button.dart';
 import 'package:twochealthcare/common_widgets/snackber_message.dart';
 import 'package:twochealthcare/models/chat_model/ChatMessage.dart';
 import 'package:twochealthcare/providers/providers.dart';
@@ -33,8 +34,8 @@ class ChatInputField extends HookWidget {
         //
         // myFocusNode = FocusNode();
         return () {
-          chatScreenVM.recorderController?.dispose();
-          chatScreenVM.recorderController = null;
+          // chatScreenVM.recorderController?.dispose();
+          // chatScreenVM.recorderController = null;
         };
       },
       const [],
@@ -122,62 +123,59 @@ class ChatInputField extends HookWidget {
                               ),
                               chatScreenVM.isMessageEmpty
                                   ? Container()
-                                  : InkWell(
-                                  onTap: () async {
-                                    if (connectivityService.connectionStatus ==
-                                        ConnectivityResult.none) {
-                                      SnackBarMessage(
-                                          message:
-                                              "No internet connection detected, please try again.");
-                                    } else {
-                                      FocusScope.of(context).unfocus();
-                                      ChatScreen.jumpToListIndex();
-                                      chatScreenVM.sendTextMessage(
-                                          message: _textEditingController?.text
-                                              .toString(),
+                                  : SendButton(
+                                ontap: () async {
+                                  if (connectivityService.connectionStatus ==
+                                      ConnectivityResult.none) {
+                                    SnackBarMessage(
+                                        message:
+                                        "No internet connection detected, please try again.");
+                                  } else {
+                                    FocusScope.of(context).unfocus();
+                                     chatScreenVM.sendTextMessage(
+                                        message: _textEditingController?.text
+                                            .toString(),
                                         chatMessageType: ChatMessageType.text
-                                      );
-                                      _textEditingController?.clear();
-                                      print("work");
-                                    }
-                                  },
-                                  child: Icon(
-                                    Icons.send,
-                                    color: AppBarEndColor,
-                                    size: ApplicationSizing.convert(30),
-                                  ))
+                                    );
+                                    _textEditingController?.clear();
+                                    ChatScreen.jumpToListIndex();
+                                    print("work");
+                                  }
+                                },
+                                // withBackground: true,
+                              ),
                             ],
                           ),
                         ),
-                     chatScreenVM.isRecording ? Container(
-                       padding: const EdgeInsets.symmetric(
-                         horizontal: kDefaultPadding * 0.75,
-                       ),
-                       decoration: BoxDecoration(
-                         color: Colors.grey.shade300,
-                         // color: Colors.green,
-                         borderRadius: BorderRadius.circular(40),
-                       ),
-                       // color: Colors.amber,
-                       child: AudioWaveforms(
-                          size: Size(MediaQuery.of(context).size.width, 30.0),
-                          shouldCalculateScrolledPosition: true,
-                          padding: EdgeInsets.zero,
-                          margin: EdgeInsets.zero,
-                          recorderController: chatScreenVM.recorderController!,
-                         waveStyle: const WaveStyle(
-                           waveCap: StrokeCap.square,
-                           // showDurationLabel: true,
-                           showMiddleLine: false,
-                           // durationTextPadding: 10,
-                           // showHourInDuration: true,
-                           showTop: true,
-                           spacing: 4.0,
-                           extendWaveform: true,
-                           // labelSpacing: -10,
-                         ),
-                        ),
-                     ) : Container(),
+                     // chatScreenVM.isRecording ? Container(
+                     //   padding: const EdgeInsets.symmetric(
+                     //     horizontal: kDefaultPadding * 0.75,
+                     //   ),
+                     //   decoration: BoxDecoration(
+                     //     color: Colors.grey.shade300,
+                     //     // color: Colors.green,
+                     //     borderRadius: BorderRadius.circular(40),
+                     //   ),
+                     //   // color: Colors.amber,
+                     //   child: AudioWaveforms(
+                     //      size: Size(MediaQuery.of(context).size.width, 30.0),
+                     //      shouldCalculateScrolledPosition: true,
+                     //      padding: EdgeInsets.zero,
+                     //      margin: EdgeInsets.zero,
+                     //      recorderController: chatScreenVM.recorderController!,
+                     //     waveStyle: const WaveStyle(
+                     //       waveCap: StrokeCap.square,
+                     //       // showDurationLabel: true,
+                     //       showMiddleLine: false,
+                     //       // durationTextPadding: 10,
+                     //       // showHourInDuration: true,
+                     //       showTop: true,
+                     //       spacing: 4.0,
+                     //       extendWaveform: true,
+                     //       // labelSpacing: -10,
+                     //     ),
+                     //    ),
+                     // ) : Container(),
                     ],
                   ),
 

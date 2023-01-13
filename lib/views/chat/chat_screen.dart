@@ -270,10 +270,11 @@ class ChatScreen extends HookWidget {
                   ),
 
                   Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Expanded(
                         child: Container(
-                            child: ChatInputField(),
+                            child: chatScreenVM.isRecording ? Container() : ChatInputField(),
                           padding: EdgeInsets.only(bottom: Platform.isIOS ? 15 : 0),
                         ),
 

@@ -7,6 +7,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:twochealthcare/common_widgets/snackber_message.dart';
@@ -42,14 +43,14 @@ class ChatScreenVM extends ChangeNotifier {
   SignalRServices? _signalRServices;
   bool isMessageEmpty = true;
   FocusNode? myFocusNode;
-  Timer? timer;
 
 
   /// audio recording
   RecorderController? recorderController;
   bool isRecording = false;
-  int recordingDuration = 100;
+  int recordingDuration = 0;
   late AnimationController controller;
+  DateTime? startTime ;
   /// audio recording
 
   ChatScreenVM({ProviderReference? ref}) {
@@ -311,7 +312,7 @@ class ChatScreenVM extends ChangeNotifier {
 
   endRecording() async {
     final path = await recorderController?.stop();
-    timer?.cancel();
+    calculateDuration(isStop: true);
     String? res;
     if(path != null){
       File file = File(path);
@@ -328,10 +329,7 @@ class ChatScreenVM extends ChangeNotifier {
 
   startDurationTimer(){
     recordingDuration = 0;
-    timer = Timer.periodic(Duration(milliseconds: 100), (timer) {
-      recordingDuration = recordingDuration + 100;
-      print("Duration inMilliSecond ${recordingDuration}");
-    });
+    calculateDuration(isStart: true);
   }
 
   saveRecording() async {
@@ -355,7 +353,7 @@ class ChatScreenVM extends ChangeNotifier {
   }
   cancelRecording() async {
     await recorderController?.stop();
-    timer?.cancel();
+    calculateDuration();
     isRecording = false;
     notifyListeners();
   }
@@ -481,6 +479,29 @@ class ChatScreenVM extends ChangeNotifier {
     int rseconds = sseconds - (sminutes * 60 + shours * 60 * 60);
 
     currentpostlabel = "$rhours:$rminutes:$rseconds";
+  }
+
+
+  calculateDuration({bool isStop = false,bool isStart = false,bool isPause = false, bool isResume = false}){
+    if(isStart){
+      recordingDuration = 0;
+      startTime = DateTime.now();
+    }
+    else if(isStop){
+      if(startTime!= null){
+        recordingDuration = recordingDuration + DateTime.now().difference(startTime!).inMilliseconds;
+      }
+    }
+    else if(isResume){
+      startTime = DateTime.now();
+    }
+    else if(isPause){
+      recordingDuration = recordingDuration + DateTime.now().difference(startTime!).inMilliseconds;
+      startTime = null;
+    }else{
+      startTime = null;
+      recordingDuration =0;
+    }
   }
 
   playPause(int index,int chatId, String audioUrl) async {

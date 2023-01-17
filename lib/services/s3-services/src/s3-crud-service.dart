@@ -15,8 +15,6 @@ import 'package:twochealthcare/constants/api_strings.dart';
 import 'package:path/path.dart' as path;
 
 class S3CrudService{
-  String accessKey = 'AKIAYVREBNGIADT7AAHB';
-  String secretKey = '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';
   // String currentBucket = "healthforce-data-dev";
   String currentBucket = bucket;
   Dio? _dio;

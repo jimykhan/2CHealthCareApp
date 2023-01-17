@@ -86,9 +86,7 @@ class AudioMessage extends HookWidget {
                   children: [
                     GestureDetector(
                       onTap: (){
-                        // widget.onPlay(widget.id);
-                        // _playPause();
-                        chatScreenVM.playPause(index,message!.id!, message!.linkUrl!);
+                        chatScreenVM.isAnyFileLoading() ? null : chatScreenVM.playPause(index,message!.id!, message!.linkUrl!);
                       },
                       child: Container(
                         // width: 40,

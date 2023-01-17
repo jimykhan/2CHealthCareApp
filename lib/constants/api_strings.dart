@@ -10,8 +10,11 @@ String dataChannel = baseUrl == production ? "-Production-NewDataReceived"
     : baseUrl == staging ? "-Staging-NewDataReceived" : "-Testing-NewDataReceived";
 String callingChannel = baseUrl == production ? "-Production-Calling"
     : baseUrl == staging ? "-Staging-Calling" : "-Testing-Calling";
-String bucket = baseUrl == production ? "healthforce-media-prod"
+String bucket = baseUrl == production ? "spiralfusion-media-prod"
     : baseUrl == staging ? "healthforce-media-staging" : "healthforce-media-testing";
+
+String accessKey = baseUrl == production ? "" : "AKIAYVREBNGIADT7AAHB";
+String secretKey = baseUrl == production ? "" : "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";
 
 class ApiStrings {
   static const String signIn = baseUrl +"/api/Account/token2";

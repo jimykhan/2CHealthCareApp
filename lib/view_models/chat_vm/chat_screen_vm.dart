@@ -42,6 +42,7 @@ class ChatScreenVM extends ChangeNotifier {
   SignalRServices? _signalRServices;
   bool isMessageEmpty = true;
   FocusNode? myFocusNode;
+  Timer? timer;
 
 
   /// audio recording
@@ -301,15 +302,16 @@ class ChatScreenVM extends ChangeNotifier {
 
   /// recording functionality
   startRecording() async {
+      startDurationTimer();
       await recorderController?.record();
+
       isRecording = true;
       notifyListeners();
   }
 
   endRecording() async {
     final path = await recorderController?.stop();
-    print("end value ${recorderController?.currentScrolledDuration.value}");
-    recordingDuration = recorderController!.currentScrolledDuration.value;
+    timer?.cancel();
     String? res;
     if(path != null){
       File file = File(path);
@@ -322,6 +324,14 @@ class ChatScreenVM extends ChangeNotifier {
     isRecording = false;
     notifyListeners();
     // return res;
+  }
+
+  startDurationTimer(){
+    recordingDuration = 0;
+    timer = Timer.periodic(Duration(milliseconds: 100), (timer) {
+      recordingDuration = recordingDuration + 100;
+      print("Duration inMilliSecond ${recordingDuration}");
+    });
   }
 
   saveRecording() async {
@@ -341,9 +351,11 @@ class ChatScreenVM extends ChangeNotifier {
 
   pauseRecording() async {
     await recorderController?.pause();
+
   }
   cancelRecording() async {
     await recorderController?.stop();
+    timer?.cancel();
     isRecording = false;
     notifyListeners();
   }
@@ -452,6 +464,8 @@ class ChatScreenVM extends ChangeNotifier {
     audioPlayer?.onPlayerComplete.listen((event) {
       audioPlayer?.seek(Duration());
       playerState = audioPlay.PlayerState.completed;
+      currentpos = 0;
+      calculateCurrentPostionLable(0);
       print("onPlayerComplete call");
       notifyListeners();
     });
@@ -477,7 +491,6 @@ class ChatScreenVM extends ChangeNotifier {
         maxduration = (int.parse(chatMessageList.chats?[index].data??"1"));
         print("Audoi MaxDuration ${maxduration}");
       }
-
       notifyListeners();
     }
     startAudio(audioUrl);
@@ -500,6 +513,7 @@ class ChatScreenVM extends ChangeNotifier {
       );
     }
     // else if (playerState == audioPlay.PlayerState.completed) {
+    //
     //   final playerResult = await audioPlayer?.resume().whenComplete(() {
     //     playerState = audioPlay.PlayerState.playing;
     //     notifyListeners();
@@ -507,6 +521,10 @@ class ChatScreenVM extends ChangeNotifier {
     //   );
     // }
     else {
+      if(playerState == audioPlay.PlayerState.completed){
+        disposeAudioResouces(chatId,false);
+        notifyListeners();
+      }
       String publicUrl;
       try{
         publicUrl = await _s3crudService?.getPublicUrl(audioUrl)??"";
@@ -516,22 +534,26 @@ class ChatScreenVM extends ChangeNotifier {
         notifyListeners();
         return;
       }
+      play(publicUrl,chatId);
       // audioPlayer?.setReleaseMode();
-      final playerResult = await audioPlayer?.play(audioPlay.UrlSource(publicUrl)).whenComplete(() {
-        playerState = audioPlay.PlayerState.playing;
-        isFileDownloadError(chatId,false);
-        isFileDownloading(chatId, false);
-        notifyListeners();
-      }
-      ).onError((error, stackTrace) {
-        disposeAudioResouces(chatId,true);
-        notifyListeners();
-        print("$error");
-      }).timeout(Duration(seconds: 7),onTimeout: (){
-        disposeAudioResouces(chatId,true);
-        notifyListeners();
-      });
     }
+  }
+
+  play(String publicUrl, int chatId) async{
+    final playerResult = await audioPlayer?.play(audioPlay.UrlSource(publicUrl)).whenComplete(() {
+      playerState = audioPlay.PlayerState.playing;
+      isFileDownloadError(chatId,false);
+      isFileDownloading(chatId, false);
+      notifyListeners();
+    }
+    ).onError((error, stackTrace) {
+      disposeAudioResouces(chatId,true);
+      notifyListeners();
+      print("$error");
+    }).timeout(Duration(seconds: 7),onTimeout: (){
+      disposeAudioResouces(chatId,true);
+      notifyListeners();
+    });
   }
 
   isFileDownloading(int chatId,bool downloading){
@@ -542,6 +564,10 @@ class ChatScreenVM extends ChangeNotifier {
         element.downloading = false;
       }
     });
+  }
+
+  bool isAnyFileLoading(){
+   return chatMessageList.chats?.any((element) => element.downloading == true)??false;
   }
 
   isFileDownloadError(int chatId,bool isError){

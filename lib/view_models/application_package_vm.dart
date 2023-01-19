@@ -63,7 +63,7 @@ class ApplicationPackageVM extends ChangeNotifier{
   }
 
   IosUpdateLouncher(){
-    launchAppStore("https://play.google.com/store/apps/details?id=twochealthcare.io");
+    launchAppStore("https://apps.apple.com/us/app/2c-health-care/id1572782591?uo=4");
   }
   AndroidUpdateLouncher(){
     launchAppStore("https://play.google.com/store/apps/details?id=twochealthcare.io");

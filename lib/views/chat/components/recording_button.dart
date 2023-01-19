@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -49,7 +48,7 @@ class _RecordButtonState extends State<RecordButton> with SingleTickerProviderSt
   void initState() {
     super.initState();
     print("recording initState call");
-    widget.chatScreenVM.RecordingPermission();
+    widget.chatScreenVM.openTheRecorder();
     controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 600),
@@ -100,7 +99,6 @@ class _RecordButtonState extends State<RecordButton> with SingleTickerProviderSt
   @override
   Widget build(BuildContext context) {
     return Container(
-      // margin: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin(n: 5)),
       child: Stack(
         clipBehavior: Clip.none,
         alignment: Alignment.bottomCenter,
@@ -108,9 +106,6 @@ class _RecordButtonState extends State<RecordButton> with SingleTickerProviderSt
           lockSlider(chatScreenVM: widget.chatScreenVM),
           cancelSlider(chatScreenVM: widget.chatScreenVM),
           audioButton(chatScreenVM: widget.chatScreenVM),
-
-          // timerLocked(chatScreenVM: widget.chatScreenVM),
-          // if (isLocked) Positioned(right :0 , child: Container(height: 40,width: 300,color: Colors.black,)),
           if (isLocked) timerLocked(context,chatScreenVM: widget.chatScreenVM),
         ],
       ),
@@ -191,7 +186,7 @@ class _RecordButtonState extends State<RecordButton> with SingleTickerProviderSt
     return Positioned(
       right: 0,
       child: Container(
-        height: size + 40,
+        height: size,
         width: MediaQuery.of(context).size.width ,
         decoration: BoxDecoration(
           // borderRadius: BorderRadius.circular(ApplicationSizing.borderRadius),
@@ -207,62 +202,50 @@ class _RecordButtonState extends State<RecordButton> with SingleTickerProviderSt
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              chatScreenVM.isRecording ? Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(recordDuration,style: Styles.PoppinsRegular(fontSize: ApplicationSizing.fontScale(14),fontWeight: FontWeight.w500),),
-                  Expanded(
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: kDefaultPadding * 0.75,
-                      ),
-                      decoration: BoxDecoration(
-                        // color: Colors.grey.shade300,
-                        // color: Colors.green,
-                        // borderRadius: BorderRadius.circular(40),
-                      ),
-                      // color: Colors.amber,
-                      child: !(chatScreenVM.isRecording) ? Container() :AudioWaveforms(
-                        size: Size(MediaQuery.of(context).size.width, 30.0),
-                        shouldCalculateScrolledPosition: true,
-                        padding: EdgeInsets.zero,
-                        margin: EdgeInsets.zero,
-                        recorderController: chatScreenVM.recorderController!,
-                        waveStyle: const WaveStyle(
-                          waveCap: StrokeCap.square,
-                          // showDurationLabel: true,
-                          showMiddleLine: false,
-                          // durationTextPadding: 10,
-                          // showHourInDuration: true,
-                          showTop: true,
-                          spacing: 4.0,
-                          extendWaveform: true,
-                          // labelSpacing: -10,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ) : Container(),
+              // chatScreenVM.isRecording ? Row(
+              //   crossAxisAlignment: CrossAxisAlignment.center,
+              //   children: [
+              //     Text(recordDuration,style: Styles.PoppinsRegular(fontSize: ApplicationSizing.fontScale(14),fontWeight: FontWeight.w500),),
+              //     Expanded(
+              //       child: Container(
+              //         padding: const EdgeInsets.symmetric(
+              //           horizontal: kDefaultPadding * 0.75,
+              //         ),
+              //         decoration: BoxDecoration(
+              //           // color: Colors.grey.shade300,
+              //           // color: Colors.green,
+              //           // borderRadius: BorderRadius.circular(40),
+              //         ),
+              //         // color: Colors.amber,
+              //         child: !(chatScreenVM.isRecording) ? Container() :AudioWaveforms(
+              //           size: Size(MediaQuery.of(context).size.width, 30.0),
+              //           shouldCalculateScrolledPosition: true,
+              //           padding: EdgeInsets.zero,
+              //           margin: EdgeInsets.zero,
+              //           recorderController: chatScreenVM.recorderController!,
+              //           waveStyle: const WaveStyle(
+              //             waveCap: StrokeCap.square,
+              //             // showDurationLabel: true,
+              //             showMiddleLine: false,
+              //             // durationTextPadding: 10,
+              //             // showHourInDuration: true,
+              //             showTop: true,
+              //             spacing: 4.0,
+              //             extendWaveform: true,
+              //             // labelSpacing: -10,
+              //           ),
+              //         ),
+              //       ),
+              //     ),
+              //   ],
+              // ) : Container(),
               Container(
                 // color: Colors.red,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   mainAxisSize: MainAxisSize.max,
                   children: [
-                    Container(),
-                    // DeleteButton(
-                    //   ontap: (){
-                    //     print("dsafdsfasdf");
-                    //     cancelRecording(chatScreenVM);
-                    //   },
-                    //   withBackground: true,
-                    // ),
-                    // FlowShader(
-                    //   child: const Text("Tap lock to stop"),
-                    //   duration: const Duration(seconds: 3),
-                    //   flowColors: const [Colors.white, Colors.grey],
-                    // ),
+                    Text(recordDuration,style: Styles.PoppinsRegular(fontSize: ApplicationSizing.fontScale(14),fontWeight: FontWeight.w500),),
                     SendButton(
                       withBackground: true,
                       ontap: ()async {

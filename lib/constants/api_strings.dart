@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart' as Foundation;
  const String test = "https://api.healthforcehub.link";
  const String staging = "https://apistaging.healthforcehub.link";
  const String production = "https://api.2chealthsolutions.com";
- const String baseUrl = staging;
+ const String baseUrl = test;
  String messageChannel = baseUrl == production ? "-Production-NewMsgReceived"
      : baseUrl == staging ? "-Staging-NewMsgReceived" : "-Testing-NewMsgReceived";
 String dataChannel = baseUrl == production ? "-Production-NewDataReceived"
@@ -13,8 +13,8 @@ String callingChannel = baseUrl == production ? "-Production-Calling"
 String bucket = baseUrl == production ? "spiralfusion-media-prod"
     : baseUrl == staging ? "healthforce-media-staging" : "healthforce-media-testing";
 
-String accessKey = baseUrl == production ? "" : "AKIAYVREBNGIADT7AAHB";
-String secretKey = baseUrl == production ? "" : "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";
+String accessKey = baseUrl == production ? "AKIA3EBLWZ2D56ISGLMZ" : "AKIAYVREBNGIADT7AAHB";
+String secretKey = baseUrl == production ? "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" : "c/zNc2My173HvnyvaXfyj3jotDagqpzC66C2diX9";
 
 class ApiStrings {
   static const String signIn = baseUrl +"/api/Account/token2";

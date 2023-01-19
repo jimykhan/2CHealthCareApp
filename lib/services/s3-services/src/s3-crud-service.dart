@@ -59,19 +59,13 @@ class S3CrudService{
     /// The content-type of file to upload. defaults to binary/octet-stream.
     String contentType = 'binary/octet-stream',
   }) async {
+     try {
     final endpoint = 'https://$currentBucket.s3.$region.amazonaws.com';
     final uploadKey = key ?? '$destDir/${filename ?? path.basename(file.path)}';
 
     // final stream = http.ByteStream(Stream.castFrom(file.openRead()));
     final length = await file.length();
-
-
-
-    // final uri = Uri.parse(endpoint);
     final multiPartFile = await MultipartFile.fromFile(file.path,filename: path.basename(file.path));
-    // final req = http.MultipartRequest("POST", uri);
-    // final multipartFile = http.MultipartFile('file', stream, length,
-    //     filename: path.basename(file.path));
     final policy = Policy.fromS3PresignedPost(
         uploadKey, currentBucket, accessKey, 432000, length, acl,
         region: region);
@@ -99,7 +93,7 @@ class S3CrudService{
     // req.fields['X-Amz-Signature'] = signature;
     // req.fields['Content-Type'] = contentType;
 
-    try {
+
       // final res = await req.send();
       Response? res = await _dio?.post(endpoint,data: formData);
 

@@ -12,6 +12,11 @@ class Assets {
   static const String ReadingsLeftArrowIcon = 'assets/icons/Readings/Left-Arrow-icon.svg';
   static const String ReadingsPulseOximeter = 'assets/icons/Readings/pulse-oximeter.svg';
   static const String ReadingsWeightIcon = 'assets/icons/Readings/weight-icon.svg';
+  static const String SIgnINEye = 'assets/icons/SIgnIN/eye.svg';
+  static const String assetsDustbin = 'assets/dustbin.json';
+  static const String assetsDustbinGrey = 'assets/dustbin_grey.json';
+  static const String assetsLoader = 'assets/loader.gif';
+  static const String assetsTrashContainer = 'assets/trash_container.png';
   static const String assetsTrashCover = 'assets/trash_cover.png';
   static const String bottomNavbarHomeIcon = 'assets/icons/bottom_navbar/home-icon.svg';
   static const String bottomNavbarMessageIcon = 'assets/icons/bottom_navbar/message-icon.svg';

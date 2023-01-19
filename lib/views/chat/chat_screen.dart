@@ -275,7 +275,7 @@ class ChatScreen extends HookWidget {
                       Expanded(
                         child: Container(
                             child: chatScreenVM.isRecording ? Container() : ChatInputField(),
-                          padding: EdgeInsets.only(bottom: Platform.isIOS ? 15 : 0),
+                          // padding: EdgeInsets.only(bottom: Platform.isIOS ? 15 : 0),
                         ),
 
                       ),

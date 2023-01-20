@@ -269,46 +269,49 @@ class ChatScreen extends HookWidget {
                     ),
                   ),
 
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Expanded(
-                        child: Container(
-                            child: chatScreenVM.isRecording ? Container() : ChatInputField(),
-                          // padding: EdgeInsets.only(bottom: Platform.isIOS ? 15 : 0),
-                        ),
+                  Container(
+                    padding: EdgeInsets.only(bottom: Platform.isIOS ? 15 : 0),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Expanded(
+                          child: Container(
+                              child: chatScreenVM.isRecording ? Container() : ChatInputField(),
 
-                      ),
-                      RecordButton(chatScreenVM: chatScreenVM,),
-                      // GestureDetector(
-                      //   onLongPressStart: (long){
-                      //     chatScreenVM.startRecording();
-                      //   },
-                      //   onLongPressEnd: (end) async{
-                      //     String fileUrl = await chatScreenVM.endRecording();
-                      //     if (connectivityService.connectionStatus == ConnectivityResult.none) {
-                      //       SnackBarMessage(message: "No internet connection detected, please try again.");
-                      //     } else {
-                      //       await chatScreenVM.sendTextMessage(
-                      //           fileUrl: fileUrl,
-                      //           chatMessageType: ChatMessageType.audio
-                      //       );
-                      //       ChatScreen.jumpToListIndex();
-                      //       print("work");
-                      //     }
-                      //   },
-                      //   // onTap: chatScreenVM.startRecording,
-                      //   // onFocusChange: chatScreenVM.endRecording,
-                      //   child: Container(
-                      //     padding: EdgeInsets.all(6),
-                      //     decoration: BoxDecoration(
-                      //         color: appColor,
-                      //         shape: BoxShape.circle
-                      //     ),
-                      //     child: Icon(Icons.mic_none,color: Colors.white,),
-                      //   ),
-                      // ),
-                    ],
+                          ),
+
+                        ),
+                        RecordButton(chatScreenVM: chatScreenVM,),
+                        // GestureDetector(
+                        //   onLongPressStart: (long){
+                        //     chatScreenVM.startRecording();
+                        //   },
+                        //   onLongPressEnd: (end) async{
+                        //     String fileUrl = await chatScreenVM.endRecording();
+                        //     if (connectivityService.connectionStatus == ConnectivityResult.none) {
+                        //       SnackBarMessage(message: "No internet connection detected, please try again.");
+                        //     } else {
+                        //       await chatScreenVM.sendTextMessage(
+                        //           fileUrl: fileUrl,
+                        //           chatMessageType: ChatMessageType.audio
+                        //       );
+                        //       ChatScreen.jumpToListIndex();
+                        //       print("work");
+                        //     }
+                        //   },
+                        //   // onTap: chatScreenVM.startRecording,
+                        //   // onFocusChange: chatScreenVM.endRecording,
+                        //   child: Container(
+                        //     padding: EdgeInsets.all(6),
+                        //     decoration: BoxDecoration(
+                        //         color: appColor,
+                        //         shape: BoxShape.circle
+                        //     ),
+                        //     child: Icon(Icons.mic_none,color: Colors.white,),
+                        //   ),
+                        // ),
+                      ],
+                    ),
                   ),
                 ],
               ),

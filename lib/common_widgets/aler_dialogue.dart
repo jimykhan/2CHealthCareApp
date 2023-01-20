@@ -113,7 +113,6 @@ logoutAlertDialog({required LoginVM loginVM}) {
     },
   );
 }
-
 GenerateAlert({required Widget child}) {
   showDialog(
     context: applicationContext!.currentContext!,
@@ -228,7 +227,6 @@ class ConfirmLogout extends HookWidget {
   }
 }
 
-
 CenterAlertDialog({String? title, required Widget child}){
   showDialog(
     context: applicationContext!.currentContext!,
@@ -236,6 +234,84 @@ CenterAlertDialog({String? title, required Widget child}){
       return AlertDialog(
         title: Text(title??"My title"),
         content: child,
+      );
+    },
+  );
+}
+
+
+AlertMessageCustomDesign({String? title, Function()? onConfirm, Function()? onCancel}){
+  showDialog(
+    context: applicationContext!.currentContext!,
+    builder: (BuildContext context) {
+      // return object of type Dialog
+      return Scaffold(
+        backgroundColor: Colors.transparent,
+        body: Container(
+          height: MediaQuery.of(context).size.height,
+          alignment: Alignment.center,
+          margin: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin(n: 15)),
+          child: Container(
+            height: 250,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15),
+              color: Colors.white,
+            ),
+            padding: EdgeInsets.symmetric(
+              vertical:ApplicationSizing.convert(10),
+              horizontal:ApplicationSizing.convert(30),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.only(top: 10),
+                        child: Text(title??"Title",
+                          textAlign: TextAlign.center,
+                          style: Styles.PoppinsRegular(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 18
+                          ),),
+                      ),
+                      Container(
+                        child:  Column(
+                          children: [
+                            FilledButton(onTap: onConfirm,
+                                txt: "Confirm",
+                                color1: appColor,
+                                txtcolor: Colors.white,
+                                w: 200,
+                                borderRadius: 30
+                            ),
+                            SizedBox(height: 10,),
+                            FilledButton(
+                              onTap: (){
+                                Navigator.pop(context);
+                              },
+                              color1: Colors.white,
+                              w: 200,
+                              borderRadius: 30,
+                              borderColor:  Colors.red,
+                              txtcolor:  Colors.red,
+                              txt: "Cancel",
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+
+          ),
+        ),
       );
     },
   );

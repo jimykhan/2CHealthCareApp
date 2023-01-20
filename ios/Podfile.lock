@@ -956,7 +956,7 @@ SPEC CHECKSUMS:
   flutter_sound: c60effa2a350fb977885f0db2fbc4c1ad5160900
   flutter_sound_core: 26c10e5832e76aaacfae252d8925232281c486ae
   flutter_vibrate: 9f4c2ab57008965f78969472367c329dd77eb801
-  flutter_webrtc: 6767eafaa728c1e58026e901ca19f3fd5d713397
+  flutter_webrtc: 38948ac4636b252b3c6275df8f503905f7ddfdcf
   GoogleDataTransport: 1c8145da7117bd68bbbed00cf304edb6a24de00f
   GoogleMLKit: 0017a6a8372e1a182139b9def4d89be5d87ca5a7
   GoogleToolboxForMac: 8bef7c7c5cf7291c687cf5354f39f9db6399ad34

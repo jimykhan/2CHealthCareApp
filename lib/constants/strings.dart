@@ -7,6 +7,9 @@ class Strings {
   static const String dateAndTimeFormat = "dd MMM yy, h:mm a";
   static const String MonthYear = "MMMM yyyy";
   static const String TimeFormat = "h:mm a";
+  static const String ScanDeviceNotFound = "Scanned device is not found in the In Hand Inventory. Please make sure device is available and not issued to any other patient.";
+  static const String AlertToActiveDevice = "Device status is not “Active”, do you want to activate this device. Please note that reactivation charges may apply.";
+  static const String AleadyDeviceAssignText = "Patient already has Blood Glucose device assigned. Please return that device before assigning a new device for same Blood Glucose. Current device serial number is ";
   // Generic strings
   static const String ok = 'OK';
   static const String cancel = 'Cancel';

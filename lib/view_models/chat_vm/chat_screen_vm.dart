@@ -232,6 +232,7 @@ class ChatScreenVM extends ChangeNotifier {
       {String? message,
       String? fileUrl,
       required ChatMessageType chatMessageType}) async {
+    if(recordingDuration==0) recordingDuration = recordingDuration - 300;
     try {
       int chatType = 0;
       if (chatMessageType == ChatMessageType.text) chatType = 0;

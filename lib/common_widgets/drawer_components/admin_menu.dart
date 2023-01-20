@@ -52,32 +52,32 @@ class AdminMenu extends StatelessWidget {
                 ),
               ),
             ),
-            InkWell(
-              onTap: () {
-                Navigator.push(
-                    context,
-                    PageTransition(
-                        child: FUProfile(), type: PageTransitionType.fade));
-              },
-              child: Container(
-                padding: MenuPadding(),
-                // color: Colors.pinkAccent,
-                child: Row(
-                  // crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    SvgPicture.asset(
-                      "assets/icons/home/user-icon.svg",
-                      color: appColor,
-                      width: ApplicationSizing.convert(18),
-                      height: ApplicationSizing.convert(18),
-                    ),
-                    MenuTextStyle(
-                      text: "My Profile",
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            // InkWell(
+            //   onTap: () {
+            //     Navigator.push(
+            //         context,
+            //         PageTransition(
+            //             child: FUProfile(), type: PageTransitionType.fade));
+            //   },
+            //   child: Container(
+            //     padding: MenuPadding(),
+            //     // color: Colors.pinkAccent,
+            //     child: Row(
+            //       // crossAxisAlignment: CrossAxisAlignment.end,
+            //       children: [
+            //         SvgPicture.asset(
+            //           "assets/icons/home/user-icon.svg",
+            //           color: appColor,
+            //           width: ApplicationSizing.convert(18),
+            //           height: ApplicationSizing.convert(18),
+            //         ),
+            //         MenuTextStyle(
+            //           text: "My Profile",
+            //         ),
+            //       ],
+            //     ),
+            //   ),
+            // ),
             InkWell(
               onTap: () {
                 Navigator.pop(context);

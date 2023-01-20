@@ -39,7 +39,6 @@ class RpmService{
 
   Future<dynamic> getModalitiesByUserId({int? currentUserId}) async {
     // SharedPrefServices sharePrf = _ref!.read(sharedPrefServiceProvider);
-
     try{
       final dio = _ref!.read(dioServicesProvider);
       Response response = await dio.dio!.get(ApiStrings.getPhdDeviceDataById+"/"+"$currentUserId",
@@ -52,28 +51,10 @@ class RpmService{
         });
         modalities.forEach((element) {
           if(element.lastReadingDate != null){
-
-            //   element.lastReadingDate = convertLocalToUtc(element.lastReadingDate!.replaceAll("Z", "")
-            //   .replaceAll("/", "-").replaceAll("A", "").replaceAll("P", "").replaceAll("M", "")
-            //       .replaceFirst(" ", "T").replaceAll(" ", ""),);
-            // print(element.lastReading);
-
             int month = int.parse(element.lastReadingDate!.split("/")[0]);
             int year = int.parse(element.lastReadingDate!.split("/")[2].split(" ")[0]);
             element.month = month;
             element.year = year;
-            // if(element.modality == "BG") {
-            //   bGLastReadingMonth = month;
-            //   bGLastReadingYear = year;
-            //   print("last month of BG = $month");
-            //   print("last year of BG = $year");
-            // }
-            // if(element.modality == "BP") {
-            //   bPLastReadingMonth = month;
-            //   bPLastReadingYear = year;
-            //   print("last month of BP = $month");
-            //   print("last year of BP = $year");
-            // }
           }
           else{
             element.month = DateTime.now().month;

@@ -100,6 +100,23 @@ class PhDeviceService{
 
   }
 
+  Future<bool> ActiveDevice(int phDeviceId) async {
+    try{
+      Response? response = await dio?.dio?.put(PhdDeviceController.ActivatePhDevice+"/${phDeviceId}",);
+      if(response?.statusCode == 200){
+        SnackBarMessage(message: "Ticket ${response?.data["ticketNo"]} has been generated in Complaint Center for further following-up (Device Activated)",
+          error: false
+        );
+        return true;
+      }
+      return false;
+    }catch(e){
+      // SnackBarMessage(message: e.toString(),error: true);
+      return false;
+    }
+
+  }
+
 
 
 }

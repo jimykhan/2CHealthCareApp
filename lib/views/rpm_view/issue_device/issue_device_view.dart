@@ -8,17 +8,21 @@ import 'package:twochealthcare/common_widgets/error_text.dart';
 import 'package:twochealthcare/common_widgets/filled_button.dart';
 import 'package:twochealthcare/common_widgets/input_field/custom_text_field.dart';
 import 'package:twochealthcare/common_widgets/loader.dart';
+import 'package:twochealthcare/constants/strings.dart';
 import 'package:twochealthcare/main.dart';
+import 'package:twochealthcare/models/modalities_models/modalities_model.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
 import 'package:twochealthcare/views/admin_view/barcode_scan/barcode_scan.dart';
+import 'package:twochealthcare/views/rpm_view/issue_device/enum.dart';
 import 'package:twochealthcare/views/rpm_view/issue_device/issue_device_vm.dart';
 
 class IssuedDeviceView extends HookWidget {
+  List<ModalitiesModel>? modalities = [];
   IssuedDeviceView(
-      {Key? key,})
+      {Key? key,this.modalities})
       : super(key: key);
 
   @override
@@ -28,7 +32,7 @@ class IssuedDeviceView extends HookWidget {
           () {
         Future.microtask(() async {
         });
-        issuedDeviceVM.initIssuedDeviceScreen();
+        issuedDeviceVM.initIssuedDeviceScreen(modalities: modalities);
         issuedDeviceVM.getRpmInventoryDeviceByFacilityId();
         issuedDeviceVM.checkUnbilledDeviceConfigClaimByPatientId();
         return () {
@@ -76,6 +80,7 @@ class IssuedDeviceView extends HookWidget {
                             padding: EdgeInsets.only(bottom: 24),
                             // height: 80,
                             child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Expanded(
                                   child: Column(
@@ -91,7 +96,7 @@ class IssuedDeviceView extends HookWidget {
 
                                       ),
                                       ((issuedDeviceVM.scanBarcode.text != "") && !issuedDeviceVM.isIssuedValid)
-                                          ? ErrorText(text: "Invalid Serial No")
+                                          ? ErrorText(text: Strings.ScanDeviceNotFound)
                                           : Container(),
                                     ],
                                   ),
@@ -99,7 +104,8 @@ class IssuedDeviceView extends HookWidget {
                                 SizedBox(
                                   width: 10,
                                 ),
-                                SqureIconButton(onClick: () {
+                                SqureIconButton(
+                                    onClick: () {
                                   Navigator.push(
                                       applicationContext!.currentContext!,
                                       PageTransition(
@@ -129,13 +135,21 @@ class IssuedDeviceView extends HookWidget {
                             isEnable: false,
                           ),
                           SizedBox(height: 15,),
-                          CustomTextField(
-                            checkFocus: (val){},
-                            onchange: issuedDeviceVM.onBarcodechange,
-                            textEditingController: TextEditingController()..text = issuedDeviceVM.issuedDevice?.modalityName??"",
-                            onSubmit: (val) {},
-                            hints: "Modality Name",
-                            isEnable: false,
+                          Column(
+                            children: [
+                              CustomTextField(
+                                checkFocus: (val){},
+                                onchange: issuedDeviceVM.onBarcodechange,
+                                textEditingController: TextEditingController()..text = issuedDeviceVM.issuedDevice?.modalityName??"",
+                                onSubmit: (val) {},
+                                hints: "Modality Name",
+                                color1: issuedDeviceVM.modalityAleadyAssign ? errorColor : disableColor,
+                                isEnable: false,
+                              ),
+                              (issuedDeviceVM.modalityAleadyAssign)
+                                  ? ErrorText(text: Strings.AleadyDeviceAssignText+" ${issuedDeviceVM.issuedDevice?.serialNo}")
+                                  : Container(),
+                            ],
                           ),
                           SizedBox(height: 15,),
                           Row(
@@ -146,6 +160,21 @@ class IssuedDeviceView extends HookWidget {
                               Text("CPT 99453",style: Styles.PoppinsRegular(fontSize: ApplicationSizing.fontScale(14)),)
                             ],
                           ),
+                          SizedBox(height: 10,),
+                          issuedDeviceVM.issuedDevice != null ? (issuedDeviceVM.issuedDevice!.status == PHDeviceStatus.Active.index) ? Container() :
+                          GestureDetector(
+                            onTap: issuedDeviceVM.ActiveDeviceAlert,
+                            child: Container(
+                                padding: EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                    color: errorColor.withOpacity(0.3),
+                                    borderRadius: BorderRadius.circular(10)
+                                ),
+                                child: Text(Strings.AlertToActiveDevice
+                                  ,style: Styles.PoppinsRegular(fontSize: ApplicationSizing.fontScale(14),color: errorColor),)
+                            ),
+                          )
+                              : Container(),
                           SizedBox(height: 10,),
                           issuedDeviceVM.cpt99453Message != "" ?
                               Container(
@@ -168,10 +197,10 @@ class IssuedDeviceView extends HookWidget {
                             child: loader(
                               color: whiteColor,
                             ),)
-                              : FilledButton(onTap: issuedDeviceVM.isIssuedValid ? issuedDeviceVM.onIssuedDevice : null,
+                              : FilledButton(onTap: (issuedDeviceVM.isIssuedValid && !issuedDeviceVM.modalityAleadyAssign) ? issuedDeviceVM.onIssuedDevice : null,
                             txt: "Issue",
-                            color1: issuedDeviceVM.isIssuedValid ? appColor : appColor.withOpacity(0.3),
-                            borderColor: issuedDeviceVM.isIssuedValid ? appColor : appColor.withOpacity(0.3),
+                            color1: (issuedDeviceVM.isIssuedValid && !issuedDeviceVM.modalityAleadyAssign) ? appColor : appColor.withOpacity(0.3),
+                            borderColor: (issuedDeviceVM.isIssuedValid && !issuedDeviceVM.modalityAleadyAssign) ? appColor : appColor.withOpacity(0.3),
                           )
                         ],
                       ),

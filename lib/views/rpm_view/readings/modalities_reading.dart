@@ -115,7 +115,7 @@ class ModalitiesReading extends HookWidget {
                               AddButton(
                                 onClick: (){
                                   openBottomModal(
-                                      child: IssuedDeviceView());
+                                      child: IssuedDeviceView(modalities: modalitiesReadingVM?.modalitiesList,));
                                   // Navigator.push(
                                   //     applicationContext!.currentContext!,
                                   //     PageTransition(

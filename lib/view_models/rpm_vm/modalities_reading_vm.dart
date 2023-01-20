@@ -29,6 +29,9 @@ class ModalitiesReadingVM extends ChangeNotifier{
     _authService = _ref!.read(authServiceProvider);
     _rpmService = _ref!.read(rpmServiceProvider);
     sharedPrefServices = _ref!.read(sharedPrefServiceProvider);
+    _rpmService?.refreshModalities.listen((value) {
+      if(value) getModalitiesByUserId(-1);
+    });
 
   }
 

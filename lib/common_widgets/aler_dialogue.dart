@@ -248,11 +248,11 @@ AlertMessageCustomDesign({String? title, Function()? onConfirm, Function()? onCa
       return Scaffold(
         backgroundColor: Colors.transparent,
         body: Container(
-          height: MediaQuery.of(context).size.height,
+          // height: MediaQuery.of(context).size.height,
           alignment: Alignment.center,
-          margin: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin(n: 15)),
+          margin: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin(n: 10)),
           child: Container(
-            height: 250,
+            // height: 250,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
               color: Colors.white,
@@ -262,10 +262,12 @@ AlertMessageCustomDesign({String? title, Function()? onConfirm, Function()? onCa
               horizontal:ApplicationSizing.convert(30),
             ),
             child: Row(
+              mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Expanded(
                   child: Column(
+                    mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -279,27 +281,36 @@ AlertMessageCustomDesign({String? title, Function()? onConfirm, Function()? onCa
                               fontSize: 18
                           ),),
                       ),
+                      SizedBox(height: 30,),
                       Container(
-                        child:  Column(
+                        child:  Row(
                           children: [
-                            FilledButton(onTap: onConfirm,
-                                txt: "Confirm",
-                                color1: appColor,
-                                txtcolor: Colors.white,
-                                w: 200,
-                                borderRadius: 30
+                            Expanded(
+                              flex: 5,
+                              child: FilledButton(onTap: onConfirm,
+                                  txt: "Confirm",
+                                  color1: appColor,
+                                  txtcolor: Colors.white,
+                                  // w: 200,
+                                  h: 40,
+                                  borderRadius: 30
+                              ),
                             ),
-                            SizedBox(height: 10,),
-                            FilledButton(
-                              onTap: (){
-                                Navigator.pop(context);
-                              },
-                              color1: Colors.white,
-                              w: 200,
-                              borderRadius: 30,
-                              borderColor:  Colors.red,
-                              txtcolor:  Colors.red,
-                              txt: "Cancel",
+                            Expanded(flex :1,child: Container()),
+                            Expanded(
+                              flex: 5,
+                              child: FilledButton(
+                                onTap: (){
+                                  Navigator.pop(context);
+                                },
+                                color1: Colors.white,
+                                // w: 200,
+                                h: 40,
+                                borderRadius: 30,
+                                borderColor:  Colors.red,
+                                txtcolor:  Colors.red,
+                                txt: "Cancel",
+                              ),
                             ),
                           ],
                         ),

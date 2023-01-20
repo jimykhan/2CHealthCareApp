@@ -1,7 +1,7 @@
 enum PHDeviceStatus
 {
   Active,
-  InActive
+  InActive,
 }
 
 enum InventoryStatus

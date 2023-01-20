@@ -8,7 +8,9 @@ import 'package:twochealthcare/main.dart';
 import 'package:twochealthcare/models/modalities_models/modalities_model.dart';
 import 'package:twochealthcare/models/rpm_models/rpm_inventory_device_model.dart';
 import 'package:twochealthcare/providers/providers.dart';
+import 'package:twochealthcare/services/patient_profile_service.dart';
 import 'package:twochealthcare/services/phdevice_service/phdevice_service.dart';
+import 'package:twochealthcare/services/rpm_services/rpm_service.dart';
 import 'package:twochealthcare/views/rpm_view/issue_device/enum.dart';
 
 class IssuedDeviceVM extends ChangeNotifier{
@@ -16,6 +18,8 @@ class IssuedDeviceVM extends ChangeNotifier{
   List<RpmInventoryDeviceModel> rpmInventoryDeviceList = [];
   List<ModalitiesModel>? patientModalities;
   RpmInventoryDeviceModel? issuedDevice;
+  RpmService? rpmService;
+  PatientProfileService? patientProfileService;
   bool cpt99453 = false;
   String cpt99453Message = "";
   bool isIssuedValid = false;
@@ -24,6 +28,7 @@ class IssuedDeviceVM extends ChangeNotifier{
   PhDeviceService? _phDeviceService;
   ProviderReference? _ref;
   bool loading = false;
+  bool ActiveDeviceAlertLoading = false;
 
   IssuedDeviceVM({ProviderReference? ref}){
     _ref = ref;
@@ -36,6 +41,8 @@ class IssuedDeviceVM extends ChangeNotifier{
   }
   initService(){
     _phDeviceService = _ref!.read(phDeviceServiceProvider);
+    patientProfileService = _ref!.read(PatientProfileServiceProvider);
+    rpmService = _ref!.read(rpmServiceProvider);
     _phDeviceService?.scanBarcode.listen((value) {
       scanBarcode.text = value;
       isIssuedValidDevice();
@@ -50,6 +57,7 @@ class IssuedDeviceVM extends ChangeNotifier{
     isIssuedValid = false;
     loading = false;
     modalityAleadyAssign = false;
+    ActiveDeviceAlertLoading = false;
     patientModalities = modalities;
   }
 
@@ -57,10 +65,24 @@ class IssuedDeviceVM extends ChangeNotifier{
     cpt99453 = !cpt99453;
     notifyListeners();
   }
-
+  issuedDeviceAlert(){
+    if(!(ActiveDeviceAlertLoading)){
+      AlertMessageCustomDesign(
+          title: "The device ${issuedDevice?.serialNo} will be issued to ${patientProfileService?.patientInfo.fullName??""}. Do you want proceed?",
+          onConfirm: (){
+            Navigator.pop(applicationContext!.currentContext!);
+            onIssuedDevice();
+          }
+      );
+    }
+  }
   onIssuedDevice()async{
     setLaoding(true);
     var res = await _phDeviceService?.assignDeviceToPatient(cpt99453, issuedDevice!.id!);
+    if(res){
+      rpmService?.refreshModalities.add(true);
+    }
+
     setLaoding(false);
   }
 
@@ -83,12 +105,21 @@ class IssuedDeviceVM extends ChangeNotifier{
   }
 
   activeDevice()async{
-    Navigator.pop(applicationContext!.currentContext!);
-    bool isActive = await _phDeviceService?.ActiveDevice(issuedDevice!.id!)??false;
-    if(isActive){
-      issuedDevice?.status = PHDeviceStatus.Active.index;
+    try{
+      ActiveDeviceAlertLoading = true;
+      Navigator.pop(applicationContext!.currentContext!);
+      bool isActive = await _phDeviceService?.ActiveDevice(issuedDevice!.id!)??false;
+      if(isActive){
+        issuedDevice?.status = PHDeviceStatus.Active.index;
+        ActiveDeviceAlertLoading = false;
+      }else{
+        issuedDevice?.status = PHDeviceStatus.InActive.index;
+        ActiveDeviceAlertLoading = false;
+      }
+      notifyListeners();
+    }catch(ex){
+      ActiveDeviceAlertLoading = false;
     }
-    notifyListeners();
 
   }
   bool isIssuedValidDevice(){
@@ -110,10 +141,12 @@ class IssuedDeviceVM extends ChangeNotifier{
 
   }
   ActiveDeviceAlert(){
-    AlertMessageCustomDesign(
-      title: "${Strings.AlertToActiveDevice}",
-      onConfirm: activeDevice
-    );
+    if(!(ActiveDeviceAlertLoading)){
+      AlertMessageCustomDesign(
+          title: "${Strings.AlertToActiveDevice}",
+          onConfirm: activeDevice
+      );
+    }
   }
 
   // issuedDeviceVM.issuedDevice != null ? (issuedDeviceVM.issuedDevice!.status == PHDeviceStatus.Active.index) ? Container() :

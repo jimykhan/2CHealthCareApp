@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:jiffy/jiffy.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:twochealthcare/common_widgets/snackber_message.dart';
 import 'package:twochealthcare/constants/api_strings.dart';
 import 'package:twochealthcare/constants/strings.dart';
@@ -21,6 +22,7 @@ import 'package:twochealthcare/services/shared_pref_services.dart';
 import 'package:twochealthcare/util/data_format.dart';
 
 class RpmService{
+  PublishSubject<bool> refreshModalities = PublishSubject<bool>(sync: true);
   double bGMaxLimit = 100;
   double bloodPressureMaxLimit = 100;
   DioServices? dio;

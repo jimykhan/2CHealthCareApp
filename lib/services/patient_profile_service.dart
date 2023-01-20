@@ -12,6 +12,7 @@ import 'package:twochealthcare/providers/providers.dart';
 
 class PatientProfileService{
   ProviderReference? _ref;
+  late PatientInfo patientInfo;
   PatientProfileService({ProviderReference? ref}){
     _ref = ref;
   }
@@ -25,7 +26,7 @@ class PatientProfileService{
       );
       if(response.statusCode == 200){
         // sharePrf.setCurrentUser(response.data);
-        PatientInfo patientInfo = PatientInfo.fromJson(response.data);
+        patientInfo = PatientInfo.fromJson(response.data);
         if(patientInfo.countryCallingCode != null && patientInfo.countryCallingCode != ""){
           patientInfo.homePhoneCountryCallingCode = "(${patientInfo.countryCallingCode}) ${patientInfo.homePhone}";
         }else{

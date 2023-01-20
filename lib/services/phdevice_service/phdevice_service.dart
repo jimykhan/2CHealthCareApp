@@ -89,7 +89,8 @@ class PhDeviceService{
       Response? response = await dio?.dio?.put(PhdDeviceController.AssignDeviceToPatient,data: body);
       if(response?.statusCode == 200){
         Navigator.pop(applicationContext!.currentContext!);
-        return null;
+        SnackBarMessage(message: Strings.DeviceIssued,error: false);
+        return true;
       }
       return "";
 
@@ -99,6 +100,8 @@ class PhDeviceService{
     }
 
   }
+
+
 
   Future<bool> ActiveDevice(int phDeviceId) async {
     try{

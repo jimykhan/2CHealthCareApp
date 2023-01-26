@@ -270,7 +270,8 @@ class ChatScreen extends HookWidget {
                   ),
 
                   Container(
-                    padding: EdgeInsets.only(bottom: Platform.isIOS ? 15 : 0),
+                    color: Theme.of(context).scaffoldBackgroundColor,
+                    padding: EdgeInsets.only(bottom: Platform.isIOS ? 10 : 0),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [

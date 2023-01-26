@@ -47,7 +47,7 @@ class ChatInputField extends HookWidget {
           vertical: kDefaultPadding / 2,
         ),
         decoration: BoxDecoration(
-          color: Theme.of(context).scaffoldBackgroundColor,
+          // color: Theme.of(context).scaffoldBackgroundColor,
           // color: Colors.black,
           boxShadow: [
             BoxShadow(

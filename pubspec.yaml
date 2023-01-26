@@ -100,7 +100,7 @@ flutter:
     - assets/icons/loginBg.png
     - assets/icons/home/health-guide-icon.svg
     - assets/icons/home/reading-icon.svg
-    - assets/icons/home/trophy-icon.svg
+    - assets/icons/home/trophy-Icon.svg
     - assets/icons/home/user-icon.svg
     - assets/icons/home/side-menu-icon.svg
     - assets/icons/home/right-arrow-icon.svg

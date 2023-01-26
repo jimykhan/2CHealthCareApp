@@ -46,7 +46,7 @@ class Home extends HookWidget {
       "bordercolor": Color(0Xff4eaf4840),
     },
     {
-      "icon": "assets/icons/home/trophy-icon.svg",
+      "icon": "assets/icons/home/trophy-Icon.svg",
       "title": "My Rewards",
       "hints": "Coming Soon...",
       "color": Color(0XffBE54FF),

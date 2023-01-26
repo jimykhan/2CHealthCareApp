@@ -33,7 +33,7 @@ class CGMService{
 
   Future<bool> checkDexComAuthByPatientId()async{
     bool isConnect = false;
-    int UserId = await _sharedPrefServices!.getCurrentUserType();
+    int UserId = await _sharedPrefServices!.getCurrentUserId();
     try{
       Response? response  = await _dioServices?.dio?.get(DexComController.Check_Auth_Given+"?patientId=${UserId}");
       if(response?.statusCode == 200){

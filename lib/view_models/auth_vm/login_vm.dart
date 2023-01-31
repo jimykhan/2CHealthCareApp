@@ -242,6 +242,7 @@ class LoginVM extends ChangeNotifier{
       ),
           (route) => false,
     );
+    authService?.clearSharePref();
     setLoading(false);
   }
 

@@ -18,10 +18,18 @@ class SharedPrefServices{
     if(_prefs == null) _prefs = await SharedPreferences.getInstance();
   }
 
+  destorySharePref() async {
+    await _initPref();
+    bool clearLogs = await _prefs?.clear()??false;
+    print("Share Pref History clear $clearLogs");
+  }
+
   setCurrentUser(var data) async {
     await _initPref();
     _prefs?.setString("currentUser", jsonEncode(data));
   }
+
+
 
   Future<CurrentUser?> getCurrentUser()  async {
     await _initPref();
@@ -100,6 +108,19 @@ class SharedPrefServices{
     });
     return facilityId;
   }
+
+  Future<bool> IsBleEnabled() async {
+    await _initPref();
+    CurrentUser? currentUser = await getCurrentUser();
+    bool isBleEnable = false;
+    currentUser!.claims?.forEach((element) {
+      if(element.claimType?.toUpperCase() == "IsBleEnabled".toUpperCase()){
+        isBleEnable = element.claimValue?.toUpperCase() == "true".toUpperCase() ? true : false;
+      }
+    });
+    return isBleEnable;
+  }
+
   Future<String> getUserLastLoginDateTime() async {
     await _initPref();
     CurrentUser? currentUser = await getCurrentUser();
@@ -156,6 +177,77 @@ class SharedPrefServices{
     }catch(e){
       return token;
     }
+  }
+
+  dynamic setlogRpmDataLogs(var data) async {
+    await _initPref();
+    String logRpmDataKey = "logRpmData";
+    // _prefs?.setString("logRpmData", token);
+    List<Map<dynamic, dynamic>> newList = [];
+    if(!(_prefs?.containsKey(logRpmDataKey)??false)){
+      newList.add(data);
+      _prefs?.setString(logRpmDataKey, json.encode(newList));
+      print("first rpm data missed log");
+      return newList;
+    }
+    else {
+      print("Add rpm data missed to list of log");
+      var rpmData =  _prefs?.get(logRpmDataKey);
+      var listofRpmData = [];
+      if (rpmData != null) {
+        listofRpmData = jsonDecode(rpmData.toString()??"[]");
+        if (listofRpmData is List) {
+          listofRpmData.forEach((element) {
+            newList.add(element);
+          });
+        }
+        newList.add(data);
+        _prefs?.setString(logRpmDataKey, json.encode(newList));
+        return newList;
+      }
+    }
+  }
+
+  Future<List> getRpmDataLogs() async {
+    await _initPref();
+    String logRpmDataKey = "logRpmData";
+    // _prefs?.setString("logRpmData", token);
+    List<Map<dynamic, dynamic>> newList = [];
+    if(!(_prefs?.containsKey(logRpmDataKey)??false)) return [];
+    else {
+      var rpmData =  _prefs?.getString(logRpmDataKey);
+      var listofRpmData = [];
+      if (rpmData != null) {
+        listofRpmData = jsonDecode(rpmData.toString());
+        if (listofRpmData is List) {
+          listofRpmData.forEach((element) {
+            newList.add(element);
+          });
+        }
+        return newList;
+      }
+      return newList;
+    }
+  }
+
+  Future<dynamic> removeRpmDataLogs(int index) async {
+    String logRpmDataKey = "logRpmData";
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    print("Remove rpm data missed to list of log");
+    var rpmData = prefs.get(logRpmDataKey);
+    var listofRpmData = [];
+    if (rpmData != null) {
+      listofRpmData = jsonDecode(rpmData.toString());
+    }
+
+    if (listofRpmData is List) {
+      if(listofRpmData.length >0){
+        listofRpmData.removeAt(index);
+      }
+    }
+    prefs.setString(logRpmDataKey, json.encode(listofRpmData));
+    return listofRpmData;
+
   }
 
 }

@@ -80,7 +80,7 @@ class IssuedDeviceVM extends ChangeNotifier{
     setLaoding(true);
     var res = await _phDeviceService?.assignDeviceToPatient(cpt99453, issuedDevice!.id!);
     if(res){
-      rpmService?.refreshModalities.add(true);
+      rpmService?.refreshModalities.add(RefreshModalityData(-1, true));
     }
 
     setLaoding(false);

@@ -20,9 +20,13 @@ import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/dio_services/dio_services.dart';
 import 'package:twochealthcare/services/shared_pref_services.dart';
 import 'package:twochealthcare/util/data_format.dart';
-
+class RefreshModalityData{
+  int patientId;
+  bool fromSummary;
+  RefreshModalityData(this.patientId,this.fromSummary);
+}
 class RpmService{
-  PublishSubject<bool> refreshModalities = PublishSubject<bool>(sync: true);
+  PublishSubject<RefreshModalityData> refreshModalities = PublishSubject<RefreshModalityData>(sync: true);
   double bGMaxLimit = 100;
   double bloodPressureMaxLimit = 100;
   DioServices? dio;

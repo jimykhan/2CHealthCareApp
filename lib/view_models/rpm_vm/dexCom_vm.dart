@@ -84,7 +84,7 @@ class DexComVM extends ChangeNotifier{
     if (index == 0) {
 
     }
-    if(currentPatientId == -1){
+    if(currentPatientId == 0){
       currentPatientId = await sharedPrefServices?.getCurrentUserId()?? 0;
     }
     if(index == 0){

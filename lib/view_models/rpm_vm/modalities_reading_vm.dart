@@ -30,18 +30,24 @@ class ModalitiesReadingVM extends ChangeNotifier{
     _rpmService = _ref!.read(rpmServiceProvider);
     sharedPrefServices = _ref!.read(sharedPrefServiceProvider);
     _rpmService?.refreshModalities.listen((value) {
-      if(value) getModalitiesByUserId(-1);
+      if(value.fromSummary) {
+        getModalitiesByUserId(-1);
+      }else{
+        getModalitiesByUserId(value.patientId,isLoading: true);
+      }
     });
 
   }
+
+
 
   setModalitiesLoading(bool f){
     modalitiesLoading = f;
     notifyListeners();
   }
 
-  getModalitiesByUserId(int currentViewPatientId)async{
-    // setModalitiesLoading(true);
+  getModalitiesByUserId(int currentViewPatientId,{bool isLoading = false})async{
+    if(isLoading) setModalitiesLoading(true);
     int id  = currentViewPatientId == -1 ? await sharedPrefServices?.getCurrentViewPatientId()??-1 : await _authService!.getCurrentUserId();
     var res = await _rpmService?.getModalitiesByUserId(currentUserId: id);
     if(res is List){

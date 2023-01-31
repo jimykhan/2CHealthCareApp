@@ -101,8 +101,6 @@ class PhDeviceService{
 
   }
 
-
-
   Future<bool> ActiveDevice(int phDeviceId) async {
     try{
       Response? response = await dio?.dio?.put(PhdDeviceController.ActivatePhDevice+"/${phDeviceId}",);
@@ -120,6 +118,20 @@ class PhDeviceService{
 
   }
 
+  Future<dynamic> publishPhdData(var body) async {
+      Response? response = await dio?.dio?.post(PhdDeviceController.PublishPhdData,data: body);
+      if(response?.statusCode == 200){
+        return true;
+      }
+  }
 
-
+  syncLogsData()async{
+    List logsData = await _sharedPrefServices?.getRpmDataLogs() ??[];
+    for(int i = 0; i < logsData.length; i++){
+      var response = await publishPhdData(logsData[i]);
+      if (response is bool) {
+        await _sharedPrefServices?.removeRpmDataLogs(i);
+      }
+    }
+  }
 }

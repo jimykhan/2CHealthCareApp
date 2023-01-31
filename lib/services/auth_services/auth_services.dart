@@ -233,6 +233,10 @@ class AuthServices{
     // getCurrentUserFromSharedPref();
   }
 
+  clearSharePref(){
+    _sharePrf?.destorySharePref();
+  }
+
   Future<CurrentUser?> getCurrentUserFromSharedPref()async{
     initServices();
     var currentUser = await _sharePrf?.getCurrentUser();

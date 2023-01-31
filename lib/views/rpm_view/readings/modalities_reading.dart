@@ -25,6 +25,7 @@ import 'package:twochealthcare/views/admin_view/barcode_scan/barcode_scan.dart';
 import 'package:twochealthcare/views/facility_user/fu_home/patient_list/patient_summary/components/headline_text_style.dart';
 import 'package:twochealthcare/views/open_bottom_modal.dart';
 import 'package:twochealthcare/views/rpm_view/issue_device/issue_device_view.dart';
+import 'package:twochealthcare/views/rpm_view/readings/Reading_view_model/ble_view_model.dart';
 import 'package:twochealthcare/views/rpm_view/readings/bg_reading.dart';
 import 'package:twochealthcare/views/rpm_view/readings/blood_pressure_reading.dart';
 import 'package:twochealthcare/views/rpm_view/readings/dex_com_reading.dart';
@@ -40,15 +41,17 @@ class ModalitiesReading extends HookWidget {
   Widget build(BuildContext context) {
     final sharedPrefService = useProvider(sharedPrefServiceProvider);
     final modalitiesReadingVM = useProvider(modalitiesReadingVMProvider);
-    ApplicationRouteService applicationRouteService =
-        useProvider(applicationRouteServiceProvider);
+    ApplicationRouteService applicationRouteService = useProvider(applicationRouteServiceProvider);
+    BleVM bleVM = useProvider(bleVMProvider);
     useEffect(
       () {
         Future.microtask(() async {});
         modalitiesReadingVM.isActiveModality = false;
         modalitiesReadingVM.modalitiesLoading = true;
         modalitiesReadingVM.getModalitiesByUserId(paitentId);
+        bleVM.initialState(paitentId);
         return () {
+          bleVM.stopScan();
           // Dispose Objects here
         };
       },

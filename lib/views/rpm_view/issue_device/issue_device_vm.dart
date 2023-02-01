@@ -16,7 +16,7 @@ import 'package:twochealthcare/views/rpm_view/issue_device/enum.dart';
 class IssuedDeviceVM extends ChangeNotifier{
 
   List<RpmInventoryDeviceModel> rpmInventoryDeviceList = [];
-  List<ModalitiesModel>? patientModalities;
+  // List<ModalitiesModel>? patientModalities; /// remove because now we check device from api
   RpmInventoryDeviceModel? issuedDevice;
   RpmService? rpmService;
   PatientProfileService? patientProfileService;
@@ -58,7 +58,7 @@ class IssuedDeviceVM extends ChangeNotifier{
     loading = false;
     modalityAleadyAssign = false;
     ActiveDeviceAlertLoading = false;
-    patientModalities = modalities;
+    // patientModalities = modalities;
   }
 
   onClickCPT994553(){
@@ -122,23 +122,25 @@ class IssuedDeviceVM extends ChangeNotifier{
     }
 
   }
-  bool isIssuedValidDevice(){
+  Future<bool> isIssuedValidDevice() async {
     isIssuedValid = false;
-    modalityAleadyAssign = false;
+    // modalityAleadyAssign = false;
     issuedDevice = rpmInventoryDeviceList.firstWhereOrNull((element) => element.serialNo?.trim().toLowerCase() == scanBarcode.text.trim().toLowerCase(),);
     if(issuedDevice != null){
-      var checkModality = patientModalities?.firstWhereOrNull((element)=> element.modality?.trim() == issuedDevice!.modality?.trim() && element.id != 0);
-      if(checkModality != null){
-        modalityAleadyAssign = true;
-      }
+      // var checkModality = patientModalities?.firstWhereOrNull((element)=> element.modality?.trim() == issuedDevice!.modality?.trim() && element.id != 0);
+      // if(checkModality != null){
+      //   modalityAleadyAssign = true;
+      // }
       isIssuedValid = true;
     }
     notifyListeners();
     if(issuedDevice != null && issuedDevice?.status == PHDeviceStatus.InActive.index){
       ActiveDeviceAlert();
     }
+    if(issuedDevice != null){
+      await checkPatientDeviceExists(issuedDevice?.modality??"");
+    }
     return isIssuedValid;
-
   }
   ActiveDeviceAlert(){
     if(!(ActiveDeviceAlertLoading)){
@@ -164,8 +166,18 @@ class IssuedDeviceVM extends ChangeNotifier{
     bool isIssuedValid = false;
     isIssuedValid = rpmInventoryDeviceList.firstWhereOrNull((element) => element.serialNo?.trim().toLowerCase() == scanBarcode.text.trim().toLowerCase(),) as bool;
     return isIssuedValid;
-
   }
+
+  Future<dynamic> checkPatientDeviceExists(String modality) async {
+    modalityAleadyAssign = false;
+    bool response = await _phDeviceService?.checkPatientDeviceExists(modality: modality)??false;
+    if(response){
+      modalityAleadyAssign = true;
+    }
+    notifyListeners();
+  }
+
+
 
 
 }

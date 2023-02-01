@@ -125,6 +125,20 @@ class PhDeviceService{
       }
   }
 
+  Future<bool> checkPatientDeviceExists({String? modality}) async {
+   try{
+     int patientId = await _sharedPrefServices?.getCurrentViewPatientId()??-1;
+     Response? response = await dio?.dio?.get(PhdDeviceController.CheckPatientDeviceExists+"/$patientId?modalityCode=$modality");
+     if(response?.statusCode == 200){
+       return response!.data;
+     }else{
+       return false;
+     }
+   }catch(ex){
+     return false;
+   }
+  }
+
   syncLogsData()async{
     List logsData = await _sharedPrefServices?.getRpmDataLogs() ??[];
     for(int i = 0; i < logsData.length; i++){

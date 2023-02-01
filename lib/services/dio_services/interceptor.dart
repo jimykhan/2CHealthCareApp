@@ -27,11 +27,11 @@ class ApiInterceptor extends Interceptor{
       case DioErrorType.response:
         switch (err.response?.statusCode) {
           case 400:
-            throw BadRequestException(err.requestOptions,data: err.response?.data);
+            throw BadRequestException(err.requestOptions,data: err.response?.statusMessage);
           case 401:
-            throw UnauthorizedException(err.requestOptions,data: err.response?.data);
+            throw UnauthorizedException(err.requestOptions,data: err.response?.statusMessage);
           case 404:
-            throw NotFoundException(err.requestOptions,data: err.response?.data);
+            throw NotFoundException(err.requestOptions,data: err.response?.statusMessage);
           case 409:
             throw ConflictException(err.requestOptions);
           case 500:

@@ -10,6 +10,7 @@ import 'package:twochealthcare/common_widgets/app_bar_components/tick_icon_butto
 import 'package:twochealthcare/common_widgets/buttons/add_button.dart';
 import 'package:twochealthcare/common_widgets/custom_appbar.dart';
 import 'package:twochealthcare/common_widgets/floating_button.dart';
+import 'package:twochealthcare/common_widgets/gif_icon_url.dart';
 import 'package:twochealthcare/common_widgets/no_data_inlist.dart';
 import 'package:twochealthcare/common_widgets/toggle_button.dart';
 import 'package:twochealthcare/main.dart';
@@ -70,13 +71,14 @@ class ModalitiesReading extends HookWidget {
         preferredSize: Size.fromHeight(ApplicationSizing.convert(90)),
         child: CustomAppBar(
           leadingIcon: CustomBackButton(),
-          color1: Colors.white,
-          color2: Colors.white,
+          color1: Colors.red,
+          color2: Colors.red,
           hight: ApplicationSizing.convert(70),
           parentContext: context,
           centerWigets: AppBarTextStyle(
             text: "My Readings",
           ),
+          trailingIcon: bleVM.bluetoothIcon()
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,

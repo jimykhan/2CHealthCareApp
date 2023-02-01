@@ -6,6 +6,7 @@ import 'package:get/state_manager.dart';
 import 'package:get/utils.dart';
 import 'package:hooks_riverpod/all.dart';
 import 'package:twochealthcare/common_widgets/aler_dialogue.dart';
+import 'package:twochealthcare/common_widgets/gif_icon_url.dart';
 import 'package:twochealthcare/main.dart';
 import 'package:twochealthcare/models/modalities_models/modalities_model.dart';
 import 'package:twochealthcare/providers/providers.dart';
@@ -13,6 +14,7 @@ import 'package:twochealthcare/services/permission_service.dart';
 import 'package:twochealthcare/services/phdevice_service/phdevice_service.dart';
 import 'package:twochealthcare/services/rpm_services/rpm_service.dart';
 import 'package:twochealthcare/services/shared_pref_services.dart';
+import 'package:twochealthcare/util/application_colors.dart';
 
 class BleVM extends ChangeNotifier {
   String glucoseServiceUuid = _uuidFromShortString("1808");
@@ -36,6 +38,8 @@ class BleVM extends ChangeNotifier {
   List<ModalitiesModel> modalitiesList = [];
 
   bool isbloodGlucoseCharSubscripe = false;
+  bool isScanning = false;
+  bool IsPatientBleEnabled = false;
 
   BleVM({ProviderReference? ref}) {
     _ref = ref;
@@ -50,6 +54,12 @@ class BleVM extends ChangeNotifier {
         await connectDevice(element.device);
       }
     });
+      flutterBlue.isScanning.listen((event) {
+        isScanning = event;
+        print("Scaning status ${event}");
+        notifyListeners();
+      });
+
     _permissionService = _ref?.read(permissionServiceProvider);
     _phDeviceService = _ref?.read(phDeviceServiceProvider);
     _sharedPrefServices = _ref?.read(sharedPrefServiceProvider);
@@ -57,8 +67,11 @@ class BleVM extends ChangeNotifier {
     // BluetoothCharacteristic? glucoseMeasureChar = BluetoothCharacteristic().;
   }
 
-  initialState(int currentPatienId) {
+  initialState(int currentPatienId) async {
+    isScanning = false;
+    IsPatientBleEnabled = false;
     if (currentPatienId != -1) {
+      _permissionService?.turnOnBlue();
       deviceConnect = false;
       startScan();
       _phDeviceService?.syncLogsData();
@@ -66,17 +79,22 @@ class BleVM extends ChangeNotifier {
   }
 
 
+
   startScan() async {
-    bool IsBleEnabled = await _rpmService?.isBleEnabled() ?? false;
-    if(IsBleEnabled) {
+     IsPatientBleEnabled = await _rpmService?.isBleEnabled() ?? false;
+    if(IsPatientBleEnabled) {
       bool isLocationAccess = await _permissionService!
           .locationPermissionRequest();
-      bool isBleAccess = await _permissionService!.bluetoothPermissionRequest();
-      if (IsBleEnabled) {
+      // bool isBleAccess = await _permissionService!.bluetoothPermissionRequest();
+      if (IsPatientBleEnabled) {
         getModalitiesByUserId();
-        if (isLocationAccess && isBleAccess) {
+        // if (isLocationAccess && isBleAccess) {
+        if (isLocationAccess) {
           await flutterBlue.startScan(
-              withServices: [Guid(glucoseServiceUuid)], allowDuplicates: true);
+              withServices: [Guid(glucoseServiceUuid)], allowDuplicates: true).
+          onError((error, stackTrace) {
+            print("$error $stackTrace");
+          });
         }
       }
     }
@@ -86,6 +104,23 @@ class BleVM extends ChangeNotifier {
 
   stopScan() async {
     await flutterBlue.stopScan();
+  }
+
+  bluetoothIcon(){
+    return !IsPatientBleEnabled ?  Container()
+    : InkWell(
+        onTap:  ()  {},
+        child: Container(
+          child: isScanning ? Container(
+              height: 40, width: 40,
+              child: Icon(Icons.bluetooth_rounded,color: appColor,size: 35,))
+              : InkWell(onTap:() async {
+            await flutterBlue.startScan(
+                withServices: [Guid(glucoseServiceUuid)], allowDuplicates: true).
+            onError((error, stackTrace) {
+              print("$error $stackTrace");
+            });
+          },child: Icon(Icons.bluetooth_disabled_rounded,color: fontGrayColor,size: 35,)),));
   }
 
   connectDevice(BluetoothDevice device) async {
@@ -232,21 +267,21 @@ class BleVM extends ChangeNotifier {
     return "0000$uuid-0000-1000-8000-00805f9b34fb";
   }
 
-  bluetoothExist({String? serialNumber, var data, var data2}){
-    ModalitiesModel? modalitiesModel = modalitiesList.firstWhereOrNull((element) => element.serialNo?.toUpperCase() == serialNumber?.toUpperCase());
-    if(modalitiesModel != null){
-      publishBGData(serialNumber: serialNumber,data: data, data2: data2);
-    }else{
-      AlertMessageCustomDesign(
-          title: "The device $serialNumber not configure. Do you want configure?",
-          onConfirm: (){
-            Navigator.pop(applicationContext!.currentContext!);
-            publishBGData(serialNumber: serialNumber,data: data, data2: data2);
-          }
-      );
-    }
-
-  }
+  // bluetoothExist({String? serialNumber, var data, var data2}){
+  //   ModalitiesModel? modalitiesModel = modalitiesList.firstWhereOrNull((element) => element.serialNo?.toUpperCase() == serialNumber?.toUpperCase());
+  //   if(modalitiesModel != null){
+  //     publishBGData(serialNumber: serialNumber,data: data, data2: data2);
+  //   }else{
+  //     AlertMessageCustomDesign(
+  //         title: "The device $serialNumber not configure. Do you want configure?",
+  //         onConfirm: (){
+  //           Navigator.pop(applicationContext!.currentContext!);
+  //           publishBGData(serialNumber: serialNumber,data: data, data2: data2);
+  //         }
+  //     );
+  //   }
+  //
+  // }
 
 
   publishBGData({String? serialNumber, var data, var data2}) async {

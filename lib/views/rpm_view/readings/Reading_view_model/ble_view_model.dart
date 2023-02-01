@@ -67,18 +67,22 @@ class BleVM extends ChangeNotifier {
 
 
   startScan() async {
-    bool IsBleEnabled = await _sharedPrefServices?.IsBleEnabled() ?? false;
-    bool isLocationAccess = await _permissionService!
-        .locationPermissionRequest();
-    bool isBleAccess = await _permissionService!.bluetoothPermissionRequest();
-    if (IsBleEnabled) {
-      getModalitiesByUserId();
-      if (isLocationAccess && isBleAccess) {
-        flutterBlue.startScan(
-            withServices: [Guid(glucoseServiceUuid)], allowDuplicates: true);
+    bool IsBleEnabled = await _rpmService?.isBleEnabled() ?? false;
+    if(IsBleEnabled) {
+      bool isLocationAccess = await _permissionService!
+          .locationPermissionRequest();
+      bool isBleAccess = await _permissionService!.bluetoothPermissionRequest();
+      if (IsBleEnabled) {
+        getModalitiesByUserId();
+        if (isLocationAccess && isBleAccess) {
+          await flutterBlue.startScan(
+              withServices: [Guid(glucoseServiceUuid)], allowDuplicates: true);
+        }
       }
     }
   }
+
+
 
   stopScan() async {
     await flutterBlue.stopScan();
@@ -168,7 +172,7 @@ class BleVM extends ChangeNotifier {
                 var contextWillFollow = (flags & 0x10) > 0;
                 if (!contextWillFollow) {
                   /// Publish Data
-                  await bluetoothExist(serialNumber: device.name,
+                  await publishBGData(serialNumber: device.name,
                       data: glucoseReading,
                       data2: glucoseContext);
                 }
@@ -183,7 +187,7 @@ class BleVM extends ChangeNotifier {
             if (event.isNotEmpty) {
               try {
                 glucoseContext = event.toList();
-                await bluetoothExist(serialNumber: device.name,
+                await publishBGData(serialNumber: device.name,
                     data: glucoseReading,
                     data2: glucoseContext);
 

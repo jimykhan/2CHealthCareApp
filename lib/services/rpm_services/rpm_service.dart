@@ -503,5 +503,24 @@ class RpmService{
 
   }
 
+  Future<bool> isBleEnabled() async {
+
+    try{
+      int patientId = await _sharedPrefServices?.getCurrentUserId()??0;
+      Response? response = await dio?.dio?.get(RPMController.IsBleEnabled+"/$patientId");
+      if(response?.statusCode == 200){
+        return response?.data??false;
+      }
+      else{
+        return false;
+      }
+
+    }catch(e){
+      SnackBarMessage(message: e.toString(),error: true);
+      return false;
+    }
+
+  }
+
 
 }

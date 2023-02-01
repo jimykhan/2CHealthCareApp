@@ -15,6 +15,7 @@ class PermissionService{
 
   Future<bool> bluetoothPermissionRequest()async{
     PermissionStatus  permissionStatus = await Permission.bluetooth.request();
+
     return permissionStatus.isGranted;
   }
 }

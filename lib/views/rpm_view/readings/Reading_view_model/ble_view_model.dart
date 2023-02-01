@@ -71,10 +71,11 @@ class BleVM extends ChangeNotifier {
     if(IsBleEnabled) {
       bool isLocationAccess = await _permissionService!
           .locationPermissionRequest();
-      bool isBleAccess = await _permissionService!.bluetoothPermissionRequest();
+      // bool isBleAccess = await _permissionService!.bluetoothPermissionRequest();
       if (IsBleEnabled) {
         getModalitiesByUserId();
-        if (isLocationAccess && isBleAccess) {
+        // if (isLocationAccess && isBleAccess) {
+        if (isLocationAccess) {
           await flutterBlue.startScan(
               withServices: [Guid(glucoseServiceUuid)], allowDuplicates: true);
         }

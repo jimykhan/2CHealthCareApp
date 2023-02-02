@@ -79,7 +79,6 @@ class BleVM extends ChangeNotifier {
   }
 
 
-
   startScan() async {
      IsPatientBleEnabled = await _rpmService?.isBleEnabled() ?? false;
     if(IsPatientBleEnabled) {

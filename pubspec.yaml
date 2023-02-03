@@ -5,7 +5,7 @@ description: A new Flutter project.
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 4.12.2+52
+version: 4.12.3+56
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -17,15 +17,15 @@ dependencies:
   hooks_riverpod: ^0.14.0+5
   flutter_hooks: ^0.18.0
   flutter_staggered_grid_view: ^0.4.1
-  sentry_flutter: ^6.0.1
+#  sentry_flutter: ^6.0.1
   syncfusion_flutter_charts: ^19.3.45+1
   flutter_svg: ^0.23.0+1
   page_transition: ^2.0.4
   fluentui_icons: ^1.0.0
   table_calendar: ^3.0.2
   dio: ^4.0.0
-  json_serializable: ^6.0.0
-  json_annotation: ^4.3.0
+#  json_serializable: ^6.0.0
+#  json_annotation: ^4.3.0
 #  new_version: ^0.3.1
   html: ^0.15.0
   firebase_messaging: ^14.1.0

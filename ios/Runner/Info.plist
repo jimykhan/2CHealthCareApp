@@ -35,6 +35,10 @@
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>2c health application uses bluetooth scanning to collect data for ble device</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>2c health application uses bluetooth scanning to collect data for ble device</string>
 	<key>NSBonjourServices</key>
 	<array>
 		<string>NWListener.Service</string>
@@ -43,6 +47,12 @@
 	</array>
 	<key>NSCameraUsageDescription</key>
 	<string>2C Health Care use camera for video calling and use for scan barcode</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>2c health application need location permission for blue data</string>
+	<key>NSLocationUsageDescription</key>
+	<string>2c health application need location permission for blue data</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>2c health application need location permission for blue data</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>2C Health Care use microphone for calling</string>
 	<key>NSPhotoLibraryUsageDescription</key>
@@ -52,10 +62,6 @@
 		<string>fetch</string>
 		<string>remote-notification</string>
 	</array>
-	<key>NSBluetoothAlwaysUsageDescription</key>
-	<string>2c health application uses bluetooth scanning to collect data for ble device</string>
-	<key>NSBluetoothPeripheralUsageDescription</key>
-	<string>2c health application uses bluetooth scanning to collect data for ble device</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -75,11 +81,5 @@
 	<false/>
 	<key>io.flutter.embedded_views_preview</key>
 	<string>yes</string>
-	<key>NSLocationUsageDescription</key>
-	<string>2c health application need location permission for blue data</string>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>2c health application need location permission for blue data</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>2c health application need location permission for blue data</string>
 </dict>
 </plist>

@@ -47,7 +47,7 @@ class DexCom extends StatelessWidget {
                         dexComIcon(),
                         SizedBox(width: 10,),
                         Text(
-                          "CGM DexCom",
+                          "DexCom Device",
                           style: Styles.PoppinsRegular(
                               fontSize: 15, fontWeight: FontWeight.w600,
                               color: appColorSecondary

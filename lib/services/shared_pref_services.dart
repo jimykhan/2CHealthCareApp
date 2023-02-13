@@ -195,7 +195,7 @@ class SharedPrefServices{
       var rpmData =  _prefs?.get(logRpmDataKey);
       var listofRpmData = [];
       if (rpmData != null) {
-        listofRpmData = jsonDecode(rpmData.toString()??"[]");
+        listofRpmData = jsonDecode(rpmData.toString());
         if (listofRpmData is List) {
           listofRpmData.forEach((element) {
             newList.add(element);

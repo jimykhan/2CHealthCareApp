@@ -36,6 +36,7 @@ class Assets {
   static const String iconsCalendar = 'assets/icons/calendar.svg';
   static const String iconsClockIcon = 'assets/icons/clock_icon.svg';
   static const String iconsCrossIcon = 'assets/icons/cross_icon.svg';
+  static const String iconsDexcomLogo = 'assets/icons/dexcom_logo.png';
   static const String iconsDexcomlogo = 'assets/icons/dexcomlogo.svg';
   static const String iconsDexcomlogo1 = 'assets/icons/dexcomlogo1.svg';
   static const String iconsDoc = 'assets/icons/doc.png';

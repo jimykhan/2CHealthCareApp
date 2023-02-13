@@ -10,7 +10,6 @@ import 'package:twochealthcare/common_widgets/app_bar_components/tick_icon_butto
 import 'package:twochealthcare/common_widgets/buttons/add_button.dart';
 import 'package:twochealthcare/common_widgets/custom_appbar.dart';
 import 'package:twochealthcare/common_widgets/floating_button.dart';
-import 'package:twochealthcare/common_widgets/gif_icon_url.dart';
 import 'package:twochealthcare/common_widgets/no_data_inlist.dart';
 import 'package:twochealthcare/common_widgets/toggle_button.dart';
 import 'package:twochealthcare/main.dart';

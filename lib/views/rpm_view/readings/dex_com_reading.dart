@@ -21,6 +21,8 @@ import 'package:twochealthcare/util/styles.dart';
 import 'package:twochealthcare/view_models/rpm_vm/components/pie_chart_widget.dart';
 import 'package:twochealthcare/view_models/rpm_vm/dexCom_vm.dart';
 
+import 'compnents/powered_by_dexcom.dart';
+
 class DexcomCGM extends HookWidget {
   String? modality;
   String? title;
@@ -215,6 +217,8 @@ class DexcomCGM extends HookWidget {
                 dexComVM: dexComVM)
                 : LineGraph(context,
                 dexComVM: dexComVM),
+            PoweredByDexcom(),
+            SizedBox(height: 80,),
           ],
         ),
       ),

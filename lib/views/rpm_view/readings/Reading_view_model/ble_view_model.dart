@@ -5,8 +5,6 @@ import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:get/state_manager.dart';
 import 'package:get/utils.dart';
 import 'package:hooks_riverpod/all.dart';
-import 'package:twochealthcare/common_widgets/aler_dialogue.dart';
-import 'package:twochealthcare/common_widgets/gif_icon_url.dart';
 import 'package:twochealthcare/main.dart';
 import 'package:twochealthcare/models/modalities_models/modalities_model.dart';
 import 'package:twochealthcare/providers/providers.dart';

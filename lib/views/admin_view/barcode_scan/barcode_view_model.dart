@@ -38,7 +38,10 @@ class BarcodeVM extends ChangeNotifier{
   }
 
   initBarcode({bool fromPatientSummary = false}){
-    cameraController  = MobileScannerController()..stop();
+    cameraController  = MobileScannerController(
+      formats: [BarcodeFormat.code128,BarcodeFormat.aztec,BarcodeFormat.code39,BarcodeFormat.code93,BarcodeFormat.codebar,BarcodeFormat.ean8,BarcodeFormat.ean13,
+        BarcodeFormat.itf,BarcodeFormat.pdf417]
+    )..stop();
     this.fromPatientSummary = fromPatientSummary;
     barcodeList = [];
     scanBarcode = "";
@@ -46,7 +49,8 @@ class BarcodeVM extends ChangeNotifier{
     showAlert = true;
   }
 
-  onDetect(Barcode barcode, MobileScannerArguments? args){
+  onDetect(BarcodeCapture barcodeCapture){
+    Barcode barcode = barcodeCapture.barcodes.first;
     if (barcode.rawValue == null) {
       debugPrint('Failed to scan Barcode');
     }

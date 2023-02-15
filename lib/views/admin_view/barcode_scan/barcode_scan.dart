@@ -62,9 +62,11 @@ class BarcodeScan extends HookWidget {
               // height: 80,
               child: MobileScanner(
                   fit: BoxFit.cover,
-                  allowDuplicates: true,
+                  // allowDuplicates: true,
                   controller: barcodeVM.cameraController,
-                  onDetect: barcodeVM.onDetect
+                  onDetect: barcodeVM.onDetect,
+
+
               ),
             ),
 

@@ -7,6 +7,7 @@ import 'package:twochealthcare/common_widgets/app_bar_components/back_button.dar
 import 'package:twochealthcare/common_widgets/custom_appbar.dart';
 import 'package:twochealthcare/common_widgets/floating_button.dart';
 import 'package:twochealthcare/providers/providers.dart';
+import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/views/admin_view/barcode_scan/barcode_view_model.dart';
 
@@ -57,6 +58,7 @@ class BarcodeScan extends HookWidget {
       body: Container(
         height: MediaQuery.of(context).size.height,
         child: Stack(
+          alignment: Alignment.topCenter,
           children: [
             Container(
               // height: 80,
@@ -65,67 +67,41 @@ class BarcodeScan extends HookWidget {
                   // allowDuplicates: true,
                   controller: barcodeVM.cameraController,
                   onDetect: barcodeVM.onDetect,
+                scanWindow: Rect.fromCenter(center: Offset(MediaQuery.of(context).size.width/2,(MediaQuery.of(context).size.height/2) - 70), width: MediaQuery.of(context).size.width, height: 80),
+                onScannerStarted: barcodeVM.onScannerStart,
+                // placeholderBuilder: barcodeVM.scannerPlaceHolder,
 
 
               ),
             ),
 
             Container(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              margin: EdgeInsets.only(top: (MediaQuery.of(context).size.height/2) - 120,left: 15,right: 15),
+              child: Row(
                 children: [
+                  // Container(width: 20,color: Colors.transparent.withOpacity(0.5),),
                   Expanded(
-                    flex: 3,
                     child: Container(
-                      // height: (MediaQuery.of(context).size.height/2)-100,
-                      width: MediaQuery.of(context).size.width,
-                      color: Colors.transparent.withOpacity(0.5),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      child: Row(
-                        children: [
-                          Container(width: 20,color: Colors.transparent.withOpacity(0.5),),
-                          Expanded(
-                            child: Container(
-                              key: barcodeVM.focusContainer,
-                              // color: Colors.amber,
-                            ),
-                          ),
-                          Container(width: 20,color: Colors.transparent.withOpacity(0.5),),
-                        ],
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(color: Colors.green),
                       ),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 3,
-                    child: Container(
-                      // height: (MediaQuery.of(context).size.height/2)-100,
                       width: MediaQuery.of(context).size.width,
-                      color: Colors.transparent.withOpacity(0.5),
-                      // child: Column(
-                      //   children: [
-                      //     ListView.separated(
-                      //         shrinkWrap: true,
-                      //         itemBuilder: (context,index){
-                      //           return Card(
-                      //             child: Text("${barcodeVM.barcodeList[index]}"),
-                      //           );
-                      //         },
-                      //         separatorBuilder: (context,index){
-                      //           return SizedBox(height: 4,);
-                      //         },
-                      //         itemCount: barcodeVM.barcodeList.length),
-                      //   ],
-                      // ),
+                      height: 80,
+                      key: barcodeVM.focusContainer,
+                      // color: Colors.amber,
                     ),
                   ),
-
+                  // Container(width: 20,color: Colors.transparent.withOpacity(0.5),),
                 ],
               ),
+
             ),
+
+
+
+
+
           ],
         ),
       ),

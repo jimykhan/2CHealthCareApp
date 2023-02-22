@@ -256,6 +256,7 @@ class CGMService{
       }
       print("this is the length of Avgs data = ${listOfAvgsData.length}");
       listOfAvgsData.forEach((element) {
+        element.value = element.value?.roundToDouble();
         print("time = ${element.time}");
         print("value = ${element.value}");
       });

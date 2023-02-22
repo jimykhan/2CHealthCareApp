@@ -20,6 +20,7 @@ import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
 import 'package:twochealthcare/view_models/rpm_vm/components/pie_chart_widget.dart';
 import 'package:twochealthcare/view_models/rpm_vm/dexCom_vm.dart';
+import 'package:twochealthcare/views/rpm_view/readings/compnents/text_badge.dart';
 
 import 'compnents/powered_by_dexcom.dart';
 
@@ -581,12 +582,22 @@ class DexcomCGM extends HookWidget {
         : Column(
           children: [
             Container(
+              margin: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin(n: 25)),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("CGM",style:Styles.PoppinsRegular()),
+                  TextBadge(text: "mg/dL",),
+                ],
+              ),
+            ),
+            Container(
             margin: EdgeInsets.symmetric(
                 horizontal: ApplicationSizing.convertWidth(15)),
             child: SfCartesianChart(
               margin: EdgeInsets.all(10),
               title: ChartTitle(
-                text: "CGM",
+                // text: "CGM",
                 alignment: ChartAlignment.near,
                 textStyle: Styles.PoppinsRegular(),
               ),

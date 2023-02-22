@@ -10,7 +10,7 @@ import 'package:twochealthcare/main.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/phdevice_service/phdevice_service.dart';
 import 'package:twochealthcare/services/signal_r_services.dart';
-import 'package:twochealthcare/views/admin_view/barcode_scan/verify_barcode.dart';
+import 'package:twochealthcare/views/admin_view/barcode_scan/components/verify_barcode.dart';
 
 class BarcodeVM extends ChangeNotifier{
   ProviderReference? _ref;
@@ -41,6 +41,7 @@ class BarcodeVM extends ChangeNotifier{
     cameraController  = MobileScannerController(
       formats: [BarcodeFormat.code128,BarcodeFormat.aztec,BarcodeFormat.code39,BarcodeFormat.code93,BarcodeFormat.codebar,BarcodeFormat.ean8,BarcodeFormat.ean13,
         BarcodeFormat.itf,BarcodeFormat.pdf417],
+      // detectionSpeed: DetectionSpeed.unrestricted,
     );
     this.fromPatientSummary = fromPatientSummary;
     barcodeList = [];

@@ -10,6 +10,7 @@ import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/views/admin_view/barcode_scan/barcode_view_model.dart';
+import 'package:twochealthcare/views/admin_view/barcode_scan/components/animated_bar.dart';
 
 class BarcodeScan extends HookWidget {
   bool fromPatinetSummary;
@@ -67,7 +68,8 @@ class BarcodeScan extends HookWidget {
                   // allowDuplicates: true,
                   controller: barcodeVM.cameraController,
                   onDetect: barcodeVM.onDetect,
-                scanWindow: Rect.fromCenter(center: Offset(MediaQuery.of(context).size.width/2,(MediaQuery.of(context).size.height/2) - 70), width: MediaQuery.of(context).size.width, height: 80),
+                // scanWindow: Rect.fromCenter(center: Offset(MediaQuery.of(context).size.width/2,(MediaQuery.of(context).size.height/2) - 70), width: MediaQuery.of(context).size.width, height: 80),
+                scanWindow: Rect.fromLTWH(0, (MediaQuery.of(context).size.height/2) -100, MediaQuery.of(context).size.width, 90),
                 onScannerStarted: barcodeVM.onScannerStart,
                 // placeholderBuilder: barcodeVM.scannerPlaceHolder,
 
@@ -76,23 +78,23 @@ class BarcodeScan extends HookWidget {
             ),
 
             Container(
-              margin: EdgeInsets.only(top: (MediaQuery.of(context).size.height/2) - 120,left: 15,right: 15),
+              margin: EdgeInsets.only(top: (MediaQuery.of(context).size.height/2) - 100,left: 15,right: 15),
+              // margin: EdgeInsets.only(top: (MediaQuery.of(context).size.height/2) - 120,left: 15,right: 15),
               child: Row(
                 children: [
-                  // Container(width: 20,color: Colors.transparent.withOpacity(0.5),),
                   Expanded(
                     child: Container(
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(color: Colors.green),
+                          borderRadius: BorderRadius.circular(2),
+                          border: Border.all(color: appColor),
                       ),
                       width: MediaQuery.of(context).size.width,
                       height: 80,
-                      key: barcodeVM.focusContainer,
+                      // key: barcodeVM.focusContainer,
+                      child: AnimatedBar(startPoint: 0,endPoint: 0,),
                       // color: Colors.amber,
                     ),
                   ),
-                  // Container(width: 20,color: Colors.transparent.withOpacity(0.5),),
                 ],
               ),
 

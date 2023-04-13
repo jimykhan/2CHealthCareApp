@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -10,6 +12,7 @@ import 'package:twochealthcare/services/shared_pref_services.dart';
 import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:twochealthcare/views/auths/login.dart';
+
 
 class ApiInterceptor extends Interceptor{
   ProviderReference? ref;
@@ -68,7 +71,8 @@ class ApiInterceptor extends Interceptor{
          }else{
            loginVM.updateCurrentUser(res);
            options.headers = {
-             "Authorization": "Bearer ${loginVM.currentUser?.bearerToken??""}"
+             "Authorization": "Bearer ${loginVM.currentUser?.bearerToken??""}",
+             "clientType" : "Mobile",
            };
          }
        }

@@ -321,7 +321,7 @@ class AddRPMEncounter extends HookWidget {
             //     children: [
             //       Expanded(
             //         flex: 1,
-            //         child: FilledButton(
+            //         child: CustomFilledButton(
             //           onTap: () {
             //             GenerateAlert(child: ChangeBillingProvider());
             //           },
@@ -339,7 +339,7 @@ class AddRPMEncounter extends HookWidget {
             //           flex: 1,
             //           child: _rmpEncounterVM.addEncounterLoader
             //               ? SimpleLoader()
-            //               : FilledButton(
+            //               : CustomFilledButton(
             //             onTap: _rmpEncounterVM.isFormValid
             //                 ? () {
             //               _rmpEncounterVM.addRpmEncounter(

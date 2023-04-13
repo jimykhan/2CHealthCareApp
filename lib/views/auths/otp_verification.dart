@@ -246,7 +246,7 @@ class OtpVerification extends HookWidget {
                                 // Container(
                                 //   child: forgetPasswordVM.verifyOtpLoading
                                 //       ? loader()
-                                //       : FilledButton(
+                                //       : CustomFilledButton(
                                 //     txt: "Submit".toUpperCase(),
                                 //     color1: forgetPasswordVM.otpLength >= 6 ? appColor : appColor.withOpacity(0.5),
                                 //     borderColor: appColor,
@@ -259,7 +259,7 @@ class OtpVerification extends HookWidget {
                                 //     } :(){print("none");},
                                 //   ),
                                 // ),
-                                FilledButton(
+                                CustomFilledButton(
                                   txt: "go back".toUpperCase(),
                                   color1: appColor,
                                   borderColor: appColor,

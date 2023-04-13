@@ -4,7 +4,7 @@ import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter_svg/flutter_svg.dart';
 
-class FilledButton extends StatelessWidget {
+class CustomFilledButton extends StatelessWidget {
   Function()? onTap;
   Color? color1;
   Color? txtcolor;
@@ -20,7 +20,7 @@ class FilledButton extends StatelessWidget {
   Widget? leftWidget;
   Widget? rigtWidget;
 
-  FilledButton(
+  CustomFilledButton(
       {this.borderColor,
       this.borderwidth,
       this.fontfamily,
@@ -77,7 +77,7 @@ class FilledButton extends StatelessWidget {
   }
 }
 
-// class filledButtonWithCenterIcon extends StatelessWidget {
+// class CustomFilledButtonWithCenterIcon extends StatelessWidget {
 //   final Function onTap;
 //   Color color1;
 //   Color txtcolor;
@@ -92,7 +92,7 @@ class FilledButton extends StatelessWidget {
 //   Widget leftWidget;
 //   Widget rigtWidget;
 //
-//   filledButtonWithCenterIcon(
+//   CustomFilledButtonWithCenterIcon(
 //       {this.borderColor,
 //       this.borderwidth,
 //       this.fontfamily,

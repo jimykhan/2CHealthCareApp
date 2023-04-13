@@ -228,7 +228,7 @@ class ResetPassword extends HookWidget {
             height: 10,
             color: Colors.red,
           )
-              : FilledButton(
+              : CustomFilledButton(
             h: ApplicationSizing.convert(50),
             txt: "Submit",
             onTap: () async {

@@ -42,7 +42,7 @@ class VerifyBarcode extends HookWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                FilledButton(
+                CustomFilledButton(
                     onTap: barcodeVM.closeAlert,
                   h: 30,
                   w: 80,
@@ -52,7 +52,7 @@ class VerifyBarcode extends HookWidget {
                   paddingLeftRight: 0,
                 ),
                 SizedBox(width: 10,),
-                barcodeVM.sendingBarCode ? FilledButton(
+                barcodeVM.sendingBarCode ? CustomFilledButton(
                   onTap: (){},
                   h: 30,
                   w: 80,

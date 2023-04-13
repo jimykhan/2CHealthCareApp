@@ -258,7 +258,7 @@ class Login extends HookWidget {
                   height: 10,
                   color: Colors.red,
                 )
-              : FilledButton(
+              : CustomFilledButton(
                   h: ApplicationSizing.convert(50),
                   txt: "Login",
                   color1: !(loginVM.isPrivacyPolicyChecked) ? appColorLight : null,

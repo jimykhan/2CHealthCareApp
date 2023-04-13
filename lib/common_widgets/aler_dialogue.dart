@@ -191,7 +191,7 @@ class ConfirmLogout extends HookWidget {
                       child:  Column(
                         children: [
                           loginVM.loading ? Container(margin:EdgeInsets.only(bottom: 10),
-                              child: loader()) : FilledButton(onTap: (){
+                              child: loader()) : CustomFilledButton(onTap: (){
                             loginVM.userLogout();
                           },
                               txt: "Log out",
@@ -201,7 +201,7 @@ class ConfirmLogout extends HookWidget {
                               borderRadius: 30
                           ),
                           SizedBox(height: 10,),
-                          FilledButton(
+                          CustomFilledButton(
                             onTap: loginVM.loading ? null : (){
                             Navigator.pop(context);
                           },
@@ -287,7 +287,7 @@ AlertMessageCustomDesign({String? title, Function()? onConfirm, Function()? onCa
                           children: [
                             Expanded(
                               flex: 5,
-                              child: FilledButton(onTap: onConfirm,
+                              child: CustomFilledButton(onTap: onConfirm,
                                   txt: "Confirm",
                                   color1: appColor,
                                   txtcolor: Colors.white,
@@ -299,7 +299,7 @@ AlertMessageCustomDesign({String? title, Function()? onConfirm, Function()? onCa
                             Expanded(flex :1,child: Container()),
                             Expanded(
                               flex: 5,
-                              child: FilledButton(
+                              child: CustomFilledButton(
                                 onTap: (){
                                   Navigator.pop(context);
                                 },

@@ -96,7 +96,7 @@ class EditEmergencyContact extends HookWidget {
           //   child: Container(
           //     margin: EdgeInsets.only(bottom: 10),
           //     padding: EdgeInsets.symmetric(horizontal: ApplicationSizing.horizontalMargin()),
-          //     child: profileVm.loading ? loader() : FilledButton(
+          //     child: profileVm.loading ? loader() : CustomFilledButton(
           //       onTap: (){
           //         profileVm.editPatientContactInfo();
           //       },

@@ -162,7 +162,7 @@ class ChangeBillingProvider extends HookWidget {
             child: Row(
               children: [
                 Expanded(flex: 1,
-                  child: FilledButton(onTap: (){
+                  child: CustomFilledButton(onTap: (){
                     Navigator.pop(context);
                   },
                     color1: appColorSecondary,
@@ -175,7 +175,7 @@ class ChangeBillingProvider extends HookWidget {
                 SizedBox(width: 10,),
                 Expanded(flex: 1,
                     child: _rmpEncounterVM.checkProviderLoading ? SimpleLoader()
-                        : FilledButton(
+                        : CustomFilledButton(
                       onTap: _rmpEncounterVM.isPasswordFieldValid ? _rmpEncounterVM.isValidUser : null,
                       color1: _rmpEncounterVM.isPasswordFieldValid? appColor : appColorLight,
                       borderColor: _rmpEncounterVM.isPasswordFieldValid? appColor : appColorLight,

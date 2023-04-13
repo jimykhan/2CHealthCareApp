@@ -197,7 +197,7 @@ class IssuedDeviceView extends HookWidget {
                             child: loader(
                               color: whiteColor,
                             ),)
-                              : FilledButton(onTap: (issuedDeviceVM.isIssuedValid && !issuedDeviceVM.modalityAleadyAssign&& (issuedDeviceVM.issuedDevice!.status == PHDeviceStatus.Active.index)) ? issuedDeviceVM.issuedDeviceAlert : null,
+                              : CustomFilledButton(onTap: (issuedDeviceVM.isIssuedValid && !issuedDeviceVM.modalityAleadyAssign&& (issuedDeviceVM.issuedDevice!.status == PHDeviceStatus.Active.index)) ? issuedDeviceVM.issuedDeviceAlert : null,
                             txt: "Issue",
                             color1: (issuedDeviceVM.isIssuedValid && !issuedDeviceVM.modalityAleadyAssign && (issuedDeviceVM.issuedDevice!.status == PHDeviceStatus.Active.index)) ? appColor : appColor.withOpacity(0.3),
                             borderColor: (issuedDeviceVM.isIssuedValid && !issuedDeviceVM.modalityAleadyAssign && (issuedDeviceVM.issuedDevice!.status == PHDeviceStatus.Active.index)) ? appColor : appColor.withOpacity(0.3),

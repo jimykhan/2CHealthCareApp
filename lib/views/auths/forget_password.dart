@@ -177,7 +177,7 @@ class forgetPassword extends HookWidget {
                             children: [
                               Expanded(
                                 flex: 1,
-                                child: FilledButton(
+                                child: CustomFilledButton(
                                   // w: ApplicationSizing.convertWidth(120),
                                   // h: ApplicationSizing.convert(35),
                                   txt: "go back".toUpperCase(),
@@ -195,7 +195,7 @@ class forgetPassword extends HookWidget {
                                 child: Container(
                                   child: forgetPasswordVM.verifyOtpLoading
                                       ? loader()
-                                      : FilledButton(
+                                      : CustomFilledButton(
                                     // w: ApplicationSizing.convertWidth(120),
                                     // h: ApplicationSizing.convert(35),
                                     txt: "Submit".toUpperCase(),

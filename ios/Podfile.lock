@@ -944,10 +944,10 @@ SPEC CHECKSUMS:
   FirebaseFirestore: bda7a1ca8c19319a2acd2761cd4b962022c1d5ea
   FirebaseInstallations: e2f26126089dcf41e215f7b8925af8d953c7d602
   FirebaseMessaging: cc9f40f5b7494680f3844d08e517e92aa4e8d9f7
-  Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
+  Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
   flutter_beep: 54fb393b22dfa0f0e4573c81b1c74dd71c4e5af8
   flutter_blue_plus: 6787777145d615de01828f3a9fa423c3c702f0b3
-  flutter_callkit_incoming: 79bbfc322b0cbde05c56fa51260b9e3b28e83175
+  flutter_callkit_incoming: 417dd1b46541cdd5d855ad795ccbe97d1c18155e
   flutter_local_notifications: 0c0b1ae97e741e1521e4c1629a459d04b9aec743
   flutter_sound: c60effa2a350fb977885f0db2fbc4c1ad5160900
   flutter_sound_core: 26c10e5832e76aaacfae252d8925232281c486ae

@@ -163,10 +163,10 @@ class FirebaseService{
     if (currentUser != null) {
       await _firebaseMessaging!
           .subscribeToTopic("${currentUser.appUserId}$dataChannel")
-          .then((value) => print("${currentUser.appUserId}$dataChannel weather topic subscribe"));
+          .then((value) => print("${currentUser.appUserId}$dataChannel dataChannel topic subscribe"));
       await _firebaseMessaging!
           .subscribeToTopic("${currentUser.appUserId}$messageChannel")
-          .then((value) => print("${currentUser.appUserId}$messageChannel weather topic subscribe"));
+          .then((value) => print("${currentUser.appUserId}$messageChannel messageChannel topic subscribe"));
     }
 
   }

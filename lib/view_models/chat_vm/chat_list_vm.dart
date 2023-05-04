@@ -6,23 +6,36 @@ import 'package:page_transition/page_transition.dart';
 import 'package:twochealthcare/constants/strings.dart';
 import 'package:twochealthcare/main.dart';
 import 'package:twochealthcare/models/chat_model/GetGroups.dart';
+import 'package:twochealthcare/models/patient_communication_models/chat_group_model.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/application_route_service.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
+import 'package:twochealthcare/services/chat_services/patient_communication_service.dart';
+import 'package:twochealthcare/services/shared_pref_services.dart';
 import 'package:twochealthcare/services/signal_r_services.dart';
 import 'package:twochealthcare/util/data_format.dart';
 import 'package:twochealthcare/views/chat/chat_screen.dart';
+import 'package:twochealthcare/views/chat/components/slider_menu.dart';
 
 class ChatListVM extends ChangeNotifier{
   List<UnReadChat> unReadChats = [];
   List<GetGroupsModel> groupIds= [];
   List<GetGroupsModel> allGroups= [];
-  bool loadingGroupId = true;
   ProviderReference? _ref;
   AuthServices? _authServices;
   SignalRServices? _signalRServices;
   ApplicationRouteService? _applicationRouteService;
+  SharedPrefServices? _sharedPrefServices;
+
+
+  PatientCommunicationService? _patientCommunicationService;
   bool isTextFieldActive = false;
+  bool loadingChatList = true;
+  bool pageWiseLoading = false;
+  int? currentUserUserId;
+  int loadingPageNumber = 1;
+  List<ChatGroupModel> chatGroupList = [];
+  List<Menu> menuList = [Menu(id: 0,name: "New",count: 30,),Menu(id: 0,name: "Clinical",count: 130,),Menu(id: 0,name: "Following",count: 37,),Menu(id: 0,name: "Unread",count: 10,)];
   // TextEditingController searchController = TextEditingController();
 
 
@@ -62,6 +75,8 @@ class ChatListVM extends ChangeNotifier{
     _authServices = _ref!.read(authServiceProvider);
     _signalRServices = _ref!.read(signalRServiceProvider);
     _applicationRouteService = _ref!.read(applicationRouteServiceProvider);
+    _patientCommunicationService = _ref!.read(patientCommunicationServiceProvider);
+    _sharedPrefServices = _ref!.read(sharedPrefServiceProvider);
     _signalRServices?.newMessage.stream.listen((event) {
       print("call chat list");
       groupIds.forEach((element) {
@@ -103,14 +118,11 @@ class ChatListVM extends ChangeNotifier{
     });
   }
 
-  setLoadingGroupId(bool check){
-    loadingGroupId = check;
-    notifyListeners();
-  }
+
 
   Future<dynamic> getGroupsIds({bool onlounch = true}) async {
     try {
-      setLoadingGroupId(true);
+      setLoadingChatList(true);
       final chatListService = _ref!.read(chatListServiceProvider);
       _authServices = _ref!.read(authServiceProvider);
       String UserId = await _authServices!.getCurrentAppUserId();
@@ -134,7 +146,7 @@ class ChatListVM extends ChangeNotifier{
             ));
           }
         });
-        setLoadingGroupId(false);
+        setLoadingChatList(false);
         if(groupIds.length == 1 && !onlounch){
           Navigator.push(applicationContext!.currentContext!,
               PageTransition(child: ChatScreen(getGroupsModel: groupIds[0],backToHome: true,),
@@ -142,14 +154,60 @@ class ChatListVM extends ChangeNotifier{
         }
       }
       else{
-        setLoadingGroupId(false);
+        setLoadingChatList(false);
       }
     } catch (e) {
-      setLoadingGroupId(false);
+      setLoadingChatList(false);
       print(e.toString());
     }
   }
 
+
+  Future<dynamic> getPatientGroupByFacilityId({int? pageNumber}) async {
+    try {
+      pageNumber == 1 ? setLoadingChatList(true) : setPageWiseLoading(true);
+      int facilityId = await _sharedPrefServices!.getFacilityId();
+      String appUserId = await _authServices!.getCurrentAppUserId();
+
+      var response = await _patientCommunicationService?.getPatientGroupByFacilityId(
+          facilityId: facilityId, pageNumber: loadingPageNumber);
+      if (response is List<ChatGroupModel>) {
+        if (loadingPageNumber == 1) {
+
+          chatGroupList = response;
+
+          setLoadingChatList(false);
+        } else {
+          if (response.length != 0) {
+            chatGroupList.insertAll(0, response ?? []);
+          }
+          setPageWiseLoading(false);
+        }
+        response.length > 0 ? loadingPageNumber++ : null;
+        // markChatViewed();
+        return chatGroupList;
+      } else {
+        loadingPageNumber == 1
+            ? setLoadingChatList(false)
+            : setPageWiseLoading(false);
+        return null;
+      }
+    } catch (e) {
+      loadingPageNumber == 1
+          ? setLoadingChatList(false)
+          : setPageWiseLoading(false);
+    }
+  }
+
+  setLoadingChatList(bool check) {
+    loadingChatList = check;
+    notifyListeners();
+  }
+
+  setPageWiseLoading(bool check) {
+    pageWiseLoading = check;
+    notifyListeners();
+  }
   resetCounter(String groupId){
     if(groupIds.length>0){
       groupIds.forEach((element) {

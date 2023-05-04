@@ -2,6 +2,7 @@
 import 'package:twochealthcare/common_widgets/circular_image.dart';
 import 'package:twochealthcare/common_widgets/loader.dart';
 import 'package:twochealthcare/models/chat_model/ChatMessage.dart';
+import 'package:twochealthcare/models/patient_communication_models/chat_message_model.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,13 +20,11 @@ class Message extends HookWidget {
    Message({
     Key? key,
     this.message,
-    this.participients,
      required this.index
   }) : super(key: key);
 
-  final ChatMessage? message;
+  final ChatMessageModel? message;
   int index;
-  List<Participients>? participients;
 
   @override
   Widget build(BuildContext context) {
@@ -39,12 +38,13 @@ class Message extends HookWidget {
       const [],
     );
 
-    Widget messageContaint(ChatMessage? message,{required int index}) {
-      switch (message!.messageType) {
+    Widget messageContaint(ChatMessageModel message,{required int index}) {
+      switch (message.messageType) {
         case ChatMessageType.text:
           return TextMessage(message: message);
         case ChatMessageType.audio:
-          return AudioMessage(message: message,index: index);
+          return Container();
+          // return AudioMessage(message: message,index: index);
         case ChatMessageType.video:
           return VideoMessage();
         default:
@@ -62,19 +62,19 @@ class Message extends HookWidget {
                 !(message!.isSender!) ? MainAxisAlignment.start : MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Expanded(child: messageContaint(message,index: index)),
+              Expanded(child: messageContaint(message!,index: index)),
             ],
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Container(
-                child: participients == null ? Container () : Wrap(
-                  children: participients!.map((e) => e.readIndex == message!.id ? viewTags(name: e.shortName?.replaceAll(" ", "")) : Container()).toList(),
-                ),
-              ),
-            ],
-          ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.end,
+          //   children: [
+          //     Container(
+          //       child: participients == null ? Container () : Wrap(
+          //         children: participients!.map((e) => e.readIndex == message!.id ? viewTags(name: e.shortName?.replaceAll(" ", "")) : Container()).toList(),
+          //       ),
+          //     ),
+          //   ],
+          // ),
 
           // !(message!.isSender!)
           //     ? checkLoader(message!.messageStatus!)

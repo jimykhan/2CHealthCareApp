@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:twochealthcare/common_widgets/alert_loader.dart';
 import 'package:twochealthcare/models/chat_model/ChatMessage.dart';
+import 'package:twochealthcare/models/patient_communication_models/chat_message_model.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
@@ -12,7 +13,7 @@ import 'package:twochealthcare/util/styles.dart';
 import 'package:twochealthcare/view_models/chat_vm/chat_screen_vm.dart';
 import 'package:twochealthcare/views/chat/constants.dart';
 class AudioMessage extends HookWidget {
-  final ChatMessage? message;
+  final ChatMessageModel? message;
   int index;
    AudioMessage({this.message,required this.index,Key? key}) : super(key: key);
 
@@ -86,7 +87,7 @@ class AudioMessage extends HookWidget {
                   children: [
                     GestureDetector(
                       onTap: (){
-                        chatScreenVM.isAnyFileLoading() ? null : chatScreenVM.playPause(index,message!.id!, message!.linkUrl!);
+                        // chatScreenVM.isAnyFileLoading() ? null : chatScreenVM.playPause(index,message!.id!, message!.linkUrl!);
                       },
                       child: Container(
                         // width: 40,

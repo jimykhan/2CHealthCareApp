@@ -11,10 +11,13 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:twochealthcare/common_widgets/snackber_message.dart';
 import 'package:twochealthcare/models/chat_model/ChatMessage.dart';
+import 'package:twochealthcare/models/patient_communication_models/chat_message_model.dart';
+import 'package:twochealthcare/models/patient_communication_models/communication_history_model.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/application_route_service.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
 import 'package:twochealthcare/services/chat_services/chat_screen_service.dart';
+import 'package:twochealthcare/services/chat_services/patient_communication_service.dart';
 import 'package:twochealthcare/services/connectivity_service.dart';
 import 'package:twochealthcare/services/s3-services/src/s3-crud-service.dart';
 import 'package:twochealthcare/services/signal_r_services.dart';
@@ -24,7 +27,11 @@ import 'package:twochealthcare/views/chat/chat_screen.dart';
 import 'package:path_provider/path_provider.dart';
 
 class ChatScreenVM extends ChangeNotifier {
-  ChatHistoryModel chatMessageList = ChatHistoryModel();
+
+  // ChatHistoryModel chatMessageList = ChatHistoryModel();
+
+  CommunicationHistoryModel communicationHistoryModel = CommunicationHistoryModel(results: []);
+
   List<Participients>? participients = [];
   bool allMessagesLoading = true;
   bool pageWiseLoading = false;
@@ -53,6 +60,10 @@ class ChatScreenVM extends ChangeNotifier {
 
   /// audio recording
 
+  PatientCommunicationService? _patientCommunicationService;
+
+
+
   ChatScreenVM({ProviderReference? ref}) {
     _ref = ref;
     initService();
@@ -62,35 +73,35 @@ class ChatScreenVM extends ChangeNotifier {
 
   dispose() {
     myFocusNode?.dispose();
-    chatMessageList.chats = [];
-    chatMessageList.participients = [];
+    // chatMessageList.chats = [];
+    // chatMessageList.participients = [];
 
     /// audio recording init
     // recorderController.dispose();
     /// audio recording init
   }
 
-  searchListener() {
-    searchController = TextEditingController();
-    participients = [];
-    participients!.addAll(chatMessageList.participients ?? []);
-    searchController?.addListener(() {
-      if (searchController!.text == "") {
-        participients = [];
-        participients!.addAll(chatMessageList.participients ?? []);
-      } else {
-        participients = [];
-        chatMessageList.participients!.forEach((element) {
-          if (element.fullName!
-              .toLowerCase()
-              .contains(searchController!.text.toLowerCase())) {
-            participients!.add(element);
-          }
-        });
-      }
-      notifyListeners();
-    });
-  }
+  // searchListener() {
+  //   searchController = TextEditingController();
+  //   participients = [];
+  //   participients!.addAll(chatMessageList.participients ?? []);
+  //   searchController?.addListener(() {
+  //     if (searchController!.text == "") {
+  //       participients = [];
+  //       participients!.addAll(chatMessageList.participients ?? []);
+  //     } else {
+  //       participients = [];
+  //       chatMessageList.participients!.forEach((element) {
+  //         if (element.fullName!
+  //             .toLowerCase()
+  //             .contains(searchController!.text.toLowerCase())) {
+  //           participients!.add(element);
+  //         }
+  //       });
+  //     }
+  //     notifyListeners();
+  //   });
+  // }
 
   disposeSearchController() {
     searchController?.dispose();
@@ -113,8 +124,7 @@ class ChatScreenVM extends ChangeNotifier {
   }
 
   initService() {
-    chatMessageList.chats = [];
-    chatMessageList.participients = [];
+    communicationHistoryModel.results = [];
     _authServices = _ref!.read(authServiceProvider);
     _chatListVM = _ref!.read(chatListVMProvider);
     _chatScreenService = _ref!.read(chatScreenServiceProvider);
@@ -122,6 +132,7 @@ class ChatScreenVM extends ChangeNotifier {
     _applicationRouteService = _ref!.read(applicationRouteServiceProvider);
     _s3crudService = _ref!.read(s3CrudServiceProvider);
     connectivityService = _ref!.read(connectivityServiceProvider);
+    _patientCommunicationService = _ref!.read(patientCommunicationServiceProvider);
     _signalRServices?.newMessage.stream.listen((event) {
       print("new message reached to Rx dart..");
       print(event.timeStamp.toString());
@@ -130,7 +141,7 @@ class ChatScreenVM extends ChangeNotifier {
         event.messageStatus = MessageStatus.viewed;
         event.timeStamp =
             convertLocalToUtc(event.timeStamp!.replaceAll("Z", ""));
-        chatMessageList.chats!.add(event);
+        // chatMessageList.add(event);
         if (_applicationRouteService?.currentScreen() ==
             event.chatGroupId.toString()) {
           print("this is appUserId  = ${currentUserAppUserId}");
@@ -138,23 +149,23 @@ class ChatScreenVM extends ChangeNotifier {
               chatGroupId: event.chatGroupId!, userId: currentUserAppUserId!);
         }
         notifyListeners();
-        chatMessageList.chats!.length == 0
+        communicationHistoryModel.results!.length == 0
             ? null
             : ChatScreen.jumpToListIndex(isDelayed: true);
       }
     });
     _signalRServices?.onChatViewed.stream.listen((event) {
       print("new message reached to Rx dart..");
-      if (chatMessageList.chats!.length > 0) {
-        if (event["chatGroupId"] == chatMessageList.chats![0].chatGroupId) {
-          List<Participients> updateParticipantList = [];
-          event["participients"].forEach((e) {
-            updateParticipantList.add(Participients.fromJson(e));
-          });
-          chatMessageList.participients = [];
-          chatMessageList.participients!.addAll(updateParticipantList);
-          notifyListeners();
-        }
+      if (communicationHistoryModel.results!.length > 0) {
+        // if (event["chatGroupId"] == chatMessageList.chats![0].chatGroupId) {
+        //   List<Participients> updateParticipantList = [];
+        //   event["participients"].forEach((e) {
+        //     updateParticipantList.add(Participients.fromJson(e));
+        //   });
+        //   chatMessageList.participients = [];
+        //   chatMessageList.participients!.addAll(updateParticipantList);
+        //   notifyListeners();
+        // }
       }
     });
   }
@@ -181,41 +192,28 @@ class ChatScreenVM extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<dynamic> getAllMessages({String? chatGroupId, int? pageNumber}) async {
+  Future<dynamic> getAllMessages({int? patientId, int? pageNumber}) async {
     try {
       pageNumber == 1 ? setAllMessagesLoading(true) : setPageWiseLoading(true);
-      String UserId = await _authServices!.getCurrentAppUserId();
-      currentUserAppUserId = UserId;
-      var queryParameters = {
-        "userId": UserId,
-        "chatGroupId": chatGroupId,
-        "pageNumber": loadingPageNumber.toString()
-      };
-      print(queryParameters);
-      var response = await _chatScreenService?.getAllMessages(
-          userId: UserId, queryParameters: queryParameters);
-      if (response is ChatHistoryModel) {
+      int? UserId = patientId ?? await _authServices?.getCurrentUserId();
+      String? appUserId = await _authServices?.getCurrentAppUserId();
+      var response = await _patientCommunicationService?.getCommunicationHistory(appUserId: appUserId,patientId: UserId, pageNumber: loadingPageNumber);
+      if (response is CommunicationHistoryModel) {
         if (loadingPageNumber == 1) {
-          _chatListVM!.resetCounter(chatGroupId!);
-          chatMessageList.chats = [];
-          chatMessageList.participients = [];
-          response.chats?.forEach((item) {
-            chatMessageList.chats!.add(item);
-          });
-          response.participients?.forEach((item) {
-            chatMessageList.participients!.add(item);
-          });
+          communicationHistoryModel.results = response.results;
+
           setAllMessagesLoading(false);
         } else {
-          if (response.chats?.length != 0) {
-            chatMessageList.chats!.insertAll(0, response.chats ?? []);
+          if (response.results?.length != 0) {
+            communicationHistoryModel.results!.insertAll(0, response.results ?? []);
           }
           setPageWiseLoading(false);
         }
-        response.chats!.length > 0 ? loadingPageNumber++ : null;
+        response.results!.length > 0 ? loadingPageNumber++ : null;
         // markChatViewed();
-        return chatMessageList;
-      } else {
+        return communicationHistoryModel;
+      }
+      else {
         loadingPageNumber == 1
             ? setAllMessagesLoading(false)
             : setPageWiseLoading(false);
@@ -240,15 +238,15 @@ class ChatScreenVM extends ChangeNotifier {
       if (chatMessageType == ChatMessageType.image) chatType = 2;
       if (chatMessageType == ChatMessageType.audio) chatType = 3;
       isMessageEmpty = true;
-      chatMessageList.chats!.add(ChatMessage(
+      communicationHistoryModel.results!.add(ChatMessageModel(
         id: -1,
         message: message ?? "",
-        sentToAll: false,
-        viewedByAll: false,
+        // sentToAll: false,
+        // viewedByAll: false,
         senderUserId: currentUserAppUserId,
         isSender: true,
-        messageStatus: MessageStatus.not_sent,
-        messageType: chatMessageType,
+        // messageStatus: MessageStatus.not_sent,
+        // messageType: chatMessageType,
         // timeStamp: DateTime(2021,DateTime.now().month,DateTime.now().month,03,33).toString(),
         timeStamp: DateTime.now().toString(),
         data: recordingDuration.toString(),
@@ -262,13 +260,13 @@ class ChatScreenVM extends ChangeNotifier {
         "chatType": chatType,
         "data": recordingDuration.toString(),
       };
-      var response = await _chatScreenService?.sendTextMessage(
+      var response = await _patientCommunicationService?.sendMessage(
           body: body, currentUserAppUserId: currentUserAppUserId);
       if (response is ChatMessage) {
         print("yes run this okay");
-        chatMessageList.chats!.removeLast();
+        communicationHistoryModel.results!.removeLast();
         response.messageStatus = MessageStatus.not_view;
-        chatMessageList.chats!.add(response);
+        response != null ? communicationHistoryModel.results!.add(response as ChatMessageModel) : null;
         notifyListeners();
         return true;
       } else {
@@ -285,7 +283,7 @@ class ChatScreenVM extends ChangeNotifier {
       var response = await _chatScreenService?.markChatViewed(
           chatGroupId: chatGroupId, currentUserAppUserId: currentUserAppUserId);
       if (response is bool && response) {
-        chatMessageList.chats!.forEach((element) {
+        communicationHistoryModel.results!.forEach((element) {
           element.messageStatus = MessageStatus.viewed;
         });
         notifyListeners();
@@ -517,9 +515,9 @@ class ChatScreenVM extends ChangeNotifier {
   playPause(int index, int chatId, String audioUrl) async {
     if (currentIndex != chatId) {
       disposeAudioResouces(chatId, false);
-      if (chatMessageList.chats?[index].data != null) {
+      if (communicationHistoryModel.results?[index].data != null) {
         /// duration in millisecond
-        maxduration = (int.parse(chatMessageList.chats?[index].data ?? "1"));
+        maxduration = (int.parse(communicationHistoryModel.results?[index].data ?? "1"));
         print("Audoi MaxDuration ${maxduration}");
       }
       notifyListeners();
@@ -586,7 +584,7 @@ class ChatScreenVM extends ChangeNotifier {
   }
 
   isFileDownloading(int chatId, bool downloading) {
-    chatMessageList.chats?.forEach((element) {
+    communicationHistoryModel.results?.forEach((element) {
       if (element.id == chatId) {
         element.downloading = downloading;
       } else {
@@ -596,13 +594,13 @@ class ChatScreenVM extends ChangeNotifier {
   }
 
   bool isAnyFileLoading() {
-    return chatMessageList.chats
+    return communicationHistoryModel.results
             ?.any((element) => element.downloading == true) ??
         false;
   }
 
   isFileDownloadError(int chatId, bool isError) {
-    chatMessageList.chats?.forEach((element) {
+    communicationHistoryModel.results?.forEach((element) {
       if (element.id == chatId) {
         element.isError = isError;
       } else {

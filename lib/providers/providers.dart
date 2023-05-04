@@ -8,6 +8,7 @@ import 'package:twochealthcare/services/care_plan_services/care_plan_services.da
 import 'package:twochealthcare/services/ccm_services/ccm_services.dart';
 import 'package:twochealthcare/services/chat_services/chat_list_service.dart';
 import 'package:twochealthcare/services/chat_services/chat_screen_service.dart';
+import 'package:twochealthcare/services/chat_services/patient_communication_service.dart';
 import 'package:twochealthcare/services/connectivity_service.dart';
 import 'package:twochealthcare/services/diagnosis_service.dart';
 import 'package:twochealthcare/services/dio_services/dio_services.dart';
@@ -16,6 +17,7 @@ import 'package:twochealthcare/services/facility_user_services/patient_summary_s
 import 'package:twochealthcare/services/firebase_service.dart';
 import 'package:twochealthcare/services/health_guides_service/health_guides_service.dart';
 import 'package:twochealthcare/services/local_notification_service.dart';
+import 'package:twochealthcare/services/notification_service.dart';
 import 'package:twochealthcare/services/onlunch_activity_routes_service.dart';
 import 'package:twochealthcare/services/patient_profile_service.dart';
 import 'package:twochealthcare/services/permission_service.dart';
@@ -121,6 +123,7 @@ final chatListServiceProvider = Provider<ChatListService>((ref)=>ChatListService
 final connectivityServiceProvider = Provider<ConnectivityService>((ref)=>ConnectivityService(ref: ref));
 final applicationRouteServiceProvider = Provider<ApplicationRouteService>((ref)=>ApplicationRouteService());
 final localNotificationServiceProvider = Provider<LocalNotificationService>((ref)=>LocalNotificationService(ref: ref));
+final notificationServiceProvider = Provider<NotificationService>((ref)=>NotificationService(ref: ref));
 final onLaunchActivityServiceProvider = Provider<OnLaunchActivityAndRoutesService>((ref)=>OnLaunchActivityAndRoutesService(ref: ref));
 final healthGuidesServiceProvider = Provider<HealthGuidesService>((ref)=>HealthGuidesService(ref: ref));
 final carePlanServiceProvider = Provider<CarePlanServices>((ref)=>CarePlanServices(ref: ref));
@@ -138,4 +141,5 @@ final cgmServiceProvider = Provider<CGMService>((ref)=>CGMService(ref: ref));
 final s3CrudServiceProvider = Provider<S3CrudService>((ref)=>S3CrudService(ref: ref));
 final phDeviceServiceProvider = Provider<PhDeviceService>((ref)=>PhDeviceService(ref: ref));
 final permissionServiceProvider = Provider<PermissionService>((ref)=>PermissionService(ref: ref));
+final patientCommunicationServiceProvider = Provider<PatientCommunicationService>((ref)=>PatientCommunicationService(ref: ref));
 /// Simple Providers

@@ -11,16 +11,10 @@ import 'package:twochealthcare/common_widgets/app_bar_components/back_button.dar
 import 'package:twochealthcare/common_widgets/circular_image.dart';
 import 'package:twochealthcare/common_widgets/circular_svg_icon.dart';
 import 'package:twochealthcare/common_widgets/custom_appbar.dart';
-import 'package:twochealthcare/common_widgets/loader.dart';
-import 'package:twochealthcare/common_widgets/no_data_inlist.dart';
-import 'package:twochealthcare/common_widgets/snackber_message.dart';
-import 'package:twochealthcare/constants/api_strings.dart';
-import 'package:twochealthcare/models/chat_model/ChatMessage.dart';
 import 'package:twochealthcare/models/chat_model/GetGroups.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:twochealthcare/services/application_route_service.dart';
@@ -30,9 +24,6 @@ import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
 import 'package:twochealthcare/view_models/chat_vm/chat_screen_vm.dart';
-import 'package:twochealthcare/views/chat/chat_info.dart';
-import 'package:twochealthcare/views/chat/components/animation_mic.dart';
-import 'package:twochealthcare/views/chat/components/audio_message.dart';
 import 'package:twochealthcare/views/chat/components/chat_input_field.dart';
 import 'package:twochealthcare/views/chat/components/message.dart';
 import 'package:marquee/marquee.dart';
@@ -41,9 +32,11 @@ import 'package:twochealthcare/views/chat/components/recording_button.dart';
 ScrollController? chatScrollController;
 
 class ChatScreen extends HookWidget {
+  String? messageTitle;
   GetGroupsModel? getGroupsModel;
   bool backToHome;
-  ChatScreen({this.getGroupsModel,this.backToHome = false});
+  int? patientId;
+  ChatScreen({this.getGroupsModel,this.backToHome = false,this.patientId,this.messageTitle});
   @override
   Widget build(BuildContext context) {
     chatScrollController = useScrollController(initialScrollOffset: MediaQuery.of(context).size.height);
@@ -62,7 +55,7 @@ class ChatScreen extends HookWidget {
 
           chatScreenVM.loadingPageNumber = 1;
           await chatScreenVM.getAllMessages(
-              chatGroupId: getGroupsModel?.id.toString() ?? "", pageNumber: 1);
+              patientId: patientId, pageNumber: 1);
           jumpToListIndex(isDelayed: true);
         });
         chatScrollController?.addListener(_scrollListener);
@@ -101,7 +94,7 @@ class ChatScreen extends HookWidget {
               ),
               InkWell(
                 onTap: (){
-                  Navigator.push(context, PageTransition(child: ChatInfo(title: getGroupsModel?.title ?? ""), type: PageTransitionType.leftToRight));
+                  // Navigator.push(context, PageTransition(child: ChatInfo(title: getGroupsModel?.title ?? ""), type: PageTransitionType.leftToRight));
                 },
                 child: Row(
                   children: [
@@ -118,9 +111,9 @@ class ChatScreen extends HookWidget {
                     SizedBox(
                       width: ApplicationSizing.convertWidth(10),
                     ),
-                    AppBarTextStyle(
-                        text: getGroupsModel?.title ?? "Text",
-                        textsize: ApplicationSizing.convert(18)),
+                     AppBarTextStyle(
+                          text: messageTitle ?? "Text",
+                          textsize: ApplicationSizing.convert(18)),
                   ],
                 ),
               )
@@ -194,7 +187,7 @@ class ChatScreen extends HookWidget {
                       strokeWidth: 3,
                       triggerMode: RefreshIndicatorTriggerMode.onEdge,
                       onRefresh: () => chatScreenVM.getAllMessages(
-                          chatGroupId: getGroupsModel?.id.toString() ?? "",
+                          patientId: patientId,
                           pageNumber: chatScreenVM.loadingPageNumber),
                       child: ListView.separated(
                         controller: chatScrollController,
@@ -202,13 +195,13 @@ class ChatScreen extends HookWidget {
                         // itemExtent: 50.0,
                         physics: ScrollPhysics(),
                         shrinkWrap: true,
-                        itemCount: chatScreenVM.chatMessageList.chats?.length??0,
+                        itemCount: chatScreenVM.communicationHistoryModel.results?.length??0,
                         itemBuilder: (context, index) {
                           if (date !=
-                              chatScreenVM.chatMessageList.chats![index].timeStamp
+                              chatScreenVM.communicationHistoryModel.results![index].timeStamp
                                   ?.substring(0, 10)) {
                             date = chatScreenVM
-                                .chatMessageList.chats![index].timeStamp!
+                                .communicationHistoryModel.results![index].timeStamp!
                                 .substring(0, 10);
                             return Container(
                               margin: EdgeInsets.symmetric(
@@ -229,7 +222,7 @@ class ChatScreen extends HookWidget {
                                         borderRadius:
                                         BorderRadius.circular(10)),
                                     child: Text(
-                                      Jiffy(chatScreenVM.chatMessageList.chats![index].timeStamp??"0000-00-00T00:00:00.000000").format("dd MMM yyyy"),
+                                      Jiffy(chatScreenVM.communicationHistoryModel.results![index].timeStamp??"0000-00-00T00:00:00.000000").format("dd MMM yyyy"),
                                       style: Styles.PoppinsRegular(
                                           color: drawerColor,
                                           fontSize:
@@ -238,8 +231,8 @@ class ChatScreen extends HookWidget {
                                   ),
                                   Message(
                                     message:
-                                    chatScreenVM.chatMessageList.chats![index],
-                                    participients: chatScreenVM.chatMessageList.participients,
+                                    chatScreenVM.communicationHistoryModel.results![index],
+                                    // participients: chatScreenVM.chatMessageList.participients,
                                     index: index,
                                   ),
                                 ],
@@ -256,8 +249,8 @@ class ChatScreen extends HookWidget {
                               child: Column(
                                 children: [
                                   Message(
-                                    message: chatScreenVM.chatMessageList.chats![index],
-                                    participients: chatScreenVM.chatMessageList.participients,
+                                    message: chatScreenVM.communicationHistoryModel.results![index],
+                                    // participients: chatScreenVM.chatMessageList.participients,
                                     index: index,
                                   ),
                                 ],
@@ -278,11 +271,10 @@ class ChatScreen extends HookWidget {
                         Expanded(
                           child: Container(
                               child: chatScreenVM.isRecording ? Container() : ChatInputField(),
-
                           ),
 
                         ),
-                        RecordButton(chatScreenVM: chatScreenVM,),
+                        // RecordButton(chatScreenVM: chatScreenVM,),
                         // GestureDetector(
                         //   onLongPressStart: (long){
                         //     chatScreenVM.startRecording();

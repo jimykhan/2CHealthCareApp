@@ -127,6 +127,7 @@ class BottomBar extends HookWidget {
                                   context,
                                   PageTransition(
                                       child: ChatList(),
+                                      // child: ChatSlider(),
                                       type: PageTransitionType.bottomToTop));
                             }
                           } else {

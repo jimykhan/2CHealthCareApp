@@ -9,6 +9,7 @@ import 'package:twochealthcare/views/splash/splash.dart';
 
 BuildContext? homeContext;
 
+@pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
   print('Handling a background message ${message.messageId}');

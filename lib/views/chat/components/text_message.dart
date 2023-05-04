@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:twochealthcare/models/chat_model/ChatMessage.dart';
+import 'package:twochealthcare/models/patient_communication_models/chat_message_model.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/data_format.dart';
@@ -12,7 +13,7 @@ class TextMessage extends StatelessWidget {
     this.message,
   }) : super(key: key);
 
-  final ChatMessage? message;
+  final ChatMessageModel? message;
 
   @override
   Widget build(BuildContext context) {

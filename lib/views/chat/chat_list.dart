@@ -13,6 +13,7 @@ import 'package:twochealthcare/common_widgets/input_field/custom_text_field.dart
 import 'package:twochealthcare/common_widgets/no_data_inlist.dart';
 import 'package:twochealthcare/common_widgets/notification_widget.dart';
 import 'package:twochealthcare/models/chat_model/GetGroups.dart';
+import 'package:twochealthcare/models/patient_communication_models/chat_group_model.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/application_route_service.dart';
 import 'package:twochealthcare/services/onlunch_activity_routes_service.dart';
@@ -22,6 +23,7 @@ import 'package:twochealthcare/util/styles.dart';
 import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
 import 'package:twochealthcare/view_models/chat_vm/chat_list_vm.dart';
 import 'package:twochealthcare/views/chat/chat_screen.dart';
+import 'package:twochealthcare/views/chat/components/slider_menu.dart';
 import 'package:twochealthcare/views/home/home.dart';
 import 'package:twochealthcare/views/home/profile.dart';
 
@@ -38,7 +40,7 @@ class ChatList extends HookWidget {
     useEffect(
       () {
         Future.microtask(() async {
-          chatListVM.getGroupsIds(onlounch: false);
+          chatListVM.getPatientGroupByFacilityId();
         });
 
         return () {
@@ -48,7 +50,8 @@ class ChatList extends HookWidget {
       },
       const [],
     );
-    return (chatListVM.isTextFieldActive) ? simpleScaffold(context,chatListVM: chatListVM,loginVM: loginVM,applicationRouteService: applicationRouteService) : Scaffold(
+    return (chatListVM.isTextFieldActive) ? simpleScaffold(context,chatListVM: chatListVM,loginVM: loginVM,applicationRouteService: applicationRouteService) :
+    Scaffold(
         primary: false,
         appBar: appBar(context,loginVM,chatListVM: chatListVM),
         floatingActionButtonLocation:  FloatingActionButtonLocation.centerDocked,
@@ -204,8 +207,10 @@ class ChatList extends HookWidget {
       required ApplicationRouteService applicationRouteService,required LoginVM loginVM}) {
     return Column(
       children: [
+        (loginVM.currentUser?.userType == 1) ? Container() :
+        Container(height : 40,child: ChatSlider(menuList: chatListVM?.menuList??[], onchange: (Menu) {  },)),
         (loginVM.currentUser?.userType == 1) ? Container() : _searchField(chatListVM: chatListVM),
-        Expanded(child: (chatListVM?.groupIds.length == 0 && !chatListVM!.loadingGroupId)
+        Expanded(child: (chatListVM?.chatGroupList.length == 0 && !chatListVM!.loadingChatList)
             ? NoData()
             : Container(
           child: Stack(
@@ -217,33 +222,36 @@ class ChatList extends HookWidget {
                     return GestureDetector(
                       onTap: () {
                         applicationRouteService.addScreen(
-                            screenName: "${chatListVM?.groupIds[index].id}");
+                            screenName: "${chatListVM?.chatGroupList[index].id}");
                         Navigator.push(
                             context,
                             PageTransition(
                                 child: ChatScreen(
                                   getGroupsModel: chatListVM?.groupIds[index],
+                                  patientId: chatListVM?.chatGroupList[index].lastCommunication!.patientId!,
+                                  messageTitle: chatListVM?.chatGroupList[index].name,
                                 ),
                                 type: PageTransitionType.fade));
                       },
                       child: chatTile(
-                          getGroupsModel: chatListVM?.groupIds[index]),
+                          getGroupsModel: chatListVM?.chatGroupList[index]),
                     );
                   },
                   separatorBuilder: (BuildContext context, int index) {
                     return ApplicationSizing.verticalSpacer();
                   },
-                  itemCount: chatListVM?.groupIds.length ?? 0),
-              chatListVM!.loadingGroupId ? AlertLoader() : Container(),
+                  itemCount: chatListVM?.chatGroupList.length ?? 0),
+              chatListVM!.loadingChatList ? AlertLoader() : Container(),
 
             ],
           ),
-        ),),
+        ),
+        ),
       ],
     );
   }
 
-  chatTile({GetGroupsModel? getGroupsModel}) {
+  chatTile({ChatGroupModel? getGroupsModel}) {
     return Container(
       // color: Colors.brown,
       padding: EdgeInsets.symmetric(
@@ -282,7 +290,7 @@ class ChatList extends HookWidget {
                         child: Container(
                             // color: Colors.red,
                             child: Text(
-                          getGroupsModel?.title ?? "",
+                          getGroupsModel?.name ?? "",
                           style: Styles.PoppinsRegular(
                               fontWeight: FontWeight.w400,
                               fontSize: ApplicationSizing.fontScale(14)),
@@ -333,25 +341,25 @@ class ChatList extends HookWidget {
                           ),
                         ),
                       ),
-                      getGroupsModel?.unreadMsgCount == 0
-                          ? Container()
-                          : Expanded(
-                              flex: 0,
-                              child: Container(
-                                alignment: Alignment.center,
-                                padding: EdgeInsets.all(5),
-                                child: Text(
-                                  "${getGroupsModel?.unreadMsgCount ?? ""}",
-                                  style: Styles.PoppinsRegular(
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: ApplicationSizing.fontScale(10),
-                                      color: Colors.white),
-                                  maxLines: 1,
-                                ),
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle, color: appColor),
-                              )
-                      ),
+                      // getGroupsModel?.unreadMsgCount == 0
+                      //     ? Container()
+                      //     : Expanded(
+                      //         flex: 0,
+                      //         child: Container(
+                      //           alignment: Alignment.center,
+                      //           padding: EdgeInsets.all(5),
+                      //           child: Text(
+                      //             "${getGroupsModel?.unreadMsgCount ?? ""}",
+                      //             style: Styles.PoppinsRegular(
+                      //                 fontWeight: FontWeight.w400,
+                      //                 fontSize: ApplicationSizing.fontScale(10),
+                      //                 color: Colors.white),
+                      //             maxLines: 1,
+                      //           ),
+                      //           decoration: BoxDecoration(
+                      //               shape: BoxShape.circle, color: appColor),
+                      //         )
+                      // ),
                     ],
                   ),
                 ],
@@ -363,3 +371,8 @@ class ChatList extends HookWidget {
     );
   }
 }
+
+
+
+
+

@@ -6,15 +6,18 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:signalr_core/signalr_core.dart';
 import 'package:twochealthcare/constants/api_strings.dart';
 import 'package:twochealthcare/models/chat_model/ChatMessage.dart';
+import 'package:twochealthcare/models/patient_communication_models/chat_message_model.dart';
+import 'package:twochealthcare/models/user/current_user.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/application_route_service.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 class SignalRServices{
-  PublishSubject<ChatMessage> newMessage = PublishSubject<ChatMessage>(sync: true);
+  PublishSubject<ChatMessageModel> newMessage = PublishSubject<ChatMessageModel>(sync: true);
   PublishSubject<dynamic> onChatViewed = PublishSubject<dynamic>(sync: true);
   HubConnection? connection;
+  CurrentUser? currentUser;
 
   ProviderReference? _ref;
   AuthServices? _authServices;
@@ -91,7 +94,10 @@ class SignalRServices{
   }
 
   SubscribeGroupsByUserId({String? appId}) async {
-    var result1 = await this.connection?.invoke(
+    currentUser = await _authServices?.getCurrentUserFromSharedPref();
+    int? facilityId = await _authServices?.getFacilityId();
+
+    var result1 = await connection?.invoke(
       'SubscribeGroupsByUserId',
       args: [appId],
     ).onError((error, stackTrace) {
@@ -100,7 +106,36 @@ class SignalRServices{
     }).then(
             (value) => {print('2cCHat Connection successful' + value.toString())});
     print("2cCHat this is the result1 var val = ${result1.toString()}");
-  }
+
+
+    if(currentUser != null){
+      var invokeUserName = await connection?.invoke(
+        'AddToGroup',
+        args: [currentUser?.userName],
+      ).onError((error, stackTrace) {
+        print(
+            "2cCHat error during inwoke AddToGroup [${currentUser?.userName}] ${error.toString()}");
+      }).then(
+              (value) => {print('2cCHat Connection successful AddToGroup [${currentUser?.userName}]' + value.toString())});
+      print("2cCHat this is the result1 var val = ${result1.toString()}");
+    }
+
+    if(currentUser!.userType == 5){
+      var invokeFacilityId = await connection?.invoke(
+        'AddToGroup',
+        args: ["${facilityId}-oncommunication"],
+      ).onError((error, stackTrace) {
+        print(
+            "2cCHat error during inwoke AddToGroup [${facilityId}] ${error.toString()}");
+      }).then(
+              (value) => {print('2cCHat Connection successful AddToGroup [${facilityId}-oncommunication]' + value.toString())});
+      print("2cCHat this is the result1 var val = ${result1.toString()}");
+    }
+
+    }
+
+
+
 
   subscribeSignalrMessages() {
     unSubscribeSignalrMessages();
@@ -153,11 +188,11 @@ class SignalRServices{
       print("OnVideoChat call ${data}}");
     });
     connection?.on('OnChatMessageReceived', (data) {
-      if (data != null) {
-        data.forEach((element) {
-          newMessage.add(ChatMessage.fromJson(element));
-        });
-      }
+      // if (data != null) {
+      //   data.forEach((element) {
+      //     newMessage.add(ChatMessage.fromJson(element));
+      //   });
+      // }
     });
     // connection?.on('OnChatMessageReceived', (data) => newMessage.add() );
     connection?.on('OnChatRequest', (data) {
@@ -166,7 +201,32 @@ class SignalRServices{
     connection?.on('OnChatViewed', (data) {
       print("OnChatViewed call $data}");
     });
+
+    ///OnPatientCommunicationReceived
+
+    /// Single R chat
+    connection?.on("OnPatientCommunicationReceived", (data) {
+
+      if (data != null) {
+        data.forEach((element) {
+
+          ChatMessageModel message = ChatMessageModel.fromJson(element);
+          // if(currentUser?.appUserId != message.senderUserId){
+            if(message.type != null){
+              if(message.type == 0) message.messageType = ChatMessageType.text;
+              if(message.type == 1) message.messageType = ChatMessageType.sms;
+              if(message.type == 2) message.messageType = ChatMessageType.document;
+              if(message.type == 3) message.messageType = ChatMessageType.image;
+              if(message.type == 4) message.messageType = ChatMessageType.audio;
+            }
+            newMessage.add(message);
+          // }
+        });
+      }
+    });
   }
+
+
   unSubscribeSignalrMessages() {
     connection?.off("OnChatViewed");
     connection?.off('OnDataReceived');
@@ -187,7 +247,7 @@ class SignalRServices{
 
   MarkChatGroupViewed({required int chatGroupId, required String userId}) async {
     print("MarkChatGroupViewed call");
-    await this.connection?.invoke("MarkChatGroupViewed",args: [chatGroupId,userId.trim()])
+    await connection?.invoke("MarkChatGroupViewed",args: [chatGroupId,userId.trim()])
         .onError((error, stackTrace) => print("error ${error.toString()}"))
         .then((value) => print("than ${value.toString()}"));
   }
@@ -195,7 +255,7 @@ class SignalRServices{
   SendBarcode({required String barcode}) async {
     print("MarkChatGroupViewed call");
     String userId  = await _authServices!.getCurrentAppUserId();
-    await this.connection?.invoke("SendBarcode",args: [barcode,userId])
+    await connection?.invoke("SendBarcode",args: [barcode,userId])
         .onError((error, stackTrace) {
       print("error ${error.toString()}");
     })

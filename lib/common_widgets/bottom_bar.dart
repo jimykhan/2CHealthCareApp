@@ -108,28 +108,7 @@ class BottomBar extends HookWidget {
                         }
                         if (check is bool) {
                           if (check) {
-                            if (chatListVM.groupIds.length == 1) {
-                              applicationRouteService.addScreen(
-                                  screenName: "${chatListVM.groupIds[0].id}");
-                              Navigator.pushReplacement(
-                                  context,
-                                  PageTransition(
-                                      child: ChatScreen(
-                                        getGroupsModel: chatScreenVM.groupIds[0],
-                                        backToHome: true,
-                                      ),
-                                      type: PageTransitionType.bottomToTop));
-                            } else {
-                              applicationRouteService.addAndRemoveScreen(
-                                  screenName: "ChatList");
-
-                              Navigator.pushReplacement(
-                                  context,
-                                  PageTransition(
-                                      child: ChatList(),
-                                      // child: ChatSlider(),
-                                      type: PageTransitionType.bottomToTop));
-                            }
+                            onLaunchActivityService.ChatDecider();
                           } else {
                             SnackBarMessage(
                                 message: "Chat disable for this user!");

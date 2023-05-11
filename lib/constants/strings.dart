@@ -80,3 +80,8 @@ class Strings {
 
 
 }
+
+class ScreenName{
+  static const String chatHistory = "chatHistory";
+  static const String chatList = "chatList";
+}

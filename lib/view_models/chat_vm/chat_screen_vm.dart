@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:audioplayers/audioplayers.dart' as audioPlay;
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -7,9 +8,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:flutter_sound/public/flutter_sound_recorder.dart';
+import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:twochealthcare/common_widgets/snackber_message.dart';
+import 'package:twochealthcare/constants/strings.dart';
 import 'package:twochealthcare/models/chat_model/ChatMessage.dart';
 import 'package:twochealthcare/models/patient_communication_models/chat_message_model.dart';
 import 'package:twochealthcare/models/patient_communication_models/communication_history_model.dart';
@@ -20,11 +23,13 @@ import 'package:twochealthcare/services/chat_services/chat_screen_service.dart';
 import 'package:twochealthcare/services/chat_services/patient_communication_service.dart';
 import 'package:twochealthcare/services/connectivity_service.dart';
 import 'package:twochealthcare/services/s3-services/src/s3-crud-service.dart';
+import 'package:twochealthcare/services/shared_pref_services.dart';
 import 'package:twochealthcare/services/signal_r_services.dart';
 import 'package:twochealthcare/util/data_format.dart';
 import 'package:twochealthcare/view_models/chat_vm/chat_list_vm.dart';
 import 'package:twochealthcare/views/chat/chat_screen.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:twochealthcare/models/patient_communication_models/chat_summary_data_model.dart';
 
 class ChatScreenVM extends ChangeNotifier {
 
@@ -44,6 +49,7 @@ class ChatScreenVM extends ChangeNotifier {
   ProviderReference? _ref;
   AuthServices? _authServices;
   ChatScreenService? _chatScreenService;
+  SharedPrefServices? _sharedPrefServices;
   ChatListVM? _chatListVM;
   ApplicationRouteService? _applicationRouteService;
   late ConnectivityService connectivityService;
@@ -54,6 +60,7 @@ class ChatScreenVM extends ChangeNotifier {
   /// audio recording
   bool isRecording = false;
   int recordingDuration = 0;
+  int? patientId;
   late AnimationController controller;
   final FlutterSoundRecorder _mRecorder = FlutterSoundRecorder();
   DateTime? startTime;
@@ -61,6 +68,7 @@ class ChatScreenVM extends ChangeNotifier {
   /// audio recording
 
   PatientCommunicationService? _patientCommunicationService;
+
 
 
 
@@ -109,7 +117,7 @@ class ChatScreenVM extends ChangeNotifier {
 
   initChatScreen() async {
     myFocusNode = FocusNode();
-
+    currentUserAppUserId = await _authServices?.getCurrentAppUserId();
     myFocusNode?.addListener(() {
       print("addListener has focus ${myFocusNode?.hasFocus}");
       if (myFocusNode?.hasFocus ?? false) {
@@ -133,6 +141,9 @@ class ChatScreenVM extends ChangeNotifier {
     _s3crudService = _ref!.read(s3CrudServiceProvider);
     connectivityService = _ref!.read(connectivityServiceProvider);
     _patientCommunicationService = _ref!.read(patientCommunicationServiceProvider);
+    _sharedPrefServices = _ref!.read(sharedPrefServiceProvider);
+
+
     _signalRServices?.newMessage.stream.listen((event) {
       print("new message reached to Rx dart..");
       print(event.timeStamp.toString());
@@ -141,17 +152,17 @@ class ChatScreenVM extends ChangeNotifier {
         event.messageStatus = MessageStatus.viewed;
         event.timeStamp =
             convertLocalToUtc(event.timeStamp!.replaceAll("Z", ""));
-        // chatMessageList.add(event);
-        if (_applicationRouteService?.currentScreen() ==
-            event.chatGroupId.toString()) {
+        communicationHistoryModel.results?.add(event);
+        if (_applicationRouteService?.currentScreen() == ScreenName.chatHistory) {
           print("this is appUserId  = ${currentUserAppUserId}");
-          _signalRServices!.MarkChatGroupViewed(
-              chatGroupId: event.chatGroupId!, userId: currentUserAppUserId!);
+          // _signalRServices!.MarkChatGroupViewed(
+          //     chatGroupId: event.chatGroupId!, userId: currentUserAppUserId!);
+          notifyListeners();
+          communicationHistoryModel.results!.length == 0
+              ? null
+              : ChatScreen.jumpToListIndex(isDelayed: true);
         }
-        notifyListeners();
-        communicationHistoryModel.results!.length == 0
-            ? null
-            : ChatScreen.jumpToListIndex(isDelayed: true);
+
       }
     });
     _signalRServices?.onChatViewed.stream.listen((event) {
@@ -201,7 +212,6 @@ class ChatScreenVM extends ChangeNotifier {
       if (response is CommunicationHistoryModel) {
         if (loadingPageNumber == 1) {
           communicationHistoryModel.results = response.results;
-
           setAllMessagesLoading(false);
         } else {
           if (response.results?.length != 0) {
@@ -226,43 +236,83 @@ class ChatScreenVM extends ChangeNotifier {
     }
   }
 
+  Future<dynamic> getGenerateCasesFromMessageList({int? patientId}) async {
+    try {
+      int? UserId = patientId ?? await _authServices?.getCurrentUserId();
+      int? facilityId =  await _authServices?.getFacilityId();
+      String? appUserId = await _authServices?.getCurrentAppUserId();
+
+        var response =  _patientCommunicationService?.getGenerateCasesFromMessageList(appUserId: appUserId,patientId: UserId, facility: facilityId);
+        // if (response is List<ChatMessageModel> && response.length > 0) {
+        //   communicationHistoryModel.results!.insertAll(0, response ?? []);
+        //   notifyListeners();
+        //   return communicationHistoryModel;
+        // }
+
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+
+  getPeriodicMessage({int? patientId}){
+    Timer.periodic(Duration(seconds: 4), (timer) {
+      if(_applicationRouteService?.currentScreen() == ScreenName.chatHistory){
+        getGenerateCasesFromMessageList(patientId: patientId);
+      }else{
+        timer.cancel();
+      }
+
+    });
+
+  }
+
+
+
   Future<dynamic> sendTextMessage(
       {String? message,
       String? fileUrl,
       required ChatMessageType chatMessageType}) async {
+    patientId = patientId ??  await _sharedPrefServices?.getCurrentUserId();
+    int? facilityId = await _sharedPrefServices?.getFacilityId();
+    String? appUserId = await _sharedPrefServices?.getCurrentAppUserId();
+    int? userType = await _sharedPrefServices?.getCurrentUserType();
     if(recordingDuration==0) recordingDuration = recordingDuration - 300;
+    int chatType = 0;
+    int communicationMethod = 1;
+    if(userType == 5){
+      if(communicationHistoryModel.results?.last.messageType == ChatMessageType.sms) communicationMethod = 0;
+    }
+
     try {
-      int chatType = 0;
+
       if (chatMessageType == ChatMessageType.text) chatType = 0;
-      if (chatMessageType == ChatMessageType.document) chatType = 1;
-      if (chatMessageType == ChatMessageType.image) chatType = 2;
-      if (chatMessageType == ChatMessageType.audio) chatType = 3;
+      if (chatMessageType == ChatMessageType.sms) chatType = 1;
+      if (chatMessageType == ChatMessageType.document) chatType = 2;
+      if (chatMessageType == ChatMessageType.image) chatType = 3;
+      if (chatMessageType == ChatMessageType.audio) chatType = 4;
       isMessageEmpty = true;
       communicationHistoryModel.results!.add(ChatMessageModel(
         id: -1,
         message: message ?? "",
-        // sentToAll: false,
-        // viewedByAll: false,
-        senderUserId: currentUserAppUserId,
+        senderUserId: appUserId,
         isSender: true,
-        // messageStatus: MessageStatus.not_sent,
-        // messageType: chatMessageType,
-        // timeStamp: DateTime(2021,DateTime.now().month,DateTime.now().month,03,33).toString(),
         timeStamp: DateTime.now().toString(),
         data: recordingDuration.toString(),
+        // method: ,
       ));
       notifyListeners();
       var body = {
-        "senderUserId": currentUserAppUserId,
-        "chatGroupId": chatGroupId,
         "message": message,
-        "linkUrl": fileUrl ?? "",
-        "chatType": chatType,
-        "data": recordingDuration.toString(),
+        "senderUserId": appUserId,
+        "patientId": patientId,
+        "facilityId": facilityId,
+        "method": communicationMethod,
       };
       var response = await _patientCommunicationService?.sendMessage(
           body: body, currentUserAppUserId: currentUserAppUserId);
-      if (response is ChatMessage) {
+      if (response is ChatMessageModel) {
+        response.isSender = true;
         print("yes run this okay");
         communicationHistoryModel.results!.removeLast();
         response.messageStatus = MessageStatus.not_view;

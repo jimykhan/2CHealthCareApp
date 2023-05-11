@@ -7,6 +7,7 @@ import 'package:twochealthcare/models/chat_model/ChatMessage.dart';
 import 'package:twochealthcare/models/chat_model/GetGroups.dart';
 import 'package:twochealthcare/models/patient_communication_models/chat_group_model.dart';
 import 'package:twochealthcare/models/patient_communication_models/chat_message_model.dart';
+import 'package:twochealthcare/models/patient_communication_models/chat_summary_data_model.dart';
 import 'package:twochealthcare/models/patient_communication_models/communication_history_model.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/dio_services/dio_services.dart';
@@ -38,9 +39,10 @@ class PatientCommunicationService{
           }
           if(element.type != null){
             if(element.type == 0) element.messageType = ChatMessageType.text;
-            if(element.type == 1) element.messageType = ChatMessageType.document;
-            if(element.type == 2) element.messageType = ChatMessageType.image;
-            if(element.type == 3) element.messageType = ChatMessageType.audio;
+            if(element.type == 1) element.messageType = ChatMessageType.sms;
+            if(element.type == 2) element.messageType = ChatMessageType.document;
+            if(element.type == 3) element.messageType = ChatMessageType.image;
+            if(element.type == 4) element.messageType = ChatMessageType.audio;
           }
         });
         chatlist.results = chatlist.results?.reversed.toList();
@@ -56,9 +58,50 @@ class PatientCommunicationService{
 
   }
 
-  Future<dynamic> getPatientGroupByFacilityId({int? facilityId, required int pageNumber, int pageSize = 10}) async {
+  Future<dynamic> getGenerateCasesFromMessageList({String? appUserId,int? facility,int? patientId}) async {
+    try{
+        _dioService.dio!.get(PatientCommunicationController.getGenerateCasesFromMessageList+"/$facility?patientId=$patientId",
+      );
+      // if(response.statusCode == 200){
+      //   List<ChatMessageModel>? chatMessageList = [];
+      //
+      //   response.data?.forEach((element) {
+      //     ChatMessageModel newMessage = ChatMessageModel.fromJson(element);
+      //     newMessage.messageStatus = MessageStatus.viewed;
+      //     newMessage.timeStamp  = convertLocalToUtc(newMessage.timeStamp);
+      //     if(newMessage.senderUserId == appUserId){
+      //       newMessage.isSender = true;
+      //     }else{
+      //       newMessage.isSender = false;
+      //     }
+      //     if(newMessage.type != null){
+      //       if(newMessage.type == 0) newMessage.messageType = ChatMessageType.text;
+      //       if(newMessage.type == 1) newMessage.messageType = ChatMessageType.sms;
+      //       if(newMessage.type == 2) newMessage.messageType = ChatMessageType.document;
+      //       if(newMessage.type == 3) newMessage.messageType = ChatMessageType.image;
+      //       if(newMessage.type == 4) newMessage.messageType = ChatMessageType.audio;
+      //     }
+      //     chatMessageList?.add(newMessage);
+      //   });
+      //
+      //   chatMessageList = chatMessageList.reversed.toList();
+      //   return chatMessageList;
+      //
+      // }else{
+      //   return null;
+      // }
+    }
+    catch(e){
+      print(e.toString());
+    }
+
+  }
+
+
+  Future<dynamic> getPatientGroupByFacilityId({int? facilityId, required int pageNumber, int pageSize = 10,bool unread = false,critical = false,following = false}) async {
     // try{
-      Response response = await _dioService.dio!.get(PatientCommunicationController.getPatientGroupsByFacilityId+"/$facilityId?PageNumber=$pageNumber&PageSize=$pageSize",
+      Response response = await _dioService.dio!.get(PatientCommunicationController.getPatientGroupsByFacilityId+"/$facilityId?"
+          "following=$following&critical=$critical&unread=$unread&PageNumber=$pageNumber&PageSize=$pageSize",
       );
       if (response is Response) {
         if (response.statusCode == 200) {
@@ -82,7 +125,28 @@ class PatientCommunicationService{
               else{
                 element.timeStamp = Jiffy(element.lastMessageTime).format(Strings.TimeFormat);
               }
-            }});
+            }
+
+            if(element.lastCommunication?.timeStamp !=null){
+              element.lastCommunication?.timeStamp = convertLocalToUtc(element.lastCommunication?.timeStamp!.replaceAll("Z", ""));
+              DateTime currentDate = DateTime.now();
+              final lastMessageTime = DateTime.parse(element.lastCommunication!.timeStamp!);
+              int difference = currentDate.difference(lastMessageTime).inDays;
+              if(difference == 1){
+                element.lastCommunication?.timeStamp = "Yesterday";
+              }
+              else if(difference>1){
+                element.lastCommunication?.timeStamp = Jiffy(element.lastCommunication?.timeStamp).format(Strings.dateFormatFullYear);
+              }
+              else{
+                element.lastCommunication?.timeStamp = Jiffy(element.lastCommunication?.timeStamp).format(Strings.TimeFormat);
+              }
+            }
+
+
+          });
+
+
 
           if (groupIds.length == 0) {
 
@@ -99,9 +163,23 @@ class PatientCommunicationService{
 
   }
 
+  Future<dynamic> getChatSummaryDataByFacilityId({int? facilityId}) async {
+    // try{
+      Response response = await _dioService.dio!.get(PatientCommunicationController.getCommunicationSummaryData+"/$facilityId",
+      );
+      if (response is Response) {
+        if (response.statusCode == 200) {
+          ChatSummaryDataModel summaryData;
+          summaryData = ChatSummaryDataModel.fromJson(response.data);
+          return summaryData;
+        } else {
+          return null;
+        }
+      }
+  }
+
   Future<dynamic> sendMessage({var body, String? currentUserAppUserId}) async {
     try{
-
       Response response = await _dioService.dio!.post(PatientCommunicationController.patientCommunication,
         data: body,
       );
@@ -113,12 +191,13 @@ class PatientCommunicationService{
         } else {
           chatMessageModel.isSender = false;
         }
-        // if(chatMessageModel.chatType != null){
-        //   if(chatMessageModel.chatType == 0) newMessage.messageType = ChatMessageType.text;
-        //   if(chatMessageModel.chatType == 1) newMessage.messageType = ChatMessageType.document;
-        //   if(chatMessageModel.chatType == 2) newMessage.messageType = ChatMessageType.image;
-        //   if(chatMessageModel.chatType == 3) newMessage.messageType = ChatMessageType.audio;
-        // }
+        if(chatMessageModel.type != null){
+          if(chatMessageModel.type == 0) chatMessageModel.messageType = ChatMessageType.text;
+          if(chatMessageModel.type == 1) chatMessageModel.messageType = ChatMessageType.sms;
+          if(chatMessageModel.type == 2) chatMessageModel.messageType = ChatMessageType.document;
+          if(chatMessageModel.type == 3) chatMessageModel.messageType = ChatMessageType.image;
+          if(chatMessageModel.type == 4) chatMessageModel.messageType = ChatMessageType.audio;
+        }
         return chatMessageModel;
       }else{
         return false;
@@ -129,6 +208,7 @@ class PatientCommunicationService{
       return false;
     }
   }
+
 
   Future<dynamic> markChatViewed({required bool inViewed, required int patientCommunicationId}) async {
     try{
@@ -150,7 +230,4 @@ class PatientCommunicationService{
       return false;
     }
   }
-
-
-
 }

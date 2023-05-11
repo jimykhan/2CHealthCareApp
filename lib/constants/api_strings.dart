@@ -176,7 +176,9 @@ class PatientCommunicationController{
   static const String patientCommunication = baseUrl + "/api/PatientCommunication";
   static const String markCommunicationViewed = baseUrl + "/api/PatientCommunication/MarkCommunicationViewed";
   static const String getPatientGroupsByFacilityId = baseUrl + "/api/PatientCommunication/GetPatientGroups";
+  static const String getCommunicationSummaryData = baseUrl + "/api/PatientCommunication/GetCommunicationSummaryData";
   static const String getCommunicationHistoryByPatientId = baseUrl + "/api/PatientCommunication/GetCommunicationHistory";
+  static const String getGenerateCasesFromMessageList = baseUrl + "/api/RingCentral/GenerateCasesFromMessageList";
 }
 
 

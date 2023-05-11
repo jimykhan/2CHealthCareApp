@@ -53,37 +53,38 @@ class _ChatSliderState extends State<ChatSlider>  {
               scrollDirection: Axis.horizontal,
               itemCount: widget.menuList.length,
               itemBuilder: (BuildContext context, int index) {
-                return Container(
-                    key: _keys[index],
-                    child: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            _buttonTap = true;
-                            _setCurrentIndex(index);
-                          });
-                          widget.onchange(widget.menuList[index]);
-                        },
-                        child: Container(
-                          // alignment: Alignment.bottomCenter,
-                          padding: EdgeInsets.symmetric(horizontal: 10),
-                          decoration: BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(
-                                color: _getForegroundColor(index),
-                                width: 2
-                              )
-                            )
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(widget.menuList[index].name??"",style: Styles.PoppinsRegular(fontSize: ApplicationSizing.fontScale(15),color: _getFontColor(index)),),
-                              SizedBox(width: 10,),
-                              Text("${widget.menuList[index].count??" "}",style: Styles.PoppinsRegular(fontSize: ApplicationSizing.fontScale(15),color: _getFontColor(index)),),
+                return  Container(
+                  width: MediaQuery.of(context).size.width/3.5,
+                      key: _keys[index],
+                      child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _buttonTap = true;
+                              _setCurrentIndex(index);
+                            });
+                            widget.onchange(widget.menuList[index]);
+                          },
+                          child: Container(
+                            // alignment: Alignment.bottomCenter,
+                            padding: EdgeInsets.symmetric(horizontal: 10),
+                            decoration: BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(
+                                  color: _getForegroundColor(index),
+                                  width: 2
+                                )
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(widget.menuList[index].name??"",style: Styles.PoppinsRegular(fontSize: ApplicationSizing.fontScale(15),color: _getFontColor(index)),),
+                                // SizedBox(width: 10,),
+                                Text("${widget.menuList[index].count??""}",style: Styles.PoppinsRegular(fontSize: ApplicationSizing.fontScale(15),color: _getFontColor(index)),),
 
-                            ],
-                          ),
-                        )));
+                              ],
+                            ),
+                          )));
               })),
     ]);
   }

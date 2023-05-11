@@ -12,6 +12,7 @@ import 'package:twochealthcare/common_widgets/custom_appbar.dart';
 import 'package:twochealthcare/common_widgets/input_field/custom_text_field.dart';
 import 'package:twochealthcare/common_widgets/no_data_inlist.dart';
 import 'package:twochealthcare/common_widgets/notification_widget.dart';
+import 'package:twochealthcare/constants/strings.dart';
 import 'package:twochealthcare/models/chat_model/GetGroups.dart';
 import 'package:twochealthcare/models/patient_communication_models/chat_group_model.dart';
 import 'package:twochealthcare/providers/providers.dart';
@@ -40,7 +41,9 @@ class ChatList extends HookWidget {
     useEffect(
       () {
         Future.microtask(() async {
-          chatListVM.getPatientGroupByFacilityId();
+          chatListVM.loadingPageNumber = 1;
+          chatListVM.getPatientGroupByFacilityId(pageNumber : 1);
+          chatListVM.getChatSummaryDataByFacilityId();
         });
 
         return () {
@@ -208,8 +211,9 @@ class ChatList extends HookWidget {
     return Column(
       children: [
         (loginVM.currentUser?.userType == 1) ? Container() :
-        Container(height : 40,child: ChatSlider(menuList: chatListVM?.menuList??[], onchange: (Menu) {  },)),
-        (loginVM.currentUser?.userType == 1) ? Container() : _searchField(chatListVM: chatListVM),
+        Container(height : 40,child: ChatSlider(menuList: chatListVM?.chatTypeList??[], onchange: chatListVM?.onChatFilterChange?? (Menu){},)),
+        // (loginVM.currentUser?.userType == 1) ? Container() : _searchField(chatListVM: chatListVM),
+        SizedBox(height: 20,),
         Expanded(child: (chatListVM?.chatGroupList.length == 0 && !chatListVM!.loadingChatList)
             ? NoData()
             : Container(
@@ -222,12 +226,12 @@ class ChatList extends HookWidget {
                     return GestureDetector(
                       onTap: () {
                         applicationRouteService.addScreen(
-                            screenName: "${chatListVM?.chatGroupList[index].id}");
+                            screenName: ScreenName.chatHistory);
                         Navigator.push(
                             context,
                             PageTransition(
                                 child: ChatScreen(
-                                  getGroupsModel: chatListVM?.groupIds[index],
+                                  // getGroupsModel: chatListVM?.chatGroupList[index],
                                   patientId: chatListVM?.chatGroupList[index].lastCommunication!.patientId!,
                                   messageTitle: chatListVM?.chatGroupList[index].name,
                                 ),
@@ -305,7 +309,7 @@ class ChatList extends HookWidget {
                             alignment: Alignment.centerRight,
                             // color: Colors.pink,
                             child: Text(
-                              getGroupsModel?.timeStamp ?? "",
+                              getGroupsModel?.lastCommunication?.timeStamp ?? "",
                               style: Styles.PoppinsRegular(
                                   fontWeight: FontWeight.w400,
                                   fontSize: ApplicationSizing.fontScale(11),
@@ -331,7 +335,7 @@ class ChatList extends HookWidget {
                             // color: Colors.white,
                           ),
                           child: Text(
-                            getGroupsModel?.lastMessage ?? "",
+                            getGroupsModel?.lastCommunication?.message ?? "",
                             style: Styles.PoppinsRegular(
                               fontWeight: FontWeight.w400,
                               fontSize: ApplicationSizing.fontScale(12),

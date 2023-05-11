@@ -42,6 +42,8 @@ class Message extends HookWidget {
       switch (message.messageType) {
         case ChatMessageType.text:
           return TextMessage(message: message);
+        case ChatMessageType.sms:
+          return TextMessage(message: message);
         case ChatMessageType.audio:
           return Container();
           // return AudioMessage(message: message,index: index);

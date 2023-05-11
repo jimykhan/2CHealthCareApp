@@ -5,8 +5,10 @@ import 'package:jiffy/jiffy.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:twochealthcare/constants/strings.dart';
 import 'package:twochealthcare/main.dart';
+import 'package:twochealthcare/models/chat_model/ChatMessage.dart';
 import 'package:twochealthcare/models/chat_model/GetGroups.dart';
 import 'package:twochealthcare/models/patient_communication_models/chat_group_model.dart';
+import 'package:twochealthcare/models/patient_communication_models/chat_summary_data_model.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/application_route_service.dart';
 import 'package:twochealthcare/services/auth_services/auth_services.dart';
@@ -35,7 +37,8 @@ class ChatListVM extends ChangeNotifier{
   int? currentUserUserId;
   int loadingPageNumber = 1;
   List<ChatGroupModel> chatGroupList = [];
-  List<Menu> menuList = [Menu(id: 0,name: "New",count: 30,),Menu(id: 0,name: "Clinical",count: 130,),Menu(id: 0,name: "Following",count: 37,),Menu(id: 0,name: "Unread",count: 10,)];
+  ChatSummaryDataModel? chatSummaryData;
+  List<Menu> chatTypeList = [Menu(id: -1,name: "All Chat",),Menu(id: 0,name: "New",count: 0,),Menu(id: 1,name: "Critical",count: 0,),Menu(id: 2,name: "Following",count: 0,)];
   // TextEditingController searchController = TextEditingController();
 
 
@@ -77,44 +80,81 @@ class ChatListVM extends ChangeNotifier{
     _applicationRouteService = _ref!.read(applicationRouteServiceProvider);
     _patientCommunicationService = _ref!.read(patientCommunicationServiceProvider);
     _sharedPrefServices = _ref!.read(sharedPrefServiceProvider);
+    // _signalRServices?.newMessage.stream.listen((event) {
+    //   print("call chat list");
+    //   groupIds.forEach((element) {
+    //     if(element.id == event.chatGroupId){
+    //       print("call chat list equal id");
+    //      element.lastMessage = event.message;
+    //      element.lastMessageTime = convertLocalToUtc(event.timeStamp!.replaceAll("Z", ""));
+    //      element.lastMessageTime = Jiffy(element.lastMessageTime).format(Strings.dateAndTimeFormat);
+    //      if(_applicationRouteService?.currentScreen() != event.chatGroupId.toString()){
+    //        element.unreadMsgCount = element.unreadMsgCount! + 1;
+    //        bool inList = false;
+    //        unReadChats.forEach((unRead) {
+    //          if(unRead.chatGroupId == element.id){
+    //            unRead.unReadMessages = element.unreadMsgCount;
+    //            inList = true;
+    //          }
+    //        });
+    //        if(!inList){
+    //          unReadChats.add(UnReadChat(chatGroupId: element.id,unReadMessages: element.unreadMsgCount));
+    //        }
+    //
+    //      }
+    //      notifyListeners();
+    //     }
+    //      else if(_applicationRouteService?.currentScreen() != event.chatGroupId.toString()){
+    //       bool inList = false;
+    //       unReadChats.forEach((unRead) {
+    //         if(unRead.chatGroupId == element.id){
+    //           unRead.unReadMessages = element.unreadMsgCount;
+    //           inList = true;
+    //         }
+    //       });
+    //       if(!inList){
+    //         unReadChats.add(UnReadChat(chatGroupId: element.id,unReadMessages: element.unreadMsgCount));
+    //       }
+    //
+    //     }
+    //   });
+    // });
+
     _signalRServices?.newMessage.stream.listen((event) {
-      print("call chat list");
-      groupIds.forEach((element) {
-        if(element.id == event.chatGroupId){
-          print("call chat list equal id");
-         element.lastMessage = event.message;
-         element.lastMessageTime = convertLocalToUtc(event.timeStamp!.replaceAll("Z", ""));
-         element.lastMessageTime = Jiffy(element.lastMessageTime).format(Strings.dateAndTimeFormat);
-         if(_applicationRouteService?.currentScreen() != event.chatGroupId.toString()){
-           element.unreadMsgCount = element.unreadMsgCount! + 1;
-           bool inList = false;
-           unReadChats.forEach((unRead) {
-             if(unRead.chatGroupId == element.id){
-               unRead.unReadMessages = element.unreadMsgCount;
-               inList = true;
-             }
-           });
-           if(!inList){
-             unReadChats.add(UnReadChat(chatGroupId: element.id,unReadMessages: element.unreadMsgCount));
-           }
+      print("new message reached to Rx dart..");
+      print(event.timeStamp.toString());
+      // if (event.senderUserId != currentUserAppUserId) {
+      event.isSender = false;
+      event.messageStatus = MessageStatus.viewed;
 
-         }
-         notifyListeners();
+      if(event.timeStamp !=null){
+        event.timeStamp = convertLocalToUtc(event.timeStamp!.replaceAll("Z", ""));
+        DateTime currentDate = DateTime.now();
+        final lastMessageTime = DateTime.parse(event.timeStamp!);
+        int difference = currentDate.difference(lastMessageTime).inDays;
+        if(difference == 1){
+          event.timeStamp = "Yesterday";
         }
-         else if(_applicationRouteService?.currentScreen() != event.chatGroupId.toString()){
-          bool inList = false;
-          unReadChats.forEach((unRead) {
-            if(unRead.chatGroupId == element.id){
-              unRead.unReadMessages = element.unreadMsgCount;
-              inList = true;
-            }
-          });
-          if(!inList){
-            unReadChats.add(UnReadChat(chatGroupId: element.id,unReadMessages: element.unreadMsgCount));
-          }
+        else if(difference>1){
+          event.timeStamp = Jiffy(event.timeStamp).format(Strings.dateFormatFullYear);
+        }
+        else{
+          event.timeStamp = Jiffy(event.timeStamp).format(Strings.TimeFormat);
+        }
+      }
 
+      chatGroupList.forEach((element) {
+        if(element.id == event.patientId){
+          element.lastCommunication = event;
+          if(
+          _applicationRouteService?.currentScreen() == ScreenName.chatList){
+            notifyListeners();
+          }
         }
       });
+
+
+      // }
     });
   }
 
@@ -163,14 +203,14 @@ class ChatListVM extends ChangeNotifier{
   }
 
 
-  Future<dynamic> getPatientGroupByFacilityId({int? pageNumber}) async {
+  Future<dynamic> getPatientGroupByFacilityId({int? pageNumber,bool unread = false,critical = false,following = false}) async {
     try {
       pageNumber == 1 ? setLoadingChatList(true) : setPageWiseLoading(true);
       int facilityId = await _sharedPrefServices!.getFacilityId();
       String appUserId = await _authServices!.getCurrentAppUserId();
 
       var response = await _patientCommunicationService?.getPatientGroupByFacilityId(
-          facilityId: facilityId, pageNumber: loadingPageNumber);
+          facilityId: facilityId, pageNumber: loadingPageNumber,unread: unread,following: following,critical: critical,pageSize: 10000);
       if (response is List<ChatGroupModel>) {
         if (loadingPageNumber == 1) {
 
@@ -199,6 +239,21 @@ class ChatListVM extends ChangeNotifier{
     }
   }
 
+  getChatSummaryDataByFacilityId()async{
+    int? facility = await _sharedPrefServices?.getFacilityId();
+    var response = await _patientCommunicationService?.getChatSummaryDataByFacilityId(facilityId: facility);
+    if (response is ChatSummaryDataModel) {
+      chatSummaryData = response;
+      chatTypeList.forEach((element) {
+        if(element.id == 0) element.count = chatSummaryData?.unread??0;
+        if(element.id == 1) element.count = chatSummaryData?.critical??0;
+        if(element.id == 2) element.count = chatSummaryData?.following??0;
+        if(element.id == 3) element.count = chatSummaryData?.anonymous??0;
+      });
+      // notifyListeners();
+    }
+  }
+
   setLoadingChatList(bool check) {
     loadingChatList = check;
     notifyListeners();
@@ -220,6 +275,14 @@ class ChatListVM extends ChangeNotifier{
     unReadChats.removeWhere((element) => element.chatGroupId == int.parse(groupId));
     unReadChats.removeWhere((element) => element.unReadMessages! == 0);
     notifyListeners();
+  }
+
+  onChatFilterChange(Menu menu){
+    loadingPageNumber = 1;
+    if(menu.id == 0) getPatientGroupByFacilityId(pageNumber : 1,unread: true,following: false,critical: false);
+    if(menu.id == 1) getPatientGroupByFacilityId(pageNumber : 1,critical: true,following: false,unread: false);
+    if(menu.id == 2) getPatientGroupByFacilityId(pageNumber : 1,following: true,unread: false,critical: false);
+    if(menu.id == -1) getPatientGroupByFacilityId(pageNumber : 1);
   }
 
 }

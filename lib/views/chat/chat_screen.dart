@@ -11,6 +11,7 @@ import 'package:twochealthcare/common_widgets/app_bar_components/back_button.dar
 import 'package:twochealthcare/common_widgets/circular_image.dart';
 import 'package:twochealthcare/common_widgets/circular_svg_icon.dart';
 import 'package:twochealthcare/common_widgets/custom_appbar.dart';
+import 'package:twochealthcare/constants/strings.dart';
 import 'package:twochealthcare/models/chat_model/GetGroups.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +24,7 @@ import 'package:twochealthcare/services/onlunch_activity_routes_service.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
+import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
 import 'package:twochealthcare/view_models/chat_vm/chat_screen_vm.dart';
 import 'package:twochealthcare/views/chat/components/chat_input_field.dart';
 import 'package:twochealthcare/views/chat/components/message.dart';
@@ -39,6 +41,7 @@ class ChatScreen extends HookWidget {
   ChatScreen({this.getGroupsModel,this.backToHome = false,this.patientId,this.messageTitle});
   @override
   Widget build(BuildContext context) {
+    LoginVM loginVM = useProvider(loginVMProvider);
     chatScrollController = useScrollController(initialScrollOffset: MediaQuery.of(context).size.height);
     ChatScreenVM chatScreenVM = useProvider(chatScreenVMProvider);
     ApplicationRouteService applicationRouteService = useProvider(applicationRouteServiceProvider);
@@ -48,15 +51,15 @@ class ChatScreen extends HookWidget {
     useEffect(
 
       () {
-        chatScreenVM.initChatScreen();
+        chatScreenVM.chatGroupId = getGroupsModel?.id.toString();
+        chatScreenVM.patientId = patientId;
+
         // chatService.initSigalR(token: deviceService?.currentUser?.bearerToken??"",appId: deviceService?.currentUser?.appUserId??"");
         Future.microtask(() async {
-          chatScreenVM.chatGroupId = getGroupsModel?.id.toString();
-
           chatScreenVM.loadingPageNumber = 1;
-          await chatScreenVM.getAllMessages(
-              patientId: patientId, pageNumber: 1);
+          await chatScreenVM.getAllMessages(patientId: patientId, pageNumber: 1);
           jumpToListIndex(isDelayed: true);
+          chatScreenVM.getPeriodicMessage(patientId: patientId);
         });
         chatScrollController?.addListener(_scrollListener);
 
@@ -64,7 +67,7 @@ class ChatScreen extends HookWidget {
 
         return () {
           chatScreenVM.dispose();
-          applicationRouteService.removeScreen(screenName: "${getGroupsModel?.id}");
+          applicationRouteService.removeScreen(screenName: ScreenName.chatHistory);
           // Dispose Objects here
         };
       },
@@ -112,7 +115,7 @@ class ChatScreen extends HookWidget {
                       width: ApplicationSizing.convertWidth(10),
                     ),
                      AppBarTextStyle(
-                          text: messageTitle ?? "Text",
+                          text: messageTitle ?? loginVM.currentUser?.fullName ?? "Text",
                           textsize: ApplicationSizing.convert(18)),
                   ],
                 ),

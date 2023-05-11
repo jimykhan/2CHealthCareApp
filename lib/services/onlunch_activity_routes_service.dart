@@ -23,6 +23,7 @@ import 'package:twochealthcare/view_models/profile_vm.dart';
 import 'package:twochealthcare/views/admin_view/home_view/admin_home_view.dart';
 import 'package:twochealthcare/views/auths/login.dart';
 import 'package:twochealthcare/views/chat/chat_list.dart';
+import 'package:twochealthcare/views/chat/chat_screen.dart';
 import 'package:twochealthcare/views/facility_user/fu_home/fu_home.dart';
 import 'package:twochealthcare/views/facility_user/fu_home/fu_profile.dart';
 import 'package:twochealthcare/views/home/home.dart';
@@ -94,7 +95,7 @@ class OnLaunchActivityAndRoutesService{
     //   "userName": loginVM?.currentUser?.fullName??"",
     //   "lastLogedIn": DateTime.now().toString()
     // });
-    _chatListVM?.getGroupsIds();
+    // _chatListVM?.getGroupsIds();
     // firebaseService?.initNotification();
     loginVM?.getCurrentUserFromSharedPref();
     signalRServices?.initSignalR();
@@ -107,7 +108,7 @@ class OnLaunchActivityAndRoutesService{
     //   "userName": loginVM?.currentUser?.fullName??"",
     //   "lastLogedIn": DateTime.now().toString()
     // });
-    _chatListVM?.getGroupsIds();
+    // _chatListVM?.getGroupsIds();
     // firebaseService?.initNotification();
     _fuHomeViewModel?.getFacilitiesByUserId();
     loginVM?.getCurrentUserFromSharedPref();
@@ -261,6 +262,33 @@ class OnLaunchActivityAndRoutesService{
     }
     else{
     }
+  }
+
+  ChatDecider()async{
+    CurrentUser currentUser = await loginVM?.getCurrentUserFromSharedPref();
+
+      if (currentUser.userType == 1) {
+        applicationRouteService?.addScreen(
+            screenName: ScreenName.chatHistory);
+        Navigator.pushReplacement(
+            applicationContext!.currentContext!,
+            PageTransition(
+                child: ChatScreen(
+                  backToHome: true,
+                ),
+                type: PageTransitionType.bottomToTop));
+      }
+      else {
+        applicationRouteService?.addAndRemoveScreen(
+            screenName: ScreenName.chatList);
+        Navigator.pushReplacement(
+            applicationContext!.currentContext!,
+            PageTransition(
+                child: ChatList(),
+                // child: ChatSlider(),
+                type: PageTransitionType.bottomToTop));
+      }
+
   }
 
   // Future<LogedInUserModel> setAndGetLastLoginDateTime()async{

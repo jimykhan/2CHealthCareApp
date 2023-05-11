@@ -262,6 +262,13 @@ class AuthServices{
     return Id;
   }
 
+  Future<int> getFacilityId() async {
+    int? facilityId = await _sharePrf?.getFacilityId();
+    int Id = 0 ;
+    if(facilityId != null) Id = facilityId;
+    return Id;
+  }
+
   Future<int> getCurrentUserType() async {
     var currentUser = await getCurrentUserFromSharedPref();
     int userType = 0 ;

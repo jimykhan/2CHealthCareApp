@@ -59,7 +59,7 @@ class ChatScreen extends HookWidget {
           chatScreenVM.loadingPageNumber = 1;
           await chatScreenVM.getAllMessages(patientId: patientId, pageNumber: 1);
           jumpToListIndex(isDelayed: true);
-          chatScreenVM.getPeriodicMessage(patientId: patientId);
+          // chatScreenVM.getPeriodicMessage(patientId: patientId);
         });
         chatScrollController?.addListener(_scrollListener);
 

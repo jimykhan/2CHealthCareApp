@@ -8,6 +8,7 @@ import 'package:twochealthcare/main.dart';
 import 'package:twochealthcare/models/chat_model/ChatMessage.dart';
 import 'package:twochealthcare/models/chat_model/GetGroups.dart';
 import 'package:twochealthcare/models/patient_communication_models/chat_group_model.dart';
+import 'package:twochealthcare/models/patient_communication_models/chat_message_model.dart';
 import 'package:twochealthcare/models/patient_communication_models/chat_summary_data_model.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/application_route_service.dart';
@@ -123,33 +124,31 @@ class ChatListVM extends ChangeNotifier{
     _signalRServices?.newMessage.stream.listen((event) {
       print("new message reached to Rx dart..");
       print(event.timeStamp.toString());
+      ChatMessageModel message = ChatMessageModel.fromJson(event.toJson());
       // if (event.senderUserId != currentUserAppUserId) {
-      event.isSender = false;
-      event.messageStatus = MessageStatus.viewed;
+      message.isSender = false;
+      message.messageStatus = MessageStatus.viewed;
 
-      if(event.timeStamp !=null){
-        event.timeStamp = convertLocalToUtc(event.timeStamp!.replaceAll("Z", ""));
+      if(message.timeStamp !=null){
+        message.timeStamp = convertLocalToUtc(message.timeStamp!.replaceAll("Z", ""));
         DateTime currentDate = DateTime.now();
-        final lastMessageTime = DateTime.parse(event.timeStamp!);
+        final lastMessageTime = DateTime.parse(message.timeStamp!);
         int difference = currentDate.difference(lastMessageTime).inDays;
         if(difference == 1){
-          event.timeStamp = "Yesterday";
+          message.timeStamp = "Yesterday";
         }
         else if(difference>1){
-          event.timeStamp = Jiffy(event.timeStamp).format(Strings.dateFormatFullYear);
+          message.timeStamp = Jiffy(message.timeStamp).format(Strings.dateFormatFullYear);
         }
         else{
-          event.timeStamp = Jiffy(event.timeStamp).format(Strings.TimeFormat);
+          message.timeStamp = Jiffy(message.timeStamp).format(Strings.TimeFormat);
         }
       }
 
       chatGroupList.forEach((element) {
-        if(element.id == event.patientId){
-          element.lastCommunication = event;
-          if(
-          _applicationRouteService?.currentScreen() == ScreenName.chatList){
+        if(element.id == message.patientId){
+          element.lastCommunication = message;
             notifyListeners();
-          }
         }
       });
 

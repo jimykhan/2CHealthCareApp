@@ -147,23 +147,25 @@ class ChatScreenVM extends ChangeNotifier {
     _signalRServices?.newMessage.stream.listen((event) {
       print("new message reached to Rx dart..");
       print(event.timeStamp.toString());
-      if (event.senderUserId != currentUserAppUserId) {
-        event.isSender = false;
-        event.messageStatus = MessageStatus.viewed;
-        event.timeStamp =
-            convertLocalToUtc(event.timeStamp!.replaceAll("Z", ""));
-        communicationHistoryModel.results?.add(event);
-        if (_applicationRouteService?.currentScreen() == ScreenName.chatHistory) {
-          print("this is appUserId  = ${currentUserAppUserId}");
-          // _signalRServices!.MarkChatGroupViewed(
-          //     chatGroupId: event.chatGroupId!, userId: currentUserAppUserId!);
-          notifyListeners();
-          communicationHistoryModel.results!.length == 0
-              ? null
-              : ChatScreen.jumpToListIndex(isDelayed: true);
-        }
+      if (_applicationRouteService?.currentScreen() == ScreenName.chatHistory) {
+        if (event.senderUserId != currentUserAppUserId) {
+          event.isSender = false;
+          event.messageStatus = MessageStatus.viewed;
+          if(event.timeStamp !=null){
+            event.timeStamp = convertLocalToUtc(event.timeStamp!.replaceAll("Z", ""));
+          }
+          communicationHistoryModel.results?.add(event);
+            print("this is appUserId  = ${currentUserAppUserId}");
+            // _signalRServices!.MarkChatGroupViewed(
+            //     chatGroupId: event.chatGroupId!, userId: currentUserAppUserId!);
+            notifyListeners();
+            communicationHistoryModel.results!.length == 0
+                ? null
+                : ChatScreen.jumpToListIndex(isDelayed: true);
 
+        }
       }
+
     });
     _signalRServices?.onChatViewed.stream.listen((event) {
       print("new message reached to Rx dart..");
@@ -283,7 +285,6 @@ class ChatScreenVM extends ChangeNotifier {
     if(userType == 5){
       if(communicationHistoryModel.results?.last.messageType == ChatMessageType.sms) communicationMethod = 0;
     }
-
     try {
 
       if (chatMessageType == ChatMessageType.text) chatType = 0;

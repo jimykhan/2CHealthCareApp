@@ -57,6 +57,22 @@ class PatientCommunicationService{
     }
 
   }
+  Future<dynamic> getUnReadMessageById({required int userId,}) async {
+    try{
+      Response response = await _dioService.dio!.get(PatientCommunicationController.getUnReadCountByPatient+"/$userId",
+      );
+      if(response.statusCode == 200){
+        return response.data;
+
+      }else{
+        return null;
+      }
+    }
+    catch(e){
+      print(e.toString());
+    }
+
+  }
 
   Future<dynamic> getGenerateCasesFromMessageList({String? appUserId,int? facility,int? patientId}) async {
     try{

@@ -65,7 +65,7 @@ dependencies:
   flutter_callkit_incoming: ^1.0.2+2
   uuid: ^3.0.6
   get: ^4.6.5
-  mobile_scanner: ^3.0.0
+  mobile_scanner: "3.0.0"
   rive: ^0.9.1
   flutter_beep: ^1.0.0
   flutter_vibrate: ^1.1.0

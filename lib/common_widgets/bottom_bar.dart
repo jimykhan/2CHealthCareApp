@@ -16,6 +16,7 @@ import 'package:twochealthcare/services/onlunch_activity_routes_service.dart';
 import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 import 'package:twochealthcare/util/styles.dart';
+import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
 import 'package:twochealthcare/view_models/chat_vm/chat_list_vm.dart';
 import 'package:twochealthcare/view_models/chat_vm/chat_screen_vm.dart';
 import 'package:twochealthcare/view_models/home_vm.dart';
@@ -36,14 +37,17 @@ class BottomBar extends HookWidget {
     HomeVM homeVM = useProvider(homeVMProvider);
     ApplicationRouteService applicationRouteService =
         useProvider(applicationRouteServiceProvider);
-    ChatListVM chatScreenVM = useProvider(chatListVMProvider);
+    ChatScreenVM chatScreenVM = useProvider(chatScreenVMProvider);
     OnLaunchActivityAndRoutesService onLaunchActivityService =
         useProvider(onLaunchActivityServiceProvider);
-    ChatListVM chatListVM = useProvider(chatListVMProvider);
+    LoginVM _loginVm = useProvider(loginVMProvider);
+
 
     useEffect(
       () {
-        Future.microtask(() async {});
+        Future.microtask(() async {
+
+        });
         return () {
           // Dispose Objects here
         };
@@ -132,7 +136,7 @@ class BottomBar extends HookWidget {
                           height: ApplicationSizing.convert(25),
                         ),
                       ),
-                      chatScreenVM.unReadChats.length == 0
+                      !(chatScreenVM.unReadChats.isNotEmpty && _loginVm.isPatient())
                           ? Container()
                           : Positioned(
                               top: 10,

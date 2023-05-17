@@ -53,6 +53,7 @@ class ChatScreen extends HookWidget {
       () {
         chatScreenVM.chatGroupId = getGroupsModel?.id.toString();
         chatScreenVM.patientId = patientId;
+        chatScreenVM.initChatScreen();
 
         // chatService.initSigalR(token: deviceService?.currentUser?.bearerToken??"",appId: deviceService?.currentUser?.appUserId??"");
         Future.microtask(() async {

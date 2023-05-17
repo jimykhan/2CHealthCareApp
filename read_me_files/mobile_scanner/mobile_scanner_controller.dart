@@ -341,7 +341,7 @@ class MobileScannerController {
           Map mapData = Map.from(data);
           iosData = [mapData];
         }
-        final parsed = (data as List)
+        final parsed = (Platform.isIOS ? iosData : data as List)
             .map((value) => Barcode.fromNative(value as Map))
             .toList();
         if(Platform.isIOS){

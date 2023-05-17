@@ -18,6 +18,7 @@ import 'package:twochealthcare/services/shared_pref_services.dart';
 import 'package:twochealthcare/services/signal_r_services.dart';
 import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
 import 'package:twochealthcare/view_models/chat_vm/chat_list_vm.dart';
+import 'package:twochealthcare/view_models/chat_vm/chat_screen_vm.dart';
 import 'package:twochealthcare/view_models/facility_user_view_model/home/fu_home_view_model.dart';
 import 'package:twochealthcare/view_models/profile_vm.dart';
 import 'package:twochealthcare/views/admin_view/home_view/admin_home_view.dart';
@@ -39,7 +40,7 @@ class OnLaunchActivityAndRoutesService{
   AuthServices? _authService;
   LoginVM? loginVM;
   FirebaseService? firebaseService;
-  ChatListVM? _chatListVM;
+  ChatScreenVM? _chatScreenVM;
   SignalRServices? signalRServices;
   ProfileVm? profileVm;
   FacilityService? _facilityService;
@@ -54,7 +55,7 @@ class OnLaunchActivityAndRoutesService{
 
   _initServices(){
     // AuthServices authServices =  _ref!.read(authServiceProvider);
-    _chatListVM =  _ref!.read(chatListVMProvider);
+    _chatScreenVM =  _ref!.read(chatScreenVMProvider);
     profileVm =  _ref!.read(profileVMProvider);
     signalRServices =  _ref!.read(signalRServiceProvider);
     firebaseService = _ref!.read(firebaseServiceProvider);
@@ -95,7 +96,7 @@ class OnLaunchActivityAndRoutesService{
     //   "userName": loginVM?.currentUser?.fullName??"",
     //   "lastLogedIn": DateTime.now().toString()
     // });
-    // _chatListVM?.getGroupsIds();
+    _chatScreenVM?.getUnReadMessageById();
     // firebaseService?.initNotification();
     loginVM?.getCurrentUserFromSharedPref();
     signalRServices?.initSignalR();
@@ -208,6 +209,16 @@ class OnLaunchActivityAndRoutesService{
               child: FUProfile(),
               type: PageTransitionType.bottomToTop));
     }else{
+    }
+  }
+
+  Future<bool> isPatient()async{
+    CurrentUser currentUser = await loginVM?.getCurrentUserFromSharedPref();
+    if(currentUser.userType == 1){
+      return true;
+    }
+    else{
+      return false;
     }
   }
 

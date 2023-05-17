@@ -17,13 +17,14 @@ import 'package:twochealthcare/services/chat_services/patient_communication_serv
 import 'package:twochealthcare/services/shared_pref_services.dart';
 import 'package:twochealthcare/services/signal_r_services.dart';
 import 'package:twochealthcare/util/data_format.dart';
+import 'package:twochealthcare/view_models/chat_vm/chat_screen_vm.dart';
 import 'package:twochealthcare/views/chat/chat_screen.dart';
 import 'package:twochealthcare/views/chat/components/slider_menu.dart';
 
-class ChatListVM extends ChangeNotifier{
-  List<UnReadChat> unReadChats = [];
-  List<GetGroupsModel> groupIds= [];
-  List<GetGroupsModel> allGroups= [];
+class ChatListVM extends ChangeNotifier {
+
+  List<GetGroupsModel> groupIds = [];
+  List<GetGroupsModel> allGroups = [];
   ProviderReference? _ref;
   AuthServices? _authServices;
   SignalRServices? _signalRServices;
@@ -39,34 +40,40 @@ class ChatListVM extends ChangeNotifier{
   int loadingPageNumber = 1;
   List<ChatGroupModel> chatGroupList = [];
   ChatSummaryDataModel? chatSummaryData;
-  List<Menu> chatTypeList = [Menu(id: -1,name: "All Chat",),Menu(id: 0,name: "New",count: 0,),Menu(id: 1,name: "Critical",count: 0,),Menu(id: 2,name: "Following",count: 0,)];
+  List<Menu> chatTypeList = [
+    Menu(id: -1, name: "All Chat",),
+    Menu(id: 0, name: "New", count: 0,),
+    Menu(id: 1, name: "Critical", count: 0,),
+    Menu(id: 2, name: "Following", count: 0,)
+  ];
+
   // TextEditingController searchController = TextEditingController();
 
 
-  ChatListVM({ProviderReference? ref}){
+  ChatListVM({ProviderReference? ref}) {
     _ref = ref;
     initService();
   }
 
-  checkFocus(bool val){
+  checkFocus(bool val) {
     isTextFieldActive = val;
     notifyListeners();
   }
 
 
-  onGroupSearch(String val){
+  onGroupSearch(String val) {
     print("${val.length} $val");
     groupIds = [];
     groupIds.addAll(allGroups);
-    if(val.length == 0){
+    if (val.length == 0) {
       groupIds = [];
       groupIds.addAll(allGroups);
-    }else{
+    } else {
       groupIds = [];
       allGroups.forEach((element) {
-        if(element.title!
+        if (element.title!
             .toLowerCase()
-            .contains(val.toLowerCase())){
+            .contains(val.toLowerCase())) {
           groupIds.add(element);
         }
       });
@@ -75,11 +82,12 @@ class ChatListVM extends ChangeNotifier{
   }
 
 
-  initService(){
+  initService() {
     _authServices = _ref!.read(authServiceProvider);
     _signalRServices = _ref!.read(signalRServiceProvider);
     _applicationRouteService = _ref!.read(applicationRouteServiceProvider);
-    _patientCommunicationService = _ref!.read(patientCommunicationServiceProvider);
+    _patientCommunicationService =
+        _ref!.read(patientCommunicationServiceProvider);
     _sharedPrefServices = _ref!.read(sharedPrefServiceProvider);
     // _signalRServices?.newMessage.stream.listen((event) {
     //   print("call chat list");
@@ -129,26 +137,31 @@ class ChatListVM extends ChangeNotifier{
       message.isSender = false;
       message.messageStatus = MessageStatus.viewed;
 
-      if(message.timeStamp !=null){
-        message.timeStamp = convertLocalToUtc(message.timeStamp!.replaceAll("Z", ""));
+      if (message.timeStamp != null) {
+        message.timeStamp =
+            convertLocalToUtc(message.timeStamp!.replaceAll("Z", ""));
         DateTime currentDate = DateTime.now();
         final lastMessageTime = DateTime.parse(message.timeStamp!);
-        int difference = currentDate.difference(lastMessageTime).inDays;
-        if(difference == 1){
+        int difference = currentDate
+            .difference(lastMessageTime)
+            .inDays;
+        if (difference == 1) {
           message.timeStamp = "Yesterday";
         }
-        else if(difference>1){
-          message.timeStamp = Jiffy(message.timeStamp).format(Strings.dateFormatFullYear);
+        else if (difference > 1) {
+          message.timeStamp =
+              Jiffy(message.timeStamp).format(Strings.dateFormatFullYear);
         }
-        else{
-          message.timeStamp = Jiffy(message.timeStamp).format(Strings.TimeFormat);
+        else {
+          message.timeStamp =
+              Jiffy(message.timeStamp).format(Strings.TimeFormat);
         }
       }
 
       chatGroupList.forEach((element) {
-        if(element.id == message.patientId){
+        if (element.id == message.patientId) {
           element.lastCommunication = message;
-            notifyListeners();
+          notifyListeners();
         }
       });
 
@@ -156,7 +169,6 @@ class ChatListVM extends ChangeNotifier{
       // }
     });
   }
-
 
 
   Future<dynamic> getGroupsIds({bool onlounch = true}) async {
@@ -170,29 +182,31 @@ class ChatListVM extends ChangeNotifier{
       if (response is List<GetGroupsModel>) {
         groupIds = [];
         allGroups = [];
-        unReadChats = [];
+        // unReadChats = [];
         response.forEach((element) {
-          if(element.lastMessageTime != null){
-            element.lastMessageTime = Jiffy(element.lastMessageTime).format(Strings.dateAndTimeFormat);
+          if (element.lastMessageTime != null) {
+            element.lastMessageTime = Jiffy(element.lastMessageTime).format(
+                Strings.dateAndTimeFormat);
           }
           groupIds.add(element);
           allGroups.add(element);
 
-          if(element.unreadMsgCount!>0){
-            unReadChats.add(
-                UnReadChat(unReadMessages: element.unreadMsgCount,
-                  chatGroupId: element.id
-            ));
+          if (element.unreadMsgCount! > 0) {
+            // unReadChats.add(
+            //     UnReadChat(unReadMessages: element.unreadMsgCount,
+            //         chatGroupId: element.id
+            //     ));
           }
         });
         setLoadingChatList(false);
-        if(groupIds.length == 1 && !onlounch){
+        if (groupIds.length == 1 && !onlounch) {
           Navigator.push(applicationContext!.currentContext!,
-              PageTransition(child: ChatScreen(getGroupsModel: groupIds[0],backToHome: true,),
+              PageTransition(child: ChatScreen(
+                getGroupsModel: groupIds[0], backToHome: true,),
                   type: PageTransitionType.fade));
         }
       }
-      else{
+      else {
         setLoadingChatList(false);
       }
     } catch (e) {
@@ -202,17 +216,23 @@ class ChatListVM extends ChangeNotifier{
   }
 
 
-  Future<dynamic> getPatientGroupByFacilityId({int? pageNumber,bool unread = false,critical = false,following = false}) async {
+  Future<dynamic> getPatientGroupByFacilityId(
+      {int? pageNumber, bool unread = false, critical = false, following = false}) async {
     try {
       pageNumber == 1 ? setLoadingChatList(true) : setPageWiseLoading(true);
       int facilityId = await _sharedPrefServices!.getFacilityId();
       String appUserId = await _authServices!.getCurrentAppUserId();
 
-      var response = await _patientCommunicationService?.getPatientGroupByFacilityId(
-          facilityId: facilityId, pageNumber: loadingPageNumber,unread: unread,following: following,critical: critical,pageSize: 10000);
+      var response = await _patientCommunicationService
+          ?.getPatientGroupByFacilityId(
+          facilityId: facilityId,
+          pageNumber: loadingPageNumber,
+          unread: unread,
+          following: following,
+          critical: critical,
+          pageSize: 10000);
       if (response is List<ChatGroupModel>) {
         if (loadingPageNumber == 1) {
-
           chatGroupList = response;
 
           setLoadingChatList(false);
@@ -238,16 +258,17 @@ class ChatListVM extends ChangeNotifier{
     }
   }
 
-  getChatSummaryDataByFacilityId()async{
+  getChatSummaryDataByFacilityId() async {
     int? facility = await _sharedPrefServices?.getFacilityId();
-    var response = await _patientCommunicationService?.getChatSummaryDataByFacilityId(facilityId: facility);
+    var response = await _patientCommunicationService
+        ?.getChatSummaryDataByFacilityId(facilityId: facility);
     if (response is ChatSummaryDataModel) {
       chatSummaryData = response;
       chatTypeList.forEach((element) {
-        if(element.id == 0) element.count = chatSummaryData?.unread??0;
-        if(element.id == 1) element.count = chatSummaryData?.critical??0;
-        if(element.id == 2) element.count = chatSummaryData?.following??0;
-        if(element.id == 3) element.count = chatSummaryData?.anonymous??0;
+        if (element.id == 0) element.count = chatSummaryData?.unread ?? 0;
+        if (element.id == 1) element.count = chatSummaryData?.critical ?? 0;
+        if (element.id == 2) element.count = chatSummaryData?.following ?? 0;
+        if (element.id == 3) element.count = chatSummaryData?.anonymous ?? 0;
       });
       // notifyListeners();
     }
@@ -262,31 +283,30 @@ class ChatListVM extends ChangeNotifier{
     pageWiseLoading = check;
     notifyListeners();
   }
-  resetCounter(String groupId){
-    if(groupIds.length>0){
+
+  resetCounter(String groupId) {
+    if (groupIds.length > 0) {
       groupIds.forEach((element) {
-        if(element.id.toString() == groupId){
+        if (element.id.toString() == groupId) {
           element.unreadMsgCount = 0;
           // notifyListeners();
         }
       });
     }
-    unReadChats.removeWhere((element) => element.chatGroupId == int.parse(groupId));
-    unReadChats.removeWhere((element) => element.unReadMessages! == 0);
+    // unReadChats.removeWhere((element) =>
+    // element.chatGroupId == int.parse(groupId));
+    // unReadChats.removeWhere((element) => element.unReadMessages! == 0);
     notifyListeners();
   }
 
-  onChatFilterChange(Menu menu){
+  onChatFilterChange(Menu menu) {
     loadingPageNumber = 1;
-    if(menu.id == 0) getPatientGroupByFacilityId(pageNumber : 1,unread: true,following: false,critical: false);
-    if(menu.id == 1) getPatientGroupByFacilityId(pageNumber : 1,critical: true,following: false,unread: false);
-    if(menu.id == 2) getPatientGroupByFacilityId(pageNumber : 1,following: true,unread: false,critical: false);
-    if(menu.id == -1) getPatientGroupByFacilityId(pageNumber : 1);
+    if (menu.id == 0) getPatientGroupByFacilityId(
+        pageNumber: 1, unread: true, following: false, critical: false);
+    if (menu.id == 1) getPatientGroupByFacilityId(
+        pageNumber: 1, critical: true, following: false, unread: false);
+    if (menu.id == 2) getPatientGroupByFacilityId(
+        pageNumber: 1, following: true, unread: false, critical: false);
+    if (menu.id == -1) getPatientGroupByFacilityId(pageNumber: 1);
   }
-
-}
-class UnReadChat{
-  int? unReadMessages;
-  int? chatGroupId;
-  UnReadChat({this.chatGroupId,this.unReadMessages});
 }

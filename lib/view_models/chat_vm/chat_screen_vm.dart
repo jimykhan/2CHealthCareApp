@@ -38,6 +38,7 @@ class ChatScreenVM extends ChangeNotifier {
   CommunicationHistoryModel communicationHistoryModel = CommunicationHistoryModel(results: []);
 
   List<Participients>? participients = [];
+  List<UnReadChat> unReadChats = [];
   bool allMessagesLoading = true;
   bool pageWiseLoading = false;
   S3CrudService? _s3crudService;
@@ -165,6 +166,17 @@ class ChatScreenVM extends ChangeNotifier {
 
         }
       }
+      else{
+        bool alreadyInList = false;
+        unReadChats.forEach((element) {
+          if(element.chatGroupId == event.id){
+            element.unReadMessages = element.unReadMessages! + 1;
+            alreadyInList = true;
+          }
+        });
+        if(!alreadyInList) unReadChats.add(UnReadChat(unReadMessages: 1,chatGroupId: event.id));
+        notifyListeners();
+      }
 
     });
     _signalRServices?.onChatViewed.stream.listen((event) {
@@ -212,6 +224,7 @@ class ChatScreenVM extends ChangeNotifier {
       String? appUserId = await _authServices?.getCurrentAppUserId();
       var response = await _patientCommunicationService?.getCommunicationHistory(appUserId: appUserId,patientId: UserId, pageNumber: loadingPageNumber);
       if (response is CommunicationHistoryModel) {
+        unReadChats = [];
         if (loadingPageNumber == 1) {
           communicationHistoryModel.results = response.results;
           setAllMessagesLoading(false);
@@ -235,6 +248,21 @@ class ChatScreenVM extends ChangeNotifier {
       loadingPageNumber == 1
           ? setAllMessagesLoading(false)
           : setPageWiseLoading(false);
+    }
+  }
+
+  Future<dynamic> getUnReadMessageById() async {
+    try {
+      int? userId = patientId ?? await _authServices?.getCurrentUserId()??0;
+      var response = await _patientCommunicationService?.getUnReadMessageById(userId: userId);
+      if (response is int) {
+        if(response>0){
+          unReadChats = [];
+          unReadChats.add(UnReadChat(unReadMessages: response,chatGroupId: userId));
+          notifyListeners();
+        }
+      }
+    } catch (e) {
     }
   }
 
@@ -661,4 +689,22 @@ class ChatScreenVM extends ChangeNotifier {
   }
 
   /// Audio Player Functionality
+
+
+  addUnReadChat(int count, int chatId){
+    unReadChats.add(UnReadChat(unReadMessages: count,chatGroupId: chatId));
+    notifyListeners();
+  }
+  removeFromUnReadChat(int count, int chatId){
+    unReadChats.remove(UnReadChat(unReadMessages: count,chatGroupId: chatId));
+    notifyListeners();
+  }
+// element.chatGroupId == int.parse(groupId));
+// unReadChats.removeWhere((element) => element.unReadMessages! == 0);
+
+}
+class UnReadChat{
+  int? unReadMessages;
+  int? chatGroupId;
+  UnReadChat({this.chatGroupId,this.unReadMessages});
 }

@@ -116,23 +116,24 @@ class ChatList extends HookWidget {
               AppBarTextStyle(
                   text: "Chat List",
                 ),
-                SizedBox(width: 5,),
-              chatListVM.unReadChats.length < 1 ? Container() : Container(
-
-                alignment: Alignment.center,
-                padding: EdgeInsets.all(3),
-                margin: EdgeInsets.only(bottom: 5),
-                child: Text(
-                  "${chatListVM.unReadChats.length}",
-                  style: Styles.PoppinsRegular(
-                      fontWeight: FontWeight.w400,
-                      fontSize: ApplicationSizing.fontScale(10),
-                      color: Colors.white),
-                  maxLines: 1,
-                ),
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle, color: appColor),
-              )
+              //   SizedBox(width: 5,),
+              // chatListVM.unReadChats.length < 1 ? Container() :
+              // Container(
+              //
+              //   alignment: Alignment.center,
+              //   padding: EdgeInsets.all(3),
+              //   margin: EdgeInsets.only(bottom: 5),
+              //   child: Text(
+              //     "${chatListVM.unReadChats.length}",
+              //     style: Styles.PoppinsRegular(
+              //         fontWeight: FontWeight.w400,
+              //         fontSize: ApplicationSizing.fontScale(10),
+              //         color: Colors.white),
+              //     maxLines: 1,
+              //   ),
+              //   decoration: BoxDecoration(
+              //       shape: BoxShape.circle, color: appColor),
+              // )
             ],
           ),
         ),

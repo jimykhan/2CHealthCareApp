@@ -77,7 +77,6 @@ class LoginVM extends ChangeNotifier{
       if(res is CurrentUser){
         currentUser = res;
         setLoading(false);
-
         return true;
       }
       setLoading(false);
@@ -255,6 +254,15 @@ class LoginVM extends ChangeNotifier{
       }
     });
     return faciilityName;
+  }
+
+  bool isPatient(){
+    if(currentUser?.userType == 1){
+      return true;
+    }
+    else{
+      return false;
+    }
   }
 
 }

@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:flutter_sound/public/flutter_sound_recorder.dart';
-import 'package:flutter_webrtc/flutter_webrtc.dart';
+// import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:twochealthcare/common_widgets/snackber_message.dart';
@@ -150,7 +150,7 @@ class ChatScreenVM extends ChangeNotifier {
       print(event.timeStamp.toString());
       if (_applicationRouteService?.currentScreen() == ScreenName.chatHistory) {
         if (event.senderUserId != currentUserAppUserId) {
-          event.isSender = false;
+          (event.senderUserId == null || event.senderUserId =="") ? _authServices?.isPatient()?? true ? event.isSender = false :event.isSender = true : event.isSender = false;
           event.messageStatus = MessageStatus.viewed;
           if(event.timeStamp !=null){
             event.timeStamp = convertLocalToUtc(event.timeStamp!.replaceAll("Z", ""));

@@ -18,6 +18,9 @@ import 'package:twochealthcare/views/auths/otp_verification.dart';
 class AuthServices{
   ProviderReference? _ref;
   SharedPrefServices? _sharePrf;
+
+  CurrentUser? currentUser;
+
   AuthServices({ProviderReference? ref}){
     _ref = ref;
     initServices();
@@ -41,16 +44,16 @@ class AuthServices{
       );
       if(response.statusCode == 200){
         if(response.data['userLastLogin'] !=null) response.data['userLastLogin'] = Jiffy(response.data['userLastLogin']).format(Strings.dateAndTimeFormat);
-        CurrentUser currentUser = CurrentUser.fromJson(response.data);
-        if(currentUser.is2faRequired?? false){
+        currentUser = CurrentUser.fromJson(response.data);
+        if(currentUser?.is2faRequired?? false){
           Navigator.push(applicationContext!.currentContext!,
-              PageTransition(child: OtpVerification(userName: currentUser.userName??"",
+              PageTransition(child: OtpVerification(userName: currentUser?.userName??"",
                 from2FA: true,
                 isForgetPassword: false,
-                userId: currentUser.appUserId??"",
-                bearerToken: currentUser.bearerToken??"",
-                phone: currentUser.phoneNumber??"",
-                email: currentUser.email??"",
+                userId: currentUser?.appUserId??"",
+                bearerToken: currentUser?.bearerToken??"",
+                phone: currentUser?.phoneNumber??"",
+                email: currentUser?.email??"",
 
               ),
                   type: PageTransitionType.fade));
@@ -342,6 +345,15 @@ class AuthServices{
     }
     catch(e){
       return null;
+    }
+  }
+
+  bool isPatient(){
+    if(currentUser?.userType == 1){
+      return true;
+    }
+    else{
+      return false;
     }
   }
 

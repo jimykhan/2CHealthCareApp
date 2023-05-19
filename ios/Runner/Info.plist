@@ -13,7 +13,7 @@
 	<key>CFBundleIdentifier</key>
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
-	<string>6.0</string>
+	<string>11.0</string>
 	<key>CFBundleName</key>
 	<string>2C Health Care</string>
 	<key>CFBundlePackageType</key>
@@ -57,6 +57,8 @@
 	<string>2C Health Care use microphone for calling</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>we want to scan barcode for this reason we need photolibrary access</string>
+	<key>UIApplicationSupportsIndirectInputEvents</key>
+	<true/>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
@@ -81,7 +83,5 @@
 	<false/>
 	<key>io.flutter.embedded_views_preview</key>
 	<string>yes</string>
-	<key>UIApplicationSupportsIndirectInputEvents</key>
-	<true/>
 </dict>
 </plist>

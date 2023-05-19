@@ -134,7 +134,8 @@ class ChatListVM extends ChangeNotifier {
       print(event.timeStamp.toString());
       ChatMessageModel message = ChatMessageModel.fromJson(event.toJson());
       // if (event.senderUserId != currentUserAppUserId) {
-      message.isSender = false;
+
+
       message.messageStatus = MessageStatus.viewed;
 
       if (message.timeStamp != null) {

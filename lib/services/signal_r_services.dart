@@ -206,7 +206,7 @@ class SignalRServices{
 
     /// Single R chat
     connection?.on("OnPatientCommunicationReceived", (data) {
-
+      // +18326319363
       if (data != null) {
         data.forEach((element) {
 

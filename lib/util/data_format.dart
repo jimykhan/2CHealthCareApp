@@ -3,7 +3,15 @@ import 'package:age_calculator/age_calculator.dart';
 
 String convertLocalToUtc(String? dateTime){
   if(dateTime != null){
-    DateTime date = DateTime.parse(dateTime+"Z");
+    // 2023-05-18T09:52:43+00:00
+    //2023-05-18T09:56:20.8837055Z
+    String newDate = "";
+    if(dateTime.contains("+")){
+      newDate = dateTime.split("+")[0]+".8837055";
+    }else{
+      newDate = dateTime;
+    }
+    DateTime date = DateTime.parse(newDate+"Z");
     return date.toLocal().toString();
   }else{
     return "";

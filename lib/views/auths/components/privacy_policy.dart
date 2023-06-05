@@ -42,7 +42,7 @@ class PrivacyPolicy extends StatelessWidget {
                           ..onTap = () {
                             openBottomModalDisableDrag(
                                 child: CostomUrlLauncher(
-                                    url:  "https://2chealthsolutions.com/terms.html",
+                                    url:  "https://2chealth.com/terms-of-use/",
                                   height: MediaQuery.of(context).size.height/1.5,
                                     ));
                             print('Terms of Service"');
@@ -64,7 +64,7 @@ class PrivacyPolicy extends StatelessWidget {
                           ..onTap = () {
                             openBottomModalDisableDrag(
                                 child: CostomUrlLauncher(
-                                  url:  "https://2chealthsolutions.com/privacy-policy.html",
+                                  url:  "https://2chealth.com/privacy-policy",
                                   height: MediaQuery.of(context).size.height/1.5,
                                 ));
                             print('Privacy Policy');

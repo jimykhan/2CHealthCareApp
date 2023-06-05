@@ -8,12 +8,12 @@ import 'package:twochealthcare/util/application_colors.dart';
 import 'package:twochealthcare/util/application_sizing.dart';
 
 class BadRequestException extends DioError {
-  dynamic data;
-  BadRequestException(RequestOptions r, {this.data}) : super(requestOptions: r);
+  DioError data;
+  BadRequestException(RequestOptions r, {required this.data}) : super(requestOptions: r);
 
   @override
   String toString() {
-    SnackBarMessage(message: data?.toString()??"Invalid request");
+    SnackBarMessage(message: "${data.response?.statusMessage??"  "} ${data.response?.data["error"]}");
     return 'Invalid request ';
   }
 }

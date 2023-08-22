@@ -141,8 +141,11 @@ class AppDataController{
 class DexComController{
   static const String GET_DEXCOM_CODE = baseUrl + "/api/Dexcom/GetCode";
   static const String DEXCOM_GET_EGVS = baseUrl + "/api/Dexcom/GetEgvs";
+  static const String DEXCOM_GET_V3_EGVS = baseUrl + "/api/Dexcom/V3/GetEgvs";
   static const String DEXCOM_GET_STATISTICS = baseUrl + "/api/Dexcom/GetStatistics";
   static const String DEXCOM_GET_DEVICES = baseUrl + "/api/Dexcom/GetDevices";
+  static const String DEXCOM_GET_V3_DEVICES = baseUrl + "/api/Dexcom/V3/GetDevices";
+  static const String DEXCOM_GET_V3_CALIBRAIONS = baseUrl + "/api/Dexcom/V3/GetCalibrations";
   static const String Check_Auth_Given = baseUrl + "/api/Dexcom/CheckAuthGiven/patientId";
 }
 class HealthCareDevicesController{

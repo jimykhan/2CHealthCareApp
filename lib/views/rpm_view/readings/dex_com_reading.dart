@@ -12,7 +12,7 @@ import 'package:twochealthcare/common_widgets/custom_appbar.dart';
 import 'package:twochealthcare/common_widgets/floating_button.dart';
 import 'package:twochealthcare/common_widgets/loader.dart';
 import 'package:twochealthcare/common_widgets/tap_bar.dart';
-import 'package:twochealthcare/models/rpm_models/dex_com_models/AlertSettings.dart';
+import 'package:twochealthcare/models/rpm_models/dexcom_v3_models/dexcom_v3_devices.dart';
 import 'package:twochealthcare/providers/providers.dart';
 import 'package:twochealthcare/services/rpm_services/cgm_services.dart';
 import 'package:twochealthcare/util/application_colors.dart';
@@ -533,40 +533,40 @@ class DexcomCGM extends HookWidget {
                     ],
                   ),
                 ),
-                Container(
-                  child: Row(
-                    children: [
-                      Container(
-                          child: Text(
-                            "Avg. calibrations per day",
-                            style: Styles.RobotoThin(
-                              color: Colors.black,
-                              fontSize: ApplicationSizing.constSize(12),
-                            ),
-                          )),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: ApplicationSizing.constSize( 5),
-                ),
-                Container(
-                  alignment: Alignment.centerLeft,
-                  child: RichText(
-                    text: TextSpan(children: [
-                      TextSpan(
-                        text:
-                        "${dexComVM.statisticsData?.meanDailyCalibrations?.toStringAsFixed(1)}",
-                        style: Styles.RobotoMedium(
-                          color: Colors.black,
-                          fontSize: ApplicationSizing.constSize(
-                            20,
-                          ),
-                        ),
-                      ),
-                    ]),
-                  ),
-                ),
+                // Container(
+                //   child: Row(
+                //     children: [
+                //       Container(
+                //           child: Text(
+                //             "Avg. calibrations per day",
+                //             style: Styles.RobotoThin(
+                //               color: Colors.black,
+                //               fontSize: ApplicationSizing.constSize(12),
+                //             ),
+                //           )),
+                //     ],
+                //   ),
+                // ),
+                // SizedBox(
+                //   height: ApplicationSizing.constSize( 5),
+                // ),
+                // Container(
+                //   alignment: Alignment.centerLeft,
+                //   child: RichText(
+                //     text: TextSpan(children: [
+                //       TextSpan(
+                //         text:
+                //         "${dexComVM.statisticsData?.meanDailyCalibrations?.toStringAsFixed(1)}",
+                //         style: Styles.RobotoMedium(
+                //           color: Colors.black,
+                //           fontSize: ApplicationSizing.constSize(
+                //             20,
+                //           ),
+                //         ),
+                //       ),
+                //     ]),
+                //   ),
+                // ),
               ],
             ),
           ),
@@ -701,7 +701,7 @@ class DexcomCGM extends HookWidget {
               children: [
                 Container(
                     child: Text(
-                      "Dexcom ${dexComVM.dexcomDeivices?.transmitterGeneration ?? "" } Mobile App",
+                      "Dexcom ${dexComVM.dexcomDeivices?.records?[0]?.transmitterGeneration ?? "" } Mobile App",
                       style: Styles.RobotoMedium(
                         color: Colors.black,
                         fontSize: ApplicationSizing.constSize(
@@ -761,7 +761,7 @@ class DexcomCGM extends HookWidget {
                   child: Container(
                       child: Text(
                         dexComVM
-                            .dexcomDeivices?.displayDevice ??
+                            .dexcomDeivices?.records?[0]?.displayDevice ??
                             "",
                         style: Styles.RobotoMedium(
                           color: Colors.black,
@@ -798,7 +798,7 @@ class DexcomCGM extends HookWidget {
                   flex: 1,
                   child: Container(
                       child: Text(
-                        dexComVM.dexcomDeivices?.lastUploadDate ??
+                        dexComVM.dexcomDeivices?.records?[0]?.lastUploadDate ??
                             "",
                         style: Styles.RobotoMedium(
                           color: Colors.black,
@@ -835,7 +835,7 @@ class DexcomCGM extends HookWidget {
                   flex: 1,
                   child: Container(
                       child: Text(
-                        dexComVM.dexcomDeivices?.transmitterGeneration ??
+                        dexComVM.dexcomDeivices?.records?[0]?.transmitterGeneration ??
                             "",
                         style: Styles.RobotoMedium(
                           color: Colors.black,
@@ -898,7 +898,7 @@ class DexcomCGM extends HookWidget {
               itemBuilder: (context, index) {
                 AlertSettings alertSetting = dexComVM
                     .dexcomDeivices
-                    !.alertScheduleList![0]
+                    !.records![0]!.alertSchedules![0]
                     .alertSettings![index];
                 return Container(
                   child: Row(
@@ -987,7 +987,7 @@ class DexcomCGM extends HookWidget {
                 );
               },
               itemCount: dexComVM.dexcomDeivices == null ? 0 : dexComVM.dexcomDeivices
-                  ?.alertScheduleList?[0].alertSettings?.length ??
+                  ?.records?[0]?.alertSchedules?[0].alertSettings?.length ??
                   0
           )
         ],

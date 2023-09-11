@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/all.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:path/path.dart';
 import 'package:twochealthcare/constants/api_strings.dart';
 import 'package:twochealthcare/constants/strings.dart';
 import 'package:twochealthcare/models/user/current_user.dart';
@@ -22,9 +23,10 @@ import 'package:twochealthcare/view_models/chat_vm/chat_list_vm.dart';
 import 'package:twochealthcare/view_models/facility_user_view_model/home/fu_home_view_model.dart';
 import 'package:twochealthcare/view_models/profile_vm.dart';
 import 'package:twochealthcare/views/auths/login.dart';
+import 'package:twochealthcare/views/splash/test_1.dart';
 import '../main.dart';
 
-class ApplicationStartupService{
+class ApplicationStartupService {
   ProviderReference? _ref;
   DioServices? dio;
   AuthServices? _authService;
@@ -40,16 +42,16 @@ class ApplicationStartupService{
   OnLaunchActivityAndRoutesService? onLaunchActivityService;
   AuthServices? authServices;
 
-  ApplicationStartupService({ProviderReference? ref}){
+  ApplicationStartupService({ProviderReference? ref}) {
     _ref = ref;
     _initServices();
   }
 
-  _initServices(){
-    authServices =  _ref!.read(authServiceProvider);
-    _chatListVM =  _ref!.read(chatListVMProvider);
-    profileVm =  _ref!.read(profileVMProvider);
-    signalRServices =  _ref!.read(signalRServiceProvider);
+  _initServices() {
+    authServices = _ref!.read(authServiceProvider);
+    _chatListVM = _ref!.read(chatListVMProvider);
+    profileVm = _ref!.read(profileVMProvider);
+    signalRServices = _ref!.read(signalRServiceProvider);
     firebaseService = _ref!.read(firebaseServiceProvider);
     dio = _ref!.read(dioServicesProvider);
     _authService = _ref!.read(authServiceProvider);
@@ -61,30 +63,46 @@ class ApplicationStartupService{
     onLaunchActivityService = _ref?.read(onLaunchActivityServiceProvider);
   }
 
-  applicationStart({bool fromSplash = false, bool fromLogin = false, bool from2FA = false, bool fromResetPassword = false})
-  async {
-    int userType = await authServices?.getCurrentUserType()??-1;
-    if(fromSplash){
+  applicationStart(
+      {bool fromSplash = false,
+      bool fromLogin = false,
+      bool from2FA = false,
+      bool fromResetPassword = false,
+      var url}) async {
+    if (url != null) {
+      Navigator.pushReplacement(
+          applicationContext!.currentContext!,
+          PageTransition(
+              child: Deeplinkwork(url: url,), type: PageTransitionType.leftToRight));
+      return;
+    }
+    int userType = await authServices?.getCurrentUserType() ?? -1;
+    if (fromSplash) {
       var bearerToken = await sharedPrefServices?.getBearerToken();
-      int userType = await authServices?.getCurrentUserType()??-1;
-      if(bearerToken == null){
+      int userType = await authServices?.getCurrentUserType() ?? -1;
+      if (bearerToken == null) {
         applicationRouteService?.addAndRemoveScreen(screenName: "Login");
-        Navigator.pushReplacement(applicationContext!.currentContext!,
-            PageTransition(child:const Login() , type: PageTransitionType.leftToRight));
+        Navigator.pushReplacement(
+            applicationContext!.currentContext!,
+            PageTransition(
+                child: Login(
+                  path: url.toString(),
+                ),
+                type: PageTransitionType.leftToRight));
         return;
       }
     }
-    if(fromLogin){
-       // onLaunchActivityService?.setAndGetLastLoginDateTime().then((value)
-       // {
-       //   loginVM?.getLastLoginDateTimeFromSharePref();
-       // } );
+    if (fromLogin) {
+      // onLaunchActivityService?.setAndGetLastLoginDateTime().then((value)
+      // {
+      //   loginVM?.getLastLoginDateTimeFromSharePref();
+      // } );
     }
-    if(from2FA){}
-    if(fromResetPassword){
-        if(userType == 1){
-           profileVm?.getUserInfo();
-          }
+    if (from2FA) {}
+    if (fromResetPassword) {
+      if (userType == 1) {
+        profileVm?.getUserInfo();
+      }
     }
 
     applicationRouteService?.addAndRemoveScreen(screenName: "Home");
@@ -92,7 +110,5 @@ class ApplicationStartupService{
     onLaunchActivityService?.syncLastApplicationUseDateAndTime();
     loginVM?.getLastLoginDateTimeFromSharePref();
     firebaseService?.subNotification();
-
   }
-
 }

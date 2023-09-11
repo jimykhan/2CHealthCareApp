@@ -1,0 +1,9 @@
+[{
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "twochealth",
+      "package_name": "twochealthcare.io",
+      "sha256_cert_fingerprints":
+      ["79:2C:68:5F:AD:F4:95:47:4B:BE:5D:97:6F:5B:55:99:49:3C:E2:6A:BF:7E:C2:C5:6D:A0:7F:5D:84:45:D2:FA"]
+    }
+  }]

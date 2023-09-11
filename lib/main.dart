@@ -1,4 +1,3 @@
-
 import 'package:bot_toast/bot_toast.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -6,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/all.dart';
 import 'package:twochealthcare/views/splash/splash.dart';
+import 'package:twochealthcare/views/splash/test_1.dart';
 
 BuildContext? homeContext;
 
@@ -17,8 +17,6 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // Navigator.push(applicationContext!.currentContext!, PageTransition(
   //     child: ModalitiesReading(), type: PageTransitionType.topToBottom));
 }
-
-
 
 GlobalKey<NavigatorState>? applicationContext = GlobalKey();
 Future<void> main() async {
@@ -43,19 +41,46 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     homeContext = context;
-    return MaterialApp(
+
+    // return MaterialApp.router(
+    //   builder: BotToastInit(),
+    //   routerConfig: GoRouter(
+    //     routes: AppRouteConfig.router,
+    //     navigatorKey: applicationContext, 
+    //     observers: [BotToastNavigatorObserver()],
+    //     ),
+      
+    //   debugShowCheckedModeBanner: false,
+    //   title: '2C Health Care',
+    //   theme: ThemeData(
+    //       primaryColor: Colors.green.shade50,
+    //       primarySwatch: Colors.green,
+    //       appBarTheme: AppBarTheme(
+    //           backgroundColor: Colors.green,
+    //           systemOverlayStyle: SystemUiOverlayStyle.dark)),
+    //   // home: const Splash(),
+    // );
+
+        return MaterialApp(
       builder: BotToastInit(),
-      navigatorKey: applicationContext,
+      initialRoute: "/",
+      routes: {
+        '/': (context) => const Splash(),
+        '/phsForm': (context) => Deeplinkwork(),
+      },
+        navigatorKey: applicationContext, 
+        navigatorObservers: [BotToastNavigatorObserver()],
+      
+      
       debugShowCheckedModeBanner: false,
       title: '2C Health Care',
-      navigatorObservers: [BotToastNavigatorObserver()],
       theme: ThemeData(
           primaryColor: Colors.green.shade50,
           primarySwatch: Colors.green,
           appBarTheme: AppBarTheme(
               backgroundColor: Colors.green,
               systemOverlayStyle: SystemUiOverlayStyle.dark)),
-      home: const Splash(),
+      // home: const Splash(),
     );
   }
 }

@@ -80,6 +80,19 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
 
+            <meta-data android:name="flutter_deeplinking_enabled" android:value="true" />
+<!--            <intent-filter android:autoVerify="true">-->
+            <intent-filter >
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="http" android:host="api.healthforcehub.link"/>
+<!--                <data android:scheme="http" android:host="api.healthforcehub.link" android:pathPattern="/phsForm/\\d+"/>-->
+                <!-- <data android:pathPattern="/phsForm"> -->
+                <data android:scheme="https"
+                    android:pathPrefix="/phsForm"/>
+            </intent-filter>
+
         </activity>
 
         <!-- Don't delete the meta-data below.

@@ -1,5 +1,3 @@
-
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -293,9 +291,9 @@ class AuthServices{
       final dio = Dio(
         BaseOptions(
           baseUrl: baseUrl,
-          receiveTimeout: 10000, // 10 seconds
-          connectTimeout: 10000,
-          sendTimeout: 1000,
+          receiveTimeout: Duration(seconds: 10), // 10 seconds
+          connectTimeout: Duration(seconds: 10),
+          sendTimeout: Duration(seconds: 10),
           contentType:"application/json",
             headers : {
               "Authorization": "Bearer ${bearerToken}"
@@ -325,9 +323,9 @@ class AuthServices{
       final dio = Dio(
         BaseOptions(
           baseUrl: baseUrl,
-          receiveTimeout: 10000, // 10 seconds
-          connectTimeout: 10000,
-          sendTimeout: 1000,
+          receiveTimeout: Duration(seconds: 10), 
+          connectTimeout: Duration(seconds: 10),
+          sendTimeout: Duration(seconds: 10),
           contentType:"application/json",
             headers : {
               "Authorization": "Bearer ${bearerToken}"

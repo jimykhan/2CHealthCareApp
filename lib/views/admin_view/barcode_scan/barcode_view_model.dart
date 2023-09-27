@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_beep/flutter_beep.dart';
+// import 'package:flutter_beep/flutter_beep.dart';
 import 'package:hooks_riverpod/all.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:twochealthcare/common_widgets/aler_dialogue.dart';
@@ -118,7 +118,7 @@ class BarcodeVM extends ChangeNotifier{
     showAlert = false;
     verifyBarcodeText.text = code;
     cameraController.stop();
-    FlutterBeep.beep();
+    // FlutterBeep.beep();
     fromPatientSummary ? pushBarToPhDeviceService() : showSucessIcon();
     // startTimer();
   }

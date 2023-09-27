@@ -34,7 +34,7 @@ import 'package:twochealthcare/views/settings/fu_settings/fu_settings.dart';
 import 'package:twochealthcare/views/settings/p_settings/p_settings.dart';
 import '../main.dart';
 
-class OnLaunchActivityAndRoutesService{
+class OnLaunchActivityAndRoutesService {
   ProviderReference? _ref;
   DioServices? dio;
   AuthServices? _authService;
@@ -48,16 +48,16 @@ class OnLaunchActivityAndRoutesService{
   ApplicationRouteService? applicationRouteService;
   SharedPrefServices? sharedPrefServices;
 
-  OnLaunchActivityAndRoutesService({ProviderReference? ref}){
+  OnLaunchActivityAndRoutesService({ProviderReference? ref}) {
     _ref = ref;
     _initServices();
   }
 
-  _initServices(){
+  _initServices() {
     // AuthServices authServices =  _ref!.read(authServiceProvider);
-    _chatScreenVM =  _ref!.read(chatScreenVMProvider);
-    profileVm =  _ref!.read(profileVMProvider);
-    signalRServices =  _ref!.read(signalRServiceProvider);
+    _chatScreenVM = _ref!.read(chatScreenVMProvider);
+    profileVm = _ref!.read(profileVMProvider);
+    signalRServices = _ref!.read(signalRServiceProvider);
     firebaseService = _ref!.read(firebaseServiceProvider);
     dio = _ref!.read(dioServicesProvider);
     _authService = _ref!.read(authServiceProvider);
@@ -69,26 +69,21 @@ class OnLaunchActivityAndRoutesService{
   }
 
   syncLastApplicationUseDateAndTime() async {
-    try{
+    try {
       int userType = await _authService!.getCurrentUserType();
-      if(userType == 1){
+      if (userType == 1) {
         patientOnStartApplicationData();
-      }
-      else if(userType == 5){
+      } else if (userType == 5) {
         facilityUserOnStartApplicationData();
-      }
-      else if(userType == 3){
+      } else if (userType == 3) {
         adminUserOnStartApplicationData();
-      }
-      else{
-
-      }
-    }catch(e){
+      } else {}
+    } catch (e) {
       rethrow;
     }
   }
 
-  patientOnStartApplicationData()async{
+  patientOnStartApplicationData() async {
     int patientId = await _authService!.getCurrentUserId();
     profileVm?.getUserInfo();
     // loginVM?.checkLastLoggedInUser(body: {
@@ -100,10 +95,11 @@ class OnLaunchActivityAndRoutesService{
     // firebaseService?.initNotification();
     loginVM?.getCurrentUserFromSharedPref();
     signalRServices?.initSignalR();
-    Response res = await dio!.dio!.post(PatientsController.setLastAppLaunchDate+"/$patientId");
+    Response res = await dio!.dio!
+        .post(PatientsController.setLastAppLaunchDate + "/$patientId");
   }
 
-  facilityUserOnStartApplicationData()async{
+  facilityUserOnStartApplicationData() async {
     // loginVM?.checkLastLoggedInUser(body: {
     //   "id":loginVM?.currentUser?.id?.toString()??"",
     //   "userName": loginVM?.currentUser?.fullName??"",
@@ -123,48 +119,41 @@ class OnLaunchActivityAndRoutesService{
     signalRServices?.initSignalR();
   }
 
-  decideUserFlow()async{
+  decideUserFlow() async {
     CurrentUser currentUser = await loginVM?.getCurrentUserFromSharedPref();
-    if(currentUser.userType == 1){
+    if (currentUser.userType == 1) {
       Navigator.pushAndRemoveUntil(
         applicationContext!.currentContext!,
         MaterialPageRoute(
-          builder: (BuildContext context) =>
-           Home(),
+          builder: (BuildContext context) => Home(),
         ),
-            (route) => false,
+        (route) => false,
       );
       return;
     }
-    if(currentUser.userType == 3){
+    if (currentUser.userType == 3) {
       Navigator.pushAndRemoveUntil(
         applicationContext!.currentContext!,
         MaterialPageRoute(
-          builder: (BuildContext context) =>
-              AdminHome(),
+          builder: (BuildContext context) => AdminHome(),
         ),
-            (route) => false,
+        (route) => false,
       );
       return;
     }
 
-    if(currentUser.userType == 5){
+    if (currentUser.userType == 5) {
       Navigator.pushAndRemoveUntil(
         applicationContext!.currentContext!,
         MaterialPageRoute(
-          builder: (BuildContext context) =>
-           FUHome(),
+          builder: (BuildContext context) => FUHome(),
         ),
-            (route) => false,
+        (route) => false,
       );
       return;
-    }
-    else{
-      Navigator.pushReplacement(
-          applicationContext!.currentContext!,
-          PageTransition(
-              child: Login(),
-              type: PageTransitionType.bottomToTop));
+    } else {
+      Navigator.pushReplacement(applicationContext!.currentContext!,
+          PageTransition(child: Login(), type: PageTransitionType.bottomToTop));
       return;
     }
   }
@@ -172,134 +161,120 @@ class OnLaunchActivityAndRoutesService{
   Future<void> handleMessage() async {
     print("OnMessageOpenedApp call");
     RemoteMessage? initialMessage =
-    await FirebaseMessaging.instance.getInitialMessage();
+        await FirebaseMessaging.instance.getInitialMessage();
     print("decide Flow");
     if (initialMessage != null) {
-      if(initialMessage.notification?.title == "New Message Received"){
+      if (initialMessage.notification?.title == "New Message Received") {
         HomeDecider();
-        applicationRouteService?.addAndRemoveScreen(
-            screenName: "ChatList");
-        Navigator.push(applicationContext!.currentContext!, PageTransition(
-            child: ChatList(), type: PageTransitionType.fade));
-
-      }
-      else{
+        applicationRouteService?.addAndRemoveScreen(screenName: "ChatList");
+        Navigator.push(applicationContext!.currentContext!,
+            PageTransition(child: ChatList(), type: PageTransitionType.fade));
+      } else {
         HomeDecider();
-        Navigator.push(applicationContext!.currentContext!, PageTransition(
-            child: ModalitiesReading(), type: PageTransitionType.fade));
+        Navigator.push(
+            applicationContext!.currentContext!,
+            PageTransition(
+                child: ModalitiesReading(), type: PageTransitionType.fade));
       }
       return;
     }
-
   }
 
-  profileDecider()async{
+  profileDecider() async {
     CurrentUser currentUser = await loginVM?.getCurrentUserFromSharedPref();
-    if(currentUser.userType == 1){
+    if (currentUser.userType == 1) {
       Navigator.pushReplacement(
           applicationContext!.currentContext!,
           PageTransition(
-              child: Profile(),
-              type: PageTransitionType.bottomToTop));
+              child: Profile(), type: PageTransitionType.bottomToTop));
     }
-    if(currentUser.userType == 5){
+    if (currentUser.userType == 5) {
       Navigator.pushReplacement(
           applicationContext!.currentContext!,
           PageTransition(
-              child: FUProfile(),
-              type: PageTransitionType.bottomToTop));
-    }else{
-    }
+              child: FUProfile(), type: PageTransitionType.bottomToTop));
+    } else {}
   }
 
-  Future<bool> isPatient()async{
+  Future<bool> isPatient() async {
     CurrentUser currentUser = await loginVM?.getCurrentUserFromSharedPref();
-    if(currentUser.userType == 1){
+    if (currentUser.userType == 1) {
       return true;
-    }
-    else{
+    } else {
       return false;
     }
   }
 
-  settingsDecider()async{
+  settingsDecider() async {
     CurrentUser currentUser = await loginVM?.getCurrentUserFromSharedPref();
     Navigator.pop(applicationContext!.currentContext!);
-    if(currentUser.userType == 1){
+    if (currentUser.userType == 1) {
       Navigator.push(
           applicationContext!.currentContext!,
           PageTransition(
-              child: PSettings(),
-              type: PageTransitionType.bottomToTop));
+              child: PSettings(), type: PageTransitionType.bottomToTop));
     }
-    if(currentUser.userType == 5){
+    if (currentUser.userType == 5) {
       Navigator.push(
           applicationContext!.currentContext!,
           PageTransition(
-              child: FUSettings(),
-              type: PageTransitionType.bottomToTop));
-    }else{
-    }
+              child: FUSettings(), type: PageTransitionType.bottomToTop));
+    } else {}
   }
 
-  HomeDecider()async{
+  HomeDecider() async {
     CurrentUser currentUser = await loginVM?.getCurrentUserFromSharedPref();
-    if(currentUser.userType == 1){
+    if (currentUser.userType == 1) {
       Navigator.pushAndRemoveUntil(
         applicationContext!.currentContext!,
         MaterialPageRoute(
           builder: (BuildContext context) => Home(),
         ),
-            (route) => false,
+        (route) => false,
       );
     }
-    if(currentUser.userType == 5){
+    if (currentUser.userType == 5) {
       Navigator.pushAndRemoveUntil(
         applicationContext!.currentContext!,
         MaterialPageRoute(
           builder: (BuildContext context) => FUHome(),
         ),
-            (route) => false,
+        (route) => false,
       );
     }
-    if(currentUser.userType == 3){
+    if (currentUser.userType == 3) {
       Navigator.pushAndRemoveUntil(
         applicationContext!.currentContext!,
         MaterialPageRoute(
           builder: (BuildContext context) => AdminHome(),
         ),
-            (route) => false,
+        (route) => false,
       );
-    }
-    else{
-    }
+    } else {}
   }
 
-  ChatDecider()async{
+  ChatDecider() async {
     CurrentUser currentUser = await loginVM?.getCurrentUserFromSharedPref();
 
-      if (currentUser.userType == 1) {
-        applicationRouteService?.addScreen(
-            screenName: ScreenName.chatHistory);
-        Navigator.pushReplacement(
-            applicationContext!.currentContext!,
-            PageTransition(
-                child: ChatScreen(
-                  backToHome: true,
-                ),
-                type: PageTransitionType.bottomToTop));
-      }
-      else {
-        applicationRouteService?.addAndRemoveScreen(
-            screenName: ScreenName.chatList);
-        Navigator.pushReplacement(
-            applicationContext!.currentContext!,
-            PageTransition(
-                child: ChatList(),
-                // child: ChatSlider(),
-                type: PageTransitionType.bottomToTop));
-      }
-
+    if (currentUser.userType == 1) {
+      applicationRouteService?.addScreen(screenName: ScreenName.chatHistory);
+      Navigator.pushReplacement(
+          applicationContext!.currentContext!,
+          PageTransition(
+              child: ChatScreen(
+                backToHome: true,
+              ),
+              type: PageTransitionType.bottomToTop));
+    } else {
+      applicationRouteService?.addAndRemoveScreen(
+          screenName: ScreenName.chatList);
+      Navigator.pushReplacement(
+          applicationContext!.currentContext!,
+          PageTransition(
+              child: ChatList(),
+              // child: ChatSlider(),
+              type: PageTransitionType.bottomToTop));
+    }
   }
 
   // Future<LogedInUserModel> setAndGetLastLoginDateTime()async{
@@ -321,5 +296,19 @@ class OnLaunchActivityAndRoutesService{
   //     return logedInUserModel;
   //   }
   //
+  // }
+
+  // pushAndRemoveUtil(String path) {
+  //   if (applicationContext!.currentContext!.canPop()) {
+  //     applicationContext!.currentContext!.pop();
+  //     pushAndRemoveUtil(path);
+  //   } else {
+  //     applicationContext!.currentContext!.push(path);
+  //     // Navigator.push(
+  //     //                   applicationContext!.currentContext!,
+  //     //                   PageTransition(
+  //     //                       child: Profile(), type: PageTransitionType.fade),
+  //     //                 );
+  //   }
   // }
 }

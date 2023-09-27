@@ -16,6 +16,8 @@
 
     <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
 
+    <uses-feature android:name="android.hardware.bluetooth_le" android:required="true" />
+
     <!-- Needed only if your app makes the device discoverable to Bluetooth
          devices. -->
     <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
@@ -83,6 +85,7 @@
             <meta-data android:name="flutter_deeplinking_enabled" android:value="true" />
 <!--            <intent-filter android:autoVerify="true">-->
             <intent-filter >
+            
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />

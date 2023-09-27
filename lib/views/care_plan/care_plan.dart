@@ -135,7 +135,7 @@ class CarePlan extends HookWidget {
                       keyValue(
                           key: "Update By",
                           value: carePlanVM.carePlanModel
-                              ?.updatedUser ??
+                              ?.billingProviderName ??
                               ""),
                       keyValue(
                         key: "Care Provider",

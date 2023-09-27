@@ -17,7 +17,7 @@ import 'package:twochealthcare/services/onlunch_activity_routes_service.dart';
 import 'package:twochealthcare/services/shared_pref_services.dart';
 import 'package:twochealthcare/views/rpm_view/readings/modalities_reading.dart';
 
-class FirebaseService{
+class FirebaseService {
   ProviderReference? _ref;
   FirebaseMessaging? _firebaseMessaging;
   SharedPrefServices? sharedPrefServices;
@@ -25,20 +25,18 @@ class FirebaseService{
   // LocalNotificationService? _localNotificationService;
   // OnLaunchActivityAndRoutesService? _onLaunchActivityService;
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-  FlutterLocalNotificationsPlugin();
+      FlutterLocalNotificationsPlugin();
   // ApplicationRouteService? applicationRouteService;
 
-  FirebaseService({ProviderReference? ref}){
+  FirebaseService({ProviderReference? ref}) {
     _ref = ref;
     initService();
-
   }
-  initService(){
+  initService() {
     // applicationRouteService = _ref?.read(applicationRouteServiceProvider);
     initNotification();
     sharedPrefServices = _ref!.read(sharedPrefServiceProvider);
   }
-
 
   // initFirebase(){
   //   print("try calling firebase initialzeApp");
@@ -59,7 +57,7 @@ class FirebaseService{
       sound: true,
     );
     // _localNotificationService = _ref!.read(localNotificationServiceProvider);
-     // localNotificationService!.initLocalNoticationChannel();
+    // localNotificationService!.initLocalNoticationChannel();
 
     if (Platform.isIOS) {
       _firebaseMessaging!.requestPermission();
@@ -73,8 +71,7 @@ class FirebaseService{
         badge: true,
         sound: true,
       );
-    }
-    else{
+    } else {
       _firebaseMessaging!
           .getToken()
           .then((value) => print("this is mobile token ${value.toString()}"));
@@ -82,23 +79,22 @@ class FirebaseService{
         var channel = const AndroidNotificationChannel(
           '2C_Health', // id
           'High Importance Notifications', // title
-          description: 'This channel is used for important notifications.', // description
+          description:
+              'This channel is used for important notifications.', // description
           importance: Importance.max,
           enableLights: true,
         );
 
         await flutterLocalNotificationsPlugin
             .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
+                AndroidFlutterLocalNotificationsPlugin>()
             ?.createNotificationChannel(channel);
       }
     }
     // _subNotification();
   }
 
-
   subNotification() async {
-
     FirebaseMessaging.onMessage.listen((event) {
       print("this is event${event.notification?.title}");
 
@@ -127,7 +123,6 @@ class FirebaseService{
       //   Navigator.push(applicationContext!.currentContext!, PageTransition(
       //       child: ModalitiesReading(), type: PageTransitionType.fade));
       // }
-
     });
     // FirebaseMessaging.onMessageOpenedApp.listen((event) {
     //   print("OnMessageOpenedApp call");
@@ -163,43 +158,49 @@ class FirebaseService{
     if (currentUser != null) {
       await _firebaseMessaging!
           .subscribeToTopic("${currentUser.appUserId}$dataChannel")
-          .then((value) => print("${currentUser.appUserId}$dataChannel dataChannel topic subscribe"));
+          .then((value) => print(
+              "${currentUser.appUserId}$dataChannel dataChannel topic subscribe"));
       await _firebaseMessaging!
           .subscribeToTopic("${currentUser.appUserId}$messageChannel")
-          .then((value) => print("${currentUser.appUserId}$messageChannel messageChannel topic subscribe"));
+          .then((value) => print(
+              "${currentUser.appUserId}$messageChannel messageChannel topic subscribe"));
     }
-
   }
 
-  turnOfChatNotification() async{
-    CurrentUser? currentUser = await sharedPrefServices?.getCurrentUser();
-    var firebaseMessaging = FirebaseMessaging.instance;
-    if(currentUser!=null){
-      await firebaseMessaging
-          .unsubscribeFromTopic(
-          "${currentUser.appUserId}$messageChannel")
-          .then((value) => print("Unsubscribe From Topic ${currentUser.appUserId}$messageChannel"));
-
+  turnOfChatNotification() async {
+    try {
+      CurrentUser? currentUser = await sharedPrefServices?.getCurrentUser();
+      var firebaseMessaging = FirebaseMessaging.instance;
+      if (currentUser != null) {
+        await firebaseMessaging
+            .unsubscribeFromTopic("${currentUser.appUserId}$messageChannel")
+            .then((value) => print(
+                "Unsubscribe From Topic ${currentUser.appUserId}$messageChannel"));
+      }
+    } catch (e) {
+      print("");
     }
-
   }
 
-  turnOfReadingNotification() async{
-    CurrentUser? currentUser = await sharedPrefServices?.getCurrentUser();
-    var firebaseMessaging = FirebaseMessaging.instance;
-    if (currentUser != null){
-      await firebaseMessaging
-          .unsubscribeFromTopic(
-          "${currentUser.appUserId}$dataChannel")
-          .then((value) => print("UnSub Topic${currentUser.appUserId}$dataChannel"));
+  turnOfReadingNotification() async {
+    try {
+      CurrentUser? currentUser = await sharedPrefServices?.getCurrentUser();
+      var firebaseMessaging = FirebaseMessaging.instance;
+      if (currentUser != null) {
+        await firebaseMessaging
+            .unsubscribeFromTopic("${currentUser.appUserId}$dataChannel")
+            .then((value) =>
+                print("UnSub Topic${currentUser.appUserId}$dataChannel"));
+      }
+    } catch (e) {
+      print("");
     }
-
   }
 
-  turnOnChatNotification() async{
+  turnOnChatNotification() async {
     CurrentUser? currentUser = await sharedPrefServices?.getCurrentUser();
     var firebaseMessaging = FirebaseMessaging.instance;
-    if (currentUser != null){
+    if (currentUser != null) {
       // firebaseMessaging
       //     .unsubscribeFromTopic(
       //     "${currentUser.appUserId}$messageChannel")
@@ -207,23 +208,23 @@ class FirebaseService{
     }
   }
 
-  turnOnReadingNotification() async{
+  turnOnReadingNotification() async {
     CurrentUser? currentUser = await sharedPrefServices?.getCurrentUser();
     var firebaseMessaging = FirebaseMessaging.instance;
-    if (currentUser != null){
+    if (currentUser != null) {
       firebaseMessaging
-          .subscribeToTopic(
-          "${currentUser.appUserId}$dataChannel")
+          .subscribeToTopic("${currentUser.appUserId}$dataChannel")
           .then((value) => null);
     }
   }
 
   Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     await Firebase.initializeApp();
-    Navigator.push(applicationContext!.currentContext!, PageTransition(
-        child: ModalitiesReading(), type: PageTransitionType.topToBottom));
+    Navigator.push(
+        applicationContext!.currentContext!,
+        PageTransition(
+            child: ModalitiesReading(), type: PageTransitionType.topToBottom));
   }
-
 
   // Future<void> setupInteractedMessage() async {
   //   // Get any messages which caused the application to open from
@@ -272,6 +273,4 @@ class FirebaseService{
   //         child: ModalitiesReading(), type: PageTransitionType.fade));
   //   }
   // }
-
-
 }

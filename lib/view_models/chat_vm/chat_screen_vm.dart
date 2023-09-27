@@ -6,8 +6,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutter_sound/flutter_sound.dart';
-import 'package:flutter_sound/public/flutter_sound_recorder.dart';
+/// should be resolved
+// import 'package:flutter_sound/flutter_sound.dart';
+/// should be resolved
+// import 'package:flutter_sound/public/flutter_sound_recorder.dart';
 // import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -63,7 +65,8 @@ class ChatScreenVM extends ChangeNotifier {
   int recordingDuration = 0;
   int? patientId;
   late AnimationController controller;
-  final FlutterSoundRecorder _mRecorder = FlutterSoundRecorder();
+  /// should be resolved
+  // final FlutterSoundRecorder _mRecorder = FlutterSoundRecorder();
   DateTime? startTime;
 
   /// audio recording
@@ -379,25 +382,32 @@ class ChatScreenVM extends ChangeNotifier {
   /// recording functionality
   startRecording() async {
     startDurationTimer();
-    Codec _codec = Codec.aacMP4;
+    /// should be resolved
+    // Codec _codec = Codec.aacMP4;
     String _mPath = '${DateTime.now().toString().replaceFirst(' ', '').replaceFirst(".", "")}tau_file.mp4';
     final Directory appDirectory = await getApplicationDocumentsDirectory();
     // await recorderController
         // ?.record(Platform.isIOS ? '${appDirectory.path}/${DateTime.now().toString().replaceAll(" ", "").replaceAll(".", ":")}.aac' : null);
-    _mRecorder.startRecorder(toFile: _mPath ,codec: _codec);
+    /// should be resolved
+    // _mRecorder.startRecorder(toFile: _mPath ,codec: _codec);
     isRecording = true;
     notifyListeners();
   }
 
   endRecording() async {
     // final path = await recorderController?.stop();
-    final path = await _mRecorder.stopRecorder();
+    /// should be resolved
+    // final path = await _mRecorder.stopRecorder();
     calculateDuration(isStop: true);
     String? res;
-    if (path != null) {
+    /// should be resolved
+    // if (path != null) {
+    if (false) {
       File file;
-      Platform.isIOS ? file = File.fromUri(Uri.parse(path)) : file = File(path);
-      String? res = await _s3crudService?.uploadFile(file: file);
+      /// should be resolved
+      // Platform.isIOS ? file = File.fromUri(Uri.parse(path)) : file = File(path);
+      /// should be resolved
+      // String? res = await _s3crudService?.uploadFile(file: file);
       print(res);
       isRecording = false;
       notifyListeners();
@@ -417,10 +427,12 @@ class ChatScreenVM extends ChangeNotifier {
     if (!kIsWeb) {
       var status = await Permission.microphone.request();
       if (status != PermissionStatus.granted) {
-        throw RecordingPermissionException('Microphone permission not granted');
+        /// should be resolved
+        // throw RecordingPermissionException('Microphone permission not granted');
       }
     }
-    await _mRecorder.openRecorder();
+    /// should be resolved
+    // await _mRecorder.openRecorder();
   }
 
   saveRecording() async {
@@ -437,11 +449,13 @@ class ChatScreenVM extends ChangeNotifier {
   }
 
   pauseRecording() async {
-    await _mRecorder.pauseRecorder();
+    /// should be resolved
+    // await _mRecorder.pauseRecorder();
   }
 
   cancelRecording() async {
-    await _mRecorder.closeRecorder();
+    /// should be resolved
+    // await _mRecorder.closeRecorder();
     calculateDuration();
     isRecording = false;
     notifyListeners();

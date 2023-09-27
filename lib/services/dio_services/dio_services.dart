@@ -1,8 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:twochealthcare/constants/api_strings.dart';
-import 'package:twochealthcare/constants/strings.dart';
-import 'package:twochealthcare/services/dio_services/error_handlers.dart';
 import 'package:twochealthcare/services/dio_services/interceptor.dart';
 
 class DioServices{
@@ -17,9 +15,9 @@ class DioServices{
     dio = Dio(
       BaseOptions(
       baseUrl: baseUrl,
-      receiveTimeout: 10000, // 10 seconds
-      connectTimeout: 10000,
-      sendTimeout: 1000,
+      receiveTimeout: Duration(seconds: 10), // 10 seconds
+      connectTimeout: Duration(seconds: 10),
+      sendTimeout: Duration(seconds: 10),
         contentType:"application/json",
     ),);
 

@@ -1,11 +1,12 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/all.dart';
+import 'package:twochealthcare/views/phs_form/phs_form_screen.dart';
 import 'package:twochealthcare/views/splash/splash.dart';
-import 'package:twochealthcare/views/splash/test_1.dart';
 
 BuildContext? homeContext;
 
@@ -41,37 +42,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     homeContext = context;
-
-    // return MaterialApp.router(
-    //   builder: BotToastInit(),
-    //   routerConfig: GoRouter(
-    //     routes: AppRouteConfig.router,
-    //     navigatorKey: applicationContext, 
-    //     observers: [BotToastNavigatorObserver()],
-    //     ),
-      
-    //   debugShowCheckedModeBanner: false,
-    //   title: '2C Health Care',
-    //   theme: ThemeData(
-    //       primaryColor: Colors.green.shade50,
-    //       primarySwatch: Colors.green,
-    //       appBarTheme: AppBarTheme(
-    //           backgroundColor: Colors.green,
-    //           systemOverlayStyle: SystemUiOverlayStyle.dark)),
-    //   // home: const Splash(),
-    // );
-
-        return MaterialApp(
+    return MaterialApp(
       builder: BotToastInit(),
-      initialRoute: "/",
-      routes: {
-        '/': (context) => const Splash(),
-        '/phsForm': (context) => Deeplinkwork(),
-      },
-        navigatorKey: applicationContext, 
-        navigatorObservers: [BotToastNavigatorObserver()],
-      
-      
+      home: Splash(),
+      navigatorKey: applicationContext,
+      navigatorObservers: [BotToastNavigatorObserver()],
       debugShowCheckedModeBanner: false,
       title: '2C Health Care',
       theme: ThemeData(
@@ -80,6 +55,18 @@ class MyApp extends StatelessWidget {
           appBarTheme: AppBarTheme(
               backgroundColor: Colors.green,
               systemOverlayStyle: SystemUiOverlayStyle.dark)),
+      onGenerateRoute: (setting) {
+        List path = setting.name?.split("/")??[];
+        if (path.contains("phsForm")) {
+          return MaterialPageRoute<void>(
+            settings: setting,
+            builder: (BuildContext context) => PhsFormScreen(
+              id: path.last,
+            ),
+            fullscreenDialog: true,
+          );
+        }
+      },
       // home: const Splash(),
     );
   }

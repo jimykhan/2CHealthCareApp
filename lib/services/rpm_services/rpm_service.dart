@@ -1,6 +1,3 @@
-
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:jiffy/jiffy.dart';
@@ -351,7 +348,7 @@ class RpmService{
     try{
       List<RpmLogModel> rpmlogs = [];
       final dio = _ref!.read(dioServicesProvider);
-      Response response = await dio.dio!.get(RPMController.getRpmEncountersByPatientId+"/$patientId/$month/$year");
+      Response response = await dio.dio!.get(RPMController.getRpmEncountersByPatientId+"/$patientId?month=$month&year=$year");
       if(response.statusCode == 200){
         response.data.forEach((element) {
           rpmlogs.add(RpmLogModel.fromJson(element));

@@ -25,7 +25,6 @@ class SplashVM extends ChangeNotifier {
   FirebaseService? firebaseService;
   ApplicationRouteService? applicationRouteService;
   ChatListVM? _chatListVM;
-  static const deepLinkChannel = const MethodChannel('deeplink_channel');
   SplashVM({ProviderReference? ref}) {
     _ref = ref;
     applicationRouteService = _ref?.read(applicationRouteServiceProvider);
@@ -33,13 +32,7 @@ class SplashVM extends ChangeNotifier {
     splashDuration();
   }
 
-  Future<dynamic> startUri() async {
-    try {
-      return deepLinkChannel.invokeMethod('initialLink');
-    } catch (e) {
-      return "";
-    }
-  }
+
 
   splashDuration() {
     Future.delayed(const Duration(seconds: 2), navigateToHome);
@@ -56,9 +49,13 @@ class SplashVM extends ChangeNotifier {
     // _chatListVM =  _ref!.read(chatListVMProvider);
     ApplicationStartupService applicationStartupService =
         _ref!.read(applicationStartupServiceProvider);
-    startUri().then((path) {
-      applicationStartupService.applicationStart(fromSplash: true, url: path);
-    });
+
+
+
+
+    applicationStartupService.applicationStart(fromSplash: true);
+
+
     // await startUri();
 
     // var bearerToken = await sharedPrefServices.getBearerToken();

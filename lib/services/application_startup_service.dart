@@ -23,7 +23,7 @@ import 'package:twochealthcare/view_models/chat_vm/chat_list_vm.dart';
 import 'package:twochealthcare/view_models/facility_user_view_model/home/fu_home_view_model.dart';
 import 'package:twochealthcare/view_models/profile_vm.dart';
 import 'package:twochealthcare/views/auths/login.dart';
-import 'package:twochealthcare/views/splash/test_1.dart';
+import 'package:twochealthcare/views/phs_form/phs_form_screen.dart';
 import '../main.dart';
 
 class ApplicationStartupService {
@@ -69,20 +69,14 @@ class ApplicationStartupService {
       bool from2FA = false,
       bool fromResetPassword = false,
       var url}) async {
-    if (url != null) {
-      Navigator.pushReplacement(
-          applicationContext!.currentContext!,
-          PageTransition(
-              child: Deeplinkwork(url: url,), type: PageTransitionType.leftToRight));
-      return;
-    }
     int userType = await authServices?.getCurrentUserType() ?? -1;
     if (fromSplash) {
       var bearerToken = await sharedPrefServices?.getBearerToken();
       int userType = await authServices?.getCurrentUserType() ?? -1;
       if (bearerToken == null) {
         applicationRouteService?.addAndRemoveScreen(screenName: "Login");
-        Navigator.pushReplacement(
+        
+        Navigator.push(
             applicationContext!.currentContext!,
             PageTransition(
                 child: Login(

@@ -13,6 +13,7 @@ import 'package:twochealthcare/view_models/auth_vm/login_vm.dart';
 import 'package:twochealthcare/views/care_plan/care_plan.dart';
 import 'package:twochealthcare/views/health_guides/health_guides.dart';
 import 'package:twochealthcare/views/home/profile.dart';
+import 'package:twochealthcare/views/phs_form/phs_form_screen.dart';
 import 'package:twochealthcare/views/rpm_view/readings/modalities_reading.dart';
 
 class PMenu extends StatelessWidget {

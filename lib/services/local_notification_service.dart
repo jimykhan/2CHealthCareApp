@@ -95,8 +95,8 @@ class LocalNotificationService{
           notification.hashCode,
           notification?.title??"",
           notification?.body??"",
-          const NotificationDetails(
-            iOS: IOSNotificationDetails(
+           const NotificationDetails(
+            iOS: DarwinNotificationDetails(
               // this.presentAlert,
               // this.presentBadge,
               // this.presentSound,

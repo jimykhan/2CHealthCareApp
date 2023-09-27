@@ -22,7 +22,7 @@ class PermissionService{
 
    turnOnBlue()async{
     try{
-      await FlutterBluePlus.instance.turnOn();
+      await FlutterBluePlus.turnOn();
       // int i = (1/0) as int;
     }catch(ex){
         print("error");

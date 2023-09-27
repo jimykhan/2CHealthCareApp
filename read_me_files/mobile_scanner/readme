@@ -1,2 +1,6 @@
 need to change SwiftMobileScannerPlugin.swift for ios
 and mobile_scanner_controller.dart these for customize mobile_scanner plugin
+
+in sms_autofill 2.3.0
+change gradle.build add namespace
+namespace 'com.jaumard.smsautofill'

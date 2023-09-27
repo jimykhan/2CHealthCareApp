@@ -43,8 +43,8 @@ class CustomFilledButton extends StatelessWidget {
       onTap: onTap,
       child: Container(
         padding: EdgeInsets.only(right: paddingLeftRight, left: paddingLeftRight),
-        height: h ?? ApplicationSizing.convert(50),
-        width: w ?? ApplicationSizing.convertWidth(360),
+        height: ApplicationSizing.convert(h??50),
+        width: ApplicationSizing.convertWidth(w??360),
         decoration: BoxDecoration(
             color: color1 ?? appColor,
             borderRadius: BorderRadius.circular(borderRadius??7),

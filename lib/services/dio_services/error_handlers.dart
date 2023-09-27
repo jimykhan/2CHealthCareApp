@@ -34,7 +34,7 @@ class ConflictException extends DioError {
   @override
   String toString() {
     SnackBarMessage(message: Strings.unknownError);
-    SnackBarMessage(message: "Conflict occurred");
+    // SnackBarMessage(message: "Conflict occurred");
     return 'Conflict occurred';
   }
 }

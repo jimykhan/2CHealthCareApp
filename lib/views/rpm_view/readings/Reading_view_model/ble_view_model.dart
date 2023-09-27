@@ -25,7 +25,6 @@ class BleVM extends ChangeNotifier {
   String glucoseModelNumberUuid = _uuidFromShortString("2a24");
   String glucoseManufacturerUuid = _uuidFromShortString("2a29");
   bool deviceConnect = false;
-  FlutterBluePlus flutterBlue = FlutterBluePlus.instance;
   PermissionService? _permissionService;
   PhDeviceService? _phDeviceService;
   SharedPrefServices? _sharedPrefServices;
@@ -45,14 +44,14 @@ class BleVM extends ChangeNotifier {
   }
 
   initService() {
-    flutterBlue.scanResults.listen((results) async {
+    FlutterBluePlus.scanResults.listen((results) async {
       // do something with scan results
       for (ScanResult element in results) {
         if (deviceConnect) return;
         await connectDevice(element.device);
       }
     });
-      flutterBlue.isScanning.listen((event) {
+      FlutterBluePlus.isScanning.listen((event) {
         isScanning = event;
         print("Scaning status ${event}");
         notifyListeners();
@@ -87,8 +86,8 @@ class BleVM extends ChangeNotifier {
         getModalitiesByUserId();
         // if (isLocationAccess && isBleAccess) {
         if (isLocationAccess) {
-          await flutterBlue.startScan(
-              withServices: [Guid(glucoseServiceUuid)], allowDuplicates: true).
+          await FlutterBluePlus.startScan(
+              withServices: [Guid(glucoseServiceUuid)]).
           onError((error, stackTrace) {
             print("$error $stackTrace");
           });
@@ -100,7 +99,7 @@ class BleVM extends ChangeNotifier {
 
 
   stopScan() async {
-    await flutterBlue.stopScan();
+    await FlutterBluePlus.stopScan();
   }
 
   bluetoothIcon(){
@@ -112,8 +111,8 @@ class BleVM extends ChangeNotifier {
               height: 40, width: 40,
               child: Icon(Icons.bluetooth_rounded,color: appColor,size: 35,))
               : InkWell(onTap:() async {
-            await flutterBlue.startScan(
-                withServices: [Guid(glucoseServiceUuid)], allowDuplicates: true).
+            await FlutterBluePlus.startScan(
+                withServices: [Guid(glucoseServiceUuid)]).
             onError((error, stackTrace) {
               print("$error $stackTrace");
             });

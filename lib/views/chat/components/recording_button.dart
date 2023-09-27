@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_vibrate/flutter_vibrate.dart';
+
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:twochealthcare/common_widgets/buttons/delete_button.dart';
 import 'package:twochealthcare/common_widgets/buttons/sent_button.dart';
@@ -249,7 +249,7 @@ class _RecordButtonState extends State<RecordButton> with SingleTickerProviderSt
                     SendButton(
                       withBackground: true,
                       ontap: ()async {
-                        Vibrate.feedback(FeedbackType.success);
+
                         timer?.cancel();
                         timer = null;
                         startTime = null;
@@ -302,8 +302,6 @@ class _RecordButtonState extends State<RecordButton> with SingleTickerProviderSt
 
         } else if (checkIsLocked(details.localPosition)) {
           controller.reverse();
-
-          Vibrate.feedback(FeedbackType.heavy);
           debugPrint("Locked recording");
           debugPrint(details.localPosition.dy.toString());
           setState(() {
@@ -312,7 +310,6 @@ class _RecordButtonState extends State<RecordButton> with SingleTickerProviderSt
         }
         else {
           controller.reverse();
-          Vibrate.feedback(FeedbackType.success);
           timer?.cancel();
           timer = null;
           startTime = null;
@@ -327,7 +324,6 @@ class _RecordButtonState extends State<RecordButton> with SingleTickerProviderSt
       },
       onLongPress: () async {
         debugPrint("onLongPress");
-        Vibrate.feedback(FeedbackType.success);
 
         /// Start recording and timer
         bool hasRecordingPermission = await chatScreenVM.RecordingPermission();
@@ -350,7 +346,6 @@ class _RecordButtonState extends State<RecordButton> with SingleTickerProviderSt
 
   cancelRecording(ChatScreenVM chatScreenVM){
     print("cancel recording call");
-    Vibrate.feedback(FeedbackType.heavy);
 
     timer?.cancel();
     timer = null;

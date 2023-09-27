@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 
 class ApplicationSizing {
@@ -21,15 +20,18 @@ class ApplicationSizing {
     longDimension = width < height ? height : width;
   }
 
-  static double fontScale(double size,{bool minus = false}) {
+  static double fontScale(double size, {bool minus = false}) {
     var f = size * textScale;
-    if(f> 30 && minus) f = 25;
+    if (f > 30 && minus) f = 25;
     return f;
   }
+
   static double constSize(double size) {
     return size;
   }
+
   static double convert(double n) {
+    if (longDimension == null) return n;
     double i = (n) / guidelineBaseHeight;
     return i * longDimension;
   }

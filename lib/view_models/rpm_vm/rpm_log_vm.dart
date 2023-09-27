@@ -47,6 +47,8 @@ class RpmLogsVM extends ChangeNotifier{
     loading = check;
     notifyListeners();
   }
+
+  
   getRpmLogsByPatientId({int? patientid})async{
     setLoading(true);
     int month = 0;
@@ -61,6 +63,8 @@ class RpmLogsVM extends ChangeNotifier{
     }
     setLoading(false);
   }
+
+
   monthYear(){
     return DatePicker.showPicker(applicationContext!.currentContext!,
         showTitleActions: true,
